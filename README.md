@@ -4,6 +4,10 @@ SchizoMania game, using Tesseract engine.
 Although it is using Tesseract as a base, it does not refrain from heavily modifying parts that need a change.
 Feel free to join in on this project, which is best done for now by just hacking away at one of the things in the todo lists below.
 
+# New features so far for Alpha 0.0.1:
+- Command: ent_set_attr str_arg1 str_arg2 str_arg3 str_arg4 str_arg5 str_arg6 str_arg7 str_arg8
+- Command: ent_get_attr, this will output the string arguments as is.
+
 # TODO ENGINE Alpha 0.0.1:
 - Add support for footstep audio based on material/texture type.
 - Add support for flickering light entities.
@@ -11,7 +15,6 @@ Feel free to join in on this project, which is best done for now by just hacking
 - Allow for 64 bots, maybe even more, so we can use these for AI. Otherwise, reimplement AI like in Cube 2, and work from there.
 
 # TODO GAME Alpha 0.0.1:
-- Allow for string enitity attributes to be set and edited. (Take note, this may have to be done in Engine code sadly.)
 - Create a basic test map.
 - Allow for the possibility of reloading a weapon.
 - Add a knife melee weapon.
