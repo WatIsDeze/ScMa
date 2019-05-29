@@ -1,0 +1,3 @@
+/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles/rebuild_cache.dir
+/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles/schizomania.dir
+/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles/edit_cache.dir

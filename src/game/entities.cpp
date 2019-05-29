@@ -1,0 +1,488 @@
+#include "game.h"
+
+namespace entities
+{
+    using namespace game;
+
+    int extraentinfosize() { return sizeof(gameentity); }       // size in bytes of what the 2 methods below read/write... so it can be skipped by other games
+
+    void writeent(entity &e, char *buf)   // write any additional data to disk (except for ET_ ents)
+    {
+    	memcpy(buf, ((gameentity &)e).str_attr1, 256);
+       	memcpy(buf + (256 * 1), ((gameentity &)e).str_attr2, 256);
+		memcpy(buf + (256 * 2), ((gameentity &)e).str_attr3, 256);
+		memcpy(buf + (256 * 3), ((gameentity &)e).str_attr4, 256);
+		memcpy(buf + (256 * 4), ((gameentity &)e).str_attr5, 256);
+		memcpy(buf + (256 * 5), ((gameentity &)e).str_attr6, 256);
+		memcpy(buf + (256 * 6), ((gameentity &)e).str_attr7, 256);
+		memcpy(buf + (256 * 7), ((gameentity &)e).str_attr8, 256);
+    }
+
+    void readent(entity &e, char *buf, int ver)     // read from disk, and init
+    {
+    	memcpy(((gameentity &)e).str_attr1, buf, 256); 
+       	memcpy(((gameentity &)e).str_attr2, buf + (256 * 1), 256); 
+    	memcpy(((gameentity &)e).str_attr3, buf + (256 * 2), 256); 
+       	memcpy(((gameentity &)e).str_attr4, buf + (256 * 3), 256); 
+    	memcpy(((gameentity &)e).str_attr5, buf + (256 * 4), 256); 
+    	memcpy(((gameentity &)e).str_attr6, buf + (256 * 5), 256); 
+    	memcpy(((gameentity &)e).str_attr7, buf + (256 * 6), 256); 
+    	memcpy(((gameentity &)e).str_attr8, buf + (256 * 7), 256); 
+    }
+
+#ifndef STANDALONE
+    vector<extentity *> ents;
+
+    vector<extentity *> &getents() { return ents; }
+
+    bool mayattach(extentity &e) { return false; }
+    bool attachent(extentity &e, extentity &a) { return false; }
+
+    const char *itemname(int i)
+    {
+        return NULL;
+#if 0
+        int t = ents[i]->type;
+        if(!validitem(t)) return NULL;
+        return itemstats[t-I_FIRST].name;
+#endif
+    }
+
+    int itemicon(int i)
+    {
+        return -1;
+#if 0
+        int t = ents[i]->type;
+        if(!validitem(t)) return -1;
+        return itemstats[t-I_FIRST].icon;
+#endif
+    }
+
+    const char *entmdlname(int type)
+    {
+        static const char * const entmdlnames[MAXENTTYPES] =
+        {
+            NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+            "game/teleport", NULL, NULL,
+            NULL
+        };
+        return entmdlnames[type];
+    }
+
+    const char *entmodel(const entity &e)
+    {
+        if(e.type == TELEPORT)
+        {
+            if(e.attr2 > 0) return mapmodelname(e.attr2);
+            if(e.attr2 < 0) return NULL;
+        }
+        return e.type < MAXENTTYPES ? entmdlname(e.type) : NULL;
+    }
+
+    void preloadentities()
+    {
+        loopi(MAXENTTYPES)
+        {
+            const char *mdl = entmdlname(i);
+            if(!mdl) continue;
+            preloadmodel(mdl);
+        }
+        loopv(ents)
+        {
+            extentity &e = *ents[i];
+            switch(e.type)
+            {
+                case TELEPORT:
+                    if(e.attr2 > 0) preloadmodel(mapmodelname(e.attr2));
+                case JUMPPAD:
+                    if(e.attr4 > 0) preloadmapsound(e.attr4);
+                    break;
+            }
+        }
+    }
+
+    void renderentities()
+    {
+        loopv(ents)
+        {
+            extentity &e = *ents[i];
+            int revs = 10;
+            switch(e.type)
+            {
+                case TELEPORT:
+                    if(e.attr2 < 0) continue;
+                    break;
+                default:
+                    if(!e.spawned() || !validitem(e.type)) continue;
+                    break;
+            }
+            const char *mdlname = entmodel(e);
+            if(mdlname)
+            {
+                vec p = e.o;
+                p.z += 1+sinf(lastmillis/100.0+e.o.x+e.o.y)/20;
+                rendermodel(mdlname, ANIM_MAPMODEL|ANIM_LOOP, p, lastmillis/(float)revs, 0, 0, MDL_CULL_VFC | MDL_CULL_DIST | MDL_CULL_OCCLUDED);
+            }
+        }
+    }
+
+    void addammo(int type, int &v, bool local)
+    {
+#if 0
+        itemstat &is = itemstats[type-I_FIRST];
+        v += is.add;
+        if(v>is.max) v = is.max;
+        if(local) msgsound(is.sound);
+#endif
+    }
+
+    // these two functions are called when the server acknowledges that you really
+    // picked up the item (in multiplayer someone may grab it before you).
+
+    void pickupeffects(int n, gameent *d)
+    {
+#if 0
+        if(!ents.inrange(n)) return;
+        int type = ents[n]->type;
+        if(!validitem(type)) return;
+        ents[n]->clearspawned();
+        if(!d) return;
+        itemstat &is = itemstats[type-I_FIRST];
+        if(d!=player1 || isthirdperson())
+        {
+            //particle_text(d->abovehead(), is.name, PART_TEXT, 2000, 0xFFC864, 4.0f, -8);
+            particle_icon(d->abovehead(), is.icon%4, is.icon/4, PART_HUD_ICON_GREY, 2000, 0xFFFFFF, 2.0f, -8);
+        }
+        playsound(itemstats[type-I_FIRST].sound, d!=player1 ? &d->o : NULL, NULL, 0, 0, 0, -1, 0, 1500);
+        d->pickup(type);
+        if(d==player1) switch(type)
+        {
+        }
+#endif
+    }
+
+    // these functions are called when the client touches the item
+
+    void teleporteffects(gameent *d, int tp, int td, bool local)
+    {
+        if(ents.inrange(tp) && ents[tp]->type == TELEPORT)
+        {
+            extentity &e = *ents[tp];
+            if(e.attr4 >= 0)
+            {
+                int snd = S_TELEPORT, flags = 0;
+                if(e.attr4 > 0) { snd = e.attr4; flags = SND_MAP; }
+                if(d == player1) playsound(snd, NULL, NULL, flags);
+                else
+                {
+                    playsound(snd, &e.o, NULL, flags);
+                    if(ents.inrange(td) && ents[td]->type == TELEDEST) playsound(snd, &ents[td]->o, NULL, flags);
+                }
+            }
+        }
+        if(local && d->clientnum >= 0)
+        {
+            sendposition(d);
+            packetbuf p(32, ENET_PACKET_FLAG_RELIABLE);
+            putint(p, N_TELEPORT);
+            putint(p, d->clientnum);
+            putint(p, tp);
+            putint(p, td);
+            sendclientpacket(p.finalize(), 0);
+            flushclient();
+        }
+    }
+
+    void jumppadeffects(gameent *d, int jp, bool local)
+    {
+        if(ents.inrange(jp) && ents[jp]->type == JUMPPAD)
+        {
+            extentity &e = *ents[jp];
+            if(e.attr4 >= 0)
+            {
+                int snd = S_JUMPPAD, flags = 0;
+                if(e.attr4 > 0) { snd = e.attr4; flags = SND_MAP; }
+                if(d == player1) playsound(snd, NULL, NULL, flags);
+                else playsound(snd, &e.o, NULL, flags);
+            }
+        }
+        if(local && d->clientnum >= 0)
+        {
+            sendposition(d);
+            packetbuf p(16, ENET_PACKET_FLAG_RELIABLE);
+            putint(p, N_JUMPPAD);
+            putint(p, d->clientnum);
+            putint(p, jp);
+            sendclientpacket(p.finalize(), 0);
+            flushclient();
+        }
+    }
+
+    void teleport(int n, gameent *d)     // also used by monsters
+    {
+        int e = -1, tag = ents[n]->attr1, beenhere = -1;
+        for(;;)
+        {
+            e = findentity(TELEDEST, e+1);
+            if(e==beenhere || e<0) { conoutf(CON_WARN, "no teleport destination for tag %d", tag); return; }
+            if(beenhere<0) beenhere = e;
+            if(ents[e]->attr2==tag)
+            {
+                teleporteffects(d, n, e, true);
+                d->o = ents[e]->o;
+                d->yaw = ents[e]->attr1;
+                if(ents[e]->attr3 > 0)
+                {
+                    vec dir;
+                    vecfromyawpitch(d->yaw, 0, 1, 0, dir);
+                    float speed = d->vel.magnitude2();
+                    d->vel.x = dir.x*speed;
+                    d->vel.y = dir.y*speed;
+                }
+                else d->vel = vec(0, 0, 0);
+                entinmap(d);
+                updatedynentcache(d);
+                ai::inferwaypoints(d, ents[n]->o, ents[e]->o, 16.f);
+                break;
+            }
+        }
+    }
+
+    VARR(teleteam, 0, 1, 1);
+
+    void trypickup(int n, gameent *d)
+    {
+        switch(ents[n]->type)
+        {
+            default:
+                if(d->canpickup(ents[n]->type))
+                {
+                    addmsg(N_ITEMPICKUP, "rci", d, n);
+                    ents[n]->clearspawned(); // even if someone else gets it first
+                }
+                break;
+
+            case TELEPORT:
+            {
+                if(d->lastpickup==ents[n]->type && lastmillis-d->lastpickupmillis<500) break;
+                if(!teleteam && m_teammode) break;
+                if(ents[n]->attr3 > 0)
+                {
+                    defformatstring(hookname, "can_teleport_%d", ents[n]->attr3);
+                    if(!execidentbool(hookname, true)) break;
+                }
+                d->lastpickup = ents[n]->type;
+                d->lastpickupmillis = lastmillis;
+                teleport(n, d);
+                break;
+            }
+
+            case JUMPPAD:
+            {
+                if(d->lastpickup==ents[n]->type && lastmillis-d->lastpickupmillis<300) break;
+                d->lastpickup = ents[n]->type;
+                d->lastpickupmillis = lastmillis;
+                jumppadeffects(d, n, true);
+                if(d->ai) d->ai->becareful = true;
+                d->falling = vec(0, 0, 0);
+                d->physstate = PHYS_FALL;
+                d->timeinair = 1;
+                d->vel = vec(ents[n]->attr3*10.0f, ents[n]->attr2*10.0f, ents[n]->attr1*12.5f);
+                break;
+            }
+        }
+    }
+
+    void checkitems(gameent *d)
+    {
+        if(d->state!=CS_ALIVE) return;
+        vec o = d->feetpos();
+        loopv(ents)
+        {
+            extentity &e = *ents[i];
+            if(e.type==NOTUSED) continue;
+            if(!e.spawned() && e.type!=TELEPORT && e.type!=JUMPPAD) continue;
+            float dist = e.o.dist(o);
+            if(dist<(e.type==TELEPORT ? 16 : 12)) trypickup(i, d);
+        }
+    }
+
+    void putitems(packetbuf &p)            // puts items in network stream and also spawns them locally
+    {
+        putint(p, N_ITEMLIST);
+        loopv(ents) if(validitem(ents[i]->type))
+        {
+            putint(p, i);
+            putint(p, ents[i]->type);
+        }
+        putint(p, -1);
+    }
+
+    void resetspawns() { loopv(ents) ents[i]->clearspawned(); }
+
+    void spawnitems(bool force)
+    {
+        loopv(ents) if(validitem(ents[i]->type))
+        {
+            ents[i]->setspawned(force || !server::delayspawn(ents[i]->type));
+        }
+    }
+
+    void setspawn(int i, bool on) { if(ents.inrange(i)) ents[i]->setspawned(on); }
+
+    extentity *newentity() { return new gameentity(); }
+    void deleteentity(extentity *e) { delete (gameentity *)e; }
+
+    void clearents()
+    {
+        while(ents.length()) deleteentity(ents.pop());
+    }
+
+    void animatemapmodel(const extentity &e, int &anim, int &basetime)
+    {
+    }
+
+    void fixentity(extentity &e)
+    {
+        switch(e.type)
+        {
+            case FLAG:
+                e.attr5 = e.attr4;
+                e.attr4 = e.attr3;
+            case TELEDEST:
+                e.attr3 = e.attr2;
+                e.attr2 = e.attr1;
+                e.attr1 = (int)player1->yaw;
+                break;
+        }
+    }
+    
+    	// WatIs: Testing the set and get properties of entities.
+	int edit_entity = -1;
+	
+	ICOMMAND(ent_set_attr, "ssssssss", (char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7, char *s8), 
+	{
+		if (edit_entity > -1 && edit_entity < ents.length()) {
+			gameentity *ent = (gameentity*)ents[edit_entity];
+
+			copystring(ent->str_attr1, s1, 256);			
+			copystring(ent->str_attr2, s2, 256);	
+			copystring(ent->str_attr3, s3, 256);
+			copystring(ent->str_attr4, s4, 256);
+			copystring(ent->str_attr5, s5, 256);
+			copystring(ent->str_attr6, s6, 256);
+			copystring(ent->str_attr7, s7, 256);
+			copystring(ent->str_attr8, s8, 256);	
+		} else {
+			conoutf("%s", "No valid in range entity selected.");
+		}
+/*		if(lastcreated) { 
+			copystring(lastcreated->str_attr1, s1, 256);
+			copystring(lastcreated->str_attr2, s2, 256);
+			copystring(lastcreated->str_attr3, s3, 256);
+			copystring(lastcreated->str_attr4, s4, 256);
+			copystring(lastcreated->str_attr5, s5, 256);
+			copystring(lastcreated->str_attr6, s6, 256);
+			copystring(lastcreated->str_attr7, s7, 256);
+			copystring(lastcreated->str_attr8, s8, 256);
+		} else {
+			conoutf("%s", "Yeah we're out of luck bro");
+		}*/
+	});
+	
+	ICOMMAND(ent_get_attr, "", (), {
+		if (edit_entity > -1 && edit_entity < ents.length()) {
+			gameentity *ent = (gameentity*)ents[edit_entity];
+			
+			conoutf("%i %s %s %s %s %s %s %s %s", 
+				edit_entity,
+				ent->str_attr1, 
+				ent->str_attr2, 
+				ent->str_attr3,
+				ent->str_attr4,
+				ent->str_attr5,
+				ent->str_attr6,
+				ent->str_attr7,
+				ent->str_attr8
+			);
+		} else {
+			
+		}
+/*		if (lastcreated) {
+			conoutf("%s %s %s %s %s %s %s %s", 
+				lastcreated->str_attr1, 
+				lastcreated->str_attr2, 
+				lastcreated->str_attr3, 
+				lastcreated->str_attr4, 
+				lastcreated->str_attr5, 
+				lastcreated->str_attr6, 
+				lastcreated->str_attr7, 
+				lastcreated->str_attr8);																												
+		} else {
+			conoutf("%s", "Yeah we're out of luck bro");
+		}*/
+	});
+
+    void entradius(extentity &e, bool color)
+    {
+        switch(e.type)
+        {
+            case TELEPORT:
+                loopv(ents) if(ents[i]->type == TELEDEST && e.attr1==ents[i]->attr2)
+                {
+                    renderentarrow(e, vec(ents[i]->o).sub(e.o).normalize(), e.o.dist(ents[i]->o));
+                    break;
+                }
+                break;
+
+            case JUMPPAD:
+                renderentarrow(e, vec((int)(char)e.attr3*10.0f, (int)(char)e.attr2*10.0f, e.attr1*12.5f).normalize(), 4);
+                break;
+
+            case FLAG:
+            case TELEDEST:
+            {
+                vec dir;
+                vecfromyawpitch(e.attr1, 0, 1, 0, dir);
+                renderentarrow(e, dir, 4);
+                break;
+            }
+        }
+    }
+
+    bool printent(extentity &e, char *buf, int len)
+    {
+        return false;
+    }
+
+    const char *entnameinfo(entity &e) { return ""; }
+    const char *entname(int i)
+    {
+        static const char * const entnames[MAXENTTYPES] =
+        {
+            "none?", "light", "mapmodel", "playerstart", "envmap", "particles", "sound", "spotlight", "decal",
+            "teleport", "teledest", "jumppad",
+            "flag"
+        };
+        return i>=0 && size_t(i)<sizeof(entnames)/sizeof(entnames[0]) ? entnames[i] : "";
+    }
+
+    void editent(int i, bool local)
+    {
+        extentity &e = *ents[i];
+        
+        edit_entity = i;
+        conoutf("%i", i);
+        
+        //e.flags = 0;
+        if(local) addmsg(N_EDITENT, "rii3ii5", i, (int)(e.o.x*DMF), (int)(e.o.y*DMF), (int)(e.o.z*DMF), e.type, e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
+    }
+
+    float dropheight(entity &e)
+    {
+        if(e.type==FLAG) return 0.0f;
+        return 4.0f;
+    }
+#endif
+}
+
