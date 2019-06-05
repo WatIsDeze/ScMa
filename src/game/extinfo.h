@@ -37,8 +37,8 @@
         putint(q, EXT_PLAYERSTATS_RESP_STATS); // send player stats following
         putint(q, ci->clientnum); //add player id
         putint(q, ci->ping);
-        sendstring(ci->name, q);
-        sendstring(teamname(m_teammode ? ci->team : 0), q);
+        sendcubestr(ci->name, q);
+        sendcubestr(teamname(m_teammode ? ci->team : 0), q);
         putint(q, ci->state.frags);
         putint(q, ci->state.flags);
         putint(q, ci->state.deaths);
@@ -56,7 +56,7 @@
 
     static inline void extinfoteamscore(ucharbuf &p, int team, int score)
     {
-        sendstring(teamname(team), p);
+        sendcubestr(teamname(team), p);
         putint(p, score);
         if(!smode || !smode->extinfoteam(team, p))
             putint(p,-1); //no bases follow

@@ -31,7 +31,7 @@ struct obj : vertloader<obj>
             stream *file = openfile(filename, "rb");
             if(!file) return false;
 
-            name = newstring(filename);
+            name = newcubestr(filename);
 
             numframes = 1;
 
@@ -46,7 +46,7 @@ struct obj : vertloader<obj>
             #define STARTMESH do { \
                 vertmesh &m = *new vertmesh; \
                 m.group = this; \
-                m.name = meshname[0] ? newstring(meshname) : NULL; \
+                m.name = meshname[0] ? newcubestr(meshname) : NULL; \
                 meshes.add(&m); \
                 curmesh = &m; \
                 verthash.clear(); \
@@ -78,7 +78,7 @@ struct obj : vertloader<obj>
                 curmesh->calctangents(); \
             } while(0)
 
-            string meshname = "";
+            cubestr meshname = "";
             vertmesh *curmesh = NULL;
             while(file->getline(buf, sizeof(buf)))
             {
@@ -99,7 +99,7 @@ struct obj : vertloader<obj>
                         char *name = c;
                         size_t namelen = strlen(name);
                         while(namelen > 0 && isspace(name[namelen-1])) namelen--;
-                        copystring(meshname, name, min(namelen+1, sizeof(meshname)));
+                        copycubestr(meshname, name, min(namelen+1, sizeof(meshname)));
 
                         if(curmesh) FLUSHMESH;
                         curmesh = NULL;
@@ -167,11 +167,11 @@ struct obj : vertloader<obj>
     {
         part &mdl = addpart();
         const char *pname = parentdir(name);
-        defformatstring(name1, "media/model/%s/tris.obj", name);
+        defformatcubestr(name1, "media/model/%s/tris.obj", name);
         mdl.meshes = sharemeshes(path(name1));
         if(!mdl.meshes)
         {
-            defformatstring(name2, "media/model/%s/tris.obj", pname);    // try obj in parent folder (vert sharing)
+            defformatcubestr(name2, "media/model/%s/tris.obj", pname);    // try obj in parent folder (vert sharing)
             mdl.meshes = sharemeshes(path(name2));
             if(!mdl.meshes) return false;
         }

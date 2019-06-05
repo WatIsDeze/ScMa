@@ -29,7 +29,7 @@ struct editline
         {
             va_list args;
             va_start(args, fmt);
-            vformatstring(newtext, fmt, args, maxlen);
+            vformatcubestr(newtext, fmt, args, maxlen);
             va_end(args);
         }
         else newtext[0] = '\0';
@@ -159,7 +159,7 @@ struct editor
     vector<editline> lines; // MUST always contain at least one line!
 
     editor(const char *name, int mode, const char *initval) :
-        mode(mode), active(true), rendered(false), name(newstring(name)), filename(NULL),
+        mode(mode), active(true), rendered(false), name(newcubestr(name)), filename(NULL),
         cx(0), cy(0), mx(-1), maxx(-1), maxy(-1), scrolly(0), linewrap(false), pixelwidth(-1), pixelheight(-1)
     {
         //printf("editor %08x '%s'\n", this, name);
@@ -199,7 +199,7 @@ struct editor
     void setfile(const char *fname)
     {
         DELETEA(filename);
-        if(fname) filename = newstring(fname);
+        if(fname) filename = newcubestr(fname);
     }
 
     void load()
@@ -299,11 +299,11 @@ struct editor
         if(b->lines.empty()) b->lines.add().set("");
     }
 
-    char *tostring()
+    char *tocubestr()
     {
         int len = 0;
         loopv(lines) len += lines[i].len + 1;
-        char *str = newstring(len);
+        char *str = newcubestr(len);
         int offset = 0;
         loopv(lines)
         {
@@ -316,7 +316,7 @@ struct editor
         return str;
     }
 
-    char *selectiontostring()
+    char *selectiontocubestr()
     {
         vector<char> buf;
         int sx, sy, ex, ey;
@@ -337,7 +337,7 @@ struct editor
             buf.add('\n');
         }
         buf.add('\0');
-        return newstring(buf.getbuf(), buf.length()-1);
+        return newcubestr(buf.getbuf(), buf.length()-1);
     }
 
     void removelines(int start, int count)
@@ -780,7 +780,7 @@ TEXTCOMMAND(textclear, "", (), textfocus->clear(););
 TEXTCOMMAND(textcurrentline, "",  (), result(textfocus->currentline().text););
 
 TEXTCOMMAND(textexec, "i", (int *selected), // execute script commands from the buffer (0=all, 1=selected region only)
-    char *script = *selected ? textfocus->selectiontostring() : textfocus->tostring();
+    char *script = *selected ? textfocus->selectiontocubestr() : textfocus->tocubestr();
     execute(script);
     delete[] script;
 );

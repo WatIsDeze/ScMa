@@ -61,7 +61,7 @@ static void writelog(FILE *file, const char *buf)
 static void writelogv(FILE *file, const char *fmt, va_list args)
 {
     static char buf[LOGSTRLEN];
-    vformatstring(buf, fmt, args, sizeof(buf));
+    vformatcubestr(buf, fmt, args, sizeof(buf));
     writelog(file, buf);
 }
 
@@ -70,7 +70,7 @@ void fatal(const char *fmt, ...)
 {
     void cleanupserver();
     cleanupserver();
-    defvformatstring(msg,fmt,fmt);
+    defvformatcubestr(msg,fmt,fmt);
     if(logfile) logoutf("%s", msg);
 #ifdef WIN32
     MessageBox(NULL, msg, "Tesseract fatal error", MB_OK|MB_SYSTEMMODAL);
@@ -112,7 +112,7 @@ struct client                   // server side version of "dynent" type
     int type;
     int num;
     ENetPeer *peer;
-    string hostname;
+    cubestr hostname;
     void *info;
 };
 
@@ -248,7 +248,7 @@ ENetPacket *sendf(int cn, int chan, const char *format, ...)
             loopi(n) putfloat(p, (float)va_arg(args, double));
             break;
         }
-        case 's': sendstring(va_arg(args, const char *), p); break;
+        case 's': sendcubestr(va_arg(args, const char *), p); break;
         case 'm':
         {
             int n = va_arg(args, int);
@@ -286,7 +286,7 @@ ENetPacket *sendfile(int cn, int chan, stream *file, const char *format, ...)
             loopi(n) putint(p, va_arg(args, int));
             break;
         }
-        case 's': sendstring(va_arg(args, const char *), p); break;
+        case 's': sendcubestr(va_arg(args, const char *), p); break;
         case 'l': putint(p, len); break;
     }
     va_end(args);
@@ -327,9 +327,9 @@ void disconnect_client(int n, int reason)
     server::clientdisconnect(n);
     delclient(clients[n]);
     const char *msg = disconnectreason(reason);
-    string s;
-    if(msg) formatstring(s, "client (%s) disconnected because: %s", clients[n]->hostname, msg);
-    else formatstring(s, "client (%s) disconnected", clients[n]->hostname);
+    cubestr s;
+    if(msg) formatcubestr(s, "client (%s) disconnected because: %s", clients[n]->hostname, msg);
+    else formatcubestr(s, "client (%s) disconnected", clients[n]->hostname);
     logoutf("%s", s);
     server::sendservmsg(s);
 }
@@ -440,7 +440,7 @@ bool requestmaster(const char *req)
 
 bool requestmasterf(const char *fmt, ...)
 {
-    defvformatstring(req, fmt, fmt);
+    defvformatcubestr(req, fmt, fmt);
     return requestmaster(req);
 }
 
@@ -458,9 +458,9 @@ void processmasterinput()
         int cmdlen = args - input;
         while(args < end && iscubespace(*args)) args++;
 
-        if(matchstring(input, cmdlen, "failreg"))
+        if(matchcubestr(input, cmdlen, "failreg"))
             conoutf(CON_ERROR, "master server registration failed: %s", args);
-        else if(matchstring(input, cmdlen, "succreg"))
+        else if(matchcubestr(input, cmdlen, "succreg"))
             conoutf("master server registration succeeded");
         else server::processmasterinput(input, cmdlen, args);
 
@@ -680,8 +680,8 @@ void serverslice(bool dedicated, uint timeout)   // main server update, called f
                 client &c = addclient(ST_TCPIP);
                 c.peer = event.peer;
                 c.peer->data = &c;
-                string hn;
-                copystring(c.hostname, (enet_address_get_host_ip(&c.peer->address, hn, sizeof(hn))==0) ? hn : "unknown");
+                cubestr hn;
+                copycubestr(c.hostname, (enet_address_get_host_ip(&c.peer->address, hn, sizeof(hn))==0) ? hn : "unknown");
                 logoutf("client connected (%s)", c.hostname);
                 int reason = server::clientconnect(c.num, c.peer->address.host);
                 if(reason) disconnect_client(c.num, reason);
@@ -733,7 +733,7 @@ void localdisconnect(bool cleanup)
 void localconnect()
 {
     client &c = addclient(ST_LOCAL);
-    copystring(c.hostname, "local");
+    copycubestr(c.hostname, "local");
     game::gameconnect(false);
     server::localconnect(c.num);
 }
@@ -744,7 +744,7 @@ void localconnect()
 
 #define IDI_ICON1 1
 
-static string apptip = "";
+static cubestr apptip = "";
 static HINSTANCE appinstance = NULL;
 static ATOM wndclass = 0;
 static HWND appwindow = NULL, conwindow = NULL;
@@ -889,15 +889,15 @@ static LRESULT CALLBACK handlemessages(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
             {
                 case MENU_OPENCONSOLE:
                     setupconsole();
-                    if(conwindow) ModifyMenu(appmenu, 0, MF_BYPOSITION|MF_STRING, MENU_HIDECONSOLE, "Hide Console");
+                    if(conwindow) ModifyMenu(appmenu, 0, MF_BYPOSITION|MF_cubestr, MENU_HIDECONSOLE, "Hide Console");
                     break;
                 case MENU_SHOWCONSOLE:
                     ShowWindow(conwindow, SW_SHOWNORMAL);
-                    ModifyMenu(appmenu, 0, MF_BYPOSITION|MF_STRING, MENU_HIDECONSOLE, "Hide Console");
+                    ModifyMenu(appmenu, 0, MF_BYPOSITION|MF_cubestr, MENU_HIDECONSOLE, "Hide Console");
                     break;
                 case MENU_HIDECONSOLE:
                     ShowWindow(conwindow, SW_HIDE);
-                    ModifyMenu(appmenu, 0, MF_BYPOSITION|MF_STRING, MENU_SHOWCONSOLE, "Show Console");
+                    ModifyMenu(appmenu, 0, MF_BYPOSITION|MF_cubestr, MENU_SHOWCONSOLE, "Show Console");
                     break;
                 case MENU_EXIT:
                     PostMessage(hWnd, WM_CLOSE, 0, 0);
@@ -913,7 +913,7 @@ static LRESULT CALLBACK handlemessages(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 
 static void setupwindow(const char *title)
 {
-    copystring(apptip, title);
+    copycubestr(apptip, title);
     //appinstance = GetModuleHandle(NULL);
     if(!appinstance) fatal("failed getting application instance");
     appicon = LoadIcon(appinstance, MAKEINTRESOURCE(IDI_ICON1));//(HICON)LoadImage(appinstance, MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE);
@@ -921,9 +921,9 @@ static void setupwindow(const char *title)
 
     appmenu = CreatePopupMenu();
     if(!appmenu) fatal("failed creating popup menu");
-    AppendMenu(appmenu, MF_STRING, MENU_OPENCONSOLE, "Open Console");
+    AppendMenu(appmenu, MF_cubestr, MENU_OPENCONSOLE, "Open Console");
     AppendMenu(appmenu, MF_SEPARATOR, 0, NULL);
-    AppendMenu(appmenu, MF_STRING, MENU_EXIT, "Exit");
+    AppendMenu(appmenu, MF_cubestr, MENU_EXIT, "Exit");
     //SetMenuDefaultItem(appmenu, 0, FALSE);
 
     WNDCLASS wc;
@@ -992,7 +992,7 @@ void logoutfv(const char *fmt, va_list args)
     if(appwindow)
     {
         logline &line = loglines.add();
-        vformatstring(line.buf, fmt, args, sizeof(line.buf));
+        vformatcubestr(line.buf, fmt, args, sizeof(line.buf));
         if(logfile) writelog(logfile, line.buf);
         line.len = min(strlen(line.buf), sizeof(line.buf)-2);
         line.buf[line.len++] = '\n';

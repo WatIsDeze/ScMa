@@ -625,7 +625,7 @@ struct ctfclientmode : clientmode
             d->flagpickup &= ~(1<<f.id);
             if(d->feetpos().dist(f.spawnloc) < FLAGRADIUS) d->flagpickup |= 1<<f.id;
         }
-        if(d!=player1) particle_textcopy(d->abovehead(), tempformatstring("%d", score), PART_TEXT, 2000, 0x32FF64, 4.0f, -8);
+        if(d!=player1) particle_textcopy(d->abovehead(), tempformatcubestr("%d", score), PART_TEXT, 2000, 0x32FF64, 4.0f, -8);
         d->flags = dflags;
         conoutf(CON_GAMEINFO, "%s scored for %s", teamcolorname(d), teamcolor("team ", "", team, "a team"));
         playsound(team==player1->team ? S_FLAGSCORE : S_FLAGFAIL);

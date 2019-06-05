@@ -172,20 +172,20 @@ struct animmodel : model
             {
                 if(rsmshader) return rsmshader;
 
-                string opts;
+                cubestr opts;
                 int optslen = 0;
                 if(alphatested()) opts[optslen++] = 'a';
                 if(!cullface) opts[optslen++] = 'c';
                 opts[optslen++] = '\0';
 
-                defformatstring(name, "rsmmodel%s", opts);
+                defformatcubestr(name, "rsmmodel%s", opts);
                 rsmshader = generateshader(name, "rsmmodelshader \"%s\"", opts);
                 return rsmshader;
             }
 
             if(shader) return shader;
 
-            string opts;
+            cubestr opts;
             int optslen = 0;
             if(alphatested()) opts[optslen++] = 'a';
             if(decaled()) opts[optslen++] = decal->type&Texture::ALPHA ? 'D' : 'd';
@@ -195,7 +195,7 @@ struct animmodel : model
             if(!cullface) opts[optslen++] = 'c';
             opts[optslen++] = '\0';
 
-            defformatstring(name, "model%s", opts);
+            defformatcubestr(name, "model%s", opts);
             shader = generateshader(name, "modelshader \"%s\"", opts);
             return shader;
         }
@@ -1704,7 +1704,7 @@ int animmodel::shaderparamskey::firstversion = 0, animmodel::shaderparamskey::la
 template<class MDL, class BASE> struct modelloader : BASE
 {
     static MDL *loading;
-    static string dir;
+    static cubestr dir;
 
     modelloader(const char *name) : BASE(name) {}
 
@@ -1724,8 +1724,8 @@ template<class MDL, class BASE> struct modelloader : BASE
 
     bool loadconfig()
     {
-        formatstring(dir, "media/model/%s", BASE::name);
-        defformatstring(cfgname, "media/model/%s/%s.cfg", BASE::name, MDL::formatname());
+        formatcubestr(dir, "media/model/%s", BASE::name);
+        defformatcubestr(cfgname, "media/model/%s/%s.cfg", BASE::name, MDL::formatname());
 
         identflags &= ~IDF_PERSIST;
         bool success = execfile(cfgname, false);
@@ -1735,7 +1735,7 @@ template<class MDL, class BASE> struct modelloader : BASE
 };
 
 template<class MDL, class BASE> MDL *modelloader<MDL, BASE>::loading = NULL;
-template<class MDL, class BASE> string modelloader<MDL, BASE>::dir = {'\0'}; // crashes clang if "" is used here
+template<class MDL, class BASE> cubestr modelloader<MDL, BASE>::dir = {'\0'}; // crashes clang if "" is used here
 
 template<class MDL, class MESH> struct modelcommands
 {
@@ -1745,7 +1745,7 @@ template<class MDL, class MESH> struct modelcommands
     static void setdir(char *name)
     {
         if(!MDL::loading) { conoutf("not loading an %s", MDL::formatname()); return; }
-        formatstring(MDL::dir, "media/model/%s", name);
+        formatcubestr(MDL::dir, "media/model/%s", name);
     }
 
     #define loopmeshes(meshname, m, body) do { \
@@ -1867,8 +1867,8 @@ template<class MDL, class MESH> struct modelcommands
 
     template<class F> void modelcommand(F *fun, const char *suffix, const char *args)
     {
-        defformatstring(name, "%s%s", MDL::formatname(), suffix);
-        addcommand(newstring(name), (identfun)fun, args);
+        defformatcubestr(name, "%s%s", MDL::formatname(), suffix);
+        addcommand(newcubestr(name), (identfun)fun, args);
     }
 
     modelcommands()

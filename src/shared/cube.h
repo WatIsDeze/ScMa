@@ -53,6 +53,10 @@
 
 #include <zlib.h>
 
+// C++ STD
+//#include <string>
+//#include <new>
+
 #include "tools.h"
 #include "geom.h"
 #include "ents.h"

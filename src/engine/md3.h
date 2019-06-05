@@ -69,7 +69,7 @@ struct md3 : vertloader<md3>
                 return false;
             }
 
-            name = newstring(path);
+            name = newcubestr(path);
 
             numframes = header.numframes;
 
@@ -85,7 +85,7 @@ struct md3 : vertloader<md3>
                 f->read(&mheader, sizeof(md3meshheader));
                 lilswap(&mheader.flags, 10);
 
-                m.name = newstring(mheader.name);
+                m.name = newcubestr(mheader.name);
 
                 m.numtris = mheader.numtriangles;
                 m.tris = new tri[m.numtris];
@@ -135,7 +135,7 @@ struct md3 : vertloader<md3>
                 {
                     f->read(&tag, sizeof(md3tag));
                     lilswap(tag.translation, 12);
-                    if(tag.name[0] && i<header.numtags) tags[i].name = newstring(tag.name);
+                    if(tag.name[0] && i<header.numtags) tags[i].name = newcubestr(tag.name);
                     matrix4x3 &m = tags[i].matrix;
                     tag.translation[1] *= -1;
                     // undo the -y
@@ -160,11 +160,11 @@ struct md3 : vertloader<md3>
     {
         const char *pname = parentdir(name);
         part &mdl = addpart();
-        defformatstring(name1, "media/model/%s/tris.md3", name);
+        defformatcubestr(name1, "media/model/%s/tris.md3", name);
         mdl.meshes = sharemeshes(path(name1));
         if(!mdl.meshes)
         {
-            defformatstring(name2, "media/model/%s/tris.md3", pname);    // try md3 in parent folder (vert sharing)
+            defformatcubestr(name2, "media/model/%s/tris.md3", pname);    // try md3 in parent folder (vert sharing)
             mdl.meshes = sharemeshes(path(name2));
             if(!mdl.meshes) return false;
         }

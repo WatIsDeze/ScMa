@@ -566,7 +566,7 @@ struct BlendBrush
     GLuint tex;
 
     BlendBrush(const char *name, int w, int h) :
-      name(newstring(name)), w(w), h(h), data(new uchar[w*h]), tex(0)
+      name(newcubestr(name)), w(w), h(h), data(new uchar[w*h]), tex(0)
     {}
 
     ~BlendBrush()
@@ -685,7 +685,7 @@ void dumpblendtexs()
         if(!bt.size || !bt.valid) continue;
         ImageData temp(bt.size, bt.size, 1, blendtexs[i].data);
         const char *map = game::getclientmap(), *name = strrchr(map, '/');
-        defformatstring(buf, "blendtex_%s_%d.png", name ? name+1 : map, i);
+        defformatcubestr(buf, "blendtex_%s_%d.png", name ? name+1 : map, i);
         savepng(buf, temp, true);
     }
 }

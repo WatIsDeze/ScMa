@@ -7,7 +7,7 @@ struct cline { char *line; int type, outtime; };
 reversequeue<cline, MAXCONLINES> conlines;
 
 int commandmillis = -1;
-string commandbuf;
+cubestr commandbuf;
 char *commandaction = NULL, *commandprompt = NULL;
 enum { CF_COMPLETE = 1<<0, CF_EXECUTE = 1<<1 };
 int commandflags = 0, commandpos = -1;
@@ -18,18 +18,18 @@ VARFP(maxcon, 10, 200, MAXCONLINES, { while(conlines.length() > maxcon) delete[]
 
 void conline(int type, const char *sf)        // add a line to the console buffer
 {
-    char *buf = conlines.length() >= maxcon ? conlines.remove().line : newstring("", CONSTRLEN-1);
+    char *buf = conlines.length() >= maxcon ? conlines.remove().line : newcubestr("", CONSTRLEN-1);
     cline &cl = conlines.add();
     cl.line = buf;
     cl.type = type;
     cl.outtime = totalmillis;                // for how long to keep line on screen
-    copystring(cl.line, sf, CONSTRLEN);
+    copycubestr(cl.line, sf, CONSTRLEN);
 }
 
 void conoutfv(int type, const char *fmt, va_list args)
 {
     static char buf[CONSTRLEN];
-    vformatstring(buf, fmt, args, sizeof(buf));
+    vformatcubestr(buf, fmt, args, sizeof(buf));
     conline(type, buf);
     logoutf("%s", buf);
 }
@@ -68,7 +68,7 @@ float rendercommand(float x, float y, float w)
 
     char buf[CONSTRLEN];
     const char *prompt = commandprompt ? commandprompt : ">";
-    formatstring(buf, "%s %s", prompt, commandbuf);
+    formatcubestr(buf, "%s %s", prompt, commandbuf);
 
     float width, height;
     text_boundsf(buf, width, height, w);
@@ -188,7 +188,7 @@ struct keym
     char *actions[NUMACTIONS];
     bool pressed;
 
-    keym() : code(-1), name(NULL), pressed(false) { loopi(NUMACTIONS) actions[i] = newstring(""); }
+    keym() : code(-1), name(NULL), pressed(false) { loopi(NUMACTIONS) actions[i] = newcubestr(""); }
     ~keym() { DELETEA(name); loopi(NUMACTIONS) DELETEA(actions[i]); }
 
     void clear(int type);
@@ -203,7 +203,7 @@ void keymap(int *code, char *key)
     keym &km = keyms[*code];
     km.code = *code;
     DELETEA(km.name);
-    km.name = newstring(key);
+    km.name = newcubestr(key);
 }
 
 COMMAND(keymap, "is");
@@ -258,7 +258,7 @@ void bindkey(char *key, char *action, int state, const char *cmd)
     while(iscubespace(*action)) action++;
     int len = strlen(action);
     while(len>0 && iscubespace(action[len-1])) len--;
-    binding = newstring(action, len);
+    binding = newcubestr(action, len);
 }
 
 ICOMMAND(bind,     "ss", (char *key, char *action), bindkey(key, action, keym::ACTION_DEFAULT, "bind"));
@@ -277,7 +277,7 @@ void keym::clear(int type)
     if(binding[0])
     {
         if(!keypressed || keyaction!=binding) delete[] binding;
-        binding = newstring("");
+        binding = newcubestr("");
     }
 }
 
@@ -291,12 +291,12 @@ void inputcommand(char *init, char *action = NULL, char *prompt = NULL, char *fl
     commandmillis = init ? totalmillis : -1;
     textinput(commandmillis >= 0, TI_CONSOLE);
     keyrepeat(commandmillis >= 0, KR_CONSOLE);
-    copystring(commandbuf, init ? init : "");
+    copycubestr(commandbuf, init ? init : "");
     DELETEA(commandaction);
     DELETEA(commandprompt);
     commandpos = -1;
-    if(action && action[0]) commandaction = newstring(action);
-    if(prompt && prompt[0]) commandprompt = newstring(prompt);
+    if(action && action[0]) commandaction = newcubestr(action);
+    if(prompt && prompt[0]) commandprompt = newcubestr(prompt);
     commandflags = 0;
     if(flags) while(*flags) switch(*flags++)
     {
@@ -337,12 +337,12 @@ struct hline
 
     void restore()
     {
-        copystring(commandbuf, buf);
+        copycubestr(commandbuf, buf);
         if(commandpos >= (int)strlen(commandbuf)) commandpos = -1;
         DELETEA(commandaction);
         DELETEA(commandprompt);
-        if(action) commandaction = newstring(action);
-        if(prompt) commandprompt = newstring(prompt);
+        if(action) commandaction = newcubestr(action);
+        if(prompt) commandprompt = newcubestr(prompt);
         commandflags = flags;
     }
 
@@ -356,9 +356,9 @@ struct hline
 
     void save()
     {
-        buf = newstring(commandbuf);
-        if(commandaction) action = newstring(commandaction);
-        if(commandprompt) prompt = newstring(commandprompt);
+        buf = newcubestr(commandbuf);
+        if(commandaction) action = newcubestr(commandaction);
+        if(commandprompt) prompt = newcubestr(commandprompt);
         flags = commandflags;
     }
 
@@ -426,7 +426,7 @@ tagval *addreleaseaction(ident *id, int numargs)
 
 void onrelease(const char *s)
 {
-    addreleaseaction(newstring(s));
+    addreleaseaction(newcubestr(s));
 }
 
 COMMAND(onrelease, "s");
@@ -634,8 +634,8 @@ void writebinds(stream *f)
             keym &km = *binds[i];
             if(*km.actions[j])
             {
-                if(validateblock(km.actions[j])) f->printf("%s %s [%s]\n", cmds[j], escapestring(km.name), km.actions[j]);
-                else f->printf("%s %s %s\n", cmds[j], escapestring(km.name), escapestring(km.actions[j]));
+                if(validateblock(km.actions[j])) f->printf("%s %s [%s]\n", cmds[j], escapecubestr(km.name), km.actions[j]);
+                else f->printf("%s %s %s\n", cmds[j], escapecubestr(km.name), escapecubestr(km.actions[j]));
             }
         }
     }
@@ -661,7 +661,7 @@ struct filesval
     vector<char *> files;
     int millis;
 
-    filesval(int type, const char *dir, const char *ext) : type(type), dir(newstring(dir)), ext(ext && ext[0] ? newstring(ext) : NULL), millis(-1) {}
+    filesval(int type, const char *dir, const char *ext) : type(type), dir(newcubestr(dir)), ext(ext && ext[0] ? newcubestr(ext) : NULL), millis(-1) {}
     ~filesval() { DELETEA(dir); DELETEA(ext); files.deletearrays(); }
 
     void update()
@@ -728,7 +728,7 @@ void addcomplete(char *command, int type, char *dir, char *ext)
     }
     filesval **hasfiles = completions.access(command);
     if(hasfiles) *hasfiles = *val;
-    else completions[newstring(command)] = *val;
+    else completions[newcubestr(command)] = *val;
 }
 
 void addfilecomplete(char *command, char *dir, char *ext)
@@ -750,7 +750,7 @@ void complete(char *s, int maxlen, const char *cmdprefix)
     if(cmdprefix)
     {
         cmdlen = strlen(cmdprefix);
-        if(strncmp(s, cmdprefix, cmdlen)) prependstring(s, cmdprefix, maxlen);
+        if(strncmp(s, cmdprefix, cmdlen)) prependcubestr(s, cmdprefix, maxlen);
     }
     if(!s[cmdlen]) return;
     if(!completesize) { completesize = (int)strlen(&s[cmdlen]); DELETEA(lastcomplete); }
@@ -759,7 +759,7 @@ void complete(char *s, int maxlen, const char *cmdprefix)
     if(completesize)
     {
         char *end = strchr(&s[cmdlen], ' ');
-        if(end) f = completions.find(stringslice(&s[cmdlen], end), NULL);
+        if(end) f = completions.find(cubestrslice(&s[cmdlen], end), NULL);
     }
 
     const char *nextcomplete = NULL;
@@ -789,8 +789,8 @@ void complete(char *s, int maxlen, const char *cmdprefix)
     {
         cmdlen = min(cmdlen, maxlen-1);
         if(cmdlen) memmove(s, cmdprefix, cmdlen);
-        copystring(&s[cmdlen], nextcomplete, maxlen-cmdlen);
-        lastcomplete = newstring(nextcomplete);
+        copycubestr(&s[cmdlen], nextcomplete, maxlen-cmdlen);
+        lastcomplete = newcubestr(nextcomplete);
     }
 }
 
@@ -806,9 +806,9 @@ void writecompletions(stream *f)
         if(v->type==FILES_LIST)
         {
             if(validateblock(v->dir)) f->printf("listcomplete %s [%s]\n", escapeid(k), v->dir);
-            else f->printf("listcomplete %s %s\n", escapeid(k), escapestring(v->dir));
+            else f->printf("listcomplete %s %s\n", escapeid(k), escapecubestr(v->dir));
         }
-        else f->printf("complete %s %s %s\n", escapeid(k), escapestring(v->dir), escapestring(v->ext ? v->ext : "*"));
+        else f->printf("complete %s %s %s\n", escapeid(k), escapecubestr(v->dir), escapecubestr(v->ext ? v->ext : "*"));
     }
 }
 

@@ -115,7 +115,7 @@ VAR(dbgzip, 0, 0, 1);
 
 static bool readzipdirectory(const char *archname, FILE *f, int entries, int offset, uint size, vector<zipfile> &files)
 {
-    uchar *buf = new (false) uchar[size], *src = buf;
+    uchar *buf = new uchar[size], *src = buf;
     if(!buf || fseek(f, offset, SEEK_SET) < 0 || fread(buf, 1, size, f) != size) { delete[] buf; return false; }
     loopi(entries)
     {
@@ -147,12 +147,12 @@ static bool readzipdirectory(const char *archname, FILE *f, int entries, int off
         }
         if(src + hdr.namelength > &buf[size]) break;
 
-        string pname;
+        cubestr pname;
         int namelen = min((int)hdr.namelength, (int)sizeof(pname)-1);
         memcpy(pname, src, namelen);
         pname[namelen] = '\0';
         path(pname);
-        char *name = newstring(pname);
+        char *name = newcubestr(pname);
 
         zipfile &f = files.add();
         f.name = name;
@@ -211,7 +211,7 @@ static bool checkprefix(vector<zipfile> &files, const char *prefix, int prefixle
 
 static void mountzip(ziparchive &arch, vector<zipfile> &files, const char *mountdir, const char *stripdir)
 {
-    string packagesdir = "media/";
+    cubestr packagesdir = "media/";
     path(packagesdir);
     size_t striplen = stripdir ? strlen(stripdir) : 0;
     if(!mountdir && !stripdir) loopv(files)
@@ -244,18 +244,18 @@ static void mountzip(ziparchive &arch, vector<zipfile> &files, const char *mount
             }
         }
     }
-    string mdir = "", fname;
+    cubestr mdir = "", fname;
     if(mountdir)
     {
-        copystring(mdir, mountdir);
+        copycubestr(mdir, mountdir);
         if(fixpackagedir(mdir) <= 1) mdir[0] = '\0';
     }
     loopv(files)
     {
         zipfile &f = files[i];
-        formatstring(fname, "%s%s", mdir, striplen && !strncmp(f.name, stripdir, striplen) ? &f.name[striplen] : f.name);
+        formatcubestr(fname, "%s%s", mdir, striplen && !strncmp(f.name, stripdir, striplen) ? &f.name[striplen] : f.name);
         if(arch.files.access(fname)) continue;
-        char *mname = newstring(fname);
+        char *mname = newcubestr(fname);
         zipfile &mf = arch.files[mname];
         mf = f;
         mf.name = mname;
@@ -264,11 +264,11 @@ static void mountzip(ziparchive &arch, vector<zipfile> &files, const char *mount
 
 bool addzip(const char *name, const char *mount = NULL, const char *strip = NULL)
 {
-    string pname;
-    copystring(pname, name);
+    cubestr pname;
+    copycubestr(pname, name);
     path(pname);
     size_t plen = strlen(pname);
-    if(plen < 4 || !strchr(&pname[plen-4], '.')) concatstring(pname, ".zip");
+    if(plen < 4 || !strchr(&pname[plen-4], '.')) concatcubestr(pname, ".zip");
 
     ziparchive *exists = findzip(pname);
     if(exists)
@@ -293,7 +293,7 @@ bool addzip(const char *name, const char *mount = NULL, const char *strip = NULL
     }
 
     ziparchive *arch = new ziparchive;
-    arch->name = newstring(pname);
+    arch->name = newcubestr(pname);
     arch->data = f;
     mountzip(*arch, files, mount, strip);
     archives.add(arch);
@@ -304,11 +304,11 @@ bool addzip(const char *name, const char *mount = NULL, const char *strip = NULL
 
 bool removezip(const char *name)
 {
-    string pname;
-    copystring(pname, name);
+    cubestr pname;
+    copycubestr(pname, name);
     path(pname);
     int plen = (int)strlen(pname);
-    if(plen < 4 || !strchr(&pname[plen-4], '.')) concatstring(pname, ".zip");
+    if(plen < 4 || !strchr(&pname[plen-4], '.')) concatcubestr(pname, ".zip");
     ziparchive *exists = findzip(pname);
     if(!exists)
     {
@@ -564,7 +564,7 @@ int listzipfiles(const char *dir, const char *ext, vector<char *> &files)
             const char *name = f.name + dirsize;
             if(name[0] == PATHDIV) name++;
             if(strchr(name, PATHDIV)) continue;
-            if(!ext) files.add(newstring(name));
+            if(!ext) files.add(newcubestr(name));
             else
             {
                 size_t namelen = strlen(name);
@@ -572,7 +572,7 @@ int listzipfiles(const char *dir, const char *ext, vector<char *> &files)
                 {
                     namelen -= extsize;
                     if(name[namelen] == '.' && strncmp(name+namelen+1, ext, extsize-1)==0)
-                        files.add(newstring(name, namelen));
+                        files.add(newcubestr(name, namelen));
                 }
             }
         });

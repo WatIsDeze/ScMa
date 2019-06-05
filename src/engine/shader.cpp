@@ -61,7 +61,7 @@ Shader *generateshader(const char *name, const char *fmt, ...)
     Shader *s = name ? lookupshaderbyname(name) : NULL;
     if(!s)
     {
-        defvformatstring(cmd, fmt, fmt);
+        defvformatcubestr(cmd, fmt, fmt);
         bool wasstandard = standardshaders;
         standardshaders = true;
         execute(cmd);
@@ -208,7 +208,7 @@ static void compileglslshader(Shader &s, GLenum type, GLuint &obj, const char *d
                     {
                         static const int preclen = strlen(prec);
                         int beforelen = int(decls-source), afterlen = strlen(decls);
-                        modsource = newstring(beforelen + preclen + afterlen);
+                        modsource = newcubestr(beforelen + preclen + afterlen);
                         memcpy(modsource, source, beforelen);
                         memcpy(&modsource[beforelen], prec, preclen);
                         memcpy(&modsource[beforelen + preclen], decls, afterlen);
@@ -264,7 +264,7 @@ static void compileglslshader(Shader &s, GLenum type, GLuint &obj, const char *d
                 FragDataLoc &d = s.fragdatalocs[i];
                 if(d.index) continue;
                 if(i >= 4) break;
-                static string defs[4];
+                static cubestr defs[4];
                 const char *swizzle = "";
                 switch(d.format)
                 {
@@ -278,7 +278,7 @@ static void compileglslshader(Shader &s, GLenum type, GLuint &obj, const char *d
                     case GL_INT:
                     case GL_FLOAT: swizzle = ".r"; break;
                 }
-                formatstring(defs[i], "#define %s gl_FragData[%d]%s\n", d.name, d.loc, swizzle);
+                formatcubestr(defs[i], "#define %s gl_FragData[%d]%s\n", d.name, d.loc, swizzle);
                 parts[numparts++] = defs[i];
             }
         }
@@ -417,23 +417,23 @@ static void findfragdatalocs(Shader &s, char *ps, const char *macroname, int ind
         switch(type[0])
         {
             case 'v':
-                if(matchstring(type, ps-type, "vec3")) format = GL_FLOAT_VEC3;
-                else if(matchstring(type, ps-type, "vec2")) format = GL_FLOAT_VEC2;
+                if(matchcubestr(type, ps-type, "vec3")) format = GL_FLOAT_VEC3;
+                else if(matchcubestr(type, ps-type, "vec2")) format = GL_FLOAT_VEC2;
                 break;
             case 'f':
-                if(matchstring(type, ps-type, "float")) format = GL_FLOAT;
+                if(matchcubestr(type, ps-type, "float")) format = GL_FLOAT;
                 break;
             case 'i':
-                if(matchstring(type, ps-type, "ivec4")) format = GL_INT_VEC4;
-                else if(matchstring(type, ps-type, "ivec3")) format = GL_INT_VEC3;
-                else if(matchstring(type, ps-type, "ivec2")) format = GL_INT_VEC2;
-                else if(matchstring(type, ps-type, "int")) format = GL_INT;
+                if(matchcubestr(type, ps-type, "ivec4")) format = GL_INT_VEC4;
+                else if(matchcubestr(type, ps-type, "ivec3")) format = GL_INT_VEC3;
+                else if(matchcubestr(type, ps-type, "ivec2")) format = GL_INT_VEC2;
+                else if(matchcubestr(type, ps-type, "int")) format = GL_INT;
                 break;
             case 'u':
-                if(matchstring(type, ps-type, "uvec4")) format = GL_UNSIGNED_INT_VEC4;
-                else if(matchstring(type, ps-type, "uvec3")) format = GL_UNSIGNED_INT_VEC3;
-                else if(matchstring(type, ps-type, "uvec2")) format = GL_UNSIGNED_INT_VEC2;
-                else if(matchstring(type, ps-type, "uint")) format = GL_UNSIGNED_INT;
+                if(matchcubestr(type, ps-type, "uvec4")) format = GL_UNSIGNED_INT_VEC4;
+                else if(matchcubestr(type, ps-type, "uvec3")) format = GL_UNSIGNED_INT_VEC3;
+                else if(matchcubestr(type, ps-type, "uvec2")) format = GL_UNSIGNED_INT_VEC2;
+                else if(matchcubestr(type, ps-type, "uint")) format = GL_UNSIGNED_INT;
                 break;
         }
 
@@ -562,7 +562,7 @@ static void allocglslactiveuniforms(Shader &s)
 {
     GLint numactive = 0;
     glGetProgramiv_(s.program, GL_ACTIVE_UNIFORMS, &numactive);
-    string name;
+    cubestr name;
     loopi(numactive)
     {
         GLsizei namelen = 0;
@@ -750,7 +750,7 @@ void Shader::cleanup(bool full)
 static void genattriblocs(Shader &s, const char *vs, const char *ps, Shader *reusevs, Shader *reuseps)
 {
     static int len = strlen("//:attrib");
-    string name;
+    cubestr name;
     int loc;
     if(reusevs) s.attriblocs = reusevs->attriblocs;
     else while((vs = strstr(vs, "//:attrib")))
@@ -764,7 +764,7 @@ static void genattriblocs(Shader &s, const char *vs, const char *ps, Shader *reu
 static void genuniformlocs(Shader &s, const char *vs, const char *ps, Shader *reusevs, Shader *reuseps)
 {
     static int len = strlen("//:uniform");
-    string name, blockname;
+    cubestr name, blockname;
     int binding, stride;
     if(reusevs) s.uniformlocs = reusevs->uniformlocs;
     else while((vs = strstr(vs, "//:uniform")))
@@ -785,11 +785,11 @@ Shader *newshader(int type, const char *name, const char *vs, const char *ps, Sh
     }
 
     Shader *exists = shaders.access(name);
-    char *rname = exists ? exists->name : newstring(name);
+    char *rname = exists ? exists->name : newcubestr(name);
     Shader &s = shaders[rname];
     s.name = rname;
-    s.vsstr = newstring(vs);
-    s.psstr = newstring(ps);
+    s.vsstr = newcubestr(vs);
+    s.psstr = newcubestr(ps);
     DELETEA(s.defer);
     s.type = type & ~(SHADER_INVALID | SHADER_DEFERRED);
     s.variantshader = variant;
@@ -884,10 +884,10 @@ static void gengenericvariant(Shader &s, const char *sname, const char *vs, cons
     row += rowoffset;
     if(row < 0 || row >= MAXVARIANTROWS) return;
     int col = s.numvariants(row);
-    defformatstring(varname, "<variant:%d,%d>%s", col, row, sname);
-    string reuse;
-    if(col) formatstring(reuse, "%d", row);
-    else copystring(reuse, "");
+    defformatcubestr(varname, "<variant:%d,%d>%s", col, row, sname);
+    cubestr reuse;
+    if(col) formatcubestr(reuse, "%d", row);
+    else copycubestr(reuse, "");
     newshader(s.type, varname, vschanged ? vsv.getbuf() : reuse, pschanged ? psv.getbuf() : reuse, &s, row);
 }
 
@@ -957,13 +957,13 @@ static void genuniformdefs(vector<char> &vsbuf, vector<char> &psbuf, const char 
     psbuf.put(ps, psmain - ps);
     if(variant) loopv(variant->defaultparams)
     {
-        defformatstring(uni, "\nuniform vec4 %s;\n", variant->defaultparams[i].name);
+        defformatcubestr(uni, "\nuniform vec4 %s;\n", variant->defaultparams[i].name);
         vsbuf.put(uni, strlen(uni));
         psbuf.put(uni, strlen(uni));
     }
     else loopv(slotparams)
     {
-        defformatstring(uni, "\nuniform vec4 %s;\n", slotparams[i].name);
+        defformatcubestr(uni, "\nuniform vec4 %s;\n", slotparams[i].name);
         vsbuf.put(uni, strlen(uni));
         psbuf.put(uni, strlen(uni));
     }
@@ -1071,11 +1071,11 @@ void defershader(int *type, const char *name, const char *contents)
     Shader *exists = shaders.access(name);
     if(exists && !exists->invalid()) return;
     if(!defershaders) { execute(contents); return; }
-    char *rname = exists ? exists->name : newstring(name);
+    char *rname = exists ? exists->name : newcubestr(name);
     Shader &s = shaders[rname];
     s.name = rname;
     DELETEA(s.defer);
-    s.defer = newstring(contents);
+    s.defer = newcubestr(contents);
     s.type = SHADER_DEFERRED | (*type & ~SHADER_INVALID);
     s.standard = standardshaders;
 }
@@ -1129,7 +1129,7 @@ void shader(int *type, char *name, char *vs, char *ps)
 {
     if(lookupshaderbyname(name)) return;
 
-    defformatstring(info, "shader %s", name);
+    defformatcubestr(info, "shader %s", name);
     renderprogress(loadprogress, info);
     vector<char> vsbuf, psbuf, vsbak, psbak;
 #define GENSHADER(cond, body) \
@@ -1164,10 +1164,10 @@ void variantshader(int *type, char *name, int *row, char *vs, char *ps, int *max
     Shader *s = lookupshaderbyname(name);
     if(!s) return;
 
-    defformatstring(varname, "<variant:%d,%d>%s", s->numvariants(*row), *row, name);
+    defformatcubestr(varname, "<variant:%d,%d>%s", s->numvariants(*row), *row, name);
     if(*maxvariants > 0)
     {
-        defformatstring(info, "shader %s", name);
+        defformatcubestr(info, "shader %s", name);
         renderprogress(min(s->variants.length() / float(*maxvariants), 1.0f), info);
     }
     vector<char> vsbuf, psbuf, vsbak, psbak;
@@ -1299,7 +1299,7 @@ const char *getshaderparamname(const char *name, bool insert)
 {
     const char *exists = shaderparamnames.find(name, NULL);
     if(exists || !insert) return exists;
-    return shaderparamnames.add(newstring(name));
+    return shaderparamnames.add(newcubestr(name));
 }
 
 void addslotparam(const char *name, float x, float y, float z, float w, int flags = 0)
@@ -1536,7 +1536,7 @@ void reloadshaders()
     {
         if(!s.standard && s.loaded() && !s.variantshader)
         {
-            defformatstring(info, "shader %s", s.name);
+            defformatcubestr(info, "shader %s", s.name);
             renderprogress(0.0, info);
             if(!s.compile()) s.cleanup(true);
             loopv(s.variants)
@@ -1599,7 +1599,7 @@ void setblurshader(int pass, int size, int radius, float *weights, float *offset
     Shader *&s = (target == GL_TEXTURE_RECTANGLE ? blurrectshader : blurshader)[radius-1][pass];
     if(!s)
     {
-        defformatstring(name, "blur%c%d%s", 'x'+pass, radius, target == GL_TEXTURE_RECTANGLE ? "rect" : "");
+        defformatcubestr(name, "blur%c%d%s", 'x'+pass, radius, target == GL_TEXTURE_RECTANGLE ? "rect" : "");
         s = lookupshaderbyname(name);
     }
     s->set();

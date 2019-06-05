@@ -216,14 +216,14 @@ void startmusic(char *name, char *cmd)
     stopmusic();
     if(soundvol && musicvol && *name)
     {
-        defformatstring(file, "media/%s", name);
+        defformatcubestr(file, "media/%s", name);
         path(file);
         if(loadmusic(file))
         {
             DELETEA(musicfile);
             DELETEA(musicdonecmd);
-            musicfile = newstring(file);
-            if(cmd[0]) musicdonecmd = newstring(cmd);
+            musicfile = newcubestr(file);
+            if(cmd[0]) musicdonecmd = newcubestr(cmd);
             Mix_PlayMusic(music, cmd[0] ? 0 : -1);
             Mix_VolumeMusic((musicvol*MIX_MAX_VOLUME)/255);
             intret(1);
@@ -262,10 +262,10 @@ bool soundsample::load(const char *dir, bool msg)
     if(!name[0]) return false;
 
     static const char * const exts[] = { "", ".wav", ".ogg" };
-    string filename;
+    cubestr filename;
     loopi(sizeof(exts)/sizeof(exts[0]))
     {
-        formatstring(filename, "media/sound/%s%s%s", dir, name, exts[i]);
+        formatcubestr(filename, "media/sound/%s%s%s", dir, name, exts[i]);
         if(msg && !i) renderprogress(0, filename);
         path(filename);
         chunk = loadwav(filename);
@@ -304,7 +304,7 @@ static struct soundtype
         soundsample *s = samples.access(name);
         if(!s)
         {
-            char *n = newstring(name);
+            char *n = newcubestr(name);
             s = &samples[n];
             s->name = n;
             s->chunk = NULL;
@@ -777,7 +777,7 @@ void initmumble()
             if(mumbleinfo) wcsncpy(mumbleinfo->name, L"Tesseract", 256);
         }
     #elif defined(_POSIX_SHARED_MEMORY_OBJECTS)
-        defformatstring(shmname, "/MumbleLink.%d", getuid());
+        defformatcubestr(shmname, "/MumbleLink.%d", getuid());
         mumblelink = shm_open(shmname, O_RDWR, 0);
         if(mumblelink >= 0)
         {

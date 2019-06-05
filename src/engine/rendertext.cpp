@@ -10,7 +10,7 @@ int curfonttex = 0;
 void newfont(char *name, char *tex, int *defaultw, int *defaulth, int *scale)
 {
     font *f = &fonts[name];
-    if(!f->name) f->name = newstring(name);
+    if(!f->name) f->name = newcubestr(name);
     f->texs.shrink(0);
     f->texs.add(textureload(tex));
     f->chars.shrink(0);
@@ -107,7 +107,7 @@ void fontalias(const char *dst, const char *src)
     font *s = fonts.access(src);
     if(!s) return;
     font *d = &fonts[dst];
-    if(!d->name) d->name = newstring(dst);
+    if(!d->name) d->name = newcubestr(dst);
     d->texs = s->texs;
     d->chars = s->chars;
     d->charoffset = s->charoffset;
@@ -184,18 +184,18 @@ void tabify(const char *str, int *numtabs)
     int tw = max(*numtabs, 0)*FONTTAB-1, tabs = 0;
     for(float w = text_widthf(str); w <= tw; w = TEXTTAB(w)) ++tabs;
     int len = strlen(str);
-    char *tstr = newstring(len + tabs);
+    char *tstr = newcubestr(len + tabs);
     memcpy(tstr, str, len);
     memset(&tstr[len], '\t', tabs);
     tstr[len+tabs] = '\0';
-    stringret(tstr);
+    cubestrret(tstr);
 }
 
 COMMAND(tabify, "si");
 
 void draw_textf(const char *fstr, float left, float top, ...)
 {
-    defvformatstring(str, top, fstr);
+    defvformatcubestr(str, top, fstr);
     draw_text(str, left, top);
 }
 

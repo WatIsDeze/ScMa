@@ -46,7 +46,7 @@ void fatal(const char *s, ...)    // failure exit
 
     if(errors <= 2) // print up to one extra recursive error
     {
-        defvformatstring(msg,s,s);
+        defvformatcubestr(msg,s,s);
         logoutf("%s", msg);
 
         if(errors <= 1) // avoid recursion
@@ -129,9 +129,9 @@ static void getbackgroundres(int &w, int &h)
     h = int(ceil(h*hk));
 }
 
-string backgroundcaption = "";
+cubestr backgroundcaption = "";
 Texture *backgroundmapshot = NULL;
-string backgroundmapname = "";
+cubestr backgroundmapname = "";
 char *backgroundmapinfo = NULL;
 
 void bgquad(float x, float y, float w, float h, float tx = 0, float ty = 0, float tw = 1, float th = 1)
@@ -238,13 +238,13 @@ VAR(menumute, 0, 1, 1);
 void setbackgroundinfo(const char *caption = NULL, Texture *mapshot = NULL, const char *mapname = NULL, const char *mapinfo = NULL)
 {
     renderedframe = false;
-    copystring(backgroundcaption, caption ? caption : "");
+    copycubestr(backgroundcaption, caption ? caption : "");
     backgroundmapshot = mapshot;
-    copystring(backgroundmapname, mapname ? mapname : "");
+    copycubestr(backgroundmapname, mapname ? mapname : "");
     if(mapinfo != backgroundmapinfo)
     {
         DELETEA(backgroundmapinfo);
-        if(mapinfo) backgroundmapinfo = newstring(mapinfo);
+        if(mapinfo) backgroundmapinfo = newcubestr(mapinfo);
     }
 }
 
@@ -893,13 +893,13 @@ void stackdumper(unsigned int type, EXCEPTION_POINTERS *ep)
     EXCEPTION_RECORD *er = ep->ExceptionRecord;
     CONTEXT *context = ep->ContextRecord;
     char out[512];
-    formatstring(out, "Tesseract Win32 Exception: 0x%x [0x%x]\n\n", er->ExceptionCode, er->ExceptionCode==EXCEPTION_ACCESS_VIOLATION ? er->ExceptionInformation[1] : -1);
+    formatcubestr(out, "Tesseract Win32 Exception: 0x%x [0x%x]\n\n", er->ExceptionCode, er->ExceptionCode==EXCEPTION_ACCESS_VIOLATION ? er->ExceptionInformation[1] : -1);
     SymInitialize(GetCurrentProcess(), NULL, TRUE);
 #ifdef _AMD64_
     STACKFRAME64 sf = {{context->Rip, 0, AddrModeFlat}, {}, {context->Rbp, 0, AddrModeFlat}, {context->Rsp, 0, AddrModeFlat}, 0};
     while(::StackWalk64(IMAGE_FILE_MACHINE_AMD64, GetCurrentProcess(), GetCurrentThread(), &sf, context, NULL, ::SymFunctionTableAccess, ::SymGetModuleBase, NULL))
     {
-        union { IMAGEHLP_SYMBOL64 sym; char symext[sizeof(IMAGEHLP_SYMBOL64) + sizeof(string)]; };
+        union { IMAGEHLP_SYMBOL64 sym; char symext[sizeof(IMAGEHLP_SYMBOL64) + sizeof(cubestr)]; };
         sym.SizeOfStruct = sizeof(sym);
         sym.MaxNameLength = sizeof(symext) - sizeof(sym);
         IMAGEHLP_LINE64 line;
@@ -911,7 +911,7 @@ void stackdumper(unsigned int type, EXCEPTION_POINTERS *ep)
     STACKFRAME sf = {{context->Eip, 0, AddrModeFlat}, {}, {context->Ebp, 0, AddrModeFlat}, {context->Esp, 0, AddrModeFlat}, 0};
     while(::StackWalk(IMAGE_FILE_MACHINE_I386, GetCurrentProcess(), GetCurrentThread(), &sf, context, NULL, ::SymFunctionTableAccess, ::SymGetModuleBase, NULL))
     {
-        union { IMAGEHLP_SYMBOL sym; char symext[sizeof(IMAGEHLP_SYMBOL) + sizeof(string)]; };
+        union { IMAGEHLP_SYMBOL sym; char symext[sizeof(IMAGEHLP_SYMBOL) + sizeof(cubestr)]; };
         sym.SizeOfStruct = sizeof(sym);
         sym.MaxNameLength = sizeof(symext) - sizeof(sym);
         IMAGEHLP_LINE line;
@@ -921,7 +921,7 @@ void stackdumper(unsigned int type, EXCEPTION_POINTERS *ep)
 #endif
         {
             char *del = strrchr(line.FileName, '\\');
-            concformatstring(out, "%s - %s [%d]\n", sym.Name, del ? del + 1 : line.FileName, line.LineNumber);
+            concformatcubestr(out, "%s - %s [%d]\n", sym.Name, del ? del + 1 : line.FileName, line.LineNumber);
         }
     }
     fatal(out);

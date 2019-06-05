@@ -21,7 +21,7 @@ struct md5vert
 
 struct md5hierarchy
 {
-    string name;
+    cubestr name;
     int parent, flags, start;
 };
 
@@ -99,14 +99,14 @@ struct md5 : skelloader<md5>
                     if(*start==' ') start++;
                     char *end = start + strlen(start)-1;
                     while(end >= start && isspace(*end)) end--;
-                    name = newstring(start, end+1-start);
+                    name = newcubestr(start, end+1-start);
                 }
                 else if(strstr(buf, "shader"))
                 {
                     char *start = strchr(buf, '"'), *end = start ? strchr(start+1, '"') : NULL;
                     if(start && end)
                     {
-                        char *texname = newstring(start+1, end-(start+1));
+                        char *texname = newcubestr(start+1, end-(start+1));
                         part *p = loading->parts.last();
                         p->initskins(notexture, notexture, group->meshes.length());
                         skin &s = p->skins.last();
@@ -183,7 +183,7 @@ struct md5 : skelloader<md5>
                 }
                 else if(strstr(buf, "joints {"))
                 {
-                    string name;
+                    cubestr name;
                     int parent;
                     md5joint j;
                     while(f->getline(buf, sizeof(buf)) && buf[0]!='}')
@@ -210,7 +210,7 @@ struct md5 : skelloader<md5>
                             if(basejoints.length()<skel->numbones)
                             {
                                 if(!skel->bones[basejoints.length()].name)
-                                    skel->bones[basejoints.length()].name = newstring(name);
+                                    skel->bones[basejoints.length()].name = newcubestr(name);
                                 skel->bones[basejoints.length()].parent = parent;
                             }
                             j.orient.restorew();
@@ -384,7 +384,7 @@ struct md5 : skelloader<md5>
 
         bool load(const char *meshfile, float smooth)
         {
-            name = newstring(meshfile);
+            name = newcubestr(meshfile);
 
             if(!loadmesh(meshfile, smooth)) return false;
 
@@ -400,12 +400,12 @@ struct md5 : skelloader<md5>
         const char *fname = name + strlen(name);
         do --fname; while(fname >= name && *fname!='/' && *fname!='\\');
         fname++;
-        defformatstring(meshname, "media/model/%s/%s.md5mesh", name, fname);
+        defformatcubestr(meshname, "media/model/%s/%s.md5mesh", name, fname);
         mdl.meshes = sharemeshes(path(meshname));
         if(!mdl.meshes) return false;
         mdl.initanimparts();
         mdl.initskins();
-        defformatstring(animname, "media/model/%s/%s.md5anim", name, fname);
+        defformatcubestr(animname, "media/model/%s/%s.md5anim", name, fname);
         ((md5meshgroup *)mdl.meshes)->loadanim(path(animname));
         return true;
     }

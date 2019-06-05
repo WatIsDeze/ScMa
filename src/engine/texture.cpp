@@ -1148,7 +1148,7 @@ static Texture *newtexture(Texture *t, const char *rname, ImageData &s, int clam
 {
     if(!t)
     {
-        char *key = newstring(rname);
+        char *key = newcubestr(rname);
         t = &textures[key];
         t->name = key;
     }
@@ -1490,10 +1490,10 @@ static bool texturedata(ImageData &d, const char *tname, bool msg = true, int *c
         if(!file) { if(msg) conoutf(CON_ERROR, "could not load texture %s", tname); return false; }
         file++;
     }
-    string pname;
+    cubestr pname;
     if(tdir)
     {
-        formatstring(pname, "%s/%s", tdir, file);
+        formatcubestr(pname, "%s/%s", tdir, file);
         file = path(pname);
     }
 
@@ -1513,11 +1513,11 @@ static bool texturedata(ImageData &d, const char *tname, bool msg = true, int *c
                 if(!arg[i] || arg[i] >= end) arg[i] = ""; \
                 else arg[i]++; \
             }
-        #define COPYTEXARG(dst, src) copystring(dst, stringslice(src, strcspn(src, ":,><")))
+        #define COPYTEXARG(dst, src) copycubestr(dst, cubestrslice(src, strcspn(src, ":,><")))
         PARSETEXCOMMANDS(pcmds);
-        if(matchstring(cmd, len, "dds")) dds = true;
-        else if(matchstring(cmd, len, "thumbnail")) raw = true;
-        else if(matchstring(cmd, len, "stub")) return canloadsurface(file);
+        if(matchcubestr(cmd, len, "dds")) dds = true;
+        else if(matchcubestr(cmd, len, "thumbnail")) raw = true;
+        else if(matchcubestr(cmd, len, "stub")) return canloadsurface(file);
     }
 
     if(msg) renderprogress(loadprogress, file);
@@ -1525,8 +1525,8 @@ static bool texturedata(ImageData &d, const char *tname, bool msg = true, int *c
     int flen = strlen(file);
     if(flen >= 4 && (!strcasecmp(file + flen - 4, ".dds") || (dds && !raw)))
     {
-        string dfile;
-        copystring(dfile, file);
+        cubestr dfile;
+        copycubestr(dfile, file);
         memcpy(dfile + flen - 4, ".dds", 4);
         if(!loaddds(dfile, d, raw ? 1 : (dds ? 0 : -1)) && (!dds || raw))
         {
@@ -1550,61 +1550,61 @@ static bool texturedata(ImageData &d, const char *tname, bool msg = true, int *c
     {
         PARSETEXCOMMANDS(cmds);
         if(d.compressed) goto compressed;
-        if(matchstring(cmd, len, "mad")) texmad(d, parsevec(arg[0]), parsevec(arg[1]));
-        else if(matchstring(cmd, len, "colorify")) texcolorify(d, parsevec(arg[0]), parsevec(arg[1]));
-        else if(matchstring(cmd, len, "colormask")) texcolormask(d, parsevec(arg[0]), *arg[1] ? parsevec(arg[1]) : vec(1, 1, 1));
-        else if(matchstring(cmd, len, "normal"))
+        if(matchcubestr(cmd, len, "mad")) texmad(d, parsevec(arg[0]), parsevec(arg[1]));
+        else if(matchcubestr(cmd, len, "colorify")) texcolorify(d, parsevec(arg[0]), parsevec(arg[1]));
+        else if(matchcubestr(cmd, len, "colormask")) texcolormask(d, parsevec(arg[0]), *arg[1] ? parsevec(arg[1]) : vec(1, 1, 1));
+        else if(matchcubestr(cmd, len, "normal"))
         {
             int emphasis = atoi(arg[0]);
             texnormal(d, emphasis > 0 ? emphasis : 3);
         }
-        else if(matchstring(cmd, len, "dup")) texdup(d, atoi(arg[0]), atoi(arg[1]));
-        else if(matchstring(cmd, len, "offset")) texoffset(d, atoi(arg[0]), atoi(arg[1]));
-        else if(matchstring(cmd, len, "rotate")) texrotate(d, atoi(arg[0]), ttype);
-        else if(matchstring(cmd, len, "reorient")) texreorient(d, atoi(arg[0])>0, atoi(arg[1])>0, atoi(arg[2])>0, ttype);
-        else if(matchstring(cmd, len, "crop")) texcrop(d, atoi(arg[0]), atoi(arg[1]), *arg[2] ? atoi(arg[2]) : -1, *arg[3] ? atoi(arg[3]) : -1);
-        else if(matchstring(cmd, len, "mix")) texmix(d, *arg[0] ? atoi(arg[0]) : -1, *arg[1] ? atoi(arg[1]) : -1, *arg[2] ? atoi(arg[2]) : -1, *arg[3] ? atoi(arg[3]) : -1);
-        else if(matchstring(cmd, len, "grey")) texgrey(d);
-        else if(matchstring(cmd, len, "blur"))
+        else if(matchcubestr(cmd, len, "dup")) texdup(d, atoi(arg[0]), atoi(arg[1]));
+        else if(matchcubestr(cmd, len, "offset")) texoffset(d, atoi(arg[0]), atoi(arg[1]));
+        else if(matchcubestr(cmd, len, "rotate")) texrotate(d, atoi(arg[0]), ttype);
+        else if(matchcubestr(cmd, len, "reorient")) texreorient(d, atoi(arg[0])>0, atoi(arg[1])>0, atoi(arg[2])>0, ttype);
+        else if(matchcubestr(cmd, len, "crop")) texcrop(d, atoi(arg[0]), atoi(arg[1]), *arg[2] ? atoi(arg[2]) : -1, *arg[3] ? atoi(arg[3]) : -1);
+        else if(matchcubestr(cmd, len, "mix")) texmix(d, *arg[0] ? atoi(arg[0]) : -1, *arg[1] ? atoi(arg[1]) : -1, *arg[2] ? atoi(arg[2]) : -1, *arg[3] ? atoi(arg[3]) : -1);
+        else if(matchcubestr(cmd, len, "grey")) texgrey(d);
+        else if(matchcubestr(cmd, len, "blur"))
         {
             int emphasis = atoi(arg[0]), repeat = atoi(arg[1]);
             texblur(d, emphasis > 0 ? clamp(emphasis, 1, 2) : 1, repeat > 0 ? repeat : 1);
         }
-        else if(matchstring(cmd, len, "premul")) texpremul(d);
-        else if(matchstring(cmd, len, "agrad")) texagrad(d, atof(arg[0]), atof(arg[1]), atof(arg[2]), atof(arg[3]));
-        else if(matchstring(cmd, len, "blend"))
+        else if(matchcubestr(cmd, len, "premul")) texpremul(d);
+        else if(matchcubestr(cmd, len, "agrad")) texagrad(d, atof(arg[0]), atof(arg[1]), atof(arg[2]), atof(arg[3]));
+        else if(matchcubestr(cmd, len, "blend"))
         {
             ImageData src, mask;
-            string srcname, maskname;
+            cubestr srcname, maskname;
             COPYTEXARG(srcname, arg[0]);
             COPYTEXARG(maskname, arg[1]);
             if(srcname[0] && texturedata(src, srcname, false, NULL, NULL, tdir, ttype) && (!maskname[0] || texturedata(mask, maskname, false, NULL, NULL, tdir, ttype)))
                 texblend(d, src, maskname[0] ? mask : src);
         }
-        else if(matchstring(cmd, len, "thumbnail"))
+        else if(matchcubestr(cmd, len, "thumbnail"))
         {
             int w = atoi(arg[0]), h = atoi(arg[1]);
             if(w <= 0 || w > (1<<12)) w = 64;
             if(h <= 0 || h > (1<<12)) h = w;
             if(d.w > w || d.h > h) scaleimage(d, w, h);
         }
-        else if(matchstring(cmd, len, "compress") || matchstring(cmd, len, "dds"))
+        else if(matchcubestr(cmd, len, "compress") || matchcubestr(cmd, len, "dds"))
         {
             int scale = atoi(arg[0]);
             if(scale <= 0) scale = scaledds;
             if(compress) *compress = scale;
         }
-        else if(matchstring(cmd, len, "nocompress"))
+        else if(matchcubestr(cmd, len, "nocompress"))
         {
             if(compress) *compress = -1;
         }
         else
     compressed:
-        if(matchstring(cmd, len, "mirror"))
+        if(matchcubestr(cmd, len, "mirror"))
         {
             if(wrap) *wrap |= 0x300;
         }
-        else if(matchstring(cmd, len, "noswizzle"))
+        else if(matchcubestr(cmd, len, "noswizzle"))
         {
             if(wrap) *wrap |= 0x10000;
         }
@@ -1643,8 +1643,8 @@ uchar *loadalphamask(Texture *t)
 
 Texture *textureload(const char *name, int clamp, bool mipit, bool msg)
 {
-    string tname;
-    copystring(tname, name);
+    cubestr tname;
+    copycubestr(tname, name);
     Texture *t = textures.access(path(tname));
     if(t) return t;
     int compress = 0;
@@ -1669,12 +1669,12 @@ vector<DecalSlot *> decalslots;
 DecalSlot dummydecalslot;
 Slot *defslot = NULL;
 
-const char *Slot::name() const { return tempformatstring("slot %d", index); }
+const char *Slot::name() const { return tempformatcubestr("slot %d", index); }
 
 MatSlot::MatSlot() : Slot(int(this - materialslots)), VSlot(this) {}
-const char *MatSlot::name() const { return tempformatstring("material slot %s", findmaterialname(Slot::index)); }
+const char *MatSlot::name() const { return tempformatcubestr("material slot %s", findmaterialname(Slot::index)); }
 
-const char *DecalSlot::name() const { return tempformatstring("decal slot %d", Slot::index); }
+const char *DecalSlot::name() const { return tempformatcubestr("decal slot %d", Slot::index); }
 
 void texturereset(int *n)
 {
@@ -2036,7 +2036,7 @@ void packvslot(vector<uchar> &buf, const VSlot &src)
         {
             const SlotShaderParam &p = src.params[i];
             buf.put(VSLOT_SHPARAM);
-            sendstring(p.name, buf);
+            sendcubestr(p.name, buf);
             loopj(4) putfloat(buf, p.val[j]);
         }
     }
@@ -2118,8 +2118,8 @@ bool unpackvslot(ucharbuf &buf, VSlot &dst, bool delta)
         {
             case VSLOT_SHPARAM:
             {
-                string name;
-                getstring(name, buf);
+                cubestr name;
+                getcubestr(name, buf);
                 SlotShaderParam p = { name[0] ? getshaderparamname(name) : NULL, -1, 0, { 0, 0, 0, 0 } };
                 loopi(4) p.val[i] = getfloat(buf);
                 if(p.name) dst.params.add(p);
@@ -2294,7 +2294,7 @@ void texture(char *type, char *name, int *rot, int *xoffset, int *yoffset, float
     if(s.sts.length()>=8) conoutf(CON_WARN, "warning: too many textures in %s", s.name());
     Slot::Tex &st = s.sts.add();
     st.type = tnum;
-    copystring(st.name, name);
+    copycubestr(st.name, name);
     path(st.name);
     if(tnum==TEX_DIFFUSE)
     {
@@ -2314,7 +2314,7 @@ void texgrass(char *name)
     if(!defslot) return;
     Slot &s = *defslot;
     DELETEA(s.grass);
-    s.grass = name[0] ? newstring(makerelpath("media/texture", name)) : NULL;
+    s.grass = name[0] ? newcubestr(makerelpath("media/texture", name)) : NULL;
 }
 COMMAND(texgrass, "s");
 
@@ -2507,7 +2507,7 @@ static void addname(vector<char> &key, Slot &slot, Slot::Tex &t, bool combined =
 {
     if(combined) key.add('&');
     if(prefix) { while(*prefix) key.add(*prefix++); }
-    defformatstring(tname, "%s/%s", slot.texturedir(), t.name);
+    defformatcubestr(tname, "%s/%s", slot.texturedir(), t.name);
     for(const char *s = path(tname); *s; key.add(*s++));
 }
 
@@ -2680,7 +2680,7 @@ Texture *Slot::loadthumbnail()
     if(vslot.colorscale == vec(1, 1, 1)) addname(name, *this, sts[0], false, "<thumbnail>");
     else
     {
-        defformatstring(prefix, "<thumbnail:%.2f/%.2f/%.2f>", vslot.colorscale.x, vslot.colorscale.y, vslot.colorscale.z);
+        defformatcubestr(prefix, "<thumbnail:%.2f/%.2f/%.2f>", vslot.colorscale.x, vslot.colorscale.y, vslot.colorscale.z);
         addname(name, *this, sts[0], false, prefix);
     }
     int glow = -1;
@@ -2689,7 +2689,7 @@ Texture *Slot::loadthumbnail()
         loopvj(sts) if(sts[j].type==TEX_GLOW) { glow = j; break; }
         if(glow >= 0)
         {
-            defformatstring(prefix, "<glow:%.2f/%.2f/%.2f>", vslot.glowcolor.x, vslot.glowcolor.y, vslot.glowcolor.z);
+            defformatcubestr(prefix, "<glow:%.2f/%.2f/%.2f>", vslot.glowcolor.x, vslot.glowcolor.y, vslot.glowcolor.z);
             addname(name, *this, sts[glow], true, prefix);
         }
     }
@@ -2699,7 +2699,7 @@ Texture *Slot::loadthumbnail()
         if(layer->colorscale == vec(1, 1, 1)) addname(name, *layer->slot, layer->slot->sts[0], true, "<layer>");
         else
         {
-            defformatstring(prefix, "<layer:%.2f/%.2f/%.2f>", layer->colorscale.x, layer->colorscale.y, layer->colorscale.z);
+            defformatcubestr(prefix, "<layer:%.2f/%.2f/%.2f>", layer->colorscale.x, layer->colorscale.y, layer->colorscale.z);
             addname(name, *layer->slot, layer->slot->sts[0], true, prefix);
         }
     }
@@ -2764,11 +2764,11 @@ VARFP(envmapsize, 4, 7, 10, setupmaterials());
 
 Texture *cubemaploadwildcard(Texture *t, const char *name, bool mipit, bool msg, bool transient = false)
 {
-    string tname;
-    if(!name) copystring(tname, t->name);
+    cubestr tname;
+    if(!name) copycubestr(tname, t->name);
     else
     {
-        copystring(tname, name);
+        copycubestr(tname, name);
         t = textures.access(path(tname));
         if(t)
         {
@@ -2778,16 +2778,16 @@ Texture *cubemaploadwildcard(Texture *t, const char *name, bool mipit, bool msg,
     }
     char *wildcard = strchr(tname, '*');
     ImageData surface[6];
-    string sname;
-    if(!wildcard) copystring(sname, tname);
+    cubestr sname;
+    if(!wildcard) copycubestr(sname, tname);
     int tsize = 0, compress = 0;
     loopi(6)
     {
         if(wildcard)
         {
-            copystring(sname, stringslice(tname, wildcard));
-            concatstring(sname, cubemapsides[i].name);
-            concatstring(sname, wildcard+1);
+            copycubestr(sname, cubestrslice(tname, wildcard));
+            concatcubestr(sname, cubemapsides[i].name);
+            concatcubestr(sname, wildcard+1);
         }
         ImageData &s = surface[i];
         texturedata(s, sname, msg, &compress);
@@ -2806,7 +2806,7 @@ Texture *cubemaploadwildcard(Texture *t, const char *name, bool mipit, bool msg,
     }
     if(name)
     {
-        char *key = newstring(tname);
+        char *key = newcubestr(tname);
         t = &textures[key];
         t->name = key;
     }
@@ -2874,17 +2874,17 @@ Texture *cubemaploadwildcard(Texture *t, const char *name, bool mipit, bool msg,
 
 Texture *cubemapload(const char *name, bool mipit, bool msg, bool transient)
 {
-    string pname;
-    copystring(pname, makerelpath("media/sky", name));
+    cubestr pname;
+    copycubestr(pname, makerelpath("media/sky", name));
     path(pname);
     Texture *t = NULL;
     if(!strchr(pname, '*'))
     {
-        defformatstring(jpgname, "%s_*.jpg", pname);
+        defformatcubestr(jpgname, "%s_*.jpg", pname);
         t = cubemaploadwildcard(NULL, jpgname, mipit, false, transient);
         if(!t)
         {
-            defformatstring(pngname, "%s_*.png", pname);
+            defformatcubestr(pngname, "%s_*.png", pname);
             t = cubemaploadwildcard(NULL, pngname, mipit, false, transient);
             if(!t && msg) conoutf(CON_ERROR, "could not load envmap %s", name);
         }
@@ -3485,7 +3485,7 @@ void gendds(char *infile, char *outfile)
 
     glHint(GL_TEXTURE_COMPRESSION_HINT, GL_NICEST);
 
-    defformatstring(cfile, "<compress>%s", infile);
+    defformatcubestr(cfile, "<compress>%s", infile);
     extern void reloadtex(char *name);
     Texture *t = textures.access(path(cfile));
     if(t) reloadtex(cfile);
@@ -3518,11 +3518,11 @@ void gendds(char *infile, char *outfile)
 
     if(!outfile[0])
     {
-        static string buf;
-        copystring(buf, infile);
+        static cubestr buf;
+        copycubestr(buf, infile);
         int len = strlen(buf);
         if(len > 4 && buf[len-4]=='.') memcpy(&buf[len-4], ".dds", 4);
-        else concatstring(buf, ".dds");
+        else concatcubestr(buf, ".dds");
         outfile = buf;
     }
 
@@ -3835,9 +3835,9 @@ SVARP(screenshotdir, "screenshot");
 
 void screenshot(char *filename)
 {
-    static string buf;
+    static cubestr buf;
     int format = -1, dirlen = 0;
-    copystring(buf, screenshotdir);
+    copycubestr(buf, screenshotdir);
     if(screenshotdir[0])
     {
         dirlen = strlen(buf);
@@ -3847,27 +3847,27 @@ void screenshot(char *filename)
     }
     if(filename[0])
     {
-        concatstring(buf, filename);
+        concatcubestr(buf, filename);
         format = guessimageformat(buf, -1);
     }
     else
     {
-        string sstime;
+        cubestr sstime;
         time_t t = time(NULL);
         size_t len = strftime(sstime, sizeof(sstime), "%Y-%m-%d_%H.%M.%S", localtime(&t));
         sstime[min(len, sizeof(sstime)-1)] = '\0';
-        concatstring(buf, sstime);
+        concatcubestr(buf, sstime);
 
         const char *map = game::getclientmap(), *ssinfo = game::getscreenshotinfo();
         if(map && map[0])
         {
-            concatstring(buf, "_");
-            concatstring(buf, map);
+            concatcubestr(buf, "_");
+            concatcubestr(buf, map);
         }
         if(ssinfo && ssinfo[0])
         {
-            concatstring(buf, "_");
-            concatstring(buf, ssinfo);
+            concatcubestr(buf, "_");
+            concatcubestr(buf, ssinfo);
         }
 
         for(char *s = &buf[dirlen]; *s; s++) if(iscubespace(*s) || *s == '/' || *s == '\\') *s = '-';
@@ -3875,7 +3875,7 @@ void screenshot(char *filename)
     if(format < 0)
     {
         format = screenshotformat;
-        concatstring(buf, imageexts[format]);
+        concatcubestr(buf, imageexts[format]);
     }
 
     ImageData image(screenw, screenh, 3);

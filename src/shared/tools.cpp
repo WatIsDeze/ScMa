@@ -34,18 +34,18 @@ void *operator new[](size_t size, bool err)
     return p;
 }
 
-////////////////////////// strings ////////////////////////////////////////
+////////////////////////// cubestrs ////////////////////////////////////////
 
-static string tmpstr[4];
+static cubestr tmpstr[4];
 static int tmpidx = 0;
 
-char *tempformatstring(const char *fmt, ...)
+char *tempformatcubestr(const char *fmt, ...)
 {
     tmpidx = (tmpidx+1)%4;
 
     va_list v;
     va_start(v, fmt);
-    vformatstring(tmpstr[tmpidx], fmt, v);
+    vformatcubestr(tmpstr[tmpidx], fmt, v);
     va_end(v);
 
     return tmpstr[tmpidx];
@@ -171,16 +171,16 @@ float getfloat(ucharbuf &p)
 }
 
 template<class T>
-static inline void sendstring_(const char *t, T &p)
+static inline void sendcubestr_(const char *t, T &p)
 {
     while(*t) putint(p, *t++);
     putint(p, 0);
 }
-void sendstring(const char *t, ucharbuf &p) { sendstring_(t, p); }
-void sendstring(const char *t, packetbuf &p) { sendstring_(t, p); }
-void sendstring(const char *t, vector<uchar> &p) { sendstring_(t, p); }
+void sendcubestr(const char *t, ucharbuf &p) { sendcubestr_(t, p); }
+void sendcubestr(const char *t, packetbuf &p) { sendcubestr_(t, p); }
+void sendcubestr(const char *t, vector<uchar> &p) { sendcubestr_(t, p); }
 
-void getstring(char *text, ucharbuf &p, size_t len)
+void getcubestr(char *text, ucharbuf &p, size_t len)
 {
     char *t = text;
     do

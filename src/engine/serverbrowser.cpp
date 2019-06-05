@@ -142,7 +142,7 @@ bool resolverwait(const char *name, ENetAddress *address)
 {
     if(resolverthreads.empty()) resolverinit();
 
-    defformatstring(text, "resolving %s... (esc to abort)", name);
+    defformatcubestr(text, "resolving %s... (esc to abort)", name);
     renderprogress(0, text);
 
     SDL_LockMutex(resolvermutex);
@@ -183,7 +183,7 @@ bool resolverwait(const char *name, ENetAddress *address)
 
 int connectwithtimeout(ENetSocket sock, const char *hostname, const ENetAddress &address)
 {
-    defformatstring(text, "connecting to %s... (esc to abort)", hostname);
+    defformatcubestr(text, "connecting to %s... (esc to abort)", hostname);
     renderprogress(0, text);
 
     ENetSocketSet readset, writeset;
@@ -373,7 +373,7 @@ static serverinfo *newserver(const char *name, int port, uint ip = ENET_HOST_ANY
     si->address.port = port;
     if(ip!=ENET_HOST_ANY) si->resolved = RESOLVED;
 
-    if(name) copystring(si->name, name);
+    if(name) copycubestr(si->name, name);
     else if(ip==ENET_HOST_ANY || enet_address_get_host_ip(&si->address, si->name, sizeof(si->name)) < 0)
     {
         delete si;
@@ -396,14 +396,14 @@ void addserver(const char *name, int port, const char *password, bool keep)
         if(password && (!s->password || strcmp(s->password, password)))
         {
             DELETEA(s->password);
-            s->password = newstring(password);
+            s->password = newcubestr(password);
         }
         if(keep && !s->keep) s->keep = true;
         return;
     }
     serverinfo *s = newserver(name, port);
     if(!s) return;
-    if(password) s->password = newstring(password);
+    if(password) s->password = newcubestr(password);
     s->keep = keep;
 }
 
@@ -537,9 +537,9 @@ void checkpings()
         int numattr = getint(p);
         si->attr.setsize(0);
         loopj(numattr) { int attr = getint(p); if(p.overread()) break; si->attr.add(attr); }
-        getstring(text, p);
+        getcubestr(text, p);
         filtertext(si->map, text, false);
-        getstring(text, p);
+        getcubestr(text, p);
         filtertext(si->desc, text);
     }
 }
@@ -599,7 +599,7 @@ ICOMMAND(servinfoplayers, "i", (int *i),
     GETSERVERINFO(*i, si,
     {
         if(si.maxplayers <= 0) intret(si.numplayers);
-        else result(tempformatstring(si.numplayers >= si.maxplayers ? "\f3%d/%d" : "%d/%d", si.numplayers, si.maxplayers));
+        else result(tempformatcubestr(si.numplayers >= si.maxplayers ? "\f3%d/%d" : "%d/%d", si.numplayers, si.maxplayers));
     }));
 ICOMMAND(servinfoattr, "ii", (int *i, int *n), GETSERVERINFO(*i, si, { if(si.attr.inrange(*n)) intret(si.attr[*n]); }));
 
@@ -625,7 +625,7 @@ void retrieveservers(vector<char> &data)
     if(sock == ENET_SOCKET_NULL) return;
 
     extern char *mastername;
-    defformatstring(text, "retrieving servers from %s... (esc to abort)", mastername);
+    defformatcubestr(text, "retrieving servers from %s... (esc to abort)", mastername);
     renderprogress(0, text);
 
     int starttime = SDL_GetTicks(), timeout = 0;
@@ -713,7 +713,7 @@ void writeservercfg()
         if(s->keep)
         {
             if(!kept) f->printf("// servers that should never be cleared from the server list\n\n");
-            if(s->password) f->printf("keepserver %s %d %s\n", escapeid(s->name), s->address.port, escapestring(s->password));
+            if(s->password) f->printf("keepserver %s %d %s\n", escapeid(s->name), s->address.port, escapecubestr(s->password));
             else f->printf("keepserver %s %d\n", escapeid(s->name), s->address.port);
             kept++;
         }
@@ -725,7 +725,7 @@ void writeservercfg()
         serverinfo *s = servers[i];
         if(!s->keep)
         {
-            if(s->password) f->printf("addserver %s %d %s\n", escapeid(s->name), s->address.port, escapestring(s->password));
+            if(s->password) f->printf("addserver %s %d %s\n", escapeid(s->name), s->address.port, escapecubestr(s->password));
             else f->printf("addserver %s %d\n", escapeid(s->name), s->address.port);
         }
     }

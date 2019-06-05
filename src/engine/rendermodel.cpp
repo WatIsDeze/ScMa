@@ -76,7 +76,7 @@ void mdltricollide(char *collide)
     DELETEA(loadingmodel->collidemodel);
     char *end = NULL;
     int val = strtol(collide, &end, 0);
-    if(*end) { val = 1; loadingmodel->collidemodel = newstring(collide); }
+    if(*end) { val = 1; loadingmodel->collidemodel = newcubestr(collide); }
     loadingmodel->collide = val ? COLLIDE_TRI : COLLIDE_NONE;
 }
 COMMAND(mdltricollide, "s");
@@ -313,7 +313,7 @@ static const int mmprefixlen = strlen(mmprefix);
 void mapmodel(char *name)
 {
     mapmodelinfo &mmi = mapmodels.add();
-    if(name[0]) formatstring(mmi.name, "%s%s", mmprefix, name);
+    if(name[0]) formatcubestr(mmi.name, "%s%s", mmprefix, name);
     else mmi.name[0] = '\0';
     mmi.m = mmi.collide = NULL;
 }
@@ -341,7 +341,7 @@ hashset<char *> failedmodels;
 void preloadmodel(const char *name)
 {
     if(!name || !name[0] || models.access(name) || preloadmodels.htfind(name) >= 0) return;
-    preloadmodels.add(newstring(name));
+    preloadmodels.add(newcubestr(name));
 }
 
 void flushpreloadedmodels(bool msg)
@@ -419,7 +419,7 @@ model *loadmodel(const char *name, int i, bool msg)
         if(!name[0] || loadingmodel || failedmodels.find(name, NULL)) return NULL;
         if(msg)
         {
-            defformatstring(filename, "media/model/%s", name);
+            defformatcubestr(filename, "media/model/%s", name);
             renderprogress(loadprogress, filename);
         }
         loopi(NUMMODELTYPES)
@@ -433,7 +433,7 @@ model *loadmodel(const char *name, int i, bool msg)
         loadingmodel = NULL;
         if(!m)
         {
-            failedmodels.add(newstring(name));
+            failedmodels.add(newcubestr(name));
             return NULL;
         }
         models.access(m->name, m);
@@ -1077,10 +1077,10 @@ ICOMMAND(findanims, "s", (char *name),
     vector<int> anims;
     game::findanims(name, anims);
     vector<char> buf;
-    string num;
+    cubestr num;
     loopv(anims)
     {
-        formatstring(num, "%d", anims[i]);
+        formatcubestr(num, "%d", anims[i]);
         if(i > 0) buf.add(' ');
         buf.put(num, strlen(num));
     }
@@ -1103,8 +1103,8 @@ void loadskin(const char *dir, const char *altdir, Texture *&skin, Texture *&mas
         } \
     }
 
-    defformatstring(mdir, "media/model/%s", dir);
-    defformatstring(maltdir, "media/model/%s", altdir);
+    defformatcubestr(mdir, "media/model/%s", dir);
+    defformatcubestr(maltdir, "media/model/%s", altdir);
     masks = notexture;
     tryload(skin, NULL, NULL, "skin");
     tryload(masks, NULL, NULL, "masks");

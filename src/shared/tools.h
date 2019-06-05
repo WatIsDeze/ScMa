@@ -33,12 +33,14 @@ typedef unsigned long long int ullong;
 #define UNUSED
 #endif
 
+#if 0
 void *operator new(size_t, bool);
 void *operator new[](size_t, bool);
 inline void *operator new(size_t, void *p) { return p; }
 inline void *operator new[](size_t, void *p) { return p; }
 inline void operator delete(void *, void *) {}
 inline void operator delete[](void *, void *) {}
+#endif
 
 #ifdef swap
 #undef swap
@@ -162,27 +164,27 @@ static inline int bitscan(uint mask)
 #define PRINTFARGS(fmt, args)
 #endif
 
-// easy safe strings
+// easy safe cubestrs
 
 #define MAXSTRLEN 260
-typedef char string[MAXSTRLEN];
+typedef char cubestr[MAXSTRLEN];
 
-inline void vformatstring(char *d, const char *fmt, va_list v, int len) { _vsnprintf(d, len, fmt, v); d[len-1] = 0; }
-template<size_t N> inline void vformatstring(char (&d)[N], const char *fmt, va_list v) { vformatstring(d, fmt, v, N); }
+inline void vformatcubestr(char *d, const char *fmt, va_list v, int len) { _vsnprintf(d, len, fmt, v); d[len-1] = 0; }
+template<size_t N> inline void vformatcubestr(char (&d)[N], const char *fmt, va_list v) { vformatcubestr(d, fmt, v, N); }
 
-inline char *copystring(char *d, const char *s, size_t len)
+inline char *copycubestr(char *d, const char *s, size_t len)
 {
     size_t slen = min(strlen(s), len-1);
     memcpy(d, s, slen);
     d[slen] = 0;
     return d;
 }
-template<size_t N> inline char *copystring(char (&d)[N], const char *s) { return copystring(d, s, N); }
+template<size_t N> inline char *copycubestr(char (&d)[N], const char *s) { return copycubestr(d, s, N); }
 
-inline char *concatstring(char *d, const char *s, size_t len) { size_t used = strlen(d); return used < len ? copystring(d+used, s, len-used) : d; }
-template<size_t N> inline char *concatstring(char (&d)[N], const char *s) { return concatstring(d, s, N); }
+inline char *concatcubestr(char *d, const char *s, size_t len) { size_t used = strlen(d); return used < len ? copycubestr(d+used, s, len-used) : d; }
+template<size_t N> inline char *concatcubestr(char (&d)[N], const char *s) { return concatcubestr(d, s, N); }
 
-inline char *prependstring(char *d, const char *s, size_t len)
+inline char *prependcubestr(char *d, const char *s, size_t len)
 {
     size_t slen = min(strlen(s), len);
     memmove(&d[slen], d, min(len - slen, strlen(d) + 1));
@@ -190,54 +192,54 @@ inline char *prependstring(char *d, const char *s, size_t len)
     d[len-1] = 0;
     return d;
 }
-template<size_t N> inline char *prependstring(char (&d)[N], const char *s) { return prependstring(d, s, N); }
+template<size_t N> inline char *prependcubestr(char (&d)[N], const char *s) { return prependcubestr(d, s, N); }
 
-inline void nformatstring(char *d, int len, const char *fmt, ...) PRINTFARGS(3, 4);
-inline void nformatstring(char *d, int len, const char *fmt, ...)
+inline void nformatcubestr(char *d, int len, const char *fmt, ...) PRINTFARGS(3, 4);
+inline void nformatcubestr(char *d, int len, const char *fmt, ...)
 {
     va_list v;
     va_start(v, fmt);
-    vformatstring(d, fmt, v, len);
+    vformatcubestr(d, fmt, v, len);
     va_end(v);
 }
 
-template<size_t N> inline void formatstring(char (&d)[N], const char *fmt, ...) PRINTFARGS(2, 3);
-template<size_t N> inline void formatstring(char (&d)[N], const char *fmt, ...)
+template<size_t N> inline void formatcubestr(char (&d)[N], const char *fmt, ...) PRINTFARGS(2, 3);
+template<size_t N> inline void formatcubestr(char (&d)[N], const char *fmt, ...)
 {
     va_list v;
     va_start(v, fmt);
-    vformatstring(d, fmt, v, int(N));
+    vformatcubestr(d, fmt, v, int(N));
     va_end(v);
 }
 
-template<size_t N> inline void concformatstring(char (&d)[N], const char *fmt, ...) PRINTFARGS(2, 3);
-template<size_t N> inline void concformatstring(char (&d)[N], const char *fmt, ...)
+template<size_t N> inline void concformatcubestr(char (&d)[N], const char *fmt, ...) PRINTFARGS(2, 3);
+template<size_t N> inline void concformatcubestr(char (&d)[N], const char *fmt, ...)
 {
     va_list v;
     va_start(v, fmt);
     int len = strlen(d);
-    vformatstring(d + len, fmt, v, int(N) - len);
+    vformatcubestr(d + len, fmt, v, int(N) - len);
     va_end(v);
 }
 
-extern char *tempformatstring(const char *fmt, ...) PRINTFARGS(1, 2);
+extern char *tempformatcubestr(const char *fmt, ...) PRINTFARGS(1, 2);
 
-#define defformatstring(d,...) string d; formatstring(d, __VA_ARGS__)
-#define defvformatstring(d,last,fmt) string d; { va_list ap; va_start(ap, last); vformatstring(d, fmt, ap); va_end(ap); }
+#define defformatcubestr(d,...) cubestr d; formatcubestr(d, __VA_ARGS__)
+#define defvformatcubestr(d,last,fmt) cubestr d; { va_list ap; va_start(ap, last); vformatcubestr(d, fmt, ap); va_end(ap); }
 
-template<size_t N> inline bool matchstring(const char *s, size_t len, const char (&d)[N])
+template<size_t N> inline bool matchcubestr(const char *s, size_t len, const char (&d)[N])
 {
     return len == N-1 && !memcmp(s, d, N-1);
 }
 
-inline char *newstring(size_t l)                { return new char[l+1]; }
-inline char *newstring(const char *s, size_t l) { return copystring(newstring(l), s, l+1); }
-inline char *newstring(const char *s)           { size_t l = strlen(s); char *d = newstring(l); memcpy(d, s, l+1); return d; }
+inline char *newcubestr(size_t l)                { return new char[l+1]; }
+inline char *newcubestr(const char *s, size_t l) { return copycubestr(newcubestr(l), s, l+1); }
+inline char *newcubestr(const char *s)           { size_t l = strlen(s); char *d = newcubestr(l); memcpy(d, s, l+1); return d; }
 
-inline char *newconcatstring(const char *s, const char *t)
+inline char *newconcatcubestr(const char *s, const char *t)
 {
     size_t slen = strlen(s), tlen = strlen(t);
-    char *r = newstring(slen + tlen);
+    char *r = newcubestr(slen + tlen);
     memcpy(r, s, slen);
     memcpy(&r[slen], t, tlen);
     r[slen+tlen] = '\0';
@@ -536,31 +538,31 @@ static inline bool htcmp(const char *x, const char *y)
     return !strcmp(x, y);
 }
 
-struct stringslice
+struct cubestrslice
 {
     const char *str;
     int len;
-    stringslice() {}
-    stringslice(const char *str, int len) : str(str), len(len) {}
-    stringslice(const char *str, const char *end) : str(str), len(int(end-str)) {}
+    cubestrslice() {}
+    cubestrslice(const char *str, int len) : str(str), len(len) {}
+    cubestrslice(const char *str, const char *end) : str(str), len(int(end-str)) {}
 
     const char *end() const { return &str[len]; }
 };
 
-inline char *newstring(const stringslice &s) { return newstring(s.str, s.len); }
-inline const char *stringptr(const char *s) { return s; }
-inline const char *stringptr(const stringslice &s) { return s.str; }
-inline int stringlen(const char *s) { return int(strlen(s)); }
-inline int stringlen(const stringslice &s) { return s.len; }
+inline char *newcubestr(const cubestrslice &s) { return newcubestr(s.str, s.len); }
+inline const char *cubestrptr(const char *s) { return s; }
+inline const char *cubestrptr(const cubestrslice &s) { return s.str; }
+inline int cubestrlen(const char *s) { return int(strlen(s)); }
+inline int cubestrlen(const cubestrslice &s) { return s.len; }
 
-inline char *copystring(char *d, const stringslice &s, size_t len)
+inline char *copycubestr(char *d, const cubestrslice &s, size_t len)
 {
     size_t slen = min(size_t(s.len), len-1);
     memcpy(d, s.str, slen);
     d[slen] = 0;
     return d;
 }
-template<size_t N> inline char *copystring(char (&d)[N], const stringslice &s) { return copystring(d, s, N); }
+template<size_t N> inline char *copycubestr(char (&d)[N], const cubestrslice &s) { return copycubestr(d, s, N); }
 
 static inline uint memhash(const void *ptr, int len)
 {
@@ -570,9 +572,9 @@ static inline uint memhash(const void *ptr, int len)
     return h;
 }
 
-static inline uint hthash(const stringslice &s) { return memhash(s.str, s.len); }
+static inline uint hthash(const cubestrslice &s) { return memhash(s.str, s.len); }
 
-static inline bool htcmp(const stringslice &x, const char *y)
+static inline bool htcmp(const cubestrslice &x, const char *y)
 {
     return x.len == (int)strlen(y) && !memcmp(x.str, y, x.len);
 }
@@ -1271,8 +1273,8 @@ struct stream
     virtual int getchar() { uchar c; return read(&c, 1) == 1 ? c : -1; }
     virtual bool putchar(int n) { uchar c = n; return write(&c, 1) == 1; }
     virtual bool getline(char *str, size_t len);
-    virtual bool putstring(const char *str) { size_t len = strlen(str); return write(str, len) == len; }
-    virtual bool putline(const char *str) { return putstring(str) && putchar('\n'); }
+    virtual bool putcubestr(const char *str) { size_t len = strlen(str); return write(str, len) == len; }
+    virtual bool putline(const char *str) { return putcubestr(str) && putchar('\n'); }
     virtual size_t printf(const char *fmt, ...) PRINTFARGS(2, 3);
     virtual uint getcrc() { return 0; }
 
@@ -1347,7 +1349,7 @@ static inline uchar cubeupper(uchar c)
 extern size_t decodeutf8(uchar *dst, size_t dstlen, const uchar *src, size_t srclen, size_t *carry = NULL);
 extern size_t encodeutf8(uchar *dstbuf, size_t dstlen, const uchar *srcbuf, size_t srclen, size_t *carry = NULL);
 
-extern string homedir;
+extern cubestr homedir;
 
 extern char *makerelpath(const char *dir, const char *file, const char *prefix = NULL, const char *cmd = NULL);
 extern char *path(char *s);
@@ -1385,11 +1387,11 @@ extern void putfloat(ucharbuf &p, float f);
 extern void putfloat(packetbuf &p, float f);
 extern void putfloat(vector<uchar> &p, float f);
 extern float getfloat(ucharbuf &p);
-extern void sendstring(const char *t, ucharbuf &p);
-extern void sendstring(const char *t, packetbuf &p);
-extern void sendstring(const char *t, vector<uchar> &p);
-extern void getstring(char *t, ucharbuf &p, size_t len);
-template<size_t N> static inline void getstring(char (&t)[N], ucharbuf &p) { getstring(t, p, N); }
+extern void sendcubestr(const char *t, ucharbuf &p);
+extern void sendcubestr(const char *t, packetbuf &p);
+extern void sendcubestr(const char *t, vector<uchar> &p);
+extern void getcubestr(char *t, ucharbuf &p, size_t len);
+template<size_t N> static inline void getcubestr(char (&t)[N], ucharbuf &p) { getcubestr(t, p, N); }
 extern void filtertext(char *dst, const char *src, bool whitespace, bool forcespace, size_t len);
 template<size_t N> static inline void filtertext(char (&dst)[N], const char *src, bool whitespace = true, bool forcespace = false) { filtertext(dst, src, whitespace, forcespace, N-1); }
 
@@ -1401,6 +1403,8 @@ struct ipmask
     int print(char *buf) const;
     bool check(enet_uint32 host) const { return (host & mask) == ip; }
 };
+
+#include <string>
 
 #endif
 

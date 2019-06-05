@@ -322,13 +322,13 @@ void findents(int low, int high, bool notspawned, const vec &pos, const vec &rad
 
 char *entname(entity &e)
 {
-    static string fullentname;
-    copystring(fullentname, entities::entname(e.type));
+    static cubestr fullentname;
+    copycubestr(fullentname, entities::entname(e.type));
     const char *einfo = entities::entnameinfo(e);
     if(*einfo)
     {
-        concatstring(fullentname, ": ");
-        concatstring(fullentname, einfo);
+        concatcubestr(fullentname, ": ");
+        concatcubestr(fullentname, einfo);
     }
     return fullentname;
 }
@@ -1212,7 +1212,7 @@ void printent(extentity &e, char *buf, int len)
             if(e.type >= ET_GAMESPECIFIC && entities::printent(e, buf, len)) return;
             break;
     }
-    nformatstring(buf, len, "%s %d %d %d %d %d", entities::entname(e.type), e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
+    nformatcubestr(buf, len, "%s %d %d %d %d %d", entities::entname(e.type), e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
 }
 
 void nearestent()
@@ -1239,7 +1239,7 @@ ICOMMAND(enthavesel,"",  (), addimplicit(intret(entgroup.length())));
 ICOMMAND(entselect, "e", (uint *body), if(!noentedit()) addgroup(e.type != ET_EMPTY && entgroup.find(n)<0 && executebool(body)));
 ICOMMAND(entloop,   "e", (uint *body), if(!noentedit()) addimplicit(groupeditloop(((void)e, execute(body)))));
 ICOMMAND(insel,     "",  (), entfocus(efocus, intret(pointinsel(sel, e.o))));
-ICOMMAND(entget,    "",  (), entfocus(efocus, string s; printent(e, s, sizeof(s)); result(s)));
+ICOMMAND(entget,    "",  (), entfocus(efocus, cubestr s; printent(e, s, sizeof(s)); result(s)));
 ICOMMAND(entindex,  "",  (), intret(efocus));
 COMMAND(entset, "siiiii");
 COMMAND(nearestent, "");

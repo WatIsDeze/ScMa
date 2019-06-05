@@ -130,12 +130,12 @@ void loadfxaashaders()
     fxaatype = tqaatype >= 0 ? tqaatype : (!fxaagreenluma && !intel_texalpha_bug ? AA_LUMA : AA_UNUSED);
     loadhdrshaders(fxaatype);
 
-    string opts;
+    cubestr opts;
     int optslen = 0;
     if(tqaa || fxaagreenluma || intel_texalpha_bug) opts[optslen++] = 'g';
     opts[optslen] = '\0';
 
-    defformatstring(fxaaname, "fxaa%d%s", fxaaquality, opts);
+    defformatcubestr(fxaaname, "fxaa%d%s", fxaaquality, opts);
     fxaashader = generateshader(fxaaname, "fxaashaders %d \"%s\"", fxaaquality, opts);
 }
 
@@ -200,7 +200,7 @@ void loadsmaashaders(bool split = false)
     if(split) smaatype += AA_SPLIT;
     loadhdrshaders(smaatype);
 
-    string opts;
+    cubestr opts;
     int optslen = 0;
     if(!hasTRG) opts[optslen++] = 'a';
     if((smaadepthmask && (!tqaa || msaalight)) || (smaastencil && ghasstencil > (msaasamples ? 1 : 0))) opts[optslen++] = 'd';
@@ -209,10 +209,10 @@ void loadsmaashaders(bool split = false)
     if(tqaa) opts[optslen++] = 't';
     opts[optslen] = '\0';
 
-    defformatstring(lumaedgename, "SMAALumaEdgeDetection%d%s", smaaquality, opts);
-    defformatstring(coloredgename, "SMAAColorEdgeDetection%d%s", smaaquality, opts);
-    defformatstring(blendweightname, "SMAABlendingWeightCalculation%d%s", smaaquality, opts);
-    defformatstring(neighborhoodname, "SMAANeighborhoodBlending%d%s", smaaquality, opts);
+    defformatcubestr(lumaedgename, "SMAALumaEdgeDetection%d%s", smaaquality, opts);
+    defformatcubestr(coloredgename, "SMAAColorEdgeDetection%d%s", smaaquality, opts);
+    defformatcubestr(blendweightname, "SMAABlendingWeightCalculation%d%s", smaaquality, opts);
+    defformatcubestr(neighborhoodname, "SMAANeighborhoodBlending%d%s", smaaquality, opts);
     smaalumaedgeshader = lookupshaderbyname(lumaedgename);
     smaacoloredgeshader = lookupshaderbyname(coloredgename);
     smaablendweightshader = lookupshaderbyname(blendweightname);

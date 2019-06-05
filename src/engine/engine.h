@@ -655,7 +655,7 @@ extern void resetmap();
 extern void startmap(const char *name);
 
 // rendermodel
-struct mapmodelinfo { string name; model *m, *collide; };
+struct mapmodelinfo { cubestr name; model *m, *collide; };
 
 extern vector<mapmodelinfo> mapmodels;
 

@@ -435,6 +435,8 @@ cube.h
 /home/watisdeze/Dev/Projects/ScMa/src/shared/cube.h
 
 /home/watisdeze/Dev/Projects/ScMa/src/shared/tools.h
+string
+-
 
 /home/watisdeze/Dev/Projects/ScMa/src/shared/zip.cpp
 cube.h
@@ -513,4 +515,6 @@ shared/iengine.h
 shared/igame.h
 
 shared/tools.h
+string
+-
 

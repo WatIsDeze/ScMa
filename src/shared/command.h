@@ -212,7 +212,7 @@ extern const char *floatstr(float v);
 extern void floatret(float v);
 extern const char *numberstr(double v);
 extern void numberret(double v);
-extern void stringret(char *s);
+extern void cubestrret(char *s);
 extern void result(tagval &v);
 extern void result(const char *s);
 
@@ -232,13 +232,13 @@ static inline int parseint(const char *s)
 PARSEFLOAT(float, float)
 PARSEFLOAT(number, double)
 
-static inline void intformat(char *buf, int v, int len = 20) { nformatstring(buf, len, "%d", v); }
-static inline void floatformat(char *buf, float v, int len = 20) { nformatstring(buf, len, v==int(v) ? "%.1f" : "%.7g", v); }
+static inline void intformat(char *buf, int v, int len = 20) { nformatcubestr(buf, len, "%d", v); }
+static inline void floatformat(char *buf, float v, int len = 20) { nformatcubestr(buf, len, v==int(v) ? "%.1f" : "%.7g", v); }
 static inline void numberformat(char *buf, double v, int len = 20)
 {
     int i = int(v);
-    if(v == i) nformatstring(buf, len, "%d", i);
-    else nformatstring(buf, len, "%.7g", v);
+    if(v == i) nformatcubestr(buf, len, "%d", i);
+    else nformatcubestr(buf, len, "%.7g", v);
 }
 
 static inline const char *getstr(const identval &v, int type)
@@ -275,7 +275,7 @@ static inline void getval(const identval &v, int type, tagval &r)
 {
     switch(type)
     {
-        case VAL_STR: case VAL_MACRO: case VAL_CSTR: r.setstr(newstring(v.s)); break;
+        case VAL_STR: case VAL_MACRO: case VAL_CSTR: r.setstr(newcubestr(v.s)); break;
         case VAL_INT: r.setint(v.i); break;
         case VAL_FLOAT: r.setfloat(v.f); break;
         default: r.setnull(); break;
@@ -291,8 +291,8 @@ inline void ident::getcstr(tagval &v) const
     {
         case VAL_MACRO: v.setmacro(val.code); break;
         case VAL_STR: case VAL_CSTR: v.setcstr(val.s); break;
-        case VAL_INT: v.setstr(newstring(intstr(val.i))); break;
-        case VAL_FLOAT: v.setstr(newstring(floatstr(val.f))); break;
+        case VAL_INT: v.setstr(newcubestr(intstr(val.i))); break;
+        case VAL_FLOAT: v.setstr(newcubestr(floatstr(val.f))); break;
         default: v.setcstr(""); break;
     }
 }

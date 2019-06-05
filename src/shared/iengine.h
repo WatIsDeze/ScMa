@@ -159,7 +159,7 @@ extern bool execfile(const char *cfgfile, bool msg = true);
 extern void alias(const char *name, const char *action);
 extern void alias(const char *name, tagval &v);
 extern const char *getalias(const char *name);
-extern const char *escapestring(const char *s);
+extern const char *escapecubestr(const char *s);
 extern const char *escapeid(const char *s);
 static inline const char *escapeid(ident &id) { return escapeid(id.name); }
 extern bool validateblock(const char *s);
@@ -178,7 +178,7 @@ extern void loopend(ident *id, identstack &stack);
 #define loopstart(id, stack) if((id)->type != ID_ALIAS) return; identstack stack;
 static inline void loopiter(ident *id, identstack &stack, int i) { tagval v; v.setint(i); loopiter(id, stack, v); }
 static inline void loopiter(ident *id, identstack &stack, float f) { tagval v; v.setfloat(f); loopiter(id, stack, v); }
-static inline void loopiter(ident *id, identstack &stack, const char *s) { tagval v; v.setstr(newstring(s)); loopiter(id, stack, v); }
+static inline void loopiter(ident *id, identstack &stack, const char *s) { tagval v; v.setstr(newcubestr(s)); loopiter(id, stack, v); }
 
 // console
 
@@ -492,7 +492,7 @@ extern bool isdedicatedserver();
 
 struct servinfo
 {
-    string name, map, desc;
+    cubestr name, map, desc;
     int protocol, numplayers, maxplayers, ping;
     vector<int> attr;
 
@@ -528,7 +528,7 @@ extern void notifywelcome();
 // crypto
 extern void genprivkey(const char *seed, vector<char> &privstr, vector<char> &pubstr);
 extern bool calcpubkey(const char *privstr, vector<char> &pubstr);
-extern bool hashstring(const char *str, char *result, int maxlen);
+extern bool hashcubestr(const char *str, char *result, int maxlen);
 extern void answerchallenge(const char *privstr, const char *challenge, vector<char> &answerstr);
 extern void *parsepubkey(const char *pubstr);
 extern void freepubkey(void *pubkey);

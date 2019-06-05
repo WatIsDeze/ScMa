@@ -8,18 +8,18 @@ void loadsky(const char *basename, Texture *texs[6])
     loopi(6)
     {
         const char *side = cubemapsides[i].name;
-        string name;
-        copystring(name, makerelpath("media/sky", basename));
+        cubestr name;
+        copycubestr(name, makerelpath("media/sky", basename));
         if(wildcard)
         {
             char *chop = strchr(name, '*');
-            if(chop) { *chop = '\0'; concatstring(name, side); concatstring(name, wildcard+1); }
+            if(chop) { *chop = '\0'; concatcubestr(name, side); concatcubestr(name, wildcard+1); }
             texs[i] = textureload(name, 3, true, false);
         }
         else
         {
-            defformatstring(ext, "_%s.jpg", side);
-            concatstring(name, ext);
+            defformatcubestr(ext, "_%s.jpg", side);
+            concatcubestr(name, ext);
             if((texs[i] = textureload(name, 3, true, false))==notexture)
             {
                 strcpy(name+strlen(name)-3, "png");
@@ -35,13 +35,13 @@ Texture *cloudoverlay = NULL;
 Texture *loadskyoverlay(const char *basename)
 {
     const char *ext = strrchr(basename, '.');
-    string name;
-    copystring(name, makerelpath("media/sky", basename));
+    cubestr name;
+    copycubestr(name, makerelpath("media/sky", basename));
     Texture *t = notexture;
     if(ext) t = textureload(name, 0, true, false);
     else
     {
-        concatstring(name, ".jpg");
+        concatcubestr(name, ".jpg");
         if((t = textureload(name, 0, true, false)) == notexture)
         {
             strcpy(name+strlen(name)-3, "png");

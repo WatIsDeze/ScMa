@@ -13,7 +13,7 @@ void validmapname(char *dst, const char *src, const char *prefix = NULL, const c
         else break;
     }
     if(dst > start) *dst = '\0';
-    else if(dst != alt) copystring(dst, alt, maxlen);
+    else if(dst != alt) copycubestr(dst, alt, maxlen);
 }
 
 void fixmapname(char *name)
@@ -64,9 +64,9 @@ static bool loadmapheader(stream *f, const char *ogzname, mapheader &hdr, octahe
 
 bool loadents(const char *fname, vector<entity> &ents, uint *crc)
 {
-    string name;
+    cubestr name;
     validmapname(name, fname);
-    defformatstring(ogzname, "media/map/%s.ogz", name);
+    defformatcubestr(ogzname, "media/map/%s.ogz", name);
     path(ogzname);
     stream *f = opengzfile(ogzname, "rb");
     if(!f) return false;
@@ -87,7 +87,7 @@ bool loadents(const char *fname, vector<entity> &ents, uint *crc)
         }
     }
 
-    string gametype;
+    cubestr gametype;
     bool samegame = true;
     int len = f->getchar();
     if(len >= 0) f->read(gametype, len+1);
@@ -135,28 +135,28 @@ bool loadents(const char *fname, vector<entity> &ents, uint *crc)
 }
 
 #ifndef STANDALONE
-string ogzname, bakname, cfgname, picname;
+cubestr ogzname, bakname, cfgname, picname;
 
 VARP(savebak, 0, 2, 2);
 
 void setmapfilenames(const char *fname, const char *cname = NULL)
 {
-    string name;
+    cubestr name;
     validmapname(name, fname);
-    formatstring(ogzname, "media/map/%s.ogz", name);
-    formatstring(picname, "media/map/%s.png", name);
-    if(savebak==1) formatstring(bakname, "media/map/%s.BAK", name);
+    formatcubestr(ogzname, "media/map/%s.ogz", name);
+    formatcubestr(picname, "media/map/%s.png", name);
+    if(savebak==1) formatcubestr(bakname, "media/map/%s.BAK", name);
     else
     {
-        string baktime;
+        cubestr baktime;
         time_t t = time(NULL);
         size_t len = strftime(baktime, sizeof(baktime), "%Y-%m-%d_%H.%M.%S", localtime(&t));
         baktime[min(len, sizeof(baktime)-1)] = '\0';
-        formatstring(bakname, "media/map/%s_%s.BAK", name, baktime);
+        formatcubestr(bakname, "media/map/%s_%s.BAK", name, baktime);
     }
 
     validmapname(name, cname ? cname : fname);
-    formatstring(cfgname, "media/map/%s.cfg", name);
+    formatcubestr(cfgname, "media/map/%s.cfg", name);
 
     path(ogzname);
     path(bakname);
@@ -167,9 +167,9 @@ void setmapfilenames(const char *fname, const char *cname = NULL)
 void mapcfgname()
 {
     const char *mname = game::getclientmap();
-    string name;
+    cubestr name;
     validmapname(name, mname);
-    defformatstring(cfgname, "media/map/%s.cfg", name);
+    defformatcubestr(cfgname, "media/map/%s.cfg", name);
     path(cfgname);
     result(cfgname);
 }
@@ -178,8 +178,8 @@ COMMAND(mapcfgname, "");
 
 void backup(const char *name, const char *backupname)
 {
-    string backupfile;
-    copystring(backupfile, findfile(backupname, "wb"));
+    cubestr backupfile;
+    copycubestr(backupfile, findfile(backupname, "wb"));
     remove(backupfile);
     rename(findfile(name, "wb"), backupfile);
 }
@@ -519,7 +519,7 @@ void loadvslot(stream *f, VSlot &vs, int changed)
     if(vs.changed & (1<<VSLOT_SHPARAM))
     {
         int numparams = f->getlil<ushort>();
-        string name;
+        cubestr name;
         loopi(numparams)
         {
             SlotShaderParam &p = vs.params.add();
@@ -562,7 +562,7 @@ void loadvslot(stream *f, VSlot &vs, int changed)
 
 void loadvslots(stream *f, int numvslots)
 {
-    int *prev = new (false) int[numvslots];
+    int *prev = new int[numvslots];
     if(!prev) return;
     memset(prev, -1, numvslots*sizeof(int));
     while(numvslots > 0)
@@ -729,13 +729,13 @@ bool load_world(const char *mname, const char *cname)        // still supports a
     loopi(hdr.numvars)
     {
         int type = f->getchar(), ilen = f->getlil<ushort>();
-        string name;
+        cubestr name;
         f->read(name, min(ilen, MAXSTRLEN-1));
         name[min(ilen, MAXSTRLEN-1)] = '\0';
         if(ilen >= MAXSTRLEN) f->seek(ilen - (MAXSTRLEN-1), SEEK_CUR);
         ident *id = getident(name);
         tagval val;
-        string str;
+        cubestr str;
         switch(type)
         {
             case ID_VAR: val.setint(f->getlil<int>()); break;
@@ -781,7 +781,7 @@ bool load_world(const char *mname, const char *cname)        // still supports a
     }
     if(dbgvars) conoutf(CON_DEBUG, "read %d vars", hdr.numvars);
 
-    string gametype;
+    cubestr gametype;
     bool samegame = true;
     int len = f->getchar();
     if(len >= 0) f->read(gametype, len+1);
@@ -914,11 +914,11 @@ COMMAND(savecurrentmap, "");
 
 void writeobj(char *name)
 {
-    defformatstring(fname, "%s.obj", name);
+    defformatcubestr(fname, "%s.obj", name);
     stream *f = openfile(path(fname), "w");
     if(!f) return;
     f->printf("# obj file of Cube 2 level\n\n");
-    defformatstring(mtlname, "%s.mtl", name);
+    defformatcubestr(mtlname, "%s.mtl", name);
     path(mtlname);
     f->printf("mtllib %s\n\n", mtlname);
     vector<vec> verts, texcoords;
@@ -1096,7 +1096,7 @@ void writecollideobj(char *name)
         }
     }
 
-    defformatstring(fname, "%s.obj", name);
+    defformatcubestr(fname, "%s.obj", name);
     stream *f = openfile(path(fname), "w");
     if(!f) return;
     f->printf("# obj file of Cube 2 collide model\n\n");

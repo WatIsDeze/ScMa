@@ -252,12 +252,12 @@ static Shader *grassshader = NULL;
 
 Shader *loadgrassshader()
 {
-    string opts;
+    cubestr opts;
     int optslen = 0;
 
     opts[optslen] = '\0';
 
-    defformatstring(name, "grass%s", opts);
+    defformatcubestr(name, "grass%s", opts);
     return generateshader(name, "grassshader \"%s\"", opts);
     
 }

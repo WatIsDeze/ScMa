@@ -386,7 +386,7 @@ struct gameent : dynent, gamestate
     float deltayaw, deltapitch, deltaroll, newyaw, newpitch, newroll;
     int smoothmillis;
 
-    string name, info;
+    cubestr name, info;
     int team, playermodel, playercolor;
     ai::aiinfo *ai;
     int ownernum, lastnode;
@@ -517,7 +517,7 @@ namespace game
 
     // game
     extern int nextmode;
-    extern string clientmap;
+    extern cubestr clientmap;
     extern bool intermission;
     extern int maptime, maprealtime, maplimit;
     extern gameent *player1;
@@ -554,7 +554,7 @@ namespace game
 
     // client
     extern bool connected, remote, demoplayback;
-    extern string servdesc;
+    extern cubestr servdesc;
     extern vector<uchar> messages;
 
     extern int parseplayer(const char *arg);

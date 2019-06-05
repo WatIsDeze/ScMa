@@ -35,7 +35,7 @@ hashnameset<userinfo> users;
 
 void adduser(char *name, char *pubkey)
 {
-    name = newstring(name);
+    name = newcubestr(name);
     userinfo &u = users[name];
     u.name = name;
     u.pubkey = parsepubkey(pubkey);
@@ -85,7 +85,7 @@ struct authreq
 struct gameserver
 {
     ENetAddress address;
-    string ip;
+    cubestr ip;
     int port, numpings;
     enet_uint32 lastping, lastpong;
 };
@@ -195,7 +195,7 @@ void output(client &c, const char *msg, int len = 0)
 
 void outputf(client &c, const char *fmt, ...)
 {
-    defvformatstring(msg, fmt, fmt);
+    defvformatcubestr(msg, fmt, fmt);
 
     output(c, msg);
 }
@@ -252,7 +252,7 @@ void genserverlist()
     {
         gameserver &s = *gameservers[i];
         if(!s.lastpong) continue;
-        defformatstring(cmd, "addserver %s %d\n", s.ip, s.port);
+        defformatcubestr(cmd, "addserver %s %d\n", s.ip, s.port);
         l->buf.put(cmd, strlen(cmd));
     }
     l->buf.add('\0');
@@ -265,7 +265,7 @@ void gengbanlist()
     messagebuf *l = new messagebuf(gbanlists);
     const char *header = "cleargbans\n";
     l->buf.put(header, strlen(header));
-    string cmd = "addgban ";
+    cubestr cmd = "addgban ";
     int cmdlen = strlen(cmd);
     loopv(gbans)
     {
@@ -318,7 +318,7 @@ void addgameserver(client &c)
         outputf(c, "failreg too many servers on ip\n");
         return;
     }
-    string hostname;
+    cubestr hostname;
     if(enet_address_get_host_ip(&c.address, hostname, sizeof(hostname)) < 0)
     {
         outputf(c, "failreg failed resolving ip\n");
@@ -327,7 +327,7 @@ void addgameserver(client &c)
     gameserver &s = *gameservers.add(new gameserver);
     s.address.host = c.address.host;
     s.address.port = c.servport;
-    copystring(s.ip, hostname);
+    copycubestr(s.ip, hostname);
     s.port = c.servport;
     s.numpings = 0;
     s.lastping = s.lastpong = 0;
@@ -474,8 +474,8 @@ void reqauth(client &c, uint id, char *name)
         char *newline = strchr(ct, '\n');
         if(newline) *newline = '\0';
     }
-    string ip;
-    if(enet_address_get_host_ip(&c.address, ip, sizeof(ip)) < 0) copystring(ip, "-");
+    cubestr ip;
+    if(enet_address_get_host_ip(&c.address, ip, sizeof(ip)) < 0) copycubestr(ip, "-");
     conoutf("%s: attempting \"%s\" as %u from %s", ct ? ct : "-", name, id, ip);
 
     userinfo *u = users.access(name);
@@ -509,8 +509,8 @@ void confauth(client &c, uint id, const char *val)
 
     loopv(c.authreqs) if(c.authreqs[i].id == id)
     {
-        string ip;
-        if(enet_address_get_host_ip(&c.address, ip, sizeof(ip)) < 0) copystring(ip, "-");
+        cubestr ip;
+        if(enet_address_get_host_ip(&c.address, ip, sizeof(ip)) < 0) copycubestr(ip, "-");
         if(checkchallenge(val, c.authreqs[i].answer))
         {
             outputf(c, "succauth %u\n", id);
@@ -539,7 +539,7 @@ bool checkclientinput(client &c)
 
         int port;
         uint id;
-        string user, val;
+        cubestr user, val;
         if(!strncmp(c.input, "list", 4) && (!c.input[4] || c.input[4] == '\n' || c.input[4] == '\r'))
         {
             genserverlist();
@@ -697,8 +697,8 @@ int main(int argc, char **argv)
     if(argc>=2) dir = argv[1];
     if(argc>=3) port = atoi(argv[2]);
     if(argc>=4) ip = argv[3];
-    defformatstring(logname, "%smaster.log", dir);
-    defformatstring(cfgname, "%smaster.cfg", dir);
+    defformatcubestr(logname, "%smaster.log", dir);
+    defformatcubestr(cfgname, "%smaster.cfg", dir);
     path(logname);
     path(cfgname);
     logfile = fopen(logname, "a");

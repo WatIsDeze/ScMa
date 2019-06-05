@@ -315,7 +315,7 @@ void parseglexts()
         loopi(numexts)
         {
             const char *ext = (const char *)glGetStringi_(GL_EXTENSIONS, i);
-            glexts.add(newstring(ext));
+            glexts.add(newcubestr(ext));
         }
     }
     else
@@ -327,7 +327,7 @@ void parseglexts()
             if(!*exts) break;
             const char *ext = exts;
             while(*exts && *exts != ' ') exts++;
-            if(exts > ext) glexts.add(newstring(ext, size_t(exts-ext)));
+            if(exts > ext) glexts.add(newcubestr(ext, size_t(exts-ext)));
         }
     }
 }
@@ -1224,7 +1224,7 @@ ICOMMAND(getcampitch, "", (), floatret(camera1->pitch));
 ICOMMAND(getcamroll, "", (), floatret(camera1->roll));
 ICOMMAND(getcampos, "", (),
 {
-    defformatstring(pos, "%s %s %s", floatstr(camera1->o.x), floatstr(camera1->o.y), floatstr(camera1->o.z));
+    defformatcubestr(pos, "%s %s %s", floatstr(camera1->o.x), floatstr(camera1->o.y), floatstr(camera1->o.z));
     result(pos);
 });
 
@@ -2617,7 +2617,7 @@ ICOMMAND(getcrosshair, "i", (int *i),
 void writecrosshairs(stream *f)
 {
     loopi(MAXCROSSHAIRS) if(crosshairs[i] && crosshairs[i]!=notexture)
-        f->printf("loadcrosshair %s %d\n", escapestring(crosshairs[i]->name), i);
+        f->printf("loadcrosshair %s %d\n", escapecubestr(crosshairs[i]->name), i);
     f->printf("\n");
 }
 
@@ -2737,7 +2737,7 @@ void gl_drawhud()
                 if(!walltime) { walltime = time(NULL); walltime -= totalmillis/1000; if(!walltime) walltime++; }
                 time_t walloffset = walltime + totalmillis/1000;
                 struct tm *localvals = localtime(&walloffset);
-                static string buf;
+                static cubestr buf;
                 if(localvals && strftime(buf, sizeof(buf), wallclocksecs ? (wallclock24 ? "%H:%M:%S" : "%I:%M:%S%p") : (wallclock24 ? "%H:%M" : "%I:%M%p"), localvals))
                 {
                     // hack because not all platforms (windows) support %P lowercase option

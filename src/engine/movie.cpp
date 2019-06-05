@@ -44,7 +44,7 @@ struct aviwriter
     uint videoframes;
     stream::offset totalsize;
     const uint videow, videoh, videofps;
-    string filename;
+    cubestr filename;
 
     int soundfrequency, soundchannels;
     Uint16 soundformat;
@@ -180,7 +180,7 @@ struct aviwriter
 
     aviwriter(const char *name, uint w, uint h, uint fps, bool sound) : f(NULL), yuv(NULL), videoframes(0), totalsize(0), videow(w&~1), videoh(h&~1), videofps(fps), soundfrequency(0),soundchannels(0),soundformat(0)
     {
-        copystring(filename, moviedir);
+        copycubestr(filename, moviedir);
         if(moviedir[0])
         {
             int dirlen = strlen(filename);
@@ -189,9 +189,9 @@ struct aviwriter
             if(!fileexists(dir, "w")) createdir(dir);
         }
 
-        concatstring(filename, name);
+        concatcubestr(filename, name);
         path(filename);
-        if(!strrchr(filename, '.')) concatstring(filename, ".avi");
+        if(!strrchr(filename, '.')) concatcubestr(filename, ".avi");
 
         extern bool nosound; // sound.cpp
         if(sound && !nosound)

@@ -869,7 +869,7 @@ void genprivkey(const char *seed, vector<char> &privstr, vector<char> &pubstr)
     calcpubkey(privkey, pubstr);
 }
 
-bool hashstring(const char *str, char *result, int maxlen)
+bool hashcubestr(const char *str, char *result, int maxlen)
 {
     tiger::hashval hv;
     if(maxlen < 2*(int)sizeof(hv.bytes) + 1) return false;

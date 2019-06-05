@@ -673,7 +673,7 @@ struct Slot
     {
         int type;
         Texture *t;
-        string name;
+        cubestr name;
         int combined;
 
         Tex() : t(NULL), combined(-1) {}

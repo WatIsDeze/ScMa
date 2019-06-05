@@ -2,7 +2,7 @@ struct smd;
 
 struct smdbone
 {
-    string name;
+    cubestr name;
     int parent;
     smdbone() : parent(-1) { name[0] = '\0'; }
 };
@@ -76,13 +76,13 @@ struct smd : skelloader<smd>
                 if(skipcomment(curbuf)) continue;
                 if(!strncmp(curbuf, "end", 3)) break;
                 int id = strtol(curbuf, &curbuf, 10);
-                string name;
+                cubestr name;
                 readname(curbuf, name, sizeof(name));
                 int parent = strtol(curbuf, &curbuf, 10);
                 if(id < 0 || id > 255 || parent > 255 || !name[0]) continue;
                 while(!bones.inrange(id)) bones.add();
                 smdbone &bone = bones[id];
-                copystring(bone.name, name);
+                copycubestr(bone.name, name);
                 bone.parent = parent;
             }
         }
@@ -153,7 +153,7 @@ struct smd : skelloader<smd>
                 char *curbuf = buf;
                 if(skipcomment(curbuf)) continue;
                 if(!strncmp(curbuf, "end", 3)) break;
-                string material;
+                cubestr material;
                 readmaterial(curbuf, material, sizeof(material));
                 if(!curmesh || strcmp(curmesh->mesh->name, material))
                 {
@@ -162,7 +162,7 @@ struct smd : skelloader<smd>
                     {
                         smdmesh *m = new smdmesh;
                         m->group = this;
-                        m->name = newstring(material);
+                        m->name = newcubestr(material);
                         meshes.add(m);
                         curmesh = &materials[m->name];
                         curmesh->mesh = m;
@@ -272,7 +272,7 @@ struct smd : skelloader<smd>
                     {
                         boneinfo &dst = skel->bones[i];
                         smdbone &src = bones[i];
-                        dst.name = newstring(src.name);
+                        dst.name = newcubestr(src.name);
                         dst.parent = src.parent;
                     }
                     skel->linkchildren();
@@ -401,7 +401,7 @@ struct smd : skelloader<smd>
 
         bool load(const char *meshfile, float smooth)
         {
-            name = newstring(meshfile);
+            name = newcubestr(meshfile);
 
             return loadmesh(meshfile);
         }
@@ -415,7 +415,7 @@ struct smd : skelloader<smd>
         const char *fname = name + strlen(name);
         do --fname; while(fname >= name && *fname!='/' && *fname!='\\');
         fname++;
-        defformatstring(meshname, "media/model/%s/%s.smd", name, fname);
+        defformatcubestr(meshname, "media/model/%s/%s.smd", name, fname);
         mdl.meshes = sharemeshes(path(meshname));
         if(!mdl.meshes) return false;
         mdl.initanimparts();

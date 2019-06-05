@@ -147,7 +147,7 @@ struct iqm : skelloader<iqm>
                     {
                         iqmjoint &j = joints[i];
                         boneinfo &b = skel->bones[i];
-                        if(!b.name) b.name = newstring(&str[j.name]);
+                        if(!b.name) b.name = newcubestr(&str[j.name]);
                         b.parent = j.parent;
                         if(skel->shared <= 1)
                         {
@@ -172,7 +172,7 @@ struct iqm : skelloader<iqm>
                 skelmesh *m = new skelmesh;
                 m->group = this;
                 meshes.add(m);
-                m->name = newstring(&str[im.name]);
+                m->name = newcubestr(&str[im.name]);
                 m->numverts = im.num_vertexes;
                 int noblend = -1;
                 if(m->numverts)
@@ -264,10 +264,10 @@ struct iqm : skelloader<iqm>
             loopi(hdr.num_anims)
             {
                 iqmanim &a = anims[i];
-                string name;
-                copystring(name, filename);
-                concatstring(name, ":");
-                concatstring(name, &str[a.name]);
+                cubestr name;
+                copycubestr(name, filename);
+                concatcubestr(name, ":");
+                concatcubestr(name, &str[a.name]);
                 skelanimspec *sa = skel->findskelanim(name);
                 if(sa) continue;
                 sa = &skel->addskelanim(name);
@@ -331,7 +331,7 @@ struct iqm : skelloader<iqm>
             lilswap(&hdr.version, (sizeof(hdr) - sizeof(hdr.magic))/sizeof(uint));
             if(hdr.version != 2) goto error;
             if(hdr.filesize > (16<<20)) goto error; // sanity check... don't load files bigger than 16 MB
-            buf = new (false) uchar[hdr.filesize];
+            buf = new uchar[hdr.filesize];
             if(!buf || f->read(buf + sizeof(hdr), hdr.filesize - sizeof(hdr)) != hdr.filesize - sizeof(hdr)) goto error;
 
             if(doloadmesh && !loadiqmmeshes(filename, hdr, buf)) goto error;
@@ -349,7 +349,7 @@ struct iqm : skelloader<iqm>
 
         bool load(const char *filename, float smooth)
         {
-            name = newstring(filename);
+            name = newcubestr(filename);
 
             return loadiqm(filename, true, false);
         }
@@ -360,8 +360,8 @@ struct iqm : skelloader<iqm>
             skelanimspec *sa = skel->findskelanim(animname, sep ? '\0' : ':');
             if(!sa)
             {
-                string filename;
-                copystring(filename, animname);
+                cubestr filename;
+                copycubestr(filename, animname);
                 if(sep) filename[sep - animname] = '\0';
                 if(loadiqm(filename, false, true))
                     sa = skel->findskelanim(animname, sep ? '\0' : ':');
@@ -378,7 +378,7 @@ struct iqm : skelloader<iqm>
         const char *fname = name + strlen(name);
         do --fname; while(fname >= name && *fname!='/' && *fname!='\\');
         fname++;
-        defformatstring(meshname, "media/model/%s/%s.iqm", name, fname);
+        defformatcubestr(meshname, "media/model/%s/%s.iqm", name, fname);
         mdl.meshes = sharemeshes(path(meshname));
         if(!mdl.meshes) return false;
         mdl.initanimparts();

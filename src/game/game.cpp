@@ -570,7 +570,7 @@ namespace game
         if(!m_mp(gamemode)) spawnplayer(player1);
         else findplayerspawn(player1, -1, m_teammode ? player1->team : 0);
         entities::resetspawns();
-        copystring(clientmap, name ? name : "");
+        copycubestr(clientmap, name ? name : "");
 
         sendmapinfo();
     }
@@ -634,8 +634,8 @@ namespace game
         bool dup = !name[0] || duplicatename(d, name, alt) || d->aitype != AI_NONE;
         if(dup || color[0])
         {
-            if(dup) return tempformatstring(d->aitype == AI_NONE ? "\fs%s%s \f5(%d)\fr" : "\fs%s%s \f5[%d]\fr", color, name, d->clientnum);
-            return tempformatstring("\fs%s%s\fr", color, name);
+            if(dup) return tempformatcubestr(d->aitype == AI_NONE ? "\fs%s%s \f5(%d)\fr" : "\fs%s%s \f5[%d]\fr", color, name, d->clientnum);
+            return tempformatcubestr("\fs%s%s\fr", color, name);
         }
         return name;
     }
@@ -651,7 +651,7 @@ namespace game
     const char *teamcolor(const char *prefix, const char *suffix, int team, const char *alt)
     {
         if(!teamcolortext || !m_teammode || !validteam(team)) return alt;
-        return tempformatstring("\fs%s%s%s%s\fr", teamtextcode[team], prefix, teamnames[team], suffix);
+        return tempformatcubestr("\fs%s%s%s%s\fr", teamtextcode[team], prefix, teamnames[team], suffix);
     }
 
     void suicide(physent *d)
@@ -829,7 +829,7 @@ namespace game
         GETSERVINFOATTR(*i, 2, mm,
         {
             const char *name = server::mastermodename(mm, NULL);
-            if(name) stringret(newconcatstring(mastermodecolor(mm, ""), name));
+            if(name) cubestrret(newconcatcubestr(mastermodecolor(mm, ""), name));
         }));
     ICOMMAND(servinfotime, "ii", (int *i, int *raw),
         GETSERVINFOATTR(*i, 1, secs,
@@ -840,7 +840,7 @@ namespace game
             {
                 int mins = secs/60;
                 secs %= 60;
-                result(tempformatstring("%d:%02d", mins, secs));
+                result(tempformatcubestr("%d:%02d", mins, secs));
             }
         }));
     ICOMMAND(servinfoicon, "i", (int *i),

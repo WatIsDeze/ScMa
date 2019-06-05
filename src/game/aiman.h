@@ -115,7 +115,7 @@ namespace aiman
         ci->state.skill = skill <= 0 ? rnd(50) + 51 : clamp(skill, 1, 101);
         clients.add(ci);
         ci->state.lasttimeplayed = lastmillis;
-        copystring(ci->name, "bot", MAXNAMELEN+1);
+        copycubestr(ci->name, "bot", MAXNAMELEN+1);
         ci->state.state = CS_DEAD;
         ci->team = team;
         ci->playermodel = rnd(128);
@@ -243,7 +243,7 @@ namespace aiman
         if(ci && !ci->local && ci->privilege < PRIV_ADMIN) return;
         botlimit = clamp(limit, 0, MAXBOTS);
         dorefresh = true;
-        defformatstring(msg, "bot limit is now %d", botlimit);
+        defformatcubestr(msg, "bot limit is now %d", botlimit);
         sendservmsg(msg);
     }
 
@@ -252,7 +252,7 @@ namespace aiman
         if(ci && !ci->local && !ci->privilege) return;
         botbalance = balance ? 1 : 0;
         dorefresh = true;
-        defformatstring(msg, "bot team balancing is now %s", botbalance ? "enabled" : "disabled");
+        defformatcubestr(msg, "bot team balancing is now %s", botbalance ? "enabled" : "disabled");
         sendservmsg(msg);
     }
 

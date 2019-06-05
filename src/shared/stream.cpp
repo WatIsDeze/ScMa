@@ -232,7 +232,7 @@ done:
 #include <dirent.h>
 #endif
 
-string homedir = "";
+cubestr homedir = "";
 struct packagedir
 {
     char *dir, *filter;
@@ -242,8 +242,8 @@ vector<packagedir> packagedirs;
 
 char *makerelpath(const char *dir, const char *file, const char *prefix, const char *cmd)
 {
-    static string tmp;
-    if(prefix) copystring(tmp, prefix);
+    static cubestr tmp;
+    if(prefix) copycubestr(tmp, prefix);
     else tmp[0] = '\0';
     if(file[0]=='<')
     {
@@ -251,17 +251,17 @@ char *makerelpath(const char *dir, const char *file, const char *prefix, const c
         if(end)
         {
             size_t len = strlen(tmp);
-            copystring(&tmp[len], file, min(sizeof(tmp)-len, size_t(end+2-file)));
+            copycubestr(&tmp[len], file, min(sizeof(tmp)-len, size_t(end+2-file)));
             file = end+1;
         }
     }
-    if(cmd) concatstring(tmp, cmd);
+    if(cmd) concatcubestr(tmp, cmd);
     if(dir)
     {
-        defformatstring(pname, "%s/%s", dir, file);
-        concatstring(tmp, pname);
+        defformatcubestr(pname, "%s/%s", dir, file);
+        concatcubestr(tmp, pname);
     }
-    else concatstring(tmp, file);
+    else concatcubestr(tmp, file);
     return tmp;
 }
 
@@ -313,8 +313,8 @@ char *path(char *s)
 
 char *path(const char *s, bool copy)
 {
-    static string tmp;
-    copystring(tmp, s);
+    static cubestr tmp;
+    copycubestr(tmp, s);
     path(tmp);
     return tmp;
 }
@@ -323,9 +323,9 @@ const char *parentdir(const char *directory)
 {
     const char *p = directory + strlen(directory);
     while(p > directory && *p != '/' && *p != '\\') p--;
-    static string parent;
+    static cubestr parent;
     size_t len = p-directory+1;
-    copystring(parent, directory, len);
+    copycubestr(parent, directory, len);
     return parent;
 }
 
@@ -346,8 +346,8 @@ bool createdir(const char *path)
     size_t len = strlen(path);
     if(path[len-1]==PATHDIV)
     {
-        static string strip;
-        path = copystring(strip, path, len);
+        static cubestr strip;
+        path = copycubestr(strip, path, len);
     }
 #ifdef WIN32
     return CreateDirectory(path, NULL)!=0;
@@ -383,25 +383,25 @@ bool subhomedir(char *dst, int len, const char *src)
         if(!home || !home[0]) return false;
 #endif
         dst[sub-src] = '\0';
-        concatstring(dst, home, len);
-        concatstring(dst, sub+(*sub == '~' ? 1 : strlen("$HOME")), len);
+        concatcubestr(dst, home, len);
+        concatcubestr(dst, sub+(*sub == '~' ? 1 : strlen("$HOME")), len);
     }
     return true;
 }
 
 const char *sethomedir(const char *dir)
 {
-    string pdir;
-    copystring(pdir, dir);
+    cubestr pdir;
+    copycubestr(pdir, dir);
     if(!subhomedir(pdir, sizeof(pdir), dir) || !fixpackagedir(pdir)) return NULL;
-    copystring(homedir, pdir);
+    copycubestr(homedir, pdir);
     return homedir;
 }
 
 const char *addpackagedir(const char *dir)
 {
-    string pdir;
-    copystring(pdir, dir);
+    cubestr pdir;
+    copycubestr(pdir, dir);
     if(!subhomedir(pdir, sizeof(pdir), dir) || !fixpackagedir(pdir)) return NULL;
     char *filter = pdir;
     for(;;)
@@ -413,24 +413,24 @@ const char *addpackagedir(const char *dir)
         filter += len;
     }
     packagedir &pf = packagedirs.add();
-    pf.dir = filter ? newstring(pdir, filter-pdir) : newstring(pdir);
+    pf.dir = filter ? newcubestr(pdir, filter-pdir) : newcubestr(pdir);
     pf.dirlen = filter ? filter-pdir : strlen(pdir);
-    pf.filter = filter ? newstring(filter) : NULL;
+    pf.filter = filter ? newcubestr(filter) : NULL;
     pf.filterlen = filter ? strlen(filter) : 0;
     return pf.dir;
 }
 
 const char *findfile(const char *filename, const char *mode)
 {
-    static string s;
+    static cubestr s;
     if(homedir[0])
     {
-        formatstring(s, "%s%s", homedir, filename);
+        formatcubestr(s, "%s%s", homedir, filename);
         if(fileexists(s, mode)) return s;
         if(mode[0]=='w' || mode[0]=='a')
         {
-            string dirs;
-            copystring(dirs, s);
+            cubestr dirs;
+            copycubestr(dirs, s);
             char *dir = strchr(dirs[0]==PATHDIV ? dirs+1 : dirs, PATHDIV);
             while(dir)
             {
@@ -447,7 +447,7 @@ const char *findfile(const char *filename, const char *mode)
     {
         packagedir &pf = packagedirs[i];
         if(pf.filter && strncmp(filename, pf.filter, pf.filterlen)) continue;
-        formatstring(s, "%s%s", pf.dir, filename);
+        formatcubestr(s, "%s%s", pf.dir, filename);
         if(fileexists(s, mode)) return s;
     }
     if(mode[0]=='e') return NULL;
@@ -458,13 +458,13 @@ bool listdir(const char *dirname, bool rel, const char *ext, vector<char *> &fil
 {
     size_t extsize = ext ? strlen(ext)+1 : 0;
 #ifdef WIN32
-    defformatstring(pathname, rel ? ".\\%s\\*.%s" : "%s\\*.%s", dirname, ext ? ext : "*");
+    defformatcubestr(pathname, rel ? ".\\%s\\*.%s" : "%s\\*.%s", dirname, ext ? ext : "*");
     WIN32_FIND_DATA FindFileData;
     HANDLE Find = FindFirstFile(pathname, &FindFileData);
     if(Find != INVALID_HANDLE_VALUE)
     {
         do {
-            if(!ext) files.add(newstring(FindFileData.cFileName));
+            if(!ext) files.add(newcubestr(FindFileData.cFileName));
             else
             {
                 size_t namelen = strlen(FindFileData.cFileName);
@@ -472,7 +472,7 @@ bool listdir(const char *dirname, bool rel, const char *ext, vector<char *> &fil
                 {
                     namelen -= extsize;
                     if(FindFileData.cFileName[namelen] == '.' && strncmp(FindFileData.cFileName+namelen+1, ext, extsize-1)==0)
-                        files.add(newstring(FindFileData.cFileName, namelen));
+                        files.add(newcubestr(FindFileData.cFileName, namelen));
                 }
             }
         } while(FindNextFile(Find, &FindFileData));
@@ -480,14 +480,14 @@ bool listdir(const char *dirname, bool rel, const char *ext, vector<char *> &fil
         return true;
     }
 #else
-    defformatstring(pathname, rel ? "./%s" : "%s", dirname);
+    defformatcubestr(pathname, rel ? "./%s" : "%s", dirname);
     DIR *d = opendir(pathname);
     if(d)
     {
         struct dirent *de;
         while((de = readdir(d)) != NULL)
         {
-            if(!ext) files.add(newstring(de->d_name));
+            if(!ext) files.add(newcubestr(de->d_name));
             else
             {
                 size_t namelen = strlen(de->d_name);
@@ -495,7 +495,7 @@ bool listdir(const char *dirname, bool rel, const char *ext, vector<char *> &fil
                 {
                     namelen -= extsize;
                     if(de->d_name[namelen] == '.' && strncmp(de->d_name+namelen+1, ext, extsize-1)==0)
-                        files.add(newstring(de->d_name, namelen));
+                        files.add(newcubestr(de->d_name, namelen));
                 }
             }
         }
@@ -508,17 +508,17 @@ bool listdir(const char *dirname, bool rel, const char *ext, vector<char *> &fil
 
 int listfiles(const char *dir, const char *ext, vector<char *> &files)
 {
-    string dirname;
-    copystring(dirname, dir);
+    cubestr dirname;
+    copycubestr(dirname, dir);
     path(dirname);
     size_t dirlen = strlen(dirname);
     while(dirlen > 1 && dirname[dirlen-1] == PATHDIV) dirname[--dirlen] = '\0';
     int dirs = 0;
     if(listdir(dirname, true, ext, files)) dirs++;
-    string s;
+    cubestr s;
     if(homedir[0])
     {
-        formatstring(s, "%s%s", homedir, dirname);
+        formatcubestr(s, "%s%s", homedir, dirname);
         if(listdir(s, false, ext, files)) dirs++;
     }
     loopv(packagedirs)
@@ -526,7 +526,7 @@ int listfiles(const char *dir, const char *ext, vector<char *> &files)
         packagedir &pf = packagedirs[i];
         if(pf.filter && strncmp(dirname, pf.filter, dirlen == pf.filterlen-1 ? dirlen : pf.filterlen))
             continue;
-        formatstring(s, "%s%s", pf.dir, dirname);
+        formatcubestr(s, "%s%s", pf.dir, dirname);
         if(listdir(s, false, ext, files)) dirs++;
     }
 #ifndef STANDALONE
@@ -686,7 +686,7 @@ struct filestream : stream
     int getchar() { return fgetc(file); }
     bool putchar(int c) { return fputc(c, file)!=EOF; }
     bool getline(char *str, size_t len) { return fgets(str, len, file)!=NULL; }
-    bool putstring(const char *str) { return fputs(str, file)!=EOF; }
+    bool putcubestr(const char *str) { return fputs(str, file)!=EOF; }
 
     size_t printf(const char *fmt, ...)
     {
@@ -1218,7 +1218,7 @@ char *loadfile(const char *fn, size_t *size, bool utf8)
     stream::offset fsize = f->size();
     if(fsize <= 0) { delete f; return NULL; }
     size_t len = fsize;
-    char *buf = new (false) char[len+1];
+    char *buf = new char[len+1];
     if(!buf) { delete f; return NULL; }
     size_t offset = 0;
     if(utf8 && len >= 3)

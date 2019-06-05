@@ -67,7 +67,7 @@ namespace game
 
     void setbliptex(int team, const char *type = "")
     {
-        defformatstring(blipname, "media/interface/radar/blip%s%s.png", teamblipcolor[validteam(team) ? team : 0], type);
+        defformatcubestr(blipname, "media/interface/radar/blip%s%s.png", teamblipcolor[validteam(team) ? team : 0], type);
         settexture(blipname, 3);
     }
 
@@ -138,14 +138,14 @@ namespace game
 
     bool connected = false, remote = false, demoplayback = false, gamepaused = false;
     int sessionid = 0, mastermode = MM_OPEN, gamespeed = 100;
-    string servdesc = "", servauth = "", connectpass = "";
+    cubestr servdesc = "", servauth = "", connectpass = "";
 
     VARP(deadpush, 1, 2, 20);
 
     void switchname(const char *name)
     {
         filtertext(player1->name, name, false, false, MAXNAMELEN);
-        if(!player1->name[0]) copystring(player1->name, "unnamed");
+        if(!player1->name[0]) copycubestr(player1->name, "unnamed");
         addmsg(N_SWITCHNAME, "rs", player1->name);
     }
     void printname()
@@ -176,7 +176,7 @@ namespace game
     {
         if(*numargs > 0) switchteam(s);
         else if(!*numargs) printteam();
-        else if((player1->clientnum < 0 || m_teammode) && validteam(player1->team)) result(tempformatstring("\fs%s%s\fr", teamtextcode[player1->team], teamnames[player1->team]));
+        else if((player1->clientnum < 0 || m_teammode) && validteam(player1->team)) result(tempformatcubestr("\fs%s%s\fr", teamtextcode[player1->team], teamnames[player1->team]));
     });
     ICOMMAND(getteam, "", (), intret((player1->clientnum < 0 || m_teammode) && validteam(player1->team) ? player1->team : 0));
     ICOMMAND(getteamname, "i", (int *num), result(teamname(*num)));
@@ -187,7 +187,7 @@ namespace game
         int lastauth;
 
         authkey(const char *name, const char *key, const char *desc)
-            : name(newstring(name)), key(newstring(key)), desc(newstring(desc)),
+            : name(newcubestr(name)), key(newcubestr(key)), desc(newcubestr(desc)),
               lastauth(0)
         {
         }
@@ -249,13 +249,13 @@ namespace game
 
     void saveauthkeys()
     {
-        string fname = "config/auth.cfg";
+        cubestr fname = "config/auth.cfg";
         stream *f = openfile(path(fname), "w");
         if(!f) { conoutf(CON_ERROR, "failed to open %s for writing", fname); return; }
         loopv(authkeys)
         {
             authkey *a = authkeys[i];
-            f->printf("authkey %s %s %s\n", escapestring(a->name), escapestring(a->key), escapestring(a->desc));
+            f->printf("authkey %s %s %s\n", escapecubestr(a->name), escapecubestr(a->key), escapecubestr(a->desc));
         }
         conoutf("saved authkeys to %s", fname);
         delete f;
@@ -271,7 +271,7 @@ namespace game
 
     void writeclientinfo(stream *f)
     {
-        f->printf("name %s\n", escapestring(player1->name));
+        f->printf("name %s\n", escapecubestr(player1->name));
     }
 
     bool allowedittoggle()
@@ -435,17 +435,17 @@ namespace game
     void listclients(bool local, bool bots)
     {
         vector<char> buf;
-        string cn;
+        cubestr cn;
         int numclients = 0;
         if(local && connected)
         {
-            formatstring(cn, "%d", player1->clientnum);
+            formatcubestr(cn, "%d", player1->clientnum);
             buf.put(cn, strlen(cn));
             numclients++;
         }
         loopv(clients) if(clients[i] && (bots || clients[i]->aitype == AI_NONE))
         {
-            formatstring(cn, "%d", clients[i]->clientnum);
+            formatcubestr(cn, "%d", clients[i]->clientnum);
             if(numclients++) buf.add(' ');
             buf.put(cn, strlen(cn));
         }
@@ -518,7 +518,7 @@ namespace game
     void hashpwd(const char *pwd)
     {
         if(player1->clientnum<0) return;
-        string hash;
+        cubestr hash;
         server::hashpassword(player1->clientnum, sessionid, pwd, hash);
         result(hash);
     }
@@ -533,7 +533,7 @@ namespace game
             cn = parseplayer(who);
             if(cn < 0) return;
         }
-        string hash = "";
+        cubestr hash = "";
         if(!arg[1] && isdigit(arg[0])) val = parseint(arg);
         else
         {
@@ -569,7 +569,7 @@ namespace game
     ICOMMAND(checkmaps, "", (), addmsg(N_CHECKMAPS, "r"));
 
     int gamemode = INT_MAX, nextmode = INT_MAX;
-    string clientmap = "";
+    cubestr clientmap = "";
 
     void changemapserv(const char *name, int mode)        // forced map change from the server
     {
@@ -610,7 +610,7 @@ namespace game
     ICOMMAND(timeremaining, "i", (int *formatted),
     {
         int val = max(maplimit - lastmillis, 0)/1000;
-        if(*formatted) result(tempformatstring("%d:%02d", val/60, val%60));
+        if(*formatted) result(tempformatcubestr("%d:%02d", val/60, val%60));
         else intret(val);
     });
     ICOMMAND(intermission, "", (), intret(intermission ? 1 : 0));
@@ -784,13 +784,13 @@ namespace game
             case ID_VAR:
             {
                 int val = *id->storage.i;
-                string str;
+                cubestr str;
                 if(val < 0)
-                    formatstring(str, "%d", val);
+                    formatcubestr(str, "%d", val);
                 else if(id->flags&IDF_HEX && id->maxval==0xFFFFFF)
-                    formatstring(str, "0x%.6X (%d, %d, %d)", val, (val>>16)&0xFF, (val>>8)&0xFF, val&0xFF);
+                    formatcubestr(str, "0x%.6X (%d, %d, %d)", val, (val>>16)&0xFF, (val>>8)&0xFF, val&0xFF);
                 else
-                    formatstring(str, id->flags&IDF_HEX ? "0x%X" : "%d", val);
+                    formatcubestr(str, id->flags&IDF_HEX ? "0x%X" : "%d", val);
                 conoutf("%s set map var \"%s\" to %s", colorname(d), id->name, str);
                 break;
             }
@@ -854,7 +854,7 @@ namespace game
         else if(*numargs < 0) intret(gamespeed);
         else printvar(id, gamespeed);
     });
-    ICOMMAND(prettygamespeed, "i", (), result(tempformatstring("%d.%02dx", gamespeed/100, gamespeed%100)));
+    ICOMMAND(prettygamespeed, "i", (), result(tempformatcubestr("%d.%02dx", gamespeed/100, gamespeed%100)));
 
     int scaletime(int t) { return t*gamespeed; }
 
@@ -906,7 +906,7 @@ namespace game
                     numf += n;
                     break;
                 }
-                case 's': sendstring(va_arg(args, const char *), p); nums++; break;
+                case 's': sendcubestr(va_arg(args, const char *), p); nums++; break;
             }
             va_end(args);
         }
@@ -928,7 +928,7 @@ namespace game
 
     void connectattempt(const char *name, const char *password, const ENetAddress &address)
     {
-        copystring(connectpass, password);
+        copycubestr(connectpass, password);
     }
 
     void connectfail()
@@ -1071,7 +1071,7 @@ namespace game
             sendcrc = false;
             const char *mname = getclientmap();
             putint(p, N_MAPCRC);
-            sendstring(mname, p);
+            sendcubestr(mname, p);
             putint(p, mname[0] ? getmapcrc() : 0);
         }
         if(senditemstoserver)
@@ -1112,27 +1112,27 @@ namespace game
     {
         packetbuf p(MAXTRANS, ENET_PACKET_FLAG_RELIABLE);
         putint(p, N_CONNECT);
-        sendstring(player1->name, p);
+        sendcubestr(player1->name, p);
         putint(p, player1->playermodel);
         putint(p, player1->playercolor);
-        string hash = "";
+        cubestr hash = "";
         if(connectpass[0])
         {
             server::hashpassword(player1->clientnum, sessionid, connectpass, hash);
             memset(connectpass, 0, sizeof(connectpass));
         }
-        sendstring(hash, p);
+        sendcubestr(hash, p);
         authkey *a = servauth[0] && autoauth ? findauthkey(servauth) : NULL;
         if(a)
         {
             a->lastauth = lastmillis;
-            sendstring(a->desc, p);
-            sendstring(a->name, p);
+            sendcubestr(a->desc, p);
+            sendcubestr(a->name, p);
         }
         else
         {
-            sendstring("", p);
-            sendstring("", p);
+            sendcubestr("", p);
+            sendcubestr("", p);
         }
         sendclientpacket(p.finalize(), 1);
     }
@@ -1314,8 +1314,8 @@ namespace game
                 sessionid = getint(p);
                 player1->clientnum = mycn;      // we are now connected
                 if(getint(p) > 0) conoutf("this server is password protected");
-                getstring(servdesc, p, sizeof(servdesc));
-                getstring(servauth, p, sizeof(servauth));
+                getcubestr(servdesc, p, sizeof(servdesc));
+                getcubestr(servauth, p, sizeof(servauth));
                 sendintro();
                 break;
             }
@@ -1368,7 +1368,7 @@ namespace game
             case N_TEXT:
             {
                 if(!d) return;
-                getstring(text, p);
+                getcubestr(text, p);
                 filtertext(text, text, true, true);
                 if(isignored(d->clientnum)) break;
                 if(d->state!=CS_DEAD && d->state!=CS_SPECTATOR)
@@ -1381,7 +1381,7 @@ namespace game
             {
                 int tcn = getint(p);
                 gameent *t = getclient(tcn);
-                getstring(text, p);
+                getcubestr(text, p);
                 filtertext(text, text, true, true);
                 if(!t || isignored(t->clientnum)) break;
                 int team = validteam(t->team) ? t->team : 0;
@@ -1392,7 +1392,7 @@ namespace game
             }
 
             case N_MAPCHANGE:
-                getstring(text, p);
+                getcubestr(text, p);
                 changemapserv(text, getint(p));
                 mapchanged = true;
                 if(getint(p)) entities::spawnitems();
@@ -1432,15 +1432,15 @@ namespace game
                 gameent *d = newclient(cn);
                 if(!d)
                 {
-                    getstring(text, p);
-                    getstring(text, p);
+                    getcubestr(text, p);
+                    getcubestr(text, p);
                     getint(p);
                     getint(p);
                     break;
                 }
-                getstring(text, p);
+                getcubestr(text, p);
                 filtertext(text, text, false, false, MAXNAMELEN);
-                if(!text[0]) copystring(text, "unnamed");
+                if(!text[0]) copycubestr(text, "unnamed");
                 if(d->name[0])          // already connected
                 {
                     if(strcmp(d->name, text) && !isignored(d->clientnum))
@@ -1451,7 +1451,7 @@ namespace game
                     conoutf("\f0join:\f7 %s", colorname(d, text));
                     if(needclipboard >= 0) needclipboard++;
                 }
-                copystring(d->name, text, MAXNAMELEN+1);
+                copycubestr(d->name, text, MAXNAMELEN+1);
                 d->team = getint(p);
                 if(!validteam(d->team)) d->team = 0;
                 d->playermodel = getint(p);
@@ -1460,15 +1460,15 @@ namespace game
             }
 
             case N_SWITCHNAME:
-                getstring(text, p);
+                getcubestr(text, p);
                 if(d)
                 {
                     filtertext(text, text, false, false, MAXNAMELEN);
-                    if(!text[0]) copystring(text, "unnamed");
+                    if(!text[0]) copycubestr(text, "unnamed");
                     if(strcmp(text, d->name))
                     {
                         if(!isignored(d->clientnum)) conoutf("%s is now known as %s", colorname(d), colorname(d, text));
-                        copystring(d->name, text, MAXNAMELEN+1);
+                        copycubestr(d->name, text, MAXNAMELEN+1);
                     }
                 }
                 break;
@@ -1600,7 +1600,7 @@ namespace game
                 if(m_teammode) setteaminfo(actor->team, tfrags);
 #if 0
                 if(actor!=player1 && (!cmode || !cmode->hidefrags()))
-                    particle_textcopy(actor->abovehead(), tempformatstring("%d", actor->frags), PART_TEXT, 2000, 0x32FF64, 4.0f, -8);
+                    particle_textcopy(actor->abovehead(), tempformatcubestr("%d", actor->frags), PART_TEXT, 2000, 0x32FF64, 4.0f, -8);
 #endif
                 if(!victim) break;
                 killed(victim, actor);
@@ -1775,8 +1775,8 @@ namespace game
             {
                 if(!d) return;
                 int type = getint(p);
-                getstring(text, p);
-                string name;
+                getcubestr(text, p);
+                cubestr name;
                 filtertext(name, text, false);
                 ident *id = getident(name);
                 switch(type)
@@ -1795,7 +1795,7 @@ namespace game
                     }
                     case ID_SVAR:
                     {
-                        getstring(text, p);
+                        getcubestr(text, p);
                         if(id && id->flags&IDF_OVERRIDE && !(id->flags&IDF_READONLY)) setsvar(name, text);
                         break;
                     }
@@ -1818,7 +1818,7 @@ namespace game
                 break;
 
             case N_SERVMSG:
-                getstring(text, p);
+                getcubestr(text, p);
                 conoutf("%s", text);
                 break;
 
@@ -1828,7 +1828,7 @@ namespace game
                 if(demos <= 0) conoutf("no demos available");
                 else loopi(demos)
                 {
-                    getstring(text, p);
+                    getcubestr(text, p);
                     if(p.overread()) break;
                     conoutf("%d. %s", i+1, text);
                 }
@@ -1949,17 +1949,17 @@ namespace game
 
             case N_REQAUTH:
             {
-                getstring(text, p);
+                getcubestr(text, p);
                 if(autoauth && text[0] && tryauth(text)) conoutf("server requested authkey \"%s\"", text);
                 break;
             }
 
             case N_AUTHCHAL:
             {
-                getstring(text, p);
+                getcubestr(text, p);
                 authkey *a = findauthkey(text);
                 uint id = (uint)getint(p);
-                getstring(text, p);
+                getcubestr(text, p);
                 if(a && a->lastauth && lastmillis - a->lastauth < 60*1000)
                 {
                     vector<char> buf;
@@ -1967,9 +1967,9 @@ namespace game
                     //conoutf(CON_DEBUG, "answering %u, challenge %s with %s", id, text, buf.getbuf());
                     packetbuf p(MAXTRANS, ENET_PACKET_FLAG_RELIABLE);
                     putint(p, N_AUTHANS);
-                    sendstring(a->desc, p);
+                    sendcubestr(a->desc, p);
                     putint(p, id);
-                    sendstring(buf.getbuf(), p);
+                    sendcubestr(buf.getbuf(), p);
                     sendclientpacket(p.finalize(), 1);
                 }
                 break;
@@ -1978,8 +1978,8 @@ namespace game
             case N_INITAI:
             {
                 int bn = getint(p), on = getint(p), at = getint(p), sk = clamp(getint(p), 1, 101), pm = getint(p), col = getint(p), team = getint(p);
-                string name;
-                getstring(text, p);
+                cubestr name;
+                getcubestr(text, p);
                 filtertext(name, text, false, false, MAXNAMELEN);
                 gameent *b = newclient(bn);
                 if(!b) break;
@@ -1988,7 +1988,7 @@ namespace game
             }
 
             case N_SERVCMD:
-                getstring(text, p);
+                getcubestr(text, p);
                 break;
 
             default:
@@ -2005,7 +2005,7 @@ namespace game
             case N_DEMOPACKET: return;
             case N_SENDDEMO:
             {
-                defformatstring(fname, "%d.dmo", lastmillis);
+                defformatcubestr(fname, "%d.dmo", lastmillis);
                 stream *demo = openrawfile(fname, "wb");
                 if(!demo) return;
                 conoutf("received demo \"%s\"", fname);
@@ -2018,10 +2018,10 @@ namespace game
             case N_SENDMAP:
             {
                 if(!m_edit) return;
-                string oldname;
-                copystring(oldname, getclientmap());
-                defformatstring(mname, "getmap_%d", lastmillis);
-                defformatstring(fname, "media/map/%s.ogz", mname);
+                cubestr oldname;
+                copycubestr(oldname, getclientmap());
+                defformatcubestr(mname, "getmap_%d", lastmillis);
+                defformatcubestr(fname, "media/map/%s.ogz", mname);
                 stream *map = openrawfile(path(fname), "wb");
                 if(!map) return;
                 conoutf("received map");
@@ -2107,9 +2107,9 @@ namespace game
     {
         if(!m_edit || (player1->state==CS_SPECTATOR && remote && !player1->privilege)) { conoutf(CON_ERROR, "\"sendmap\" only works in coop edit mode"); return; }
         conoutf("sending map...");
-        defformatstring(mname, "sendmap_%d", lastmillis);
+        defformatcubestr(mname, "sendmap_%d", lastmillis);
         save_world(mname, true);
-        defformatstring(fname, "media/map/%s.ogz", mname);
+        defformatcubestr(fname, "media/map/%s.ogz", mname);
         stream *map = openrawfile(path(fname), "rb");
         if(map)
         {

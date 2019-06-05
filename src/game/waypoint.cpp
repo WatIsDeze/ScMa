@@ -527,7 +527,7 @@ namespace ai
         a.links[rnd(MAXWAYPOINTLINKS)] = n;
     }
 
-    string loadedwaypoints = "";
+    cubestr loadedwaypoints = "";
 
     static inline bool shouldnavigate()
     {
@@ -679,14 +679,14 @@ namespace ai
         if(!mname || !*mname) mname = getclientmap();
         if(!*mname) return false;
 
-        nformatstring(wptname, MAXSTRLEN, "media/map/%s.wpt", mname);
+        nformatcubestr(wptname, MAXSTRLEN, "media/map/%s.wpt", mname);
         path(wptname);
         return true;
     }
 
     void loadwaypoints(bool force, const char *mname)
     {
-        string wptname;
+        cubestr wptname;
         if(!getwaypointfile(mname, wptname)) return;
         if(!force && (waypoints.length() || !strcmp(loadedwaypoints, wptname))) return;
 
@@ -695,7 +695,7 @@ namespace ai
         char magic[4];
         if(f->read(magic, 4) < 4 || memcmp(magic, "OWPT", 4)) { delete f; return; }
 
-        copystring(loadedwaypoints, wptname);
+        copycubestr(loadedwaypoints, wptname);
 
         waypoints.setsize(0);
         waypoints.add(vec(0, 0, 0));
@@ -729,7 +729,7 @@ namespace ai
     {
         if((!dropwaypoints && !force) || waypoints.empty()) return;
 
-        string wptname;
+        cubestr wptname;
         if(!getwaypointfile(mname, wptname)) return;
 
         stream *f = opengzfile(wptname, "wb");

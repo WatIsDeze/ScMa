@@ -161,7 +161,7 @@ struct partrenderer
     int texclamp;
     uint type;
     int stain;
-    string info;
+    cubestr info;
 
     partrenderer(const char *texname, int texclamp, int type, int stain = -1)
         : tex(NULL), texname(texname), texclamp(texclamp), type(type), stain(stain)
@@ -238,19 +238,19 @@ struct partrenderer
 
     void debuginfo()
     {
-        formatstring(info, "%d\t%s(", count(), partnames[type&0xFF]);
-        if(type&PT_LERP) concatstring(info, "l,");
-        if(type&PT_MOD) concatstring(info, "m,");
-        if(type&PT_RND4) concatstring(info, "r,");
-        if(type&PT_TRACK) concatstring(info, "t,");
-        if(type&PT_FLIP) concatstring(info, "f,");
-        if(type&PT_COLLIDE) concatstring(info, "c,");
+        formatcubestr(info, "%d\t%s(", count(), partnames[type&0xFF]);
+        if(type&PT_LERP) concatcubestr(info, "l,");
+        if(type&PT_MOD) concatcubestr(info, "m,");
+        if(type&PT_RND4) concatcubestr(info, "r,");
+        if(type&PT_TRACK) concatcubestr(info, "t,");
+        if(type&PT_FLIP) concatcubestr(info, "f,");
+        if(type&PT_COLLIDE) concatcubestr(info, "c,");
         int len = strlen(info);
         info[len-1] = info[len-1] == ',' ? ')' : '\0';
         if(texname)
         {
             const char *title = strrchr(texname, '/');
-            if(title) concformatstring(info, ": %s", title+1);
+            if(title) concformatcubestr(info, ": %s", title+1);
         }
     }
 };
@@ -1081,7 +1081,7 @@ void particle_textcopy(const vec &s, const char *t, int type, int fade, int colo
     if(!canaddparticles()) return;
     if(!particletext || camera1->o.dist(s) > maxparticletextdistance) return;
     particle *p = newparticle(s, vec(0, 0, 1), fade, type, color, size, gravity);
-    p->text = newstring(t);
+    p->text = newcubestr(t);
     p->flags = 1;
 }
 
@@ -1333,7 +1333,7 @@ static void makeparticles(entity &e)
         default:
             if(!editmode)
             {
-                defformatstring(ds, "particles %d?", e.attr1);
+                defformatcubestr(ds, "particles %d?", e.attr1);
                 particle_textcopy(e.o, ds, PART_TEXT, 1, 0x6496FF, 2.0f);
             }
             break;
@@ -1345,13 +1345,13 @@ bool printparticles(extentity &e, char *buf, int len)
     switch(e.attr1)
     {
         case 0: case 4: case 7: case 8: case 9: case 10: case 11: case 12: case 13:
-            nformatstring(buf, len, "%s %d %d %d 0x%.3hX %d", entities::entname(e.type), e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
+            nformatcubestr(buf, len, "%s %d %d %d 0x%.3hX %d", entities::entname(e.type), e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
             return true;
         case 3:
-            nformatstring(buf, len, "%s %d %d 0x%.3hX %d %d", entities::entname(e.type), e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
+            nformatcubestr(buf, len, "%s %d %d 0x%.3hX %d %d", entities::entname(e.type), e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
             return true;
         case 5: case 6:
-            nformatstring(buf, len, "%s %d %d 0x%.3hX 0x%.3hX %d", entities::entname(e.type), e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
+            nformatcubestr(buf, len, "%s %d %d 0x%.3hX 0x%.3hX %d", entities::entname(e.type), e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
             return true;
     }
     return false;

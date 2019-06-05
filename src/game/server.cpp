@@ -171,7 +171,7 @@ namespace server
     struct savedscore
     {
         uint ip;
-        string name;
+        cubestr name;
         int frags, flags, deaths, teamkills, shotdamage, damage;
         int timeplayed;
         float effectiveness;
@@ -206,7 +206,7 @@ namespace server
     struct clientinfo
     {
         int clientnum, ownernum, connectmillis, sessionid, overflow;
-        string name, mapvote;
+        cubestr name, mapvote;
         int team, playermodel, playercolor;
         int modevote;
         int privilege;
@@ -219,14 +219,14 @@ namespace server
         int wslen;
         vector<clientinfo *> bots;
         int ping, aireinit;
-        string clientmap;
+        cubestr clientmap;
         int mapcrc;
         bool warned, gameclip;
         ENetPacket *getdemo, *getmap, *clipboard;
         int lastclipboard, needclipboard;
         int connectauth;
         uint authreq;
-        string authname, authdesc;
+        cubestr authname, authdesc;
         void *authchallenge;
         int authkickvictim;
         char *authkickreason;
@@ -386,7 +386,7 @@ namespace server
     int gamemillis = 0, gamelimit = 0, nextexceeded = 0, gamespeed = 100;
     bool gamepaused = false, shouldstep = true;
 
-    string smapname = "";
+    cubestr smapname = "";
     int interm = 0;
     enet_uint32 lastsend = 0;
     int mastermode = MM_OPEN, mastermask = MM_PRIVSERV;
@@ -423,7 +423,7 @@ namespace server
     {
         static int exclude;
         int modes;
-        string map;
+        cubestr map;
 
         int calcmodemask() const { return modes&(1<<NUMGAMEMODES) ? modes & ~exclude : modes; }
         bool hasmode(int mode, int offset = STARTGAMEMODE) const { return (calcmodemask() & (1 << (mode-offset))) != 0; }
@@ -560,7 +560,7 @@ namespace server
         if(!(modemask&(1<<NUMGAMEMODES))) maprotation::exclude |= modemask;
         maprotation &rot = maprotations.add();
         rot.modes = modemask;
-        copystring(rot.map, map);
+        copycubestr(rot.map, map);
         return true;
     }
 
@@ -590,7 +590,7 @@ namespace server
 
     struct demofile
     {
-        string info;
+        cubestr info;
         uchar *data;
         int len;
     };
@@ -756,7 +756,7 @@ namespace server
     void sendservmsgf(const char *fmt, ...) PRINTFARGS(1, 2);
     void sendservmsgf(const char *fmt, ...)
     {
-         defvformatstring(s, fmt, fmt);
+         defvformatcubestr(s, fmt, fmt);
          sendf(-1, 1, "ris", N_SERVMSG, s);
     }
 
@@ -801,10 +801,10 @@ namespace server
     {
         if(!name) name = ci->name;
         if(name[0] && !duplicatename(ci, name) && ci->state.aitype == AI_NONE) return name;
-        static string cname[3];
+        static cubestr cname[3];
         static int cidx = 0;
         cidx = (cidx+1)%3;
-        formatstring(cname[cidx], ci->state.aitype == AI_NONE ? "%s \fs\f5(%d)\fr" : "%s \fs\f5[%d]\fr", name, ci->clientnum);
+        formatcubestr(cname[cidx], ci->state.aitype == AI_NONE ? "%s \fs\f5(%d)\fr" : "%s \fs\f5[%d]\fr", name, ci->clientnum);
         return cname[cidx];
     }
 
@@ -983,7 +983,7 @@ namespace server
         time_t t = time(NULL);
         char *timestr = ctime(&t), *trim = timestr + strlen(timestr);
         while(trim>timestr && iscubespace(*--trim)) *trim = '\0';
-        formatstring(d.info, "%s: %s, %s, %.2f%s", timestr, modeprettyname(gamemode), smapname, len > 1024*1024 ? len/(1024*1024.f) : len/1024.0f, len > 1024*1024 ? "MB" : "kB");
+        formatcubestr(d.info, "%s: %s, %s, %.2f%s", timestr, modeprettyname(gamemode), smapname, len > 1024*1024 ? len/(1024*1024.f) : len/1024.0f, len > 1024*1024 ? "MB" : "kB");
         sendservmsgf("demo \"%s\" recorded", d.info);
         d.data = new uchar[len];
         d.len = len;
@@ -1054,7 +1054,7 @@ namespace server
         packetbuf p(MAXTRANS, ENET_PACKET_FLAG_RELIABLE);
         putint(p, N_SENDDEMOLIST);
         putint(p, demos.length());
-        loopv(demos) sendstring(demos[i].info, p);
+        loopv(demos) sendcubestr(demos[i].info, p);
         sendpacket(cn, 1, p.finalize());
     }
 
@@ -1118,18 +1118,18 @@ namespace server
     {
         if(demoplayback) return;
         demoheader hdr;
-        string msg;
+        cubestr msg;
         msg[0] = '\0';
-        defformatstring(file, "%s.dmo", smapname);
+        defformatcubestr(file, "%s.dmo", smapname);
         demoplayback = opengzfile(file, "rb");
-        if(!demoplayback) formatstring(msg, "could not read demo \"%s\"", file);
+        if(!demoplayback) formatcubestr(msg, "could not read demo \"%s\"", file);
         else if(demoplayback->read(&hdr, sizeof(demoheader))!=sizeof(demoheader) || memcmp(hdr.magic, DEMO_MAGIC, sizeof(hdr.magic)))
-            formatstring(msg, "\"%s\" is not a demo file", file);
+            formatcubestr(msg, "\"%s\" is not a demo file", file);
         else
         {
             lilswap(&hdr.version, 2);
-            if(hdr.version!=DEMO_VERSION) formatstring(msg, "demo \"%s\" requires an %s version of Tesseract", file, hdr.version<DEMO_VERSION ? "older" : "newer");
-            else if(hdr.protocol!=PROTOCOL_VERSION) formatstring(msg, "demo \"%s\" requires an %s version of Tesseract", file, hdr.protocol<PROTOCOL_VERSION ? "older" : "newer");
+            if(hdr.version!=DEMO_VERSION) formatcubestr(msg, "demo \"%s\" requires an %s version of Tesseract", file, hdr.version<DEMO_VERSION ? "older" : "newer");
+            else if(hdr.protocol!=PROTOCOL_VERSION) formatcubestr(msg, "demo \"%s\" requires an %s version of Tesseract", file, hdr.protocol<PROTOCOL_VERSION ? "older" : "newer");
         }
         if(msg[0])
         {
@@ -1258,8 +1258,8 @@ namespace server
         userkey key(name, desc);
         userinfo &u = users[key];
         if(u.pubkey) { freepubkey(u.pubkey); u.pubkey = NULL; }
-        if(!u.name) u.name = newstring(name);
-        if(!u.desc) u.desc = newstring(desc);
+        if(!u.name) u.name = newcubestr(name);
+        if(!u.desc) u.desc = newcubestr(desc);
         u.pubkey = parsepubkey(pubkey);
         switch(priv[0])
         {
@@ -1278,14 +1278,14 @@ namespace server
 
     void hashpassword(int cn, int sessionid, const char *pwd, char *result, int maxlen)
     {
-        char buf[2*sizeof(string)];
-        formatstring(buf, "%d %d %s", cn, sessionid, pwd);
-        if(!hashstring(buf, result, maxlen)) *result = '\0';
+        char buf[2*sizeof(cubestr)];
+        formatcubestr(buf, "%d %d %s", cn, sessionid, pwd);
+        if(!hashcubestr(buf, result, maxlen)) *result = '\0';
     }
 
     bool checkpassword(clientinfo *ci, const char *wanted, const char *given)
     {
-        string hash;
+        cubestr hash;
         hashpassword(ci->clientnum, ci->sessionid, wanted, hash, sizeof(hash));
         return !strcmp(hash, given);
     }
@@ -1343,16 +1343,16 @@ namespace server
             mastermode = MM_OPEN;
             allowedips.shrink(0);
         }
-        string msg;
+        cubestr msg;
         if(val && authname)
         {
-            if(authdesc && authdesc[0]) formatstring(msg, "%s claimed %s as '\fs\f5%s\fr' [\fs\f0%s\fr]", colorname(ci), name, authname, authdesc);
-            else formatstring(msg, "%s claimed %s as '\fs\f5%s\fr'", colorname(ci), name, authname);
+            if(authdesc && authdesc[0]) formatcubestr(msg, "%s claimed %s as '\fs\f5%s\fr' [\fs\f0%s\fr]", colorname(ci), name, authname, authdesc);
+            else formatcubestr(msg, "%s claimed %s as '\fs\f5%s\fr'", colorname(ci), name, authname);
         }
-        else formatstring(msg, "%s %s %s", colorname(ci), val ? "claimed" : "relinquished", name);
+        else formatcubestr(msg, "%s %s %s", colorname(ci), val ? "claimed" : "relinquished", name);
         packetbuf p(MAXTRANS, ENET_PACKET_FLAG_RELIABLE);
         putint(p, N_SERVMSG);
-        sendstring(msg, p);
+        sendcubestr(msg, p);
         putint(p, N_CURRENTMASTER);
         putint(p, mastermode);
         loopv(clients) if(clients[i]->privilege >= PRIV_MASTER)
@@ -1380,13 +1380,13 @@ namespace server
             if(vinfo && vinfo->connected && (priv >= vinfo->privilege || ci->local) && vinfo->privilege < PRIV_ADMIN && !vinfo->local)
             {
                 if(trial) return true;
-                string kicker;
+                cubestr kicker;
                 if(authname)
                 {
-                    if(authdesc && authdesc[0]) formatstring(kicker, "%s as '\fs\f5%s\fr' [\fs\f0%s\fr]", colorname(ci), authname, authdesc);
-                    else formatstring(kicker, "%s as '\fs\f5%s\fr'", colorname(ci), authname);
+                    if(authdesc && authdesc[0]) formatcubestr(kicker, "%s as '\fs\f5%s\fr' [\fs\f0%s\fr]", colorname(ci), authname, authdesc);
+                    else formatcubestr(kicker, "%s as '\fs\f5%s\fr'", colorname(ci), authname);
                 }
-                else copystring(kicker, colorname(ci));
+                else copycubestr(kicker, colorname(ci));
                 if(reason && reason[0]) sendservmsgf("%s kicked %s because: %s", kicker, colorname(vinfo), reason);
                 else sendservmsgf("%s kicked %s", kicker, colorname(vinfo));
                 uint ip = getclientip(victim);
@@ -1424,7 +1424,7 @@ namespace server
         if(!insert) return 0;
         savedscore &sc = scores.add();
         sc.ip = ip;
-        copystring(sc.name, ci->name);
+        copycubestr(sc.name, ci->name);
         return &sc;
     }
 
@@ -1697,13 +1697,13 @@ namespace server
             putint(p, ci->playermodel);
             putint(p, ci->playercolor);
             putint(p, ci->team);
-            sendstring(ci->name, p);
+            sendcubestr(ci->name, p);
         }
         else
         {
             putint(p, N_INITCLIENT);
             putint(p, ci->clientnum);
-            sendstring(ci->name, p);
+            sendcubestr(ci->name, p);
             putint(p, ci->team);
             putint(p, ci->playermodel);
             putint(p, ci->playercolor);
@@ -1731,7 +1731,7 @@ namespace server
     {
         putint(p, N_WELCOME);
         putint(p, N_MAPCHANGE);
-        sendstring(smapname, p);
+        sendcubestr(smapname, p);
         putint(p, gamemode);
         putint(p, notgotitems ? 1 : 0);
         if(!ci || (m_timed && smapname[0]))
@@ -1902,7 +1902,7 @@ namespace server
         gamelimit = (m_overtime ? 15 : 10)*60000;
         interm = 0;
         nextexceeded = 0;
-        copystring(smapname, s);
+        copycubestr(smapname, s);
         loaditems();
         scores.shrink(0);
         shouldcheckteamkills = false;
@@ -2037,7 +2037,7 @@ namespace server
             sendf(sender, 1, "ris", N_SERVMSG, "This server has locked the map rotation.");
             return;
         }
-        copystring(ci->mapvote, map);
+        copycubestr(ci->mapvote, map);
         ci->modevote = reqmode;
         if(ci->local || (ci->privilege && mastermode>=MM_VETO))
         {
@@ -2377,12 +2377,12 @@ namespace server
         }
         if(!mcrc && total - unsent < min(total, 4)) return;
         crcs.sort(crcinfo::compare);
-        string msg;
+        cubestr msg;
         loopv(clients)
         {
             clientinfo *ci = clients[i];
             if(ci->state.state==CS_SPECTATOR || ci->state.aitype != AI_NONE || ci->clientmap[0] || ci->mapcrc >= 0 || (req < 0 && ci->warned)) continue;
-            formatstring(msg, "%s has modified map \"%s\"", colorname(ci), smapname);
+            formatcubestr(msg, "%s has modified map \"%s\"", colorname(ci), smapname);
             sendf(req, 1, "ris", N_SERVMSG, msg);
             if(req < 0) ci->warned = true;
         }
@@ -2393,7 +2393,7 @@ namespace server
             {
                 clientinfo *ci = clients[j];
                 if(ci->state.state==CS_SPECTATOR || ci->state.aitype != AI_NONE || !ci->clientmap[0] || ci->mapcrc != info.crc || (req < 0 && ci->warned)) continue;
-                formatstring(msg, "%s has modified map \"%s\"", colorname(ci), smapname);
+                formatcubestr(msg, "%s has modified map \"%s\"", colorname(ci), smapname);
                 sendf(req, 1, "ris", N_SERVMSG, msg);
                 if(req < 0) ci->warned = true;
             }
@@ -2599,7 +2599,7 @@ namespace server
         if(!nextauthreq) nextauthreq = 1;
         ci->authreq = nextauthreq++;
         filtertext(ci->authname, user, false, false, 100);
-        copystring(ci->authdesc, desc);
+        copycubestr(ci->authdesc, desc);
         if(ci->authdesc[0])
         {
             userinfo *u = users.access(userkey(ci->authname, ci->authdesc));
@@ -2675,14 +2675,14 @@ namespace server
     void processmasterinput(const char *cmd, int cmdlen, const char *args)
     {
         uint id;
-        string val;
+        cubestr val;
         if(sscanf(cmd, "failauth %u", &id) == 1)
             authfailed(id);
         else if(sscanf(cmd, "succauth %u", &id) == 1)
             authsucceeded(id);
         else if(sscanf(cmd, "chalauth %u %255s", &id, val) == 2)
             authchallenged(id, val);
-        else if(matchstring(cmd, cmdlen, "cleargbans"))
+        else if(matchcubestr(cmd, cmdlen, "cleargbans"))
             gbans.clear();
         else if(sscanf(cmd, "addgban %100s", val) == 1)
             gbans.add(val);
@@ -2759,17 +2759,17 @@ namespace server
             {
                 case N_CONNECT:
                 {
-                    getstring(text, p);
+                    getcubestr(text, p);
                     filtertext(text, text, false, false, MAXNAMELEN);
-                    if(!text[0]) copystring(text, "unnamed");
-                    copystring(ci->name, text, MAXNAMELEN+1);
+                    if(!text[0]) copycubestr(text, "unnamed");
+                    copycubestr(ci->name, text, MAXNAMELEN+1);
                     ci->playermodel = getint(p);
                     ci->playercolor = getint(p);
 
-                    string password, authdesc, authname;
-                    getstring(password, p, sizeof(password));
-                    getstring(authdesc, p, sizeof(authdesc));
-                    getstring(authname, p, sizeof(authname));
+                    cubestr password, authdesc, authname;
+                    getcubestr(password, p, sizeof(password));
+                    getcubestr(authdesc, p, sizeof(authdesc));
+                    getcubestr(authname, p, sizeof(authname));
                     int disc = allowconnect(ci, password);
                     if(disc)
                     {
@@ -2786,10 +2786,10 @@ namespace server
 
                 case N_AUTHANS:
                 {
-                    string desc, ans;
-                    getstring(desc, p, sizeof(desc));
+                    cubestr desc, ans;
+                    getcubestr(desc, p, sizeof(desc));
                     uint id = (uint)getint(p);
-                    getstring(ans, p, sizeof(ans));
+                    getcubestr(ans, p, sizeof(ans));
                     if(!answerchallenge(ci, id, ans, desc))
                     {
                         disconnect_client(sender, ci->connectauth);
@@ -2826,7 +2826,7 @@ namespace server
         }
         #define QUEUE_INT(n) QUEUE_BUF(putint(cm->messages, n))
         #define QUEUE_UINT(n) QUEUE_BUF(putuint(cm->messages, n))
-        #define QUEUE_STR(text) QUEUE_BUF(sendstring(text, cm->messages))
+        #define QUEUE_STR(text) QUEUE_BUF(sendcubestr(text, cm->messages))
         int curmsg;
         while((curmsg = p.length()) < p.maxlen) switch(type = checktype(getint(p), ci))
         {
@@ -2931,7 +2931,7 @@ namespace server
 
             case N_MAPCRC:
             {
-                getstring(text, p);
+                getcubestr(text, p);
                 int crc = getint(p);
                 if(!ci) break;
                 if(strcmp(text, smapname))
@@ -2944,7 +2944,7 @@ namespace server
                     else if(ci->mapcrc > 0) ci->mapcrc = 0;
                     break;
                 }
-                copystring(ci->clientmap, text);
+                copycubestr(ci->clientmap, text);
                 ci->mapcrc = text[0] ? crc : 1;
                 checkmaps();
                 if(cq && cq != ci && cq->ownernum != ci->clientnum) cq = NULL;
@@ -3071,7 +3071,7 @@ namespace server
             {
                 QUEUE_AI;
                 QUEUE_MSG;
-                getstring(text, p);
+                getcubestr(text, p);
                 filtertext(text, text, true, true);
                 QUEUE_STR(text);
                 if(isdedicatedserver() && cq) logoutf("%s: %s", colorname(cq), text);
@@ -3080,7 +3080,7 @@ namespace server
 
             case N_SAYTEAM:
             {
-                getstring(text, p);
+                getcubestr(text, p);
                 if(!ci || !cq || (ci->state.state==CS_SPECTATOR && !ci->local && !ci->privilege) || !m_teammode || !validteam(cq->team)) break;
                 filtertext(text, text, true, true);
                 loopv(clients)
@@ -3096,9 +3096,9 @@ namespace server
             case N_SWITCHNAME:
             {
                 QUEUE_MSG;
-                getstring(text, p);
+                getcubestr(text, p);
                 filtertext(ci->name, text, false, false, MAXNAMELEN);
-                if(!ci->name[0]) copystring(ci->name, "unnamed");
+                if(!ci->name[0]) copycubestr(ci->name, "unnamed");
                 QUEUE_STR(ci->name);
                 break;
             }
@@ -3132,7 +3132,7 @@ namespace server
 
             case N_MAPVOTE:
             {
-                getstring(text, p);
+                getcubestr(text, p);
                 filtertext(text, text, false);
                 fixmapname(text);
                 int reqmode = getint(p);
@@ -3185,12 +3185,12 @@ namespace server
             case N_EDITVAR:
             {
                 int type = getint(p);
-                getstring(text, p);
+                getcubestr(text, p);
                 switch(type)
                 {
                     case ID_VAR: getint(p); break;
                     case ID_FVAR: getfloat(p); break;
-                    case ID_SVAR: getstring(text, p);
+                    case ID_SVAR: getcubestr(text, p);
                 }
                 if(ci && ci->state.state!=CS_SPECTATOR) QUEUE_MSG;
                 break;
@@ -3230,7 +3230,7 @@ namespace server
                     }
                     else
                     {
-                        sendf(sender, 1, "ris", N_SERVMSG, tempformatstring("mastermode %d is disabled on this server", mm));
+                        sendf(sender, 1, "ris", N_SERVMSG, tempformatcubestr("mastermode %d is disabled on this server", mm));
                     }
                 }
                 break;
@@ -3249,7 +3249,7 @@ namespace server
             case N_KICK:
             {
                 int victim = getint(p);
-                getstring(text, p);
+                getcubestr(text, p);
                 filtertext(text, text);
                 trykick(ci, victim, text);
                 break;
@@ -3361,7 +3361,7 @@ namespace server
             case N_SETMASTER:
             {
                 int mn = getint(p), val = getint(p);
-                getstring(text, p);
+                getcubestr(text, p);
                 if(mn != ci->clientnum)
                 {
                     if(!ci->privilege && !ci->local) break;
@@ -3402,20 +3402,20 @@ namespace server
 
             case N_AUTHTRY:
             {
-                string desc, name;
-                getstring(desc, p, sizeof(desc));
-                getstring(name, p, sizeof(name));
+                cubestr desc, name;
+                getcubestr(desc, p, sizeof(desc));
+                getcubestr(name, p, sizeof(name));
                 tryauth(ci, name, desc);
                 break;
             }
 
             case N_AUTHKICK:
             {
-                string desc, name;
-                getstring(desc, p, sizeof(desc));
-                getstring(name, p, sizeof(name));
+                cubestr desc, name;
+                getcubestr(desc, p, sizeof(desc));
+                getcubestr(name, p, sizeof(name));
                 int victim = getint(p);
-                getstring(text, p);
+                getcubestr(text, p);
                 filtertext(text, text);
                 int authpriv = PRIV_AUTH;
                 if(desc[0])
@@ -3427,17 +3427,17 @@ namespace server
                 else if(trykick(ci, victim, text, name, desc, authpriv, true) && tryauth(ci, name, desc))
                 {
                     ci->authkickvictim = victim;
-                    ci->authkickreason = newstring(text);
+                    ci->authkickreason = newcubestr(text);
                 }
                 break;
             }
 
             case N_AUTHANS:
             {
-                string desc, ans;
-                getstring(desc, p, sizeof(desc));
+                cubestr desc, ans;
+                getcubestr(desc, p, sizeof(desc));
                 uint id = (uint)getint(p);
-                getstring(ans, p, sizeof(ans));
+                getcubestr(ans, p, sizeof(ans));
                 answerchallenge(ci, id, ans, desc);
                 break;
             }
@@ -3528,7 +3528,7 @@ namespace server
             }
  
             case N_SERVCMD:
-                getstring(text, p);
+                getcubestr(text, p);
                 break;
 
             #define PARSEMESSAGES 1
@@ -3586,8 +3586,8 @@ namespace server
             putint(p, gamepaused ? 1 : 0);
             putint(p, gamespeed);
         }
-        sendstring(smapname, p);
-        sendstring(serverdesc, p);
+        sendcubestr(smapname, p);
+        sendcubestr(serverdesc, p);
         sendserverinforeply(p);
     }
 

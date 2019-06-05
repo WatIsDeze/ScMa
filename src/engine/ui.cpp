@@ -584,7 +584,7 @@ namespace UI
         vec2 sscale, soffset;
 
         Window(const char *name, const char *contents, const char *onshow, const char *onhide) :
-            name(newstring(name)),
+            name(newcubestr(name)),
             contents(compilecode(contents)),
             onshow(onshow && onshow[0] ? compilecode(onshow) : NULL),
             onhide(onhide && onhide[0] ? compilecode(onhide) : NULL),
@@ -1850,8 +1850,8 @@ namespace UI
     FVAR(uitextscale, 1, 0, 0);
 
     #define SETSTR(dst, src) do { \
-        if(dst) { if(dst != src && strcmp(dst, src)) { delete[] dst; dst = newstring(src); } } \
-        else dst = newstring(src); \
+        if(dst) { if(dst != src && strcmp(dst, src)) { delete[] dst; dst = newcubestr(src); } } \
+        else dst = newcubestr(src); \
     } while(0)
 
     struct Text : Object
@@ -1898,12 +1898,12 @@ namespace UI
         }
     };
 
-    struct TextString : Text
+    struct Textcubestr : Text
     {
         char *str;
 
-        TextString() : str(NULL) {}
-        ~TextString() { delete[] str; }
+        Textcubestr() : str(NULL) {}
+        ~Textcubestr() { delete[] str; }
 
         void setup(const char *str_, float scale_ = 1, const Color &color_ = Color(255, 255, 255), float wrap_ = -1)
         {
@@ -1912,7 +1912,7 @@ namespace UI
             SETSTR(str, str_);
         }
 
-        static const char *typestr() { return "#TextString"; }
+        static const char *typestr() { return "#Textcubestr"; }
         const char *gettype() const { return typestr(); }
 
         const char *getstr() const { return str; }
@@ -2757,7 +2757,7 @@ namespace UI
             case ID_COMMAND:
             {
                 tagval t;
-                t.setstr(newstring(val));
+                t.setstr(newcubestr(val));
                 execute(id, &t, 1);
                 break;
             }
@@ -3346,7 +3346,7 @@ namespace UI
             case VAL_STR:
                 if(t.s[0])
                 {
-                    BUILD(TextString, o, o->setup(t.s, scale, color, wrap), children);
+                    BUILD(Textcubestr, o, o->setup(t.s, scale, color, wrap), children);
                     break;
                 }
                 // fall-through

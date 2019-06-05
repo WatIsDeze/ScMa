@@ -175,9 +175,9 @@ namespace game
             if(servdesc[0]) result(servdesc);
             else
             {
-                string hostname;
+                cubestr hostname;
                 if(enet_address_get_host_ip(address, hostname, sizeof(hostname)) >= 0)
-                    result(tempformatstring("%s:%d", hostname, address->port));
+                    result(tempformatcubestr("%s:%d", hostname, address->port));
             }
         }
     });
@@ -201,7 +201,7 @@ namespace game
             else
             {
                 int secs = max(maplimit-lastmillis, 0)/1000;
-                result(tempformatstring("%d:%02d", secs/60, secs%60));
+                result(tempformatcubestr("%d:%02d", secs/60, secs%60));
             }
         }
     });

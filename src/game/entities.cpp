@@ -97,6 +97,8 @@ namespace entities
                 case JUMPPAD:
                     if(e.attr4 > 0) preloadmapsound(e.attr4);
                     break;
+                //case ET_GAMESPECIFIC:
+                //	conoutf("%s", "Found a gamespecific entity");
             }
         }
     }
@@ -268,7 +270,7 @@ namespace entities
                 if(!teleteam && m_teammode) break;
                 if(ents[n]->attr3 > 0)
                 {
-                    defformatstring(hookname, "can_teleport_%d", ents[n]->attr3);
+                    defformatcubestr(hookname, "can_teleport_%d", ents[n]->attr3);
                     if(!execidentbool(hookname, true)) break;
                 }
                 d->lastpickup = ents[n]->type;
@@ -357,7 +359,7 @@ namespace entities
         }
     }
     
-    	// WatIs: Testing the set and get properties of entities.
+    // WatIs: Testing the set and get properties of entities.
 	int edit_entity = -1;
 	
 	ICOMMAND(ent_set_attr, "ssssssss", (char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7, char *s8), 
@@ -365,26 +367,26 @@ namespace entities
 		if (edit_entity > -1 && edit_entity < ents.length()) {
 			gameentity *ent = (gameentity*)ents[edit_entity];
 
-			copystring(ent->str_attr1, s1, 256);			
-			copystring(ent->str_attr2, s2, 256);	
-			copystring(ent->str_attr3, s3, 256);
-			copystring(ent->str_attr4, s4, 256);
-			copystring(ent->str_attr5, s5, 256);
-			copystring(ent->str_attr6, s6, 256);
-			copystring(ent->str_attr7, s7, 256);
-			copystring(ent->str_attr8, s8, 256);	
+			copycubestr(ent->str_attr1, s1, 256);			
+			copycubestr(ent->str_attr2, s2, 256);	
+			copycubestr(ent->str_attr3, s3, 256);
+			copycubestr(ent->str_attr4, s4, 256);
+			copycubestr(ent->str_attr5, s5, 256);
+			copycubestr(ent->str_attr6, s6, 256);
+			copycubestr(ent->str_attr7, s7, 256);
+			copycubestr(ent->str_attr8, s8, 256);	
 		} else {
 			conoutf("%s", "No valid in range entity selected.");
 		}
 /*		if(lastcreated) { 
-			copystring(lastcreated->str_attr1, s1, 256);
-			copystring(lastcreated->str_attr2, s2, 256);
-			copystring(lastcreated->str_attr3, s3, 256);
-			copystring(lastcreated->str_attr4, s4, 256);
-			copystring(lastcreated->str_attr5, s5, 256);
-			copystring(lastcreated->str_attr6, s6, 256);
-			copystring(lastcreated->str_attr7, s7, 256);
-			copystring(lastcreated->str_attr8, s8, 256);
+			copycubestr(lastcreated->str_attr1, s1, 256);
+			copycubestr(lastcreated->str_attr2, s2, 256);
+			copycubestr(lastcreated->str_attr3, s3, 256);
+			copycubestr(lastcreated->str_attr4, s4, 256);
+			copycubestr(lastcreated->str_attr5, s5, 256);
+			copycubestr(lastcreated->str_attr6, s6, 256);
+			copycubestr(lastcreated->str_attr7, s7, 256);
+			copycubestr(lastcreated->str_attr8, s8, 256);
 		} else {
 			conoutf("%s", "Yeah we're out of luck bro");
 		}*/

@@ -128,15 +128,15 @@ const char *findmaterialname(int mat)
 const char *getmaterialdesc(int mat, const char *prefix)
 {
     static const ushort matmasks[] = { MATF_VOLUME|MATF_INDEX, MATF_CLIP, MAT_DEATH, MAT_NOGI, MAT_ALPHA };
-    static string desc;
+    static cubestr desc;
     desc[0] = '\0';
     loopi(sizeof(matmasks)/sizeof(matmasks[0])) if(mat&matmasks[i])
     {
         const char *matname = findmaterialname(mat&matmasks[i]);
         if(matname)
         {
-            concatstring(desc, desc[0] ? ", " : prefix);
-            concatstring(desc, matname);
+            concatcubestr(desc, desc[0] ? ", " : prefix);
+            concatcubestr(desc, matname);
         }
     }
     return desc;

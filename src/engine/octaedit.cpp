@@ -255,7 +255,7 @@ cube &blockcube(int x, int y, int z, const block3 &b, int rgrid) // looks up a w
 int selchildcount = 0, selchildmat = -1;
 
 ICOMMAND(havesel, "", (), intret(havesel ? selchildcount : 0));
-ICOMMAND(selchildcount, "", (), { if(selchildcount < 0) result(tempformatstring("1/%d", -selchildcount)); else intret(selchildcount); });
+ICOMMAND(selchildcount, "", (), { if(selchildcount < 0) result(tempformatcubestr("1/%d", -selchildcount)); else intret(selchildcount); });
 ICOMMAND(selchildmat, "s", (char *prefix), { if(selchildmat > 0) result(getmaterialdesc(selchildmat, prefix)); });
 
 void countselchild(cube *c, const ivec &cor, int size)
@@ -627,7 +627,7 @@ block3 *blockcopy(const block3 &s, int rgrid)
 {
     int bsize = sizeof(block3)+sizeof(cube)*s.size();
     if(bsize <= 0 || bsize > (100<<20)) return NULL;
-    block3 *b = (block3 *)new (false) uchar[bsize];
+    block3 *b = (block3 *)new uchar[bsize];
     if(b) blockcopy(s, rgrid, b);
     return b;
 }
@@ -745,7 +745,7 @@ undoblock *newundocube(const selinfo &s)
         selgridsize = ssize,
         blocksize = sizeof(block3)+ssize*sizeof(cube);
     if(blocksize <= 0 || blocksize > (undomegs<<20)) return NULL;
-    undoblock *u = (undoblock *)new (false) uchar[sizeof(undoblock) + blocksize + selgridsize];
+    undoblock *u = (undoblock *)new uchar[sizeof(undoblock) + blocksize + selgridsize];
     if(!u) return NULL;
     u->numents = 0;
     block3 *b = u->block();
@@ -950,7 +950,7 @@ static bool unpackblock(block3 *&b, B &buf)
     lilswap(&hdr.grid, 1);
     lilswap(&hdr.orient, 1);
     if(hdr.size() > (1<<20) || hdr.grid <= 0 || hdr.grid > (1<<12)) return false;
-    b = (block3 *)new (false) uchar[sizeof(block3)+hdr.size()*sizeof(cube)];
+    b = (block3 *)new uchar[sizeof(block3)+hdr.size()*sizeof(cube)];
     if(!b) return false;
     *b = hdr;
     cube *c = b->c();
@@ -1007,7 +1007,7 @@ static bool compresseditinfo(const uchar *inbuf, int inlen, uchar *&outbuf, int 
 {
     uLongf len = compressBound(inlen);
     if(len > (1<<20)) return false;
-    outbuf = new (false) uchar[len];
+    outbuf = new uchar[len];
     if(!outbuf || compress2((Bytef *)outbuf, &len, (const Bytef *)inbuf, inlen, Z_BEST_COMPRESSION) != Z_OK || len > (1<<16))
     {
         delete[] outbuf;
@@ -1022,7 +1022,7 @@ static bool uncompresseditinfo(const uchar *inbuf, int inlen, uchar *&outbuf, in
 {
     if(compressBound(outlen) > (1<<20)) return false;
     uLongf len = outlen;
-    outbuf = new (false) uchar[len];
+    outbuf = new uchar[len];
     if(!outbuf || uncompress((Bytef *)outbuf, &len, (const Bytef *)inbuf, inlen) != Z_OK)
     {
         delete[] outbuf;
@@ -1202,12 +1202,12 @@ void saveprefab(char *name)
     if(!b)
     {
         b = &prefabs[name];
-        b->name = newstring(name);
+        b->name = newcubestr(name);
     }
     if(b->copy) freeblock(b->copy);
     protectsel(b->copy = blockcopy(block3(sel), sel.grid));
     changed(sel);
-    defformatstring(filename, "media/prefab/%s.obr", name);
+    defformatcubestr(filename, "media/prefab/%s.obr", name);
     path(filename);
     stream *f = opengzfile(filename, "wb");
     if(!f) { conoutf(CON_ERROR, "could not write prefab to %s", filename); return; }
@@ -1238,7 +1238,7 @@ prefab *loadprefab(const char *name, bool msg = true)
    prefab *b = prefabs.access(name);
    if(b) return b;
 
-   defformatstring(filename, "media/prefab/%s.obr", name);
+   defformatcubestr(filename, "media/prefab/%s.obr", name);
    path(filename);
    stream *f = opengzfile(filename, "rb");
    if(!f) { if(msg) conoutf(CON_ERROR, "could not read prefab %s", filename); return NULL; }
@@ -1252,7 +1252,7 @@ prefab *loadprefab(const char *name, bool msg = true)
    delete f;
 
    b = &prefabs[name];
-   b->name = newstring(name);
+   b->name = newcubestr(name);
    b->copy = copy;
 
    return b;

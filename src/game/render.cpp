@@ -335,7 +335,7 @@ namespace game
             gameent *d = players[i];
             if(d == player1 || d->state==CS_SPECTATOR || d->state==CS_SPAWNING || d->lifesequence < 0 || d == exclude || (d->state==CS_DEAD && hidedead)) continue;
             renderplayer(d);
-            copystring(d->info, colorname(d));
+            copycubestr(d->info, colorname(d));
             if(d->state!=CS_DEAD)
             {
                 int team = m_teammode && validteam(d->team) ? d->team : 0;
@@ -418,7 +418,7 @@ namespace game
         const playermodelinfo &mdl = getplayermodelinfo(d);
         int team = m_teammode && validteam(d->team) ? d->team : 0,
             color = getplayercolor(d, team);
-        defformatstring(gunname, "%s/%s", mdl.hudguns[team], file);
+        defformatcubestr(gunname, "%s/%s", mdl.hudguns[team], file);
         modelattach a[2];
         d->muzzle = vec(-1, -1, -1);
         a[0] = modelattach("tag_muzzle", &d->muzzle);
@@ -499,21 +499,21 @@ namespace game
         {
             const char *file = guns[i].file;
             if(!file) continue;
-            string fname;
+            cubestr fname;
             if(m_teammode)
             {
                 loopj(MAXTEAMS)
                 {
-                    formatstring(fname, "%s/%s", mdl.hudguns[1+j], file);
+                    formatcubestr(fname, "%s/%s", mdl.hudguns[1+j], file);
                     preloadmodel(fname);
                 }
             }
             else
             {
-                formatstring(fname, "%s/%s", mdl.hudguns[0], file);
+                formatcubestr(fname, "%s/%s", mdl.hudguns[0], file);
                 preloadmodel(fname);
             }
-            formatstring(fname, "worldgun/%s", file);
+            formatcubestr(fname, "worldgun/%s", file);
             preloadmodel(fname);
         }
     }

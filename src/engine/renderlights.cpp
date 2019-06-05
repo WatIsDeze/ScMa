@@ -99,7 +99,7 @@ Shader *loadbilateralshader(int pass)
 {
     if(!aobilateral) return nullshader;
 
-    string opts;
+    cubestr opts;
     int optslen = 0;
 
     bool linear = aoreducedepth && (aoreduce || aoreducedepth > 1),
@@ -115,7 +115,7 @@ Shader *loadbilateralshader(int pass)
     if(aopackdepth) opts[optslen++] = 'p';
     opts[optslen] = '\0';
 
-    defformatstring(name, "bilateral%c%s%d", 'x' + pass, opts, aobilateral);
+    defformatcubestr(name, "bilateral%c%s%d", 'x' + pass, opts, aobilateral);
     return generateshader(name, "bilateralshader \"%s\" %d %d", opts, aobilateral, reduce ? aoreduce : 0);
 }
 
@@ -145,7 +145,7 @@ static Shader *ambientobscuranceshader = NULL;
 
 Shader *loadambientobscuranceshader()
 {
-    string opts;
+    cubestr opts;
     int optslen = 0;
 
     bool linear = aoreducedepth && (aoreduce || aoreducedepth > 1);
@@ -154,7 +154,7 @@ Shader *loadambientobscuranceshader()
     if(aobilateral && aopackdepth) opts[optslen++] = 'p';
     opts[optslen] = '\0';
 
-    defformatstring(name, "ambientobscurance%s%d", opts, aotaps);
+    defformatcubestr(name, "ambientobscurance%s%d", opts, aotaps);
     return generateshader(name, "ambientobscuranceshader \"%s\" %d", opts, aotaps);
 }
 
@@ -1367,7 +1367,7 @@ Shader *rsmworldshader = NULL;
 
 Shader *loadradiancehintsshader()
 {
-    defformatstring(name, "radiancehints%d", rhtaps);
+    defformatcubestr(name, "radiancehints%d", rhtaps);
     return generateshader(name, "radiancehintsshader %d", rhtaps);
 }
 
@@ -2411,7 +2411,7 @@ extern int volsteps, volbilateral, volblur, volreduce;
 
 Shader *loadvolumetricshader()
 {
-    string common, shadow;
+    cubestr common, shadow;
     int commonlen = 0, shadowlen = 0;
 
     if(usegatherforsm()) common[commonlen++] = smfilter > 2 ? 'G' : 'g';
@@ -2422,7 +2422,7 @@ Shader *loadvolumetricshader()
     shadow[shadowlen++] = 'p';
     shadow[shadowlen] = '\0';
 
-    defformatstring(name, "volumetric%s%s%d", common, shadow, volsteps);
+    defformatcubestr(name, "volumetric%s%s%d", common, shadow, volsteps);
     return generateshader(name, "volumetricshader \"%s\" \"%s\" %d", common, shadow, volsteps);
 }
 
@@ -2432,7 +2432,7 @@ void loadvolumetricshaders()
 
     if(volbilateral) loopi(2)
     {
-        defformatstring(name, "volumetricbilateral%c%d%d", 'x' + i, volbilateral, volreduce);
+        defformatcubestr(name, "volumetricbilateral%c%d%d", 'x' + i, volbilateral, volreduce);
         volumetricbilateralshader[i] = generateshader(name, "volumetricbilateralshader %d %d", volbilateral, volreduce);
     }
 }
@@ -2500,7 +2500,7 @@ extern int nospeclights;
 
 Shader *loaddeferredlightshader(const char *type = NULL)
 {
-    string common, shadow, sun;
+    cubestr common, shadow, sun;
     int commonlen = 0, shadowlen = 0, sunlen = 0;
 
     bool minimap = false, multisample = false, avatar = true;
@@ -2509,7 +2509,7 @@ Shader *loaddeferredlightshader(const char *type = NULL)
         if(strchr(type, 'm')) minimap = true;
         if(strchr(type, 'M')) multisample = true;
         if(strchr(type, 'D')) avatar = false;
-        copystring(common, type);
+        copycubestr(common, type);
         commonlen = strlen(common);
     }
     if(!minimap)
@@ -2555,7 +2555,7 @@ Shader *loaddeferredlightshader(const char *type = NULL)
     }
     sun[sunlen] = '\0';
 
-    defformatstring(name, "deferredlight%s%s%s", common, shadow, sun);
+    defformatcubestr(name, "deferredlight%s%s%s", common, shadow, sun);
     return generateshader(name, "deferredlightshader \"%s\" \"%s\" \"%s\" %d %d %d", common, shadow, sun, usecsm, userh, !minimap ? lighttilebatch : 0);
 }
 
@@ -2563,10 +2563,10 @@ void loaddeferredlightshaders()
 {
     if(msaasamples)
     {
-        string opts;
-        if(msaalight > 2) copystring(opts, "MS");
-        else if(msaalight==2) copystring(opts, ghasstencil || !msaaedgedetect ? "MO" : "MOT");
-        else formatstring(opts, ghasstencil || !msaaedgedetect ? "MR%d" : "MRT%d", msaasamples);
+        cubestr opts;
+        if(msaalight > 2) copycubestr(opts, "MS");
+        else if(msaalight==2) copycubestr(opts, ghasstencil || !msaaedgedetect ? "MO" : "MOT");
+        else formatcubestr(opts, ghasstencil || !msaaedgedetect ? "MR%d" : "MRT%d", msaasamples);
         deferredmsaasampleshader = loaddeferredlightshader(opts);
         deferredmsaapixelshader = loaddeferredlightshader("M");
         deferredlightshader = msaalight ? deferredmsaapixelshader : loaddeferredlightshader("D");
