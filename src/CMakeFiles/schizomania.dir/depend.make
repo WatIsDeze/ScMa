@@ -637,6 +637,8 @@ CMakeFiles/schizomania.dir/engine/world.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/world.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/world.cpp.o: engine/world.cpp
 CMakeFiles/schizomania.dir/engine/world.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/world.cpp.o: game/ai.h
+CMakeFiles/schizomania.dir/engine/world.cpp.o: game/game.h
 CMakeFiles/schizomania.dir/engine/world.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/world.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/world.cpp.o: shared/ents.h

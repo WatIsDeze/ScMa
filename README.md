@@ -9,6 +9,8 @@ Feel free to join in on this project, which is best done for now by just hacking
 - Command: ent_get_attr, this will output the string arguments as is.
 
 # TODO ENGINE Alpha 0.0.1:
+- Fix adding entity so newgent can become newent in world.cpp, currently this function has been added to add string support.
+
 - Add support for footstep audio based on material/texture type.
 - Add support for flickering light entities.
 - Add doors. (This is done by movable to my understanding, the code is partially there, it seems that the missing link is the mapmodel command not accepting integers anymore.)

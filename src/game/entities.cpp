@@ -8,26 +8,26 @@ namespace entities
 
     void writeent(entity &e, char *buf)   // write any additional data to disk (except for ET_ ents)
     {
-    	memcpy(buf, ((gameentity &)e).str_attr1, 256);
-       	memcpy(buf + (256 * 1), ((gameentity &)e).str_attr2, 256);
-		memcpy(buf + (256 * 2), ((gameentity &)e).str_attr3, 256);
-		memcpy(buf + (256 * 3), ((gameentity &)e).str_attr4, 256);
-		memcpy(buf + (256 * 4), ((gameentity &)e).str_attr5, 256);
-		memcpy(buf + (256 * 5), ((gameentity &)e).str_attr6, 256);
-		memcpy(buf + (256 * 6), ((gameentity &)e).str_attr7, 256);
-		memcpy(buf + (256 * 7), ((gameentity &)e).str_attr8, 256);
+        memcpy(buf, ((gameentity &)e).str_attr1, 256);
+        memcpy(buf + (256 * 1), ((gameentity &)e).str_attr2, 256);
+        memcpy(buf + (256 * 2), ((gameentity &)e).str_attr3, 256);
+        memcpy(buf + (256 * 3), ((gameentity &)e).str_attr4, 256);
+        memcpy(buf + (256 * 4), ((gameentity &)e).str_attr5, 256);
+        memcpy(buf + (256 * 5), ((gameentity &)e).str_attr6, 256);
+        memcpy(buf + (256 * 6), ((gameentity &)e).str_attr7, 256);
+        memcpy(buf + (256 * 7), ((gameentity &)e).str_attr8, 256);
     }
 
     void readent(entity &e, char *buf, int ver)     // read from disk, and init
     {
-    	memcpy(((gameentity &)e).str_attr1, buf, 256); 
-       	memcpy(((gameentity &)e).str_attr2, buf + (256 * 1), 256); 
-    	memcpy(((gameentity &)e).str_attr3, buf + (256 * 2), 256); 
-       	memcpy(((gameentity &)e).str_attr4, buf + (256 * 3), 256); 
-    	memcpy(((gameentity &)e).str_attr5, buf + (256 * 4), 256); 
-    	memcpy(((gameentity &)e).str_attr6, buf + (256 * 5), 256); 
-    	memcpy(((gameentity &)e).str_attr7, buf + (256 * 6), 256); 
-    	memcpy(((gameentity &)e).str_attr8, buf + (256 * 7), 256); 
+        memcpy(((gameentity &)e).str_attr1, buf, 256);
+        memcpy(((gameentity &)e).str_attr2, buf + (256 * 1), 256);
+        memcpy(((gameentity &)e).str_attr3, buf + (256 * 2), 256);
+        memcpy(((gameentity &)e).str_attr4, buf + (256 * 3), 256);
+        memcpy(((gameentity &)e).str_attr5, buf + (256 * 4), 256);
+        memcpy(((gameentity &)e).str_attr6, buf + (256 * 5), 256);
+        memcpy(((gameentity &)e).str_attr7, buf + (256 * 6), 256);
+        memcpy(((gameentity &)e).str_attr8, buf + (256 * 7), 256);
     }
 
 #ifndef STANDALONE
@@ -64,7 +64,7 @@ namespace entities
         {
             NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
             "game/teleport", NULL, NULL,
-            NULL
+            NULL, NULL
         };
         return entmdlnames[type];
     }
@@ -332,12 +332,12 @@ namespace entities
 
     void setspawn(int i, bool on) { if(ents.inrange(i)) ents[i]->setspawned(on); }
 
-    extentity *newentity() { return new gameentity(); }
-    void deleteentity(extentity *e) { delete (gameentity *)e; }
+    extentity *newgameentity() { return new gameentity(); }
+    void deletegameentity(extentity *e) { delete (gameentity *)e; }
 
     void clearents()
     {
-        while(ents.length()) deleteentity(ents.pop());
+        while(ents.length()) deletegameentity(ents.pop());
     }
 
     void animatemapmodel(const extentity &e, int &anim, int &basetime)
@@ -358,48 +358,36 @@ namespace entities
                 break;
         }
     }
-    
+
     // WatIs: Testing the set and get properties of entities.
 	int edit_entity = -1;
-	
-	ICOMMAND(ent_set_attr, "ssssssss", (char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7, char *s8), 
+
+	ICOMMAND(ent_set_attr, "ssssssss", (char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7, char *s8),
 	{
 		if (edit_entity > -1 && edit_entity < ents.length()) {
 			gameentity *ent = (gameentity*)ents[edit_entity];
 
-			copycubestr(ent->str_attr1, s1, 256);			
-			copycubestr(ent->str_attr2, s2, 256);	
+			copycubestr(ent->str_attr1, s1, 256);
+			copycubestr(ent->str_attr2, s2, 256);
 			copycubestr(ent->str_attr3, s3, 256);
 			copycubestr(ent->str_attr4, s4, 256);
 			copycubestr(ent->str_attr5, s5, 256);
 			copycubestr(ent->str_attr6, s6, 256);
 			copycubestr(ent->str_attr7, s7, 256);
-			copycubestr(ent->str_attr8, s8, 256);	
+			copycubestr(ent->str_attr8, s8, 256);
 		} else {
 			conoutf("%s", "No valid in range entity selected.");
 		}
-/*		if(lastcreated) { 
-			copycubestr(lastcreated->str_attr1, s1, 256);
-			copycubestr(lastcreated->str_attr2, s2, 256);
-			copycubestr(lastcreated->str_attr3, s3, 256);
-			copycubestr(lastcreated->str_attr4, s4, 256);
-			copycubestr(lastcreated->str_attr5, s5, 256);
-			copycubestr(lastcreated->str_attr6, s6, 256);
-			copycubestr(lastcreated->str_attr7, s7, 256);
-			copycubestr(lastcreated->str_attr8, s8, 256);
-		} else {
-			conoutf("%s", "Yeah we're out of luck bro");
-		}*/
 	});
-	
+
 	ICOMMAND(ent_get_attr, "", (), {
 		if (edit_entity > -1 && edit_entity < ents.length()) {
 			gameentity *ent = (gameentity*)ents[edit_entity];
-			
-			conoutf("%i %s %s %s %s %s %s %s %s", 
-				edit_entity,
-				ent->str_attr1, 
-				ent->str_attr2, 
+
+			conoutf("%i %s %s %s %s %s %s %s %s",
+				ent->type,
+				ent->str_attr1,
+				ent->str_attr2,
 				ent->str_attr3,
 				ent->str_attr4,
 				ent->str_attr5,
@@ -408,21 +396,8 @@ namespace entities
 				ent->str_attr8
 			);
 		} else {
-			
+
 		}
-/*		if (lastcreated) {
-			conoutf("%s %s %s %s %s %s %s %s", 
-				lastcreated->str_attr1, 
-				lastcreated->str_attr2, 
-				lastcreated->str_attr3, 
-				lastcreated->str_attr4, 
-				lastcreated->str_attr5, 
-				lastcreated->str_attr6, 
-				lastcreated->str_attr7, 
-				lastcreated->str_attr8);																												
-		} else {
-			conoutf("%s", "Yeah we're out of luck bro");
-		}*/
 	});
 
     void entradius(extentity &e, bool color)
@@ -457,14 +432,23 @@ namespace entities
         return false;
     }
 
-    const char *entnameinfo(entity &e) { return ""; }
+    const char *entnameinfo(entity &e) {
+    	gameentity *f = (gameentity*)&e;
+    	std::string a;
+    	a = f->str_attr1;
+    	a += ",";
+    	a += f->str_attr2;
+    	a += ",";
+    	a += f->str_attr3;
+     return a.c_str();
+    }
     const char *entname(int i)
     {
         static const char * const entnames[MAXENTTYPES] =
         {
             "none?", "light", "mapmodel", "playerstart", "envmap", "particles", "sound", "spotlight", "decal",
             "teleport", "teledest", "jumppad",
-            "flag"
+            "flag", "gameentity"
         };
         return i>=0 && size_t(i)<sizeof(entnames)/sizeof(entnames[0]) ? entnames[i] : "";
     }
@@ -472,10 +456,10 @@ namespace entities
     void editent(int i, bool local)
     {
         extentity &e = *ents[i];
-        
+
         edit_entity = i;
         conoutf("%i", i);
-        
+
         //e.flags = 0;
         if(local) addmsg(N_EDITENT, "rii3ii5", i, (int)(e.o.x*DMF), (int)(e.o.y*DMF), (int)(e.o.z*DMF), e.type, e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
     }

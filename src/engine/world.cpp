@@ -509,7 +509,7 @@ void pasteundoent(int idx, const entity &ue)
 {
     if(idx < 0 || idx >= MAXENTS) return;
     vector<extentity *> &ents = entities::getents();
-    while(ents.length() < idx) ents.add(entities::newentity())->type = ET_EMPTY;
+    while(ents.length() < idx) ents.add(entities::newgameentity())->type = ET_EMPTY;
     int efocus = -1;
     entedit(idx, (entity &)e = ue);
 }
@@ -1065,8 +1065,8 @@ extentity *newentity(bool local, const vec &o, int type, int v1, int v2, int v3,
         for(int i = keepents; i < ents.length(); i++) if(ents[i]->type == ET_EMPTY) { idx = i; break; }
         if(idx < 0 && ents.length() >= MAXENTS) { conoutf("too many entities"); return NULL; }
     }
-    else while(ents.length() < idx) ents.add(entities::newentity())->type = ET_EMPTY;
-    extentity &e = *entities::newentity();
+    else while(ents.length() < idx) ents.add(entities::newgameentity())->type = ET_EMPTY;
+    extentity &e = *entities::newgameentity();
     e.o = o;
     e.attr1 = v1;
     e.attr2 = v2;
@@ -1100,7 +1100,7 @@ extentity *newentity(bool local, const vec &o, int type, int v1, int v2, int v3,
         }
         entities::fixentity(e);
     }
-    if(ents.inrange(idx)) { entities::deleteentity(ents[idx]); ents[idx] = &e; }
+    if(ents.inrange(idx)) { entities::deletegameentity(ents[idx]); ents[idx] = &e; }
     else { idx = ents.length(); ents.add(&e); }
     return &e;
 }
@@ -1125,6 +1125,43 @@ void newent(char *what, int *a1, int *a2, int *a3, int *a4, int *a5)
     if(type != ET_EMPTY)
         newentity(type, *a1, *a2, *a3, *a4, *a5);
 }
+
+// WatIs: Game entity creation.
+#include "../game/game.h"
+
+// Start of new game entity.
+void new_game_entity(int type, char *a1, char *a2, char *a3, char *a4, char *a5, char *a6, char *a7, char *a8, bool fix = true)
+{
+    int idx;
+    extentity *t = newentity(true, player->o, type, 0, 0, 0, 0, 0, idx, fix);
+    if(!t) return;
+    dropentity(*t);
+    t->type = ET_EMPTY; // Why would we want this here if we set e.type later 
+    
+    // Copy string attributes.
+    copycubestr(((gameentity*)t)->str_attr1, a1, 256);
+    copycubestr(((gameentity*)t)->str_attr2, a2, 256);
+    copycubestr(((gameentity*)t)->str_attr3, a3, 256);
+    copycubestr(((gameentity*)t)->str_attr4, a4, 256);
+    copycubestr(((gameentity*)t)->str_attr5, a5, 256);
+    copycubestr(((gameentity*)t)->str_attr6, a6, 256);
+    copycubestr(((gameentity*)t)->str_attr7, a7, 256);
+    copycubestr(((gameentity*)t)->str_attr8, a8, 256);
+    
+    t->type = type;
+    
+    enttoggle(idx);
+    makeundoent();
+    entedit(idx, e.type = type);
+    commitchanges();
+}
+
+void newgent(char *what, char *a1, char *a2, char *a3, char *a4, char *a5, char *a6, char *a7, char *a8)
+{
+	new_game_entity(GAMEENTITY, a1, a2, a3, a4, a5, a6, a7, a8);
+}
+COMMAND(newgent, "sssssssss");
+// WatIs: End of new game entity.
 
 int entcopygrid;
 vector<entity> entcopybuf;

@@ -638,6 +638,8 @@ CMakeFiles/schizomania.dir/engine/world.cpp.o
  /home/watisdeze/Dev/Projects/ScMa/src/engine/texture.h
  /home/watisdeze/Dev/Projects/ScMa/src/engine/world.cpp
  /home/watisdeze/Dev/Projects/ScMa/src/engine/world.h
+ /home/watisdeze/Dev/Projects/ScMa/src/game/ai.h
+ /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
  shared/command.h
  shared/cube.h
  shared/ents.h

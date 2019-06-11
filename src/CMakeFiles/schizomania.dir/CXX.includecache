@@ -263,6 +263,8 @@ engine.h
 /home/watisdeze/Dev/Projects/ScMa/src/engine/world.cpp
 engine.h
 /home/watisdeze/Dev/Projects/ScMa/src/engine/engine.h
+../game/game.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/game.h
 
 /home/watisdeze/Dev/Projects/ScMa/src/engine/world.h
 

@@ -808,7 +808,7 @@ bool load_world(const char *mname, const char *cname)        // still supports a
     char *ebuf = einfosize > 0 ? new char[einfosize] : NULL;
     loopi(min(hdr.numents, MAXENTS))
     {
-        extentity &e = *entities::newentity();
+        extentity &e = *entities::newgameentity();
         ents.add(&e);
         f->read(&e, sizeof(entity));
         lilswap(&e.o.x, 3);
@@ -824,7 +824,7 @@ bool load_world(const char *mname, const char *cname)        // still supports a
             if(eif > 0) f->seek(eif, SEEK_CUR);
             if(e.type>=ET_GAMESPECIFIC)
             {
-                entities::deleteentity(ents.pop());
+                entities::deletegameentity(ents.pop());
                 continue;
             }
         }

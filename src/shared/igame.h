@@ -14,8 +14,8 @@ namespace entities
     extern bool mayattach(extentity &e);
     extern bool attachent(extentity &e, extentity &a);
     extern bool printent(extentity &e, char *buf, int len);
-    extern extentity *newentity();
-    extern void deleteentity(extentity *e);
+    extern extentity *newgameentity();
+    extern void deletegameentity(extentity *e);
     extern void clearents();
     extern vector<extentity *> &getents();
     extern const char *entmodel(const entity &e);
