@@ -71,7 +71,7 @@ enum                            // static entity types
     TELEDEST,                   // attr1 = angle, attr2 = idx
     JUMPPAD,                    // attr1 = zpush, attr2 = ypush, attr3 = xpush
     FLAG,                       // attr1 = angle, attr2 = team
-    GAMEENTITY,						// str_attr1 = Entity Type, str_attr# is string arguments.
+    GAMEENTITY,					// str_attr1 = Entity Type, str_attr# is string arguments.
     MAXENTTYPES,
 
     I_FIRST = 0,
@@ -98,6 +98,14 @@ struct gameentity : extentity
 		memset(str_attr6, 0, 256); 
 		memset(str_attr7, 0, 256); 
 		memset(str_attr8, 0, 256); 					    	
+    }
+};
+
+struct testentity : gameentity {
+    testentity() : gameentity() {
+        strcpy(str_attr1, "Test Ent Attr1");
+        strcpy(str_attr2, "Test Ent Attr2");
+        strcpy(str_attr3, "Test Ent Attr3");
     }
 };
 

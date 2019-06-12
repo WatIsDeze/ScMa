@@ -1059,13 +1059,19 @@ static int keepents = 0;
 extentity *newentity(bool local, const vec &o, int type, int v1, int v2, int v3, int v4, int v5, int &idx, bool fix = true)
 {
     vector<extentity *> &ents = entities::getents();
+
+    // If local, we ensure it is not out of bounds, if it is, we return NULL and warn our player.
     if(local)
     {
         idx = -1;
         for(int i = keepents; i < ents.length(); i++) if(ents[i]->type == ET_EMPTY) { idx = i; break; }
         if(idx < 0 && ents.length() >= MAXENTS) { conoutf("too many entities"); return NULL; }
+    } else {
+        while(ents.length() < idx) {
+            ents.add(entities::newgameentity())->type = ET_EMPTY;
+        }
     }
-    else while(ents.length() < idx) ents.add(entities::newgameentity())->type = ET_EMPTY;
+
     extentity &e = *entities::newgameentity();
     e.o = o;
     e.attr1 = v1;
@@ -1129,11 +1135,67 @@ void newent(char *what, int *a1, int *a2, int *a3, int *a4, int *a5)
 // WatIs: Game entity creation.
 #include "../game/game.h"
 
+extentity *new_game_entity(bool local, const vec &o, int &idx, bool fix = true, char *strclass = NULL)
+{
+    vector<extentity *> &ents = entities::getents();
+
+    // If local, we ensure it is not out of bounds, if it is, we return NULL and warn our player.
+    if(local)
+    {
+        idx = -1;
+        for(int i = keepents; i < ents.length(); i++) if(ents[i]->type == ET_EMPTY) { idx = i; break; }
+        if(idx < 0 && ents.length() >= MAXENTS) { conoutf("too many entities"); return NULL; }
+    } else {
+        while(ents.length() < idx) {
+            ents.add(entities::newgameentity(strclass))->type = ET_EMPTY;
+        }
+    }
+
+    extentity &e = *entities::newgameentity(strclass);
+    e.o = o;
+    e.attr1 = 0;
+    e.attr2 = 0;
+    e.attr3 = 0;
+    e.attr4 = 0;
+    e.attr5 = 0;
+    e.type = GAMEENTITY;
+    e.reserved = 0;
+    // TODO: Remove this.
+/*    if(local && fix)
+    {
+        switch(type)
+        {
+                case ET_DECAL:
+                    if(!e.attr2 && !e.attr3 && !e.attr4)
+                    {
+                        e.attr2 = (int)camera1->yaw;
+                        e.attr3 = (int)camera1->pitch;
+                        e.attr4 = (int)camera1->roll;
+                    }
+                    break;
+                case ET_MAPMODEL:
+                    if(!e.attr2) e.attr2 = (int)camera1->yaw;
+                    break;
+                case ET_PLAYERSTART:
+                    e.attr5 = e.attr4;
+                    e.attr4 = e.attr3;
+                    e.attr3 = e.attr2;
+                    e.attr2 = e.attr1;
+                    e.attr1 = (int)camera1->yaw;
+                    break;
+        }
+        entities::fixentity(e);
+    }*/
+    if(ents.inrange(idx)) { entities::deletegameentity(ents[idx]); ents[idx] = &e; }
+    else { idx = ents.length(); ents.add(&e); }
+    return &e;
+}
+
 // Start of new game entity.
-void new_game_entity(int type, char *a1, char *a2, char *a3, char *a4, char *a5, char *a6, char *a7, char *a8, bool fix = true)
+void new_game_entity(char *strclass, char *a1, char *a2, char *a3, char *a4, char *a5, char *a6, char *a7, char *a8, bool fix = true)
 {
     int idx;
-    extentity *t = newentity(true, player->o, type, 0, 0, 0, 0, 0, idx, fix);
+    extentity *t = new_game_entity(true, player->o, idx, fix, strclass);
     if(!t) return;
     dropentity(*t);
     t->type = ET_EMPTY; // Why would we want this here if we set e.type later 
@@ -1147,18 +1209,26 @@ void new_game_entity(int type, char *a1, char *a2, char *a3, char *a4, char *a5,
     copycubestr(((gameentity*)t)->str_attr6, a6, 256);
     copycubestr(((gameentity*)t)->str_attr7, a7, 256);
     copycubestr(((gameentity*)t)->str_attr8, a8, 256);
-    
-    t->type = type;
+
+    t->type = GAMEENTITY;
     
     enttoggle(idx);
     makeundoent();
-    entedit(idx, e.type = type);
+    entedit(idx, e.type = GAMEENTITY);
     commitchanges();
 }
 
 void newgent(char *what, char *a1, char *a2, char *a3, char *a4, char *a5, char *a6, char *a7, char *a8)
 {
-	new_game_entity(GAMEENTITY, a1, a2, a3, a4, a5, a6, a7, a8);
+    // TODO: Determine what "what" is, and use this as the entity type?
+    // From there on, we modify newentity(the one in world.cpp, which was name colliding with newgameentity before I renamed it.)
+    // Newentity will then pass the WHAT, over to newgameentity.
+    //
+    // From there on, we heavily need to modify the code. After all, this entity system is rather shitty.
+    // Maybe first fix name confusions, gameent and gameentity... wow...
+    //
+    // TODO: Explain more here.
+    new_game_entity(what, a1, a2, a3, a4, a5, a6, a7, a8);
 }
 COMMAND(newgent, "sssssssss");
 // WatIs: End of new game entity.

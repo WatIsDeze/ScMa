@@ -332,7 +332,9 @@ namespace entities
 
     void setspawn(int i, bool on) { if(ents.inrange(i)) ents[i]->setspawned(on); }
 
-    extentity *newgameentity() { return new gameentity(); }
+    extentity *newgameentity(char *strclass) {
+        return new testentity();
+    }
     void deletegameentity(extentity *e) { delete (gameentity *)e; }
 
     void clearents()
