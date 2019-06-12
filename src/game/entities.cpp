@@ -8,26 +8,28 @@ namespace entities
 
     void writeent(entity &e, char *buf)   // write any additional data to disk (except for ET_ ents)
     {
-        memcpy(buf, ((gameentity &)e).str_attr1, 256);
-        memcpy(buf + (256 * 1), ((gameentity &)e).str_attr2, 256);
-        memcpy(buf + (256 * 2), ((gameentity &)e).str_attr3, 256);
-        memcpy(buf + (256 * 3), ((gameentity &)e).str_attr4, 256);
-        memcpy(buf + (256 * 4), ((gameentity &)e).str_attr5, 256);
-        memcpy(buf + (256 * 5), ((gameentity &)e).str_attr6, 256);
-        memcpy(buf + (256 * 6), ((gameentity &)e).str_attr7, 256);
-        memcpy(buf + (256 * 7), ((gameentity &)e).str_attr8, 256);
+        memcpy(buf, ((gameentity&)e).classname, 256);
+        memcpy(buf + 256, ((gameentity &)e).str_attr1, 256);
+        memcpy(buf + (256 * 2), ((gameentity &)e).str_attr2, 256);
+        memcpy(buf + (256 * 3), ((gameentity &)e).str_attr3, 256);
+        memcpy(buf + (256 * 4), ((gameentity &)e).str_attr4, 256);
+        memcpy(buf + (256 * 5), ((gameentity &)e).str_attr5, 256);
+        memcpy(buf + (256 * 6), ((gameentity &)e).str_attr6, 256);
+        memcpy(buf + (256 * 7), ((gameentity &)e).str_attr7, 256);
+        memcpy(buf + (256 * 8), ((gameentity &)e).str_attr8, 256);
     }
 
     void readent(entity &e, char *buf, int ver)     // read from disk, and init
     {
-        memcpy(((gameentity &)e).str_attr1, buf, 256);
-        memcpy(((gameentity &)e).str_attr2, buf + (256 * 1), 256);
-        memcpy(((gameentity &)e).str_attr3, buf + (256 * 2), 256);
-        memcpy(((gameentity &)e).str_attr4, buf + (256 * 3), 256);
-        memcpy(((gameentity &)e).str_attr5, buf + (256 * 4), 256);
-        memcpy(((gameentity &)e).str_attr6, buf + (256 * 5), 256);
-        memcpy(((gameentity &)e).str_attr7, buf + (256 * 6), 256);
-        memcpy(((gameentity &)e).str_attr8, buf + (256 * 7), 256);
+        memcpy(((gameentity &)e).classname, buf, 256);
+        memcpy(((gameentity &)e).str_attr1, buf + 256, 256);
+        memcpy(((gameentity &)e).str_attr2, buf + (256 * 2), 256);
+        memcpy(((gameentity &)e).str_attr3, buf + (256 * 3), 256);
+        memcpy(((gameentity &)e).str_attr4, buf + (256 * 4), 256);
+        memcpy(((gameentity &)e).str_attr5, buf + (256 * 5), 256);
+        memcpy(((gameentity &)e).str_attr6, buf + (256 * 6), 256);
+        memcpy(((gameentity &)e).str_attr7, buf + (256 * 7), 256);
+        memcpy(((gameentity &)e).str_attr8, buf + (256 * 8), 256);
     }
 
 #ifndef STANDALONE
@@ -332,11 +334,21 @@ namespace entities
 
     void setspawn(int i, bool on) { if(ents.inrange(i)) ents[i]->setspawned(on); }
 
+    // Returns the entity class respectively according to its registered name.
     extentity *newgameentity(char *strclass) {
-        return new testentity();
+        if (strclass != NULL && strcmp(strclass, "test")) {
+            conoutf("%s", "Test entity found");
+            return new testentity();
+        } else {
+            return new gameentity();
+        }
     }
-    void deletegameentity(extentity *e) { delete (gameentity *)e; }
+    // Deletes the entity class in specific.
+    void deletegameentity(extentity *e) {
+        delete (gameentity *)e;
+    }
 
+    // Deletes all game entities in the stack.
     void clearents()
     {
         while(ents.length()) deletegameentity(ents.pop());
@@ -346,6 +358,8 @@ namespace entities
     {
     }
 
+    // Fixes entities, which mainly just mangles the attributes. I see little reason to keep this around...
+    // TODO: Do we need this? Remove it?
     void fixentity(extentity &e)
     {
         switch(e.type)

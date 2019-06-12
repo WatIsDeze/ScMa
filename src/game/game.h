@@ -80,6 +80,8 @@ enum                            // static entity types
 
 struct gameentity : extentity
 {
+    char classname[256];
+
     char str_attr1[256];
     char str_attr2[256];
     char str_attr3[256];
@@ -90,6 +92,7 @@ struct gameentity : extentity
     char str_attr8[256];
 
     gameentity() { 
+        memset(classname, 0, 256);
     	memset(str_attr1, 0, 256); 
 		memset(str_attr2, 0, 256); 
 		memset(str_attr3, 0, 256); 
