@@ -34,6 +34,7 @@ endif()
 if(SCHIZOMANIA_BUILD_CLIENT)
   # Client executable.
   set(CLIENT_SOURCES
+      # Engine code.
       shared/crypto.cpp
       shared/geom.cpp
       shared/glemu.cpp
@@ -76,6 +77,8 @@ if(SCHIZOMANIA_BUILD_CLIENT)
       engine/water.cpp
       engine/world.cpp
       engine/worldio.cpp
+      
+      # Game code.
       game/ai.cpp
       game/client.cpp
       game/entities.cpp
@@ -87,6 +90,10 @@ if(SCHIZOMANIA_BUILD_CLIENT)
       game/server.cpp
       game/waypoint.cpp
       game/weapon.cpp
+      
+      # Entities.
+      game/entities/baseentity.cpp
+      game/entities/playerstart.cpp
     )
   set(CLIENT_INCLUDES
       ${CMAKE_CURRENT_SOURCE_DIR}

@@ -293,6 +293,28 @@ ctf.h
 /home/watisdeze/Dev/Projects/ScMa/src/game/entities.cpp
 game.h
 /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
+entities/baseentity.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/entities/baseentity.h
+entities/playerstart.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.h
+
+/home/watisdeze/Dev/Projects/ScMa/src/game/entities/baseentity.cpp
+../game.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/game.h
+baseentity.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/entities/baseentity.h
+
+/home/watisdeze/Dev/Projects/ScMa/src/game/entities/baseentity.h
+
+/home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.cpp
+../game.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/game.h
+baseentity.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/entities/baseentity.h
+playerstart.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.h
+
+/home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.h
 
 /home/watisdeze/Dev/Projects/ScMa/src/game/extinfo.h
 

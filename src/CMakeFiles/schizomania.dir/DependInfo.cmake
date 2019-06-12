@@ -43,6 +43,8 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/watisdeze/Dev/Projects/ScMa/src/game/ai.cpp" "/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles/schizomania.dir/game/ai.cpp.o"
   "/home/watisdeze/Dev/Projects/ScMa/src/game/client.cpp" "/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles/schizomania.dir/game/client.cpp.o"
   "/home/watisdeze/Dev/Projects/ScMa/src/game/entities.cpp" "/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles/schizomania.dir/game/entities.cpp.o"
+  "/home/watisdeze/Dev/Projects/ScMa/src/game/entities/baseentity.cpp" "/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o"
+  "/home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.cpp" "/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o"
   "/home/watisdeze/Dev/Projects/ScMa/src/game/game.cpp" "/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles/schizomania.dir/game/game.cpp.o"
   "/home/watisdeze/Dev/Projects/ScMa/src/game/render.cpp" "/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles/schizomania.dir/game/render.cpp.o"
   "/home/watisdeze/Dev/Projects/ScMa/src/game/scoreboard.cpp" "/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles/schizomania.dir/game/scoreboard.cpp.o"

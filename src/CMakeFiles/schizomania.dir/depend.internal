@@ -697,6 +697,37 @@ CMakeFiles/schizomania.dir/game/client.cpp.o
 CMakeFiles/schizomania.dir/game/entities.cpp.o
  /home/watisdeze/Dev/Projects/ScMa/src/game/ai.h
  /home/watisdeze/Dev/Projects/ScMa/src/game/entities.cpp
+ /home/watisdeze/Dev/Projects/ScMa/src/game/entities/baseentity.h
+ /home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.h
+ /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
+ shared/command.h
+ shared/cube.h
+ shared/ents.h
+ shared/geom.h
+ shared/glemu.h
+ shared/glexts.h
+ shared/iengine.h
+ shared/igame.h
+ shared/tools.h
+CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o
+ /home/watisdeze/Dev/Projects/ScMa/src/game/ai.h
+ /home/watisdeze/Dev/Projects/ScMa/src/game/entities/baseentity.cpp
+ /home/watisdeze/Dev/Projects/ScMa/src/game/entities/baseentity.h
+ /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
+ shared/command.h
+ shared/cube.h
+ shared/ents.h
+ shared/geom.h
+ shared/glemu.h
+ shared/glexts.h
+ shared/iengine.h
+ shared/igame.h
+ shared/tools.h
+CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o
+ /home/watisdeze/Dev/Projects/ScMa/src/game/ai.h
+ /home/watisdeze/Dev/Projects/ScMa/src/game/entities/baseentity.h
+ /home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.cpp
+ /home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.h
  /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
  shared/command.h
  shared/cube.h

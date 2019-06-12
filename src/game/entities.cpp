@@ -1,4 +1,6 @@
 #include "game.h"
+#include "entities/baseentity.h"
+#include "entities/playerstart.h"
 
 namespace entities
 {
@@ -336,9 +338,9 @@ namespace entities
 
     // Returns the entity class respectively according to its registered name.
     extentity *newgameentity(char *strclass) {
-        if (strclass != NULL && strcmp(strclass, "test")) {
-            conoutf("%s", "Test entity found");
-            return new testentity();
+        if (strclass != NULL && strcmp(strclass, "playerstart")) {
+            conoutf("%s", "Found Playerstart");
+            return new entities::classes::PlayerStart();
         } else {
             return new gameentity();
         }
@@ -449,14 +451,14 @@ namespace entities
     }
 
     const char *entnameinfo(entity &e) {
-    	gameentity *f = (gameentity*)&e;
-    	std::string a;
-    	a = f->str_attr1;
-    	a += ",";
-    	a += f->str_attr2;
-    	a += ",";
-    	a += f->str_attr3;
-     return a.c_str();
+        gameentity *ptr_e = (gameentity*)&e;
+        std::string str;
+        str = ptr_e->classname;
+        str += ",";
+        str += ptr_e->str_attr1;
+        str += ",";
+        str += ptr_e->str_attr2;
+        return str.c_str();
     }
     const char *entname(int i)
     {

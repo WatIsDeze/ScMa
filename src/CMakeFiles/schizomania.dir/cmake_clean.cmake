@@ -50,6 +50,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/schizomania.dir/game/server.cpp.o"
   "CMakeFiles/schizomania.dir/game/waypoint.cpp.o"
   "CMakeFiles/schizomania.dir/game/weapon.cpp.o"
+  "CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o"
+  "CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o"
   "schizomania.pdb"
   "schizomania"
 )

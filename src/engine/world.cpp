@@ -1201,6 +1201,7 @@ void new_game_entity(char *strclass, char *a1, char *a2, char *a3, char *a4, cha
     t->type = ET_EMPTY; // Why would we want this here if we set e.type later 
     
     // Copy string attributes.
+    copycubestr(((gameentity*)t)->classname, strclass, 256);
     copycubestr(((gameentity*)t)->str_attr1, a1, 256);
     copycubestr(((gameentity*)t)->str_attr2, a2, 256);
     copycubestr(((gameentity*)t)->str_attr3, a3, 256);
@@ -1396,6 +1397,7 @@ void entattr(int *attr, int *val, int *numargs)
 COMMAND(enttype, "sN");
 COMMAND(entattr, "iiN");
 
+// TODO: Is this still needed?
 int findentity(int type, int index, int attr1, int attr2)
 {
     const vector<extentity *> &ents = entities::getents();
@@ -1417,6 +1419,75 @@ int findentity(int type, int index, int attr1, int attr2)
 
 int spawncycle = -1;
 
+//void findplayerspawn(dynent *d, int forceent, int tag) // place at random spawn
+//{
+//    int pick = forceent;
+//    if(pick<0)
+//    {
+//        int r = rnd(10)+1;
+//        pick = spawncycle;
+//        loopi(r)
+//        {
+//            pick = findentity(ET_PLAYERSTART, pick+1, -1, tag);
+//            if(pick < 0) break;
+//        }
+//        if(pick < 0 && tag)
+//        {
+//            pick = spawncycle;
+//            loopi(r)
+//            {
+//                pick = findentity(ET_PLAYERSTART, pick+1, -1, 0);
+//                if(pick < 0) break;
+//            }
+//        }
+//        if(pick >= 0) spawncycle = pick;
+//    }
+//    if(pick>=0)
+//    {
+//        const vector<extentity *> &ents = entities::getents();
+//        d->pitch = 0;
+//        d->roll = 0;
+//        for(int attempt = pick;;)
+//        {
+//            d->o = ents[attempt]->o;
+//            d->yaw = ents[attempt]->attr1;
+//            if(entinmap(d, true)) break;
+//            attempt = findentity(ET_PLAYERSTART, attempt+1, -1, tag);
+//            if(attempt<0 || attempt==pick)
+//            {
+//                d->o = ents[pick]->o;
+//                d->yaw = ents[pick]->attr1;
+//                entinmap(d);
+//                break;
+//            }
+//        }
+//    }
+//    else
+//    {
+//        d->o.x = d->o.y = d->o.z = 0.5f*worldsize;
+//        d->o.z += 1;
+//        entinmap(d);
+//    }
+//}
+int findentity_byclass(char *strclass, int index, int attr1, int attr2)
+{
+    const vector<extentity *> &ents = entities::getents();
+    if(index > ents.length()) index = ents.length();
+    else for(int i = index; i<ents.length(); i++)
+    {
+        extentity *e = ents[i];
+        if(strcmp(strclass, ((gameentity*)e)->classname))
+            return i;
+    }
+    loopj(index)
+    {
+        extentity *e = ents[j];
+        if(strcmp(strclass, ((gameentity*)e)->classname))
+            return j;
+    }
+    return -1;
+}
+
 void findplayerspawn(dynent *d, int forceent, int tag) // place at random spawn
 {
     int pick = forceent;
@@ -1426,7 +1497,7 @@ void findplayerspawn(dynent *d, int forceent, int tag) // place at random spawn
         pick = spawncycle;
         loopi(r)
         {
-            pick = findentity(ET_PLAYERSTART, pick+1, -1, tag);
+            pick = findentity_byclass("playerstart", pick+1, -1, tag);
             if(pick < 0) break;
         }
         if(pick < 0 && tag)
@@ -1434,7 +1505,7 @@ void findplayerspawn(dynent *d, int forceent, int tag) // place at random spawn
             pick = spawncycle;
             loopi(r)
             {
-                pick = findentity(ET_PLAYERSTART, pick+1, -1, 0);
+                pick = findentity_byclass("playerstart", pick+1, -1, 0);
                 if(pick < 0) break;
             }
         }
@@ -1450,7 +1521,7 @@ void findplayerspawn(dynent *d, int forceent, int tag) // place at random spawn
             d->o = ents[attempt]->o;
             d->yaw = ents[attempt]->attr1;
             if(entinmap(d, true)) break;
-            attempt = findentity(ET_PLAYERSTART, attempt+1, -1, tag);
+            attempt = findentity_byclass("playerstart", attempt+1, -1, tag);
             if(attempt<0 || attempt==pick)
             {
                 d->o = ents[pick]->o;

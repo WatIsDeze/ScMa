@@ -696,6 +696,8 @@ CMakeFiles/schizomania.dir/game/client.cpp.o: shared/tools.h
 
 CMakeFiles/schizomania.dir/game/entities.cpp.o: game/ai.h
 CMakeFiles/schizomania.dir/game/entities.cpp.o: game/entities.cpp
+CMakeFiles/schizomania.dir/game/entities.cpp.o: game/entities/baseentity.h
+CMakeFiles/schizomania.dir/game/entities.cpp.o: game/entities/playerstart.h
 CMakeFiles/schizomania.dir/game/entities.cpp.o: game/game.h
 CMakeFiles/schizomania.dir/game/entities.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/game/entities.cpp.o: shared/cube.h
@@ -706,6 +708,35 @@ CMakeFiles/schizomania.dir/game/entities.cpp.o: shared/glexts.h
 CMakeFiles/schizomania.dir/game/entities.cpp.o: shared/iengine.h
 CMakeFiles/schizomania.dir/game/entities.cpp.o: shared/igame.h
 CMakeFiles/schizomania.dir/game/entities.cpp.o: shared/tools.h
+
+CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: game/ai.h
+CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: game/entities/baseentity.cpp
+CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: game/entities/baseentity.h
+CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: game/game.h
+CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: shared/command.h
+CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: shared/cube.h
+CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: shared/ents.h
+CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: shared/geom.h
+CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: shared/glemu.h
+CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: shared/glexts.h
+CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: shared/iengine.h
+CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: shared/igame.h
+CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: shared/tools.h
+
+CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: game/ai.h
+CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: game/entities/baseentity.h
+CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: game/entities/playerstart.cpp
+CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: game/entities/playerstart.h
+CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: game/game.h
+CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: shared/command.h
+CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: shared/cube.h
+CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: shared/ents.h
+CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: shared/geom.h
+CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: shared/glemu.h
+CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: shared/glexts.h
+CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: shared/iengine.h
+CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: shared/igame.h
+CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: shared/tools.h
 
 CMakeFiles/schizomania.dir/game/game.cpp.o: game/ai.h
 CMakeFiles/schizomania.dir/game/game.cpp.o: game/game.cpp
