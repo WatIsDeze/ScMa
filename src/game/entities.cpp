@@ -91,7 +91,7 @@ namespace entities
             // This is only specific to ET_GAMESPECIFIC entities for now.
             if (ents[i]->type == GAMEENTITY) {
                 //entities::classes::BaseEntity *e = (entities::classes::BaseEntity*)ents[i];
-                conoutf("Found a game specific %i %s", e->type, e->classname);
+                //conoutf("Found a game specific %i %s", e->type, e->classname);
                 //e->preload();
             }
         }

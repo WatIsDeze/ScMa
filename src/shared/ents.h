@@ -5,8 +5,12 @@
 
 enum { ET_EMPTY=0, ET_LIGHT, ET_MAPMODEL, ET_PLAYERSTART, ET_ENVMAP, ET_PARTICLES, ET_SOUND, ET_SPOTLIGHT, ET_DECAL, ET_GAMESPECIFIC };
 
-struct entity                                   // persistent map entity
+class entity                                   // persistent map entity
 {
+public:
+    entity() {}
+    virtual ~entity() {}
+
     vec o;                                      // position
     short attr1, attr2, attr3, attr4, attr5;
     uchar type;                                 // type is one of the above
@@ -27,12 +31,14 @@ enum
 
 };
 
-struct extentity : entity                       // part of the entity that doesn't get saved to disk
+class extentity : public entity                       // part of the entity that doesn't get saved to disk
 {
+public:
     int flags;
     extentity *attached;
 
-    extentity() : flags(0), attached(NULL) {}
+    extentity() : entity(), flags(0), attached(NULL) {}
+    virtual ~extentity() {}
 
     bool spawned() const { return (flags&EF_SPAWNED) != 0; }
     void setspawned(bool val) { if(val) flags |= EF_SPAWNED; else flags &= ~EF_SPAWNED; }

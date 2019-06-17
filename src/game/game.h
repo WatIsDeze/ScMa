@@ -78,8 +78,9 @@ enum                            // static entity types
     I_LAST = -1
 };
 
-struct gameentity : extentity
+class gameentity : public extentity
 {
+public:
     char classname[256];
 
     char str_attr1[256];
@@ -91,7 +92,7 @@ struct gameentity : extentity
     char str_attr7[256];
     char str_attr8[256];
 
-    gameentity() { 
+    gameentity() : extentity() {
         memset(classname, 0, 256);
     	memset(str_attr1, 0, 256); 
 		memset(str_attr2, 0, 256); 
@@ -102,6 +103,7 @@ struct gameentity : extentity
 		memset(str_attr7, 0, 256); 
 		memset(str_attr8, 0, 256); 					    	
     }
+    virtual ~gameentity() {}
 };
 
 struct testentity : gameentity {

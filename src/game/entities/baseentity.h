@@ -6,7 +6,7 @@ namespace entities {
         class BaseEntity : public gameentity {
         public:
             BaseEntity();
-            ~BaseEntity();
+            virtual ~BaseEntity();
 
             virtual void preload();
             virtual void think();

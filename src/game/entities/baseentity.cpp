@@ -4,7 +4,7 @@
 namespace entities {
 namespace classes {
 
-BaseEntity::BaseEntity() {
+BaseEntity::BaseEntity() : gameentity() {
 
 }
 

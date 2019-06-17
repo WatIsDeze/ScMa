@@ -6,7 +6,7 @@ namespace entities {
         class PlayerStart : public BaseEntity {
         public:
             PlayerStart();
-            ~PlayerStart();
+            virtual ~PlayerStart();
 
             void preload();
             void think();
