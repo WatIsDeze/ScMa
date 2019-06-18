@@ -1198,8 +1198,8 @@ void new_game_entity(char *strclass, char *a1, char *a2, char *a3, char *a4, cha
     extentity *t = new_game_entity(true, player->o, idx, fix, strclass);
     if(!t) return;
     dropentity(*t);
-    t->type = ET_EMPTY; // Why would we want this here if we set e.type later 
-    
+    t->type = ET_EMPTY; // Why would we want this here if we set e.type later
+
     // Copy string attributes.
     copycubestr(((gameentity*)t)->classname, strclass, 256);
     copycubestr(((gameentity*)t)->str_attr1, a1, 256);
@@ -1212,7 +1212,7 @@ void new_game_entity(char *strclass, char *a1, char *a2, char *a3, char *a4, cha
     copycubestr(((gameentity*)t)->str_attr8, a8, 256);
 
     t->type = GAMEENTITY;
-    
+
     enttoggle(idx);
     makeundoent();
     entedit(idx, e.type = GAMEENTITY);

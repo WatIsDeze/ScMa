@@ -1,3 +1,12 @@
+# TODO:
+- Do proper file error handling and use internal engine streams for writing and reading json.
+
+# Changes - 2019-06-18
+- Added the ext folder in src, currently contains nlohmann his single_header json implementation.
+- Ensured the constructors are properly solved in the entity classes. (Virtual destructors, properly call parent constructors.)
+- Added saving entities to JSON, removed saving them into the .ogz map file.
+
+
 # Changes - 2019-06-12
 - Added ALUI
 - Modified newgent to support string class types.

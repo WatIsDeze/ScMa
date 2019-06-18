@@ -9,6 +9,7 @@ CMakeFiles/schizomania.dir/engine/aa.cpp.o: engine/model.h
 CMakeFiles/schizomania.dir/engine/aa.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/aa.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/aa.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/aa.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/aa.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/aa.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/aa.cpp.o: shared/ents.h
@@ -27,6 +28,7 @@ CMakeFiles/schizomania.dir/engine/bih.cpp.o: engine/model.h
 CMakeFiles/schizomania.dir/engine/bih.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/bih.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/bih.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/bih.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/bih.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/bih.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/bih.cpp.o: shared/ents.h
@@ -45,6 +47,7 @@ CMakeFiles/schizomania.dir/engine/blend.cpp.o: engine/model.h
 CMakeFiles/schizomania.dir/engine/blend.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/blend.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/blend.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/blend.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/blend.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/blend.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/blend.cpp.o: shared/ents.h
@@ -63,6 +66,7 @@ CMakeFiles/schizomania.dir/engine/client.cpp.o: engine/model.h
 CMakeFiles/schizomania.dir/engine/client.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/client.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/client.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/client.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/client.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/client.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/client.cpp.o: shared/ents.h
@@ -81,6 +85,7 @@ CMakeFiles/schizomania.dir/engine/command.cpp.o: engine/model.h
 CMakeFiles/schizomania.dir/engine/command.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/command.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/command.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/command.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/command.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/command.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/command.cpp.o: shared/ents.h
@@ -99,6 +104,7 @@ CMakeFiles/schizomania.dir/engine/console.cpp.o: engine/model.h
 CMakeFiles/schizomania.dir/engine/console.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/console.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/console.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/console.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/console.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/console.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/console.cpp.o: shared/ents.h
@@ -117,6 +123,7 @@ CMakeFiles/schizomania.dir/engine/dynlight.cpp.o: engine/model.h
 CMakeFiles/schizomania.dir/engine/dynlight.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/dynlight.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/dynlight.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/dynlight.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/dynlight.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/dynlight.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/dynlight.cpp.o: shared/ents.h
@@ -135,6 +142,7 @@ CMakeFiles/schizomania.dir/engine/grass.cpp.o: engine/model.h
 CMakeFiles/schizomania.dir/engine/grass.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/grass.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/grass.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/grass.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/grass.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/grass.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/grass.cpp.o: shared/ents.h
@@ -153,6 +161,7 @@ CMakeFiles/schizomania.dir/engine/light.cpp.o: engine/model.h
 CMakeFiles/schizomania.dir/engine/light.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/light.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/light.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/light.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/light.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/light.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/light.cpp.o: shared/ents.h
@@ -171,6 +180,7 @@ CMakeFiles/schizomania.dir/engine/main.cpp.o: engine/model.h
 CMakeFiles/schizomania.dir/engine/main.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/main.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/main.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/main.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/main.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/main.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/main.cpp.o: shared/ents.h
@@ -189,6 +199,7 @@ CMakeFiles/schizomania.dir/engine/material.cpp.o: engine/model.h
 CMakeFiles/schizomania.dir/engine/material.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/material.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/material.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/material.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/material.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/material.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/material.cpp.o: shared/ents.h
@@ -207,6 +218,7 @@ CMakeFiles/schizomania.dir/engine/menus.cpp.o: engine/model.h
 CMakeFiles/schizomania.dir/engine/menus.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/menus.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/menus.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/menus.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/menus.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/menus.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/menus.cpp.o: shared/ents.h
@@ -225,6 +237,7 @@ CMakeFiles/schizomania.dir/engine/movie.cpp.o: engine/movie.cpp
 CMakeFiles/schizomania.dir/engine/movie.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/movie.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/movie.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/movie.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/movie.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/movie.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/movie.cpp.o: shared/ents.h
@@ -243,6 +256,7 @@ CMakeFiles/schizomania.dir/engine/normal.cpp.o: engine/normal.cpp
 CMakeFiles/schizomania.dir/engine/normal.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/normal.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/normal.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/normal.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/normal.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/normal.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/normal.cpp.o: shared/ents.h
@@ -261,6 +275,7 @@ CMakeFiles/schizomania.dir/engine/octa.cpp.o: engine/octa.cpp
 CMakeFiles/schizomania.dir/engine/octa.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/octa.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/octa.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/octa.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/octa.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/octa.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/octa.cpp.o: shared/ents.h
@@ -279,6 +294,7 @@ CMakeFiles/schizomania.dir/engine/octaedit.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/octaedit.cpp.o: engine/octaedit.cpp
 CMakeFiles/schizomania.dir/engine/octaedit.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/octaedit.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/octaedit.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/octaedit.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/octaedit.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/octaedit.cpp.o: shared/ents.h
@@ -297,6 +313,7 @@ CMakeFiles/schizomania.dir/engine/octarender.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/octarender.cpp.o: engine/octarender.cpp
 CMakeFiles/schizomania.dir/engine/octarender.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/octarender.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/octarender.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/octarender.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/octarender.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/octarender.cpp.o: shared/ents.h
@@ -316,6 +333,7 @@ CMakeFiles/schizomania.dir/engine/physics.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/physics.cpp.o: engine/physics.cpp
 CMakeFiles/schizomania.dir/engine/physics.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/physics.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/physics.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/physics.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/physics.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/physics.cpp.o: shared/ents.h
@@ -334,6 +352,7 @@ CMakeFiles/schizomania.dir/engine/pvs.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/pvs.cpp.o: engine/pvs.cpp
 CMakeFiles/schizomania.dir/engine/pvs.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/pvs.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/pvs.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/pvs.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/pvs.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/pvs.cpp.o: shared/ents.h
@@ -352,6 +371,7 @@ CMakeFiles/schizomania.dir/engine/rendergl.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/rendergl.cpp.o: engine/rendergl.cpp
 CMakeFiles/schizomania.dir/engine/rendergl.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/rendergl.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/rendergl.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/rendergl.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/rendergl.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/rendergl.cpp.o: shared/ents.h
@@ -370,6 +390,7 @@ CMakeFiles/schizomania.dir/engine/renderlights.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/renderlights.cpp.o: engine/renderlights.cpp
 CMakeFiles/schizomania.dir/engine/renderlights.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/renderlights.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/renderlights.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/renderlights.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/renderlights.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/renderlights.cpp.o: shared/ents.h
@@ -399,6 +420,7 @@ CMakeFiles/schizomania.dir/engine/rendermodel.cpp.o: engine/smd.h
 CMakeFiles/schizomania.dir/engine/rendermodel.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/rendermodel.cpp.o: engine/vertmodel.h
 CMakeFiles/schizomania.dir/engine/rendermodel.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/rendermodel.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/rendermodel.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/rendermodel.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/rendermodel.cpp.o: shared/ents.h
@@ -420,6 +442,7 @@ CMakeFiles/schizomania.dir/engine/renderparticles.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/renderparticles.cpp.o: engine/renderparticles.cpp
 CMakeFiles/schizomania.dir/engine/renderparticles.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/renderparticles.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/renderparticles.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/renderparticles.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/renderparticles.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/renderparticles.cpp.o: shared/ents.h
@@ -438,6 +461,7 @@ CMakeFiles/schizomania.dir/engine/rendersky.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/rendersky.cpp.o: engine/rendersky.cpp
 CMakeFiles/schizomania.dir/engine/rendersky.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/rendersky.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/rendersky.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/rendersky.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/rendersky.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/rendersky.cpp.o: shared/ents.h
@@ -456,6 +480,7 @@ CMakeFiles/schizomania.dir/engine/rendertext.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/rendertext.cpp.o: engine/rendertext.cpp
 CMakeFiles/schizomania.dir/engine/rendertext.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/rendertext.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/rendertext.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/rendertext.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/rendertext.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/rendertext.cpp.o: shared/ents.h
@@ -474,6 +499,7 @@ CMakeFiles/schizomania.dir/engine/renderva.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/renderva.cpp.o: engine/renderva.cpp
 CMakeFiles/schizomania.dir/engine/renderva.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/renderva.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/renderva.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/renderva.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/renderva.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/renderva.cpp.o: shared/ents.h
@@ -492,6 +518,7 @@ CMakeFiles/schizomania.dir/engine/server.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/server.cpp.o: engine/server.cpp
 CMakeFiles/schizomania.dir/engine/server.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/server.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/server.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/server.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/server.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/server.cpp.o: shared/ents.h
@@ -510,6 +537,7 @@ CMakeFiles/schizomania.dir/engine/serverbrowser.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/serverbrowser.cpp.o: engine/serverbrowser.cpp
 CMakeFiles/schizomania.dir/engine/serverbrowser.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/serverbrowser.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/serverbrowser.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/serverbrowser.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/serverbrowser.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/serverbrowser.cpp.o: shared/ents.h
@@ -528,6 +556,7 @@ CMakeFiles/schizomania.dir/engine/shader.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/shader.cpp.o: engine/shader.cpp
 CMakeFiles/schizomania.dir/engine/shader.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/shader.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/shader.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/shader.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/shader.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/shader.cpp.o: shared/ents.h
@@ -546,6 +575,7 @@ CMakeFiles/schizomania.dir/engine/sound.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/sound.cpp.o: engine/sound.cpp
 CMakeFiles/schizomania.dir/engine/sound.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/sound.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/sound.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/sound.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/sound.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/sound.cpp.o: shared/ents.h
@@ -564,6 +594,7 @@ CMakeFiles/schizomania.dir/engine/stain.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/stain.cpp.o: engine/stain.cpp
 CMakeFiles/schizomania.dir/engine/stain.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/stain.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/stain.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/stain.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/stain.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/stain.cpp.o: shared/ents.h
@@ -582,6 +613,7 @@ CMakeFiles/schizomania.dir/engine/texture.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/texture.cpp.o: engine/texture.cpp
 CMakeFiles/schizomania.dir/engine/texture.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/texture.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/texture.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/texture.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/texture.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/texture.cpp.o: shared/ents.h
@@ -601,6 +633,7 @@ CMakeFiles/schizomania.dir/engine/ui.cpp.o: engine/textedit.h
 CMakeFiles/schizomania.dir/engine/ui.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/ui.cpp.o: engine/ui.cpp
 CMakeFiles/schizomania.dir/engine/ui.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/ui.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/ui.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/ui.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/ui.cpp.o: shared/ents.h
@@ -619,6 +652,7 @@ CMakeFiles/schizomania.dir/engine/water.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/water.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/water.cpp.o: engine/water.cpp
 CMakeFiles/schizomania.dir/engine/water.cpp.o: engine/world.h
+CMakeFiles/schizomania.dir/engine/water.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/water.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/water.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/water.cpp.o: shared/ents.h
@@ -639,6 +673,7 @@ CMakeFiles/schizomania.dir/engine/world.cpp.o: engine/world.cpp
 CMakeFiles/schizomania.dir/engine/world.cpp.o: engine/world.h
 CMakeFiles/schizomania.dir/engine/world.cpp.o: game/ai.h
 CMakeFiles/schizomania.dir/engine/world.cpp.o: game/game.h
+CMakeFiles/schizomania.dir/engine/world.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/world.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/world.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/world.cpp.o: shared/ents.h
@@ -657,6 +692,9 @@ CMakeFiles/schizomania.dir/engine/worldio.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/worldio.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/worldio.cpp.o: engine/world.h
 CMakeFiles/schizomania.dir/engine/worldio.cpp.o: engine/worldio.cpp
+CMakeFiles/schizomania.dir/engine/worldio.cpp.o: game/ai.h
+CMakeFiles/schizomania.dir/engine/worldio.cpp.o: game/game.h
+CMakeFiles/schizomania.dir/engine/worldio.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/worldio.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/engine/worldio.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/engine/worldio.cpp.o: shared/ents.h
@@ -670,6 +708,7 @@ CMakeFiles/schizomania.dir/engine/worldio.cpp.o: shared/tools.h
 CMakeFiles/schizomania.dir/game/ai.cpp.o: game/ai.cpp
 CMakeFiles/schizomania.dir/game/ai.cpp.o: game/ai.h
 CMakeFiles/schizomania.dir/game/ai.cpp.o: game/game.h
+CMakeFiles/schizomania.dir/game/ai.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/game/ai.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/game/ai.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/game/ai.cpp.o: shared/ents.h
@@ -684,6 +723,7 @@ CMakeFiles/schizomania.dir/game/client.cpp.o: game/ai.h
 CMakeFiles/schizomania.dir/game/client.cpp.o: game/client.cpp
 CMakeFiles/schizomania.dir/game/client.cpp.o: game/ctf.h
 CMakeFiles/schizomania.dir/game/client.cpp.o: game/game.h
+CMakeFiles/schizomania.dir/game/client.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/game/client.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/game/client.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/game/client.cpp.o: shared/ents.h
@@ -699,6 +739,7 @@ CMakeFiles/schizomania.dir/game/entities.cpp.o: game/entities.cpp
 CMakeFiles/schizomania.dir/game/entities.cpp.o: game/entities/baseentity.h
 CMakeFiles/schizomania.dir/game/entities.cpp.o: game/entities/playerstart.h
 CMakeFiles/schizomania.dir/game/entities.cpp.o: game/game.h
+CMakeFiles/schizomania.dir/game/entities.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/game/entities.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/game/entities.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/game/entities.cpp.o: shared/ents.h
@@ -713,6 +754,7 @@ CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: game/ai.h
 CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: game/entities/baseentity.cpp
 CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: game/entities/baseentity.h
 CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: game/game.h
+CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: shared/ents.h
@@ -728,6 +770,7 @@ CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: game/entities/baseen
 CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: game/entities/playerstart.cpp
 CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: game/entities/playerstart.h
 CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: game/game.h
+CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: shared/ents.h
@@ -741,6 +784,7 @@ CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: shared/tools.h
 CMakeFiles/schizomania.dir/game/game.cpp.o: game/ai.h
 CMakeFiles/schizomania.dir/game/game.cpp.o: game/game.cpp
 CMakeFiles/schizomania.dir/game/game.cpp.o: game/game.h
+CMakeFiles/schizomania.dir/game/game.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/game/game.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/game/game.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/game/game.cpp.o: shared/ents.h
@@ -754,6 +798,7 @@ CMakeFiles/schizomania.dir/game/game.cpp.o: shared/tools.h
 CMakeFiles/schizomania.dir/game/render.cpp.o: game/ai.h
 CMakeFiles/schizomania.dir/game/render.cpp.o: game/game.h
 CMakeFiles/schizomania.dir/game/render.cpp.o: game/render.cpp
+CMakeFiles/schizomania.dir/game/render.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/game/render.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/game/render.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/game/render.cpp.o: shared/ents.h
@@ -767,6 +812,7 @@ CMakeFiles/schizomania.dir/game/render.cpp.o: shared/tools.h
 CMakeFiles/schizomania.dir/game/scoreboard.cpp.o: game/ai.h
 CMakeFiles/schizomania.dir/game/scoreboard.cpp.o: game/game.h
 CMakeFiles/schizomania.dir/game/scoreboard.cpp.o: game/scoreboard.cpp
+CMakeFiles/schizomania.dir/game/scoreboard.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/game/scoreboard.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/game/scoreboard.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/game/scoreboard.cpp.o: shared/ents.h
@@ -783,6 +829,7 @@ CMakeFiles/schizomania.dir/game/server.cpp.o: game/ctf.h
 CMakeFiles/schizomania.dir/game/server.cpp.o: game/extinfo.h
 CMakeFiles/schizomania.dir/game/server.cpp.o: game/game.h
 CMakeFiles/schizomania.dir/game/server.cpp.o: game/server.cpp
+CMakeFiles/schizomania.dir/game/server.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/game/server.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/game/server.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/game/server.cpp.o: shared/ents.h
@@ -796,6 +843,7 @@ CMakeFiles/schizomania.dir/game/server.cpp.o: shared/tools.h
 CMakeFiles/schizomania.dir/game/waypoint.cpp.o: game/ai.h
 CMakeFiles/schizomania.dir/game/waypoint.cpp.o: game/game.h
 CMakeFiles/schizomania.dir/game/waypoint.cpp.o: game/waypoint.cpp
+CMakeFiles/schizomania.dir/game/waypoint.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/game/waypoint.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/game/waypoint.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/game/waypoint.cpp.o: shared/ents.h
@@ -809,6 +857,7 @@ CMakeFiles/schizomania.dir/game/waypoint.cpp.o: shared/tools.h
 CMakeFiles/schizomania.dir/game/weapon.cpp.o: game/ai.h
 CMakeFiles/schizomania.dir/game/weapon.cpp.o: game/game.h
 CMakeFiles/schizomania.dir/game/weapon.cpp.o: game/weapon.cpp
+CMakeFiles/schizomania.dir/game/weapon.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/game/weapon.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/game/weapon.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/game/weapon.cpp.o: shared/ents.h
@@ -819,6 +868,7 @@ CMakeFiles/schizomania.dir/game/weapon.cpp.o: shared/iengine.h
 CMakeFiles/schizomania.dir/game/weapon.cpp.o: shared/igame.h
 CMakeFiles/schizomania.dir/game/weapon.cpp.o: shared/tools.h
 
+CMakeFiles/schizomania.dir/shared/crypto.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/shared/crypto.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/shared/crypto.cpp.o: shared/crypto.cpp
 CMakeFiles/schizomania.dir/shared/crypto.cpp.o: shared/cube.h
@@ -830,6 +880,7 @@ CMakeFiles/schizomania.dir/shared/crypto.cpp.o: shared/iengine.h
 CMakeFiles/schizomania.dir/shared/crypto.cpp.o: shared/igame.h
 CMakeFiles/schizomania.dir/shared/crypto.cpp.o: shared/tools.h
 
+CMakeFiles/schizomania.dir/shared/geom.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/shared/geom.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/shared/geom.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/shared/geom.cpp.o: shared/ents.h
@@ -841,6 +892,7 @@ CMakeFiles/schizomania.dir/shared/geom.cpp.o: shared/iengine.h
 CMakeFiles/schizomania.dir/shared/geom.cpp.o: shared/igame.h
 CMakeFiles/schizomania.dir/shared/geom.cpp.o: shared/tools.h
 
+CMakeFiles/schizomania.dir/shared/glemu.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/shared/glemu.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/shared/glemu.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/shared/glemu.cpp.o: shared/ents.h
@@ -852,6 +904,7 @@ CMakeFiles/schizomania.dir/shared/glemu.cpp.o: shared/iengine.h
 CMakeFiles/schizomania.dir/shared/glemu.cpp.o: shared/igame.h
 CMakeFiles/schizomania.dir/shared/glemu.cpp.o: shared/tools.h
 
+CMakeFiles/schizomania.dir/shared/stream.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/shared/stream.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/shared/stream.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/shared/stream.cpp.o: shared/ents.h
@@ -863,6 +916,7 @@ CMakeFiles/schizomania.dir/shared/stream.cpp.o: shared/igame.h
 CMakeFiles/schizomania.dir/shared/stream.cpp.o: shared/stream.cpp
 CMakeFiles/schizomania.dir/shared/stream.cpp.o: shared/tools.h
 
+CMakeFiles/schizomania.dir/shared/tools.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/shared/tools.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/shared/tools.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/shared/tools.cpp.o: shared/ents.h
@@ -874,6 +928,7 @@ CMakeFiles/schizomania.dir/shared/tools.cpp.o: shared/igame.h
 CMakeFiles/schizomania.dir/shared/tools.cpp.o: shared/tools.cpp
 CMakeFiles/schizomania.dir/shared/tools.cpp.o: shared/tools.h
 
+CMakeFiles/schizomania.dir/shared/zip.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/shared/zip.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/shared/zip.cpp.o: shared/cube.h
 CMakeFiles/schizomania.dir/shared/zip.cpp.o: shared/ents.h

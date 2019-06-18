@@ -8,6 +8,7 @@ option(SCHIZOMANIA_BUILD_SERVER "Build the game server" ON)
 
 # Generate compile commands (compile_commands.json) for clang tooling etc.
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_CXX_STANDARD 11)
 
 # Add zlib.
 find_package(ZLIB REQUIRED)
@@ -94,21 +95,21 @@ if(SCHIZOMANIA_BUILD_CLIENT)
       # Entities.
       game/entities/baseentity.cpp
       game/entities/playerstart.cpp
-    )
+  )
   set(CLIENT_INCLUDES
-      ${CMAKE_CURRENT_SOURCE_DIR}
-	  ${CMAKE_CURRENT_SOURCE_DIR}/engine
-	  ${CMAKE_CURRENT_SOURCE_DIR}/shared
-      )
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/engine
+    ${CMAKE_CURRENT_SOURCE_DIR}/shared
+  )
   set(CLIENT_LIBRARIES
       enet
       SDL2
-	  SDL2_mixer
-	  SDL2_image
+      SDL2_mixer
+      SDL2_image
       ${OPENGL_LIBRARIES}
       ${ZLIB_LIBRARIES}
       ${PLATFORM_LIBRARIES}
-      )
+  )
   add_executable(schizomania ${CLIENT_SOURCES})
   target_include_directories(schizomania PRIVATE ${CLIENT_INCLUDES} )
   target_link_libraries(schizomania ${CLIENT_LIBRARIES})
@@ -125,14 +126,14 @@ if(SCHIZOMANIA_BUILD_SERVER)
       engine/worldio.cpp
       game/entities.cpp
       game/server.cpp
-      )
+  )
   set(SERVER_INCLUDES
       ${CMAKE_CURRENT_SOURCE_DIR}
-      )
+  )
   set(SERVER_LIBRARIES
       enet
       ${ZLIB_LIBRARIES}
-      )
+  )
   add_executable(schizomania_server ${SERVER_SOURCES})
   target_compile_definitions(schizomania_server PRIVATE -DSTANDALONE)
   target_include_directories(schizomania_server PRIVATE ${SERVER_INCLUDES})
@@ -145,14 +146,14 @@ if(SCHIZOMANIA_BUILD_SERVER)
       shared/tools.cpp
       engine/command.cpp
       engine/master.cpp
-      )
+  )
   set(MASTER_INCLUDES
       ${CMAKE_CURRENT_SOURCE_DIR}
-      )
+  )
   set(MASTER_LIBRARIES
       enet
       ${ZLIB_LIBRARIES}
-      )
+  )
   add_executable(schizomania_master ${MASTER_SOURCES})
   target_compile_definitions(schizomania_master PRIVATE -DSTANDALONE)
   target_include_directories(schizomania_master PRIVATE ${MASTER_INCLUDES})

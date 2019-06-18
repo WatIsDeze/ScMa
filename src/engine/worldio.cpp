@@ -2,6 +2,9 @@
 
 #include "engine.h"
 
+// Include game.h for our game entity casting.
+#include "../game/game.h"
+
 void validmapname(char *dst, const char *src, const char *prefix = NULL, const char *alt = "untitled", size_t maxlen = 100)
 {
     if(prefix) while(*prefix) *dst++ = *prefix++;
@@ -34,7 +37,7 @@ static bool loadmapheader(stream *f, const char *ogzname, mapheader &hdr, octahe
     if(f->read(&hdr, 3*sizeof(int)) != 3*sizeof(int)) { conoutf(CON_ERROR, "map %s has malformatted header", ogzname); return false; }
     lilswap(&hdr.version, 2);
 
-    if(!memcmp(hdr.magic, "TMAP", 4))
+    if(!memcmp(hdr.magic, "SCMA", 4))
     {
         if(hdr.version>MAPVERSION) { conoutf(CON_ERROR, "map %s requires a newer version of Tesseract", ogzname); return false; }
         if(f->read(&hdr.worldsize, 6*sizeof(int)) != 6*sizeof(int)) { conoutf(CON_ERROR, "map %s has malformatted header", ogzname); return false; }
@@ -47,7 +50,7 @@ static bool loadmapheader(stream *f, const char *ogzname, mapheader &hdr, octahe
         if(f->read(&ohdr.worldsize, 7*sizeof(int)) != 7*sizeof(int)) { conoutf(CON_ERROR, "map %s has malformatted header", ogzname); return false; }
         lilswap(&ohdr.worldsize, 7);
         if(ohdr.worldsize <= 0|| ohdr.numents < 0) { conoutf(CON_ERROR, "map %s has malformatted header", ogzname); return false; }
-        memcpy(hdr.magic, "TMAP", 4);
+        memcpy(hdr.magic, "SCMA", 4);
         hdr.version = 0;
         hdr.headersize = sizeof(hdr);
         hdr.worldsize = ohdr.worldsize;
@@ -586,6 +589,9 @@ void loadvslots(stream *f, int numvslots)
 
 bool save_world(const char *mname, bool nolms)
 {
+    // Use JSON, no shit.
+    using json = nlohmann::json;
+
     if(!*mname) mname = game::getclientmap();
     setmapfilenames(*mname ? mname : "untitled");
     if(savebak) backup(ogzname, bakname);
@@ -603,7 +609,7 @@ bool save_world(const char *mname, bool nolms)
     renderprogress(0, "saving map...");
 
     mapheader hdr;
-    memcpy(hdr.magic, "TMAP", 4);
+    memcpy(hdr.magic, "SCMA", 4);
     hdr.version = MAPVERSION;
     hdr.headersize = sizeof(hdr);
     hdr.worldsize = worldsize;
@@ -660,6 +666,10 @@ bool save_world(const char *mname, bool nolms)
     f->putlil<ushort>(texmru.length());
     loopv(texmru) f->putlil<ushort>(texmru[i]);
     char *ebuf = new char[entities::extraentinfosize()];
+
+    // JSON Entity storage.
+    json j;
+
     loopv(ents)
     {
         if(ents[i]->type!=ET_EMPTY || nolms)
@@ -667,12 +677,46 @@ bool save_world(const char *mname, bool nolms)
             entity tmp = *ents[i];
             lilswap(&tmp.o.x, 3);
             lilswap(&tmp.attr1, 5);
-            f->write(&tmp, sizeof(entity));
-            entities::writeent(*ents[i], ebuf);
-            if(entities::extraentinfosize()) f->write(ebuf, entities::extraentinfosize());
+            //f->write(&tmp, sizeof(entity));
+            //entities::writeent(*ents[i], ebuf);
+            //if(entities::extraentinfosize()) f->write(ebuf, entities::extraentinfosize());
+
+            // These are the default attributes, the old-school ones which are still used here and there in the engine.
+            j[i]["type"] = tmp.type;
+            j[i]["o"]["x"] = tmp.o.x;
+            j[i]["o"]["y"] = tmp.o.y;
+            j[i]["o"]["z"] = tmp.o.z;
+            j[i]["int_attr1"] = tmp.attr1;
+            j[i]["int_attr2"] = tmp.attr2;
+            j[i]["int_attr3"] = tmp.attr3;
+            j[i]["int_attr4"] = tmp.attr4;
+            j[i]["int_attr5"] = tmp.attr5;
+            j[i]["int_reserved"] = tmp.reserved;
+
+            // Now comes the good stuff, our own custom attributes.
+            if (tmp.type == GAMEENTITY) {
+                gameentity *gtmp = (gameentity*)ents[i];
+                j[i]["classname"] = std::string(gtmp->classname);
+                j[i]["str_attr1"] = std::string(gtmp->str_attr1);
+                j[i]["str_attr2"] = std::string(gtmp->str_attr2);
+                j[i]["str_attr3"] = std::string(gtmp->str_attr3);
+                j[i]["str_attr4"] = std::string(gtmp->str_attr4);
+                j[i]["str_attr5"] = std::string(gtmp->str_attr5);
+                j[i]["str_attr6"] = std::string(gtmp->str_attr6);
+                j[i]["str_attr7"] = std::string(gtmp->str_attr7);
+                j[i]["str_attr8"] = std::string(gtmp->str_attr8);
+            }
         }
     }
     delete[] ebuf;
+
+    // Generate JSON Entity filename.
+    defformatcubestr(jsonname, "media/map/%s.json", mname);
+
+    // Save JSON to file.
+    // TODO: Use the streams that the engine provides instead.
+    std::ofstream o(jsonname);
+    o << std::setw(4) << j << std::endl;
 
     savevslots(f, numvslots);
 

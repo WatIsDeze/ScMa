@@ -85,18 +85,7 @@ namespace entities
 
     void preloadentities()
     {
-        loopv(ents) {
-            conoutf("%i : %i", i, ents[i]->type);
-
-            // This is only specific to ET_GAMESPECIFIC entities for now.
-            if (ents[i]->type == GAMEENTITY) {
-                //entities::classes::BaseEntity *e = (entities::classes::BaseEntity*)ents[i];
-                //conoutf("Found a game specific %i %s", e->type, e->classname);
-                //e->preload();
-            }
-        }
-
-/*        loopi(MAXENTTYPES)
+        loopi(MAXENTTYPES)
         {
             const char *mdl = entmdlname(i);
             if(!mdl) continue;
@@ -115,12 +104,12 @@ namespace entities
                 //case ET_GAMESPECIFIC:
                 //	conoutf("%s", "Found a gamespecific entity");
             }
-        }*/
+        }
     }
 
     void renderentities()
     {
-/*        loopv(ents)
+        loopv(ents)
         {
             extentity &e = *ents[i];
             int revs = 10;
@@ -140,7 +129,7 @@ namespace entities
                 p.z += 1+sinf(lastmillis/100.0+e.o.x+e.o.y)/20;
                 rendermodel(mdlname, ANIM_MAPMODEL|ANIM_LOOP, p, lastmillis/(float)revs, 0, 0, MDL_CULL_VFC | MDL_CULL_DIST | MDL_CULL_OCCLUDED);
             }
-        }*/
+        }
     }
 
     void addammo(int type, int &v, bool local)
@@ -349,7 +338,7 @@ namespace entities
 
     // Returns the entity class respectively according to its registered name.
     extentity *newgameentity(char *strclass) {
-        if (strclass != NULL && strcmp(strclass, "playerstart")) {
+        if (strclass != NULL && strcmp(strclass, "playerstart") == 0) {
             conoutf("%s", "Found Playerstart");
             return new entities::classes::PlayerStart();
         } else {

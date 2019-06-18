@@ -50,13 +50,17 @@
 #endif
 
 #include <enet/enet.h>
-
 #include <zlib.h>
 
-// C++ STD
-//#include <string>
-//#include <new>
+// C++ STD Lib.
+#include <iostream>
+#include <fstream>
+#include <iomanip>
 
+// Libraries from the ext folder.
+#include "../ext/json-develop/single_include/nlohmann/json.hpp"
+
+// Engine and game related includes.
 #include "tools.h"
 #include "geom.h"
 #include "ents.h"
