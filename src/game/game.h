@@ -78,34 +78,6 @@ enum                            // static entity types
     I_LAST = -1
 };
 
-class gameentity : public extentity
-{
-public:
-    char classname[256];
-
-    char str_attr1[256];
-    char str_attr2[256];
-    char str_attr3[256];
-    char str_attr4[256];
-    char str_attr5[256];
-    char str_attr6[256];
-    char str_attr7[256];
-    char str_attr8[256];
-
-    gameentity() : extentity() {
-        memset(classname, 0, 256);
-    	memset(str_attr1, 0, 256); 
-		memset(str_attr2, 0, 256); 
-		memset(str_attr3, 0, 256); 
-		memset(str_attr4, 0, 256); 
-		memset(str_attr5, 0, 256); 
-		memset(str_attr6, 0, 256); 
-		memset(str_attr7, 0, 256); 
-		memset(str_attr8, 0, 256); 					    	
-    }
-    virtual ~gameentity() {}
-};
-
 struct testentity : gameentity {
     testentity() : gameentity() {
         strcpy(str_attr1, "Test Ent Attr1");
@@ -478,7 +450,7 @@ struct teaminfo
 
 namespace entities
 {
-    extern vector<extentity *> ents;
+    extern vector<entities::classes::BaseEntity*> ents;
 
     extern const char *entmdlname(int type);
     extern const char *itemname(int i);

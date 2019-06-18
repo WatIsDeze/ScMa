@@ -1,0 +1,39 @@
+[
+    {
+        "classname": "playerstart",
+        "int_attr1": 0,
+        "int_attr2": 0,
+        "int_attr3": 0,
+        "int_attr4": 0,
+        "int_attr5": 0,
+        "int_reserved": 0,
+        "o": {
+            "x": 660.0,
+            "y": 188.0,
+            "z": 548.0
+        },
+        "str_attr1": "weapon_a",
+        "str_attr2": "weapon_b",
+        "str_attr3": "",
+        "str_attr4": "",
+        "str_attr5": "",
+        "str_attr6": "",
+        "str_attr7": "",
+        "str_attr8": "",
+        "type": 13
+    },
+    {
+        "int_attr1": 65,
+        "int_attr2": 255,
+        "int_attr3": 0,
+        "int_attr4": 255,
+        "int_attr5": 4,
+        "int_reserved": 0,
+        "o": {
+            "x": 557.0750122070313,
+            "y": 285.55548095703125,
+            "z": 527.7584228515625
+        },
+        "type": 1
+    }
+]

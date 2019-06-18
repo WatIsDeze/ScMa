@@ -476,7 +476,7 @@ struct ctfclientmode : clientmode
         resetflags();
         loopv(entities::ents)
         {
-            extentity *e = entities::ents[i];
+            entities::classes::BaseEntity *e = entities::ents[i];
             if(e->type!=FLAG || !validteam(e->attr2)) continue;
             int index = flags.length();
             if(!addflag(index, e->o, e->attr2)) continue;

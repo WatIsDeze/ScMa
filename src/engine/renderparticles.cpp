@@ -31,14 +31,14 @@ VAR(dbgpseed, 0, 0, 1);
 
 struct particleemitter
 {
-    extentity *ent;
+    entities::classes::BaseEntity *ent;
     vec bbmin, bbmax;
     vec center;
     float radius;
     ivec cullmin, cullmax;
     int maxfade, lastemit, lastcull;
 
-    particleemitter(extentity *ent)
+    particleemitter(entities::classes::BaseEntity *ent)
         : ent(ent), bbmin(ent->o), bbmax(ent->o), maxfade(-1), lastemit(0), lastcull(0)
     {}
 
@@ -80,10 +80,10 @@ void clearparticleemitters()
 void addparticleemitters()
 {
     emitters.setsize(0);
-    const vector<extentity *> &ents = entities::getents();
+    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     loopv(ents)
     {
-        extentity &e = *ents[i];
+        entities::classes::BaseEntity &e = *ents[i];
         if(e.type != ET_PARTICLES) continue;
         emitters.add(particleemitter(&e));
     }
@@ -1340,7 +1340,7 @@ static void makeparticles(entity &e)
     }
 }
 
-bool printparticles(extentity &e, char *buf, int len)
+bool printparticles(entities::classes::BaseEntity &e, char *buf, int len)
 {
     switch(e.attr1)
     {
@@ -1365,7 +1365,7 @@ void seedparticles()
     loopv(emitters)
     {
         particleemitter &pe = emitters[i];
-        extentity &e = *pe.ent;
+        entities::classes::BaseEntity &e = *pe.ent;
         seedemitter = &pe;
         for(int millis = 0; millis < seedmillis; millis += min(emitmillis, seedmillis/10))
             makeparticles(e);
@@ -1400,7 +1400,7 @@ void updateparticles()
         loopv(emitters)
         {
             particleemitter &pe = emitters[i];
-            extentity &e = *pe.ent;
+            entities::classes::BaseEntity &e = *pe.ent;
             if(e.o.dist(camera1->o) > maxparticledistance) { pe.lastemit = lastmillis; continue; }
             if(cullparticles && pe.maxfade >= 0)
             {
@@ -1424,7 +1424,7 @@ void updateparticles()
     }
     if(editmode) // show sparkly thingies for map entities in edit mode
     {
-        const vector<extentity *> &ents = entities::getents();
+        const vector<entities::classes::BaseEntity *> &ents = entities::getents();
         // note: order matters in this case as particles of the same type are drawn in the reverse order that they are added
         loopv(entgroup)
         {

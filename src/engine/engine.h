@@ -292,7 +292,7 @@ extern void cleanupvolumetric();
 extern void findshadowvas();
 extern void findshadowmms();
 
-extern int calcshadowinfo(const extentity &e, vec &origin, float &radius, vec &spotloc, int &spotangle, float &bias);
+extern int calcshadowinfo(const entities::classes::BaseEntity &e, vec &origin, float &radius, vec &spotloc, int &spotangle, float &bias);
 extern int dynamicshadowvabounds(int mask, vec &bbmin, vec &bbmax);
 extern void rendershadowmapworld();
 extern void batchshadowmapmodels(bool skipmesh = false);
@@ -458,7 +458,7 @@ extern void renderdecals();
 struct shadowmesh;
 extern void clearshadowmeshes();
 extern void genshadowmeshes();
-extern shadowmesh *findshadowmesh(int idx, extentity &e);
+extern shadowmesh *findshadowmesh(int idx, entities::classes::BaseEntity &e);
 extern void rendershadowmesh(shadowmesh *m);
 
 // dynlight
@@ -639,7 +639,7 @@ extern void modifyorient(float yaw, float pitch);
 extern void mousemove(int dx, int dy);
 extern bool overlapsdynent(const vec &o, float radius);
 extern void rotatebb(vec &center, vec &radius, int yaw, int pitch, int roll = 0);
-extern float shadowray(const vec &o, const vec &ray, float radius, int mode, extentity *t = NULL);
+extern float shadowray(const vec &o, const vec &ray, float radius, int mode, entities::classes::BaseEntity *t = NULL);
 
 // world
 
@@ -702,7 +702,7 @@ extern void seedparticles();
 extern void updateparticles();
 extern void debugparticles();
 extern void renderparticles(int layer = PL_ALL);
-extern bool printparticles(extentity &e, char *buf, int len);
+extern bool printparticles(entities::classes::BaseEntity &e, char *buf, int len);
 extern void cleanupparticles();
 
 // stain

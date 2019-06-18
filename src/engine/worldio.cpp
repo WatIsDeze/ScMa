@@ -5,6 +5,9 @@
 // Include game.h for our game entity casting.
 #include "../game/game.h"
 
+// Use JSON, no shit.
+using json = nlohmann::json;
+
 void validmapname(char *dst, const char *src, const char *prefix = NULL, const char *alt = "untitled", size_t maxlen = 100)
 {
     if(prefix) while(*prefix) *dst++ = *prefix++;
@@ -589,9 +592,6 @@ void loadvslots(stream *f, int numvslots)
 
 bool save_world(const char *mname, bool nolms)
 {
-    // Use JSON, no shit.
-    using json = nlohmann::json;
-
     if(!*mname) mname = game::getclientmap();
     setmapfilenames(*mname ? mname : "untitled");
     if(savebak) backup(ogzname, bakname);
@@ -614,7 +614,7 @@ bool save_world(const char *mname, bool nolms)
     hdr.headersize = sizeof(hdr);
     hdr.worldsize = worldsize;
     hdr.numents = 0;
-    const vector<extentity *> &ents = entities::getents();
+    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     loopv(ents) if(ents[i]->type!=ET_EMPTY || nolms) hdr.numents++;
     hdr.numpvs = nolms ? 0 : getnumviewcells();
     hdr.blendmap = shouldsaveblendmap();
@@ -847,45 +847,108 @@ bool load_world(const char *mname, const char *cname)        // still supports a
 
     renderprogress(0, "loading entities...");
 
-    vector<extentity *> &ents = entities::getents();
-    int einfosize = entities::extraentinfosize();
-    char *ebuf = einfosize > 0 ? new char[einfosize] : NULL;
+    // Read our entity JSON file
+    defformatcubestr(jsonname, "media/map/%s.json", mname);
+
+    // TODO: Use the engine stream.
+    // Load in the stream.
+    std::ifstream i(jsonname);
+    json j;
+    i >> j;
+
+    // Fetch the entities array, which, I suppose can be a BaseEntity from here on to begin with.
+    vector<entities::classes::BaseEntity*> &ents = entities::getents();
+
+    // TODO: Ensure that our data is valid, do not access invalid or nonexistent elements.
+    // Parse entities and allocate them, or rather, add them to the list! ;-)
+    for (auto& element : j) {
+        // For now only proceed if a type is available.
+        if (element.find("type") != element.end()) {
+            // Classname and type, used to determine what to load in and allocate the precise class firsthand.
+            std::string classname("");
+            int type = element["type"];
+
+            //
+            if (type == GAMEENTITY) {
+                // TODO: Ensure length is max 256... I guess.
+                classname = element["classname"];
+            }
+
+            // Allocate our entity.
+            entities::classes::BaseEntity &e = *entities::newgameentity((char*)classname.c_str());
+
+            // Fetch base entity data. (Old ancient entity info.)
+            e.type = element["type"];
+            e.o.x = element["o"]["x"];
+            e.o.y = element["o"]["y"];
+            e.o.z = element["o"]["z"];
+            e.attr1 = element["int_attr1"];
+            e.attr2 = element["int_attr2"];
+            e.attr3 = element["int_attr3"];
+            e.attr4 = element["int_attr4"];
+            e.attr5 = element["int_attr5"];
+            e.reserved = element["int_reserved"];
+
+            // Fetch ScMa entity info.
+            if (type == GAMEENTITY) {
+                // TODO: Ensure length is max 256... I guess.
+                strcpy(&e.classname[0], classname.c_str());
+                strcpy(&e.str_attr1[0], std::string(element["str_attr1"]).c_str());
+                strcpy(&e.str_attr2[0], std::string(element["str_attr2"]).c_str());
+                strcpy(&e.str_attr3[0], std::string(element["str_attr3"]).c_str());
+                strcpy(&e.str_attr4[0], std::string(element["str_attr4"]).c_str());
+                strcpy(&e.str_attr5[0], std::string(element["str_attr5"]).c_str());
+                strcpy(&e.str_attr6[0], std::string(element["str_attr6"]).c_str());
+                strcpy(&e.str_attr7[0], std::string(element["str_attr7"]).c_str());
+                strcpy(&e.str_attr8[0], std::string(element["str_attr8"]).c_str());
+            }
+
+            ents.add(&e);
+        }
+        //std::cout << element << '\n';
+    }
+
+//    vector<extentity *> &ents = entities::getents();
+//    int einfosize = entities::extraentinfosize();
+//    char *ebuf = einfosize > 0 ? new char[einfosize] : NULL;
+
     loopi(min(hdr.numents, MAXENTS))
     {
-        extentity &e = *entities::newgameentity();
-        ents.add(&e);
-        f->read(&e, sizeof(entity));
-        lilswap(&e.o.x, 3);
-        lilswap(&e.attr1, 5);
-        fixent(e, hdr.version);
-        if(samegame)
-        {
-            if(einfosize > 0) f->read(ebuf, einfosize);
-            entities::readent(e, ebuf, mapversion);
-        }
-        else
-        {
-            if(eif > 0) f->seek(eif, SEEK_CUR);
-            if(e.type>=ET_GAMESPECIFIC)
-            {
-                entities::deletegameentity(ents.pop());
-                continue;
-            }
-        }
-        if(!insideworld(e.o))
-        {
-            if(e.type != ET_LIGHT && e.type != ET_SPOTLIGHT)
-            {
-                conoutf(CON_WARN, "warning: ent outside of world: enttype[%s] index %d (%f, %f, %f)", entities::entname(e.type), i, e.o.x, e.o.y, e.o.z);
-            }
-        }
+//        extentity &e = *entities::newgameentity();
+//        ents.add(&e);
+//        f->read(&e, sizeof(entity));
+//        lilswap(&e.o.x, 3);
+//        lilswap(&e.attr1, 5);
+//        fixent(e, hdr.version);
+//        if(samegame)
+//        {
+//            if(einfosize > 0) f->read(ebuf, einfosize);
+//            entities::readent(e, ebuf, mapversion);
+//        }
+//        else
+//        {
+//            if(eif > 0) f->seek(eif, SEEK_CUR);
+//            if(e.type>=ET_GAMESPECIFIC)
+//            {
+//                entities::deletegameentity(ents.pop());
+//                continue;
+//            }
+//        }
+//        if(!insideworld(e.o))
+//        {
+//            if(e.type != ET_LIGHT && e.type != ET_SPOTLIGHT)
+//            {
+//                conoutf(CON_WARN, "warning: ent outside of world: enttype[%s] index %d (%f, %f, %f)", entities::entname(e.type), i, e.o.x, e.o.y, e.o.z);
+//            }
+//        }
     }
-    if(ebuf) delete[] ebuf;
+//  if(ebuf) delete[] ebuf;
 
     if(hdr.numents > MAXENTS)
     {
         conoutf(CON_WARN, "warning: map has %d entities", hdr.numents);
-        f->seek((hdr.numents-MAXENTS)*(samegame ? sizeof(entity) + einfosize : eif), SEEK_CUR);
+        // TODO: What to do here?
+        //f->seek((hdr.numents-MAXENTS)*(samegame ? sizeof(entity) + einfosize : eif), SEEK_CUR);
     }
 
     renderprogress(0, "loading slots...");
@@ -1061,18 +1124,18 @@ void writecollideobj(char *name)
         conoutf(CON_ERROR, "geometry for collide model not selected");
         return;
     }
-    vector<extentity *> &ents = entities::getents();
-    extentity *mm = NULL;
+    vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    entities::classes::BaseEntity *mm = NULL;
     loopv(entgroup)
     {
-        extentity &e = *ents[entgroup[i]];
+        entities::classes::BaseEntity &e = *ents[entgroup[i]];
         if(e.type != ET_MAPMODEL || !pointinsel(sel, e.o)) continue;
         mm = &e;
         break;
     }
     if(!mm) loopv(ents)
     {
-        extentity &e = *ents[i];
+        entities::classes::BaseEntity &e = *ents[i];
         if(e.type != ET_MAPMODEL || !pointinsel(sel, e.o)) continue;
         mm = &e;
         break;

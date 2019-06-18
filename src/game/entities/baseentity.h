@@ -1,20 +1,20 @@
 #ifndef BASEENTITY_H
 #define BASEENTITY_H
 
-namespace entities {
-    namespace classes {
-        class BaseEntity : public gameentity {
-        public:
-            BaseEntity();
-            virtual ~BaseEntity();
+//namespace entities {
+//    namespace classes {
+//        class BaseEntity : public gameentity {
+//        public:
+//            BaseEntity();
+//            virtual ~BaseEntity();
 
-            virtual void preload();
-            virtual void think();
+//            virtual void preload();
+//            virtual void think();
 
-        private:
+//        private:
 
-        };
-    } // classes
-} // entities
+//        };
+//    } // classes
+//} // entities
 
 #endif // BASEENTITY_H

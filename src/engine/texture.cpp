@@ -3030,10 +3030,10 @@ void initenvmaps()
 {
     clearenvmaps();
     envmaps.add().size = hasskybox() ? 0 : 1;
-    const vector<extentity *> &ents = entities::getents();
+    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     loopv(ents)
     {
-        const extentity &ent = *ents[i];
+        const entities::classes::BaseEntity &ent = *ents[i];
         if(ent.type != ET_ENVMAP) continue;
         envmap &em = envmaps.add();
         em.radius = ent.attr1 ? clamp(int(ent.attr1), 0, 10000) : envmapradius;

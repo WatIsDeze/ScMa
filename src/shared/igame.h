@@ -2,6 +2,11 @@
 
 namespace entities
 {
+    // Predefined.
+    namespace classes {
+        class BaseEntity;
+    }
+
     extern void editent(int i, bool local);
     extern const char *entnameinfo(entity &e);
     extern const char *entname(int i);
@@ -9,17 +14,17 @@ namespace entities
     extern void writeent(entity &e, char *buf);
     extern void readent(entity &e, char *buf, int ver);
     extern float dropheight(entity &e);
-    extern void fixentity(extentity &e);
-    extern void entradius(extentity &e, bool color);
-    extern bool mayattach(extentity &e);
-    extern bool attachent(extentity &e, extentity &a);
-    extern bool printent(extentity &e, char *buf, int len);
-    extern extentity *newgameentity(char *strclass = NULL);
-    extern void deletegameentity(extentity *e);
+    extern void fixentity(entities::classes::BaseEntity &e);
+    extern void entradius(entities::classes::BaseEntity &e, bool color);
+    extern bool mayattach(entities::classes::BaseEntity &e);
+    extern bool attachent(entities::classes::BaseEntity &e, entities::classes::BaseEntity &a);
+    extern bool printent(entities::classes::BaseEntity &e, char *buf, int len);
+    extern entities::classes::BaseEntity *newgameentity(char *strclass = NULL);
+    extern void deletegameentity(entities::classes::BaseEntity *e);
     extern void clearents();
-    extern vector<extentity *> &getents();
+    extern vector<classes::BaseEntity *> &getents();
     extern const char *entmodel(const entity &e);
-    extern void animatemapmodel(const extentity &e, int &anim, int &basetime);
+    extern void animatemapmodel(const entities::classes::BaseEntity &e, int &anim, int &basetime);
 }
 
 namespace game

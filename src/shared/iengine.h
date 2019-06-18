@@ -40,12 +40,12 @@ enum // cube empty-space materials
 #define isclipped(mat) ((mat)==MAT_GLASS)
 #define isdeadly(mat) ((mat)==MAT_LAVA)
 
-extern void lightent(extentity &e, float height = 8.0f);
-extern void lightreaching(const vec &target, vec &color, vec &dir, bool fast = false, extentity *e = 0, float minambient = 0.4f);
+extern void lightent(entities::classes::BaseEntity &e, float height = 8.0f);
+extern void lightreaching(const vec &target, vec &color, vec &dir, bool fast = false, entities::classes::BaseEntity *e = 0, float minambient = 0.4f);
 
 enum { RAY_BB = 1, RAY_POLY = 3, RAY_ALPHAPOLY = 7, RAY_ENTS = 9, RAY_CLIPMAT = 16, RAY_SKIPFIRST = 32, RAY_EDITMAT = 64, RAY_SHADOW = 128, RAY_PASS = 256, RAY_SKIPSKY = 512 };
 
-extern float raycube   (const vec &o, const vec &ray,     float radius = 0, int mode = RAY_CLIPMAT, int size = 0, extentity *t = 0);
+extern float raycube   (const vec &o, const vec &ray,     float radius = 0, int mode = RAY_CLIPMAT, int size = 0, entities::classes::BaseEntity *t = 0);
 extern float raycubepos(const vec &o, const vec &ray, vec &hit, float radius = 0, int mode = RAY_CLIPMAT, int size = 0);
 extern float rayfloor  (const vec &o, vec &floor, int mode = 0, float radius = 0);
 extern bool  raycubelos(const vec &o, const vec &dest, vec &hitpos);
@@ -226,11 +226,11 @@ extern void mpeditent(int i, const vec &o, int type, int attr1, int attr2, int a
 extern vec getselpos();
 extern int getworldsize();
 extern int getmapversion();
-extern void renderentcone(const extentity &e, const vec &dir, float radius, float angle);
-extern void renderentarrow(const extentity &e, const vec &dir, float radius);
-extern void renderentattachment(const extentity &e);
-extern void renderentsphere(const extentity &e, float radius);
-extern void renderentring(const extentity &e, float radius, int axis = 0);
+extern void renderentcone(const entities::classes::BaseEntity &e, const vec &dir, float radius, float angle);
+extern void renderentarrow(const entities::classes::BaseEntity &e, const vec &dir, float radius);
+extern void renderentattachment(const entities::classes::BaseEntity &e);
+extern void renderentsphere(const entities::classes::BaseEntity &e, float radius);
+extern void renderentring(const entities::classes::BaseEntity &e, float radius, int axis = 0);
 
 // main
 extern void fatal(const char *s, ...) PRINTFARGS(1, 2);
@@ -408,7 +408,7 @@ enum
     SND_MAP = 1<<0
 };
 
-extern int playsound(int n, const vec *loc = NULL, extentity *ent = NULL, int flags = 0, int loops = 0, int fade = 0, int chanid = -1, int radius = 0, int expire = -1);
+extern int playsound(int n, const vec *loc = NULL, entities::classes::BaseEntity *ent = NULL, int flags = 0, int loops = 0, int fade = 0, int chanid = -1, int radius = 0, int expire = -1);
 extern int playsoundname(const char *s, const vec *loc = NULL, int vol = 0, int flags = 0, int loops = 0, int fade = 0, int chanid = -1, int radius = 0, int expire = -1);
 extern void preloadsound(int n);
 extern void preloadmapsound(int n);

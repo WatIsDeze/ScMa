@@ -35,12 +35,12 @@ namespace entities
     }
 
 #ifndef STANDALONE
-    vector<extentity *> ents;
+    vector<classes::BaseEntity *> ents;
 
-    vector<extentity *> &getents() { return ents; }
+    vector<classes::BaseEntity *> &getents() { return ents; }
 
-    bool mayattach(extentity &e) { return false; }
-    bool attachent(extentity &e, extentity &a) { return false; }
+    bool mayattach(classes::BaseEntity &e) { return false; }
+    bool attachent(classes::BaseEntity &e, classes::BaseEntity &a) { return false; }
 
     const char *itemname(int i)
     {
@@ -93,7 +93,11 @@ namespace entities
         }
         loopv(ents)
         {
-            extentity &e = *ents[i];
+            entities::classes::BaseEntity &e = *ents[i];
+            if (strcmp(e.classname, "playerstart") == 0) {
+                e.preload();
+            }
+
             switch(e.type)
             {
                 case TELEPORT:
@@ -111,7 +115,7 @@ namespace entities
     {
         loopv(ents)
         {
-            extentity &e = *ents[i];
+            entities::classes::BaseEntity &e = *ents[i];
             int revs = 10;
             switch(e.type)
             {
@@ -173,7 +177,7 @@ namespace entities
     {
         if(ents.inrange(tp) && ents[tp]->type == TELEPORT)
         {
-            extentity &e = *ents[tp];
+            entities::classes::BaseEntity &e = *ents[tp];
             if(e.attr4 >= 0)
             {
                 int snd = S_TELEPORT, flags = 0;
@@ -203,7 +207,7 @@ namespace entities
     {
         if(ents.inrange(jp) && ents[jp]->type == JUMPPAD)
         {
-            extentity &e = *ents[jp];
+            entities::classes::BaseEntity &e = *ents[jp];
             if(e.attr4 >= 0)
             {
                 int snd = S_JUMPPAD, flags = 0;
@@ -305,7 +309,7 @@ namespace entities
         vec o = d->feetpos();
         loopv(ents)
         {
-            extentity &e = *ents[i];
+            entities::classes::BaseEntity &e = *ents[i];
             if(e.type==NOTUSED) continue;
             if(!e.spawned() && e.type!=TELEPORT && e.type!=JUMPPAD) continue;
             float dist = e.o.dist(o);
@@ -337,17 +341,17 @@ namespace entities
     void setspawn(int i, bool on) { if(ents.inrange(i)) ents[i]->setspawned(on); }
 
     // Returns the entity class respectively according to its registered name.
-    extentity *newgameentity(char *strclass) {
+    entities::classes::BaseEntity *newgameentity(char *strclass) {
         if (strclass != NULL && strcmp(strclass, "playerstart") == 0) {
             conoutf("%s", "Found Playerstart");
             return new entities::classes::PlayerStart();
         } else {
-            return new gameentity();
+            return new entities::classes::BaseEntity();
         }
     }
     // Deletes the entity class in specific.
-    void deletegameentity(extentity *e) {
-        delete (gameentity *)e;
+    void deletegameentity(entities::classes::BaseEntity *e) {
+        delete (entities::classes::BaseEntity *)e;
     }
 
     // Deletes all game entities in the stack.
@@ -356,13 +360,13 @@ namespace entities
         while(ents.length()) deletegameentity(ents.pop());
     }
 
-    void animatemapmodel(const extentity &e, int &anim, int &basetime)
+    void animatemapmodel(const entities::classes::BaseEntity &e, int &anim, int &basetime)
     {
     }
 
     // Fixes entities, which mainly just mangles the attributes. I see little reason to keep this around...
     // TODO: Do we need this? Remove it?
-    void fixentity(extentity &e)
+    void fixentity(entities::classes::BaseEntity &e)
     {
         switch(e.type)
         {
@@ -418,7 +422,7 @@ namespace entities
 		}
 	});
 
-    void entradius(extentity &e, bool color)
+    void entradius(entities::classes::BaseEntity &e, bool color)
     {
         switch(e.type)
         {
@@ -445,7 +449,7 @@ namespace entities
         }
     }
 
-    bool printent(extentity &e, char *buf, int len)
+    bool printent(entities::classes::BaseEntity &e, char *buf, int len)
     {
         return false;
     }
@@ -473,7 +477,7 @@ namespace entities
 
     void editent(int i, bool local)
     {
-        extentity &e = *ents[i];
+        entities::classes::BaseEntity &e = *ents[i];
 
         edit_entity = i;
         conoutf("%i", i);

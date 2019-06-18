@@ -37,7 +37,7 @@ static inline void decalboundbox(const entity &e, DecalSlot &s, vec &center, vec
     rotatebb(center, radius, e.attr2, e.attr3, e.attr4);
 }
 
-bool getentboundingbox(const extentity &e, ivec &o, ivec &r)
+bool getentboundingbox(const entities::classes::BaseEntity &e, ivec &o, ivec &r)
 {
     switch(e.type)
     {
@@ -81,7 +81,7 @@ enum
     MODOE_CHANGED  = 1<<2
 };
 
-void modifyoctaentity(int flags, int id, extentity &e, cube *c, const ivec &cor, int size, const ivec &bo, const ivec &br, int leafsize, vtxarray *lastva = NULL)
+void modifyoctaentity(int flags, int id, entities::classes::BaseEntity &e, cube *c, const ivec &cor, int size, const ivec &bo, const ivec &br, int leafsize, vtxarray *lastva = NULL)
 {
     loopoctabox(cor, size, bo, br)
     {
@@ -141,7 +141,7 @@ void modifyoctaentity(int flags, int id, extentity &e, cube *c, const ivec &cor,
                     oe.bbmin.add(oe.size);
                     loopvj(oe.decals)
                     {
-                        extentity &e = *entities::getents()[oe.decals[j]];
+                        entities::classes::BaseEntity &e = *entities::getents()[oe.decals[j]];
                         ivec eo, er;
                         if(getentboundingbox(e, eo, er))
                         {
@@ -165,7 +165,7 @@ void modifyoctaentity(int flags, int id, extentity &e, cube *c, const ivec &cor,
                         oe.bbmin.add(oe.size);
                         loopvj(oe.mapmodels)
                         {
-                            extentity &e = *entities::getents()[oe.mapmodels[j]];
+                            entities::classes::BaseEntity &e = *entities::getents()[oe.mapmodels[j]];
                             ivec eo, er;
                             if(getentboundingbox(e, eo, er))
                             {
@@ -200,7 +200,7 @@ void modifyoctaentity(int flags, int id, extentity &e, cube *c, const ivec &cor,
 vector<int> outsideents;
 int spotlights = 0, volumetriclights = 0, nospeclights = 0;
 
-static bool modifyoctaent(int flags, int id, extentity &e)
+static bool modifyoctaent(int flags, int id, entities::classes::BaseEntity &e)
 {
     if(flags&MODOE_ADD ? e.flags&EF_OCTA : !(e.flags&EF_OCTA)) return false;
 
@@ -241,7 +241,7 @@ static bool modifyoctaent(int flags, int id, extentity &e)
 
 static inline bool modifyoctaent(int flags, int id)
 {
-    vector<extentity *> &ents = entities::getents();
+    vector<entities::classes::BaseEntity *> &ents = entities::getents();
     return ents.inrange(id) && modifyoctaent(flags, id, *ents[id]);
 }
 
@@ -268,17 +268,17 @@ void freeoctaentities(cube &c)
 
 void entitiesinoctanodes()
 {
-    vector<extentity *> &ents = entities::getents();
+    vector<entities::classes::BaseEntity *> &ents = entities::getents();
     loopv(ents) modifyoctaent(MODOE_ADD, i, *ents[i]);
 }
 
 static inline void findents(octaentities &oe, int low, int high, bool notspawned, const vec &pos, const vec &invradius, vector<int> &found)
 {
-    vector<extentity *> &ents = entities::getents();
+    vector<entities::classes::BaseEntity *> &ents = entities::getents();
     loopv(oe.other)
     {
         int id = oe.other[i];
-        extentity &e = *ents[id];
+        entities::classes::BaseEntity &e = *ents[id];
         if(e.type >= low && e.type <= high && (e.spawned() || notspawned) && vec(e.o).sub(pos).mul(invradius).squaredlen() <= 1) found.add(id);
     }
 }
@@ -400,7 +400,7 @@ void makeundoent()
     if(u) addundo(u);
 }
 
-void detachentity(extentity &e)
+void detachentity(entities::classes::BaseEntity &e)
 {
     if(!e.attached) return;
     e.attached->attached = NULL;
@@ -409,7 +409,7 @@ void detachentity(extentity &e)
 
 VAR(attachradius, 1, 100, 1000);
 
-void attachentity(extentity &e)
+void attachentity(entities::classes::BaseEntity &e)
 {
     switch(e.type)
     {
@@ -423,12 +423,12 @@ void attachentity(extentity &e)
 
     detachentity(e);
 
-    vector<extentity *> &ents = entities::getents();
+    vector<entities::classes::BaseEntity *> &ents = entities::getents();
     int closest = -1;
     float closedist = 1e10f;
     loopv(ents)
     {
-        extentity *a = ents[i];
+        entities::classes::BaseEntity *a = ents[i];
         if(a->attached) continue;
         switch(e.type)
         {
@@ -454,7 +454,7 @@ void attachentity(extentity &e)
 
 void attachentities()
 {
-    vector<extentity *> &ents = entities::getents();
+    vector<entities::classes::BaseEntity *> &ents = entities::getents();
     loopv(ents) attachentity(*ents[i]);
 }
 
@@ -462,7 +462,7 @@ void attachentities()
 // e         entity, currently edited ent
 // n         int,    index to currently edited ent
 #define addimplicit(f)    { if(entgroup.empty() && enthover>=0) { entadd(enthover); undonext = (enthover != oldhover); f; entgroup.drop(); } else f; }
-#define entfocusv(i, f, v){ int n = efocus = (i); if(n>=0) { extentity &e = *v[n]; f; } }
+#define entfocusv(i, f, v){ int n = efocus = (i); if(n>=0) { entities::classes::BaseEntity &e = *v[n]; f; } }
 #define entfocus(i, f)    entfocusv(i, f, entities::getents())
 #define enteditv(i, f, v) \
 { \
@@ -478,16 +478,16 @@ void attachentities()
     }, v); \
 }
 #define entedit(i, f)   enteditv(i, f, entities::getents())
-#define addgroup(exp)   { vector<extentity *> &ents = entities::getents(); loopv(ents) entfocusv(i, if(exp) entadd(n), ents); }
+#define addgroup(exp)   { vector<entities::classes::BaseEntity *> &ents = entities::getents(); loopv(ents) entfocusv(i, if(exp) entadd(n), ents); }
 #define setgroup(exp)   { entcancel(); addgroup(exp); }
-#define groupeditloop(f){ vector<extentity *> &ents = entities::getents(); entlooplevel++; int _ = efocus; loopv(entgroup) enteditv(entgroup[i], f, ents); efocus = _; entlooplevel--; }
+#define groupeditloop(f){ vector<entities::classes::BaseEntity *> &ents = entities::getents(); entlooplevel++; int _ = efocus; loopv(entgroup) enteditv(entgroup[i], f, ents); efocus = _; entlooplevel--; }
 #define groupeditpure(f){ if(entlooplevel>0) { entedit(efocus, f); } else { groupeditloop(f); commitchanges(); } }
 #define groupeditundo(f){ makeundoent(); groupeditpure(f); }
 #define groupedit(f)    { addimplicit(groupeditundo(f)); }
 
 vec getselpos()
 {
-    vector<extentity *> &ents = entities::getents();
+    vector<entities::classes::BaseEntity *> &ents = entities::getents();
     if(entgroup.length() && ents.inrange(entgroup[0])) return ents[entgroup[0]]->o;
     if(ents.inrange(enthover)) return ents[enthover]->o;
     return vec(sel.o);
@@ -508,7 +508,7 @@ undoblock *copyundoents(undoblock *u)
 void pasteundoent(int idx, const entity &ue)
 {
     if(idx < 0 || idx >= MAXENTS) return;
-    vector<extentity *> &ents = entities::getents();
+    vector<entities::classes::BaseEntity *> &ents = entities::getents();
     while(ents.length() < idx) ents.add(entities::newgameentity())->type = ET_EMPTY;
     int efocus = -1;
     entedit(idx, (entity &)e = ue);
@@ -620,7 +620,7 @@ void entdrag(const vec &ray)
 
 VAR(showentradius, 0, 1, 1);
 
-void renderentring(const extentity &e, float radius, int axis)
+void renderentring(const entities::classes::BaseEntity &e, float radius, int axis)
 {
     if(radius <= 0) return;
     gle::defvertex();
@@ -636,13 +636,13 @@ void renderentring(const extentity &e, float radius, int axis)
     xtraverts += gle::end();
 }
 
-void renderentsphere(const extentity &e, float radius)
+void renderentsphere(const entities::classes::BaseEntity &e, float radius)
 {
     if(radius <= 0) return;
     loopk(3) renderentring(e, radius, k);
 }
 
-void renderentattachment(const extentity &e)
+void renderentattachment(const entities::classes::BaseEntity &e)
 {
     if(!e.attached) return;
     gle::defvertex();
@@ -652,7 +652,7 @@ void renderentattachment(const extentity &e)
     xtraverts += gle::end();
 }
 
-void renderentarrow(const extentity &e, const vec &dir, float radius)
+void renderentarrow(const entities::classes::BaseEntity &e, const vec &dir, float radius)
 {
     if(radius <= 0) return;
     float arrowsize = min(radius/8, 0.5f);
@@ -674,7 +674,7 @@ void renderentarrow(const extentity &e, const vec &dir, float radius)
     xtraverts += gle::end();
 }
 
-void renderentcone(const extentity &e, const vec &dir, float radius, float angle)
+void renderentcone(const entities::classes::BaseEntity &e, const vec &dir, float radius, float angle)
 {
     if(radius <= 0) return;
     vec spot = vec(dir).mul(radius*cosf(angle*RAD)).add(e.o), spoke;
@@ -697,7 +697,7 @@ void renderentcone(const extentity &e, const vec &dir, float radius, float angle
     xtraverts += gle::end();
 }
 
-void renderentbox(const extentity &e, const vec &center, const vec &radius, int yaw, int pitch, int roll)
+void renderentbox(const entities::classes::BaseEntity &e, const vec &center, const vec &radius, int yaw, int pitch, int roll)
 {
     matrix4x3 orient;
     orient.identity();
@@ -738,7 +738,7 @@ void renderentbox(const extentity &e, const vec &center, const vec &radius, int 
     xtraverts += gle::end();
 }
 
-void renderentradius(extentity &e, bool color)
+void renderentradius(entities::classes::BaseEntity &e, bool color)
 {
     switch(e.type)
     {
@@ -1056,9 +1056,9 @@ COMMAND(attachent, "");
 
 static int keepents = 0;
 
-extentity *newentity(bool local, const vec &o, int type, int v1, int v2, int v3, int v4, int v5, int &idx, bool fix = true)
+entities::classes::BaseEntity *newentity(bool local, const vec &o, int type, int v1, int v2, int v3, int v4, int v5, int &idx, bool fix = true)
 {
-    vector<extentity *> &ents = entities::getents();
+    vector<entities::classes::BaseEntity *> &ents = entities::getents();
 
     // If local, we ensure it is not out of bounds, if it is, we return NULL and warn our player.
     if(local)
@@ -1072,7 +1072,7 @@ extentity *newentity(bool local, const vec &o, int type, int v1, int v2, int v3,
         }
     }
 
-    extentity &e = *entities::newgameentity();
+    entities::classes::BaseEntity &e = *entities::newgameentity();
     e.o = o;
     e.attr1 = v1;
     e.attr2 = v2;
@@ -1114,7 +1114,7 @@ extentity *newentity(bool local, const vec &o, int type, int v1, int v2, int v3,
 void newentity(int type, int a1, int a2, int a3, int a4, int a5, bool fix = true)
 {
     int idx;
-    extentity *t = newentity(true, player->o, type, a1, a2, a3, a4, a5, idx, fix);
+    entities::classes::BaseEntity *t = newentity(true, player->o, type, a1, a2, a3, a4, a5, idx, fix);
     if(!t) return;
     dropentity(*t);
     t->type = ET_EMPTY;
@@ -1135,9 +1135,9 @@ void newent(char *what, int *a1, int *a2, int *a3, int *a4, int *a5)
 // WatIs: Game entity creation.
 #include "../game/game.h"
 
-extentity *new_game_entity(bool local, const vec &o, int &idx, bool fix = true, char *strclass = NULL)
+entities::classes::BaseEntity *new_game_entity(bool local, const vec &o, int &idx, bool fix = true, char *strclass = NULL)
 {
-    vector<extentity *> &ents = entities::getents();
+    vector<entities::classes::BaseEntity *> &ents = entities::getents();
 
     // If local, we ensure it is not out of bounds, if it is, we return NULL and warn our player.
     if(local)
@@ -1151,7 +1151,7 @@ extentity *new_game_entity(bool local, const vec &o, int &idx, bool fix = true, 
         }
     }
 
-    extentity &e = *entities::newgameentity(strclass);
+    entities::classes::BaseEntity &e = *entities::newgameentity(strclass);
     e.o = o;
     e.attr1 = 0;
     e.attr2 = 0;
@@ -1195,7 +1195,7 @@ extentity *new_game_entity(bool local, const vec &o, int &idx, bool fix = true, 
 void new_game_entity(char *strclass, char *a1, char *a2, char *a3, char *a4, char *a5, char *a6, char *a7, char *a8, bool fix = true)
 {
     int idx;
-    extentity *t = new_game_entity(true, player->o, idx, fix, strclass);
+    entities::classes::BaseEntity *t = new_game_entity(true, player->o, idx, fix, strclass);
     if(!t) return;
     dropentity(*t);
     t->type = ET_EMPTY; // Why would we want this here if we set e.type later
@@ -1257,7 +1257,7 @@ void entpaste()
         const entity &c = entcopybuf[i];
         vec o = vec(c.o).mul(m).add(vec(sel.o));
         int idx;
-        extentity *e = newentity(true, o, ET_EMPTY, c.attr1, c.attr2, c.attr3, c.attr4, c.attr5, idx);
+        entities::classes::BaseEntity *e = newentity(true, o, ET_EMPTY, c.attr1, c.attr2, c.attr3, c.attr4, c.attr5, idx);
         if(!e) continue;
         entadd(idx);
         keepents = max(keepents, idx+1);
@@ -1308,7 +1308,7 @@ void entset(char *what, int *a1, int *a2, int *a3, int *a4, int *a5)
                   e.attr5=*a5);
 }
 
-void printent(extentity &e, char *buf, int len)
+void printent(entities::classes::BaseEntity &e, char *buf, int len)
 {
     switch(e.type)
     {
@@ -1328,10 +1328,10 @@ void nearestent()
     if(noentedit()) return;
     int closest = -1;
     float closedist = 1e16f;
-    vector<extentity *> &ents = entities::getents();
+    vector<entities::classes::BaseEntity *> &ents = entities::getents();
     loopv(ents)
     {
-        extentity &e = *ents[i];
+        entities::classes::BaseEntity &e = *ents[i];
         if(e.type == ET_EMPTY) continue;
         float dist = e.o.dist(player->o);
         if(dist < closedist)
@@ -1400,17 +1400,17 @@ COMMAND(entattr, "iiN");
 // TODO: Is this still needed?
 int findentity(int type, int index, int attr1, int attr2)
 {
-    const vector<extentity *> &ents = entities::getents();
+    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     if(index > ents.length()) index = ents.length();
     else for(int i = index; i<ents.length(); i++)
     {
-        extentity &e = *ents[i];
+        entities::classes::BaseEntity &e = *ents[i];
         if(e.type==type && (attr1<0 || e.attr1==attr1) && (attr2<0 || e.attr2==attr2))
             return i;
     }
     loopj(index)
     {
-        extentity &e = *ents[j];
+        entities::classes::BaseEntity &e = *ents[j];
         if(e.type==type && (attr1<0 || e.attr1==attr1) && (attr2<0 || e.attr2==attr2))
             return j;
     }
@@ -1469,20 +1469,20 @@ int spawncycle = -1;
 //        entinmap(d);
 //    }
 //}
-int findentity_byclass(char *strclass, int index, int attr1, int attr2)
+int findentity_byclass(const char *strclass, int index, int attr1, int attr2)
 {
-    const vector<extentity *> &ents = entities::getents();
+    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     if(index > ents.length()) index = ents.length();
     else for(int i = index; i<ents.length(); i++)
     {
-        extentity *e = ents[i];
-        if(strcmp(strclass, ((gameentity*)e)->classname))
+        entities::classes::BaseEntity *e = ents[i];
+        if(strcmp(strclass, e->classname) == 0)
             return i;
     }
     loopj(index)
     {
-        extentity *e = ents[j];
-        if(strcmp(strclass, ((gameentity*)e)->classname))
+        entities::classes::BaseEntity *e = ents[j];
+        if(strcmp(strclass, e->classname) == 0)
             return j;
     }
     return -1;
@@ -1513,7 +1513,7 @@ void findplayerspawn(dynent *d, int forceent, int tag) // place at random spawn
     }
     if(pick>=0)
     {
-        const vector<extentity *> &ents = entities::getents();
+        const vector<entities::classes::BaseEntity *> &ents = entities::getents();
         d->pitch = 0;
         d->roll = 0;
         for(int attempt = pick;;)
@@ -1672,7 +1672,7 @@ void shrinkmap()
     worldsize /= 2;
 
     ivec offset(octant, ivec(0, 0, 0), worldsize);
-    vector<extentity *> &ents = entities::getents();
+    vector<entities::classes::BaseEntity *> &ents = entities::getents();
     loopv(ents) ents[i]->o.sub(vec(offset));
 
     shrinkblendmap(octant);
@@ -1698,17 +1698,17 @@ COMMAND(mapname, "");
 void mpeditent(int i, const vec &o, int type, int attr1, int attr2, int attr3, int attr4, int attr5, bool local)
 {
     if(i < 0 || i >= MAXENTS) return;
-    vector<extentity *> &ents = entities::getents();
+    vector<entities::classes::BaseEntity *> &ents = entities::getents();
     if(ents.length()<=i)
     {
-        extentity *e = newentity(local, o, type, attr1, attr2, attr3, attr4, attr5, i);
+        entities::classes::BaseEntity *e = newentity(local, o, type, attr1, attr2, attr3, attr4, attr5, i);
         if(!e) return;
         addentityedit(i);
         attachentity(*e);
     }
     else
     {
-        extentity &e = *ents[i];
+        entities::classes::BaseEntity &e = *ents[i];
         removeentityedit(i);
         int oldtype = e.type;
         if(oldtype!=type) detachentity(e);

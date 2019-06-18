@@ -1569,7 +1569,7 @@ struct lightinfo
         if(spot > 0) calcspot();
         calcscissor();
     }
-    lightinfo(int i, const extentity &e)
+    lightinfo(int i, const entities::classes::BaseEntity &e)
       : ent(i), shadowmap(-1), flags(e.attr5),
         o(e.o), color(vec(e.attr2, e.attr3, e.attr4).max(0)), radius(e.attr1), dist(camera1->o.dist(e.o)),
         dir(0, 0, 0), spot(0), query(NULL)
@@ -3416,14 +3416,14 @@ VAR(debuglightscissor, 0, 0, 1);
 
 void viewlightscissor()
 {
-    vector<extentity *> &ents = entities::getents();
+    vector<entities::classes::BaseEntity *> &ents = entities::getents();
     gle::defvertex(2);
     loopv(entgroup)
     {
         int idx = entgroup[i];
         if(ents.inrange(idx) && ents[idx]->type == ET_LIGHT)
         {
-            extentity &e = *ents[idx];
+            entities::classes::BaseEntity &e = *ents[idx];
             loopvj(lights) if(lights[j].o == e.o)
             {
                 lightinfo &l = lights[j];
@@ -3447,10 +3447,10 @@ void collectlights()
     if(lights.length()) return;
 
     // point lights processed here
-    const vector<extentity *> &ents = entities::getents();
+    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     if(!editmode || !fullbright) loopv(ents)
     {
-        const extentity *e = ents[i];
+        const entities::classes::BaseEntity *e = ents[i];
         if(e->type != ET_LIGHT || e->attr1 <= 0) continue;
 
         if(smviscull)
@@ -4288,7 +4288,7 @@ void rendercsmshadowmaps()
     }
 }
 
-int calcshadowinfo(const extentity &e, vec &origin, float &radius, vec &spotloc, int &spotangle, float &bias)
+int calcshadowinfo(const entities::classes::BaseEntity &e, vec &origin, float &radius, vec &spotloc, int &spotangle, float &bias)
 {
     if(e.attr5&L_NOSHADOW || e.attr1 <= smminradius) return SM_NONE;
 
@@ -4347,14 +4347,14 @@ void rendershadowmaps(int offset = 0)
 
     glEnable(GL_SCISSOR_TEST);
 
-    const vector<extentity *> &ents = entities::getents();
+    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     for(int i = offset; i < shadowmaps.length(); i++)
     {
         shadowmapinfo &sm = shadowmaps[i];
         if(sm.light < 0) continue;
 
         lightinfo &l = lights[sm.light];
-        extentity *e = l.ent >= 0 ? ents[l.ent] : NULL;
+        entities::classes::BaseEntity *e = l.ent >= 0 ? ents[l.ent] : NULL;
 
         int border, sidemask;
         if(l.spot)

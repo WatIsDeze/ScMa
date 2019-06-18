@@ -412,7 +412,7 @@ namespace ai
         }
     }
 
-    static void tryitem(gameent *d, extentity &e, int id, aistate &b, vector<interest> &interests, bool force = false)
+    static void tryitem(gameent *d, entities::classes::BaseEntity &e, int id, aistate &b, vector<interest> &interests, bool force = false)
     {
         float score = 0;
         switch(e.type)
@@ -433,7 +433,7 @@ namespace ai
     {
         loopv(entities::ents)
         {
-            extentity &e = *(extentity *)entities::ents[i];
+            entities::classes::BaseEntity &e = *(entities::classes::BaseEntity *)entities::ents[i];
             if(!e.spawned() || !d->canpickup(e.type)) continue;
             tryitem(d, e, i, b, interests, force);
         }
@@ -574,7 +574,7 @@ namespace ai
     void itemspawned(int ent)
     {
         if(!entities::ents.inrange(ent)) return;
-        extentity &e = *entities::ents[ent];
+        entities::classes::BaseEntity &e = *entities::ents[ent];
         if(validitem(e.type))
         {
             loopv(players) if(players[i] && players[i]->ai && players[i]->aitype == AI_BOT && players[i]->canpickup(e.type))
@@ -667,7 +667,7 @@ namespace ai
             case AI_T_ENTITY:
                 if(entities::ents.inrange(b.target))
                 {
-                    extentity &e = *(extentity *)entities::ents[b.target];
+                    entities::classes::BaseEntity &e = *(entities::classes::BaseEntity *)entities::ents[b.target];
                     if(!e.spawned() || !validitem(e.type)) return 0;
                     //if(d->feetpos().squaredist(e.o) <= CLOSEDIST*CLOSEDIST)
                     //{

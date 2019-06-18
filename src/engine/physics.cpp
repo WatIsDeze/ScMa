@@ -128,17 +128,17 @@ extern void entselectionbox(const entity &e, vec &eo, vec &es);
 float hitentdist;
 int hitent, hitorient;
 
-static float disttoent(octaentities *oc, const vec &o, const vec &ray, float radius, int mode, extentity *t)
+static float disttoent(octaentities *oc, const vec &o, const vec &ray, float radius, int mode, entities::classes::BaseEntity *t)
 {
     vec eo, es;
     int orient = -1;
     float dist = radius, f = 0.0f;
-    const vector<extentity *> &ents = entities::getents();
+    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
 
     #define entintersect(type, func) do { \
         loopv(oc->type) \
         { \
-            extentity &e = *ents[oc->type[i]]; \
+            entities::classes::BaseEntity &e = *ents[oc->type[i]]; \
             if(!(e.flags&EF_OCTA) || &e==t) continue; \
             func; \
             if(f<dist && f>0 && vec(ray).mul(f).add(o).insidebb(oc->o, oc->size)) \
@@ -170,15 +170,15 @@ static float disttoent(octaentities *oc, const vec &o, const vec &ray, float rad
     return dist;
 }
 
-static float disttooutsideent(const vec &o, const vec &ray, float radius, int mode, extentity *t)
+static float disttooutsideent(const vec &o, const vec &ray, float radius, int mode, entities::classes::BaseEntity *t)
 {
     vec eo, es;
     int orient;
     float dist = radius, f = 0.0f;
-    const vector<extentity *> &ents = entities::getents();
+    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     loopv(outsideents)
     {
-        extentity &e = *ents[outsideents[i]];
+        entities::classes::BaseEntity &e = *ents[outsideents[i]];
         if(!(e.flags&EF_OCTA) || &e == t) continue;
         entselectionbox(e, eo, es);
         if(!rayboxintersect(eo, es, o, ray, f, orient)) continue;
@@ -193,13 +193,13 @@ static float disttooutsideent(const vec &o, const vec &ray, float radius, int mo
 }
 
 // optimized shadow version
-static float shadowent(octaentities *oc, const vec &o, const vec &ray, float radius, int mode, extentity *t)
+static float shadowent(octaentities *oc, const vec &o, const vec &ray, float radius, int mode, entities::classes::BaseEntity *t)
 {
     float dist = radius, f = 0.0f;
-    const vector<extentity *> &ents = entities::getents();
+    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     loopv(oc->mapmodels)
     {
-        extentity &e = *ents[oc->mapmodels[i]];
+        entities::classes::BaseEntity &e = *ents[oc->mapmodels[i]];
         if(!(e.flags&EF_OCTA) || &e==t) continue;
         if(!mmintersect(e, o, ray, radius, mode, f)) continue;
         if(f>0 && f<dist) dist = f;
@@ -283,7 +283,7 @@ static float shadowent(octaentities *oc, const vec &o, const vec &ray, float rad
             diff >>= 1; \
         } while(diff);
 
-float raycube(const vec &o, const vec &ray, float radius, int mode, int size, extentity *t)
+float raycube(const vec &o, const vec &ray, float radius, int mode, int size, entities::classes::BaseEntity *t)
 {
     if(ray.iszero()) return 0;
 
@@ -341,7 +341,7 @@ float raycube(const vec &o, const vec &ray, float radius, int mode, int size, ex
 }
 
 // optimized version for light shadowing... every cycle here counts!!!
-float shadowray(const vec &o, const vec &ray, float radius, int mode, extentity *t)
+float shadowray(const vec &o, const vec &ray, float radius, int mode, entities::classes::BaseEntity *t)
 {
     INITRAYCUBE;
     CHECKINSIDEWORLD;
@@ -671,7 +671,7 @@ void rotatebb(vec &center, vec &radius, int yaw, int pitch, int roll)
 }
 
 template<class E, class M>
-static inline bool mmcollide(physent *d, const vec &dir, const extentity &e, const vec &center, const vec &radius, int yaw, int pitch, int roll)
+static inline bool mmcollide(physent *d, const vec &dir, const entities::classes::BaseEntity &e, const vec &center, const vec &radius, int yaw, int pitch, int roll)
 {
     E entvol(d);
     M mdlvol(e.o, center, radius, yaw, pitch, roll);
@@ -800,10 +800,10 @@ VAR(testtricol, 0, 0, 2);
 
 bool mmcollide(physent *d, const vec &dir, float cutoff, octaentities &oc) // collide with a mapmodel
 {
-    const vector<extentity *> &ents = entities::getents();
+    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     loopv(oc.mapmodels)
     {
-        extentity &e = *ents[oc.mapmodels[i]];
+        entities::classes::BaseEntity &e = *ents[oc.mapmodels[i]];
         if(e.flags&EF_NOCOLLIDE || !mapmodels.inrange(e.attr1)) continue;
         mapmodelinfo &mmi = mapmodels[e.attr1];
         model *m = mmi.collide;

@@ -275,7 +275,7 @@ void clearlightcache(int id)
 {
     if(id >= 0)
     {
-        const extentity &light = *entities::getents()[id];
+        const entities::classes::BaseEntity &light = *entities::getents()[id];
         int radius = light.attr1;
         if(radius <= 0) return;
         for(int x = int(max(light.o.x-radius, 0.0f))>>lightcachesize, ex = int(min(light.o.x+radius, worldsize-1.0f))>>lightcachesize; x <= ex; x++)
@@ -305,10 +305,10 @@ const vector<int> &checklightcache(int x, int y)
 
     lce.lights.setsize(0);
     int csize = 1<<lightcachesize, cx = x<<lightcachesize, cy = y<<lightcachesize;
-    const vector<extentity *> &ents = entities::getents();
+    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     loopv(ents)
     {
-        const extentity &light = *ents[i];
+        const entities::classes::BaseEntity &light = *ents[i];
         switch(light.type)
         {
             case ET_LIGHT:
@@ -629,7 +629,7 @@ void initlights()
     loaddeferredlightshaders();
 }
 
-void lightreaching(const vec &target, vec &color, vec &dir, bool fast, extentity *t, float minambient)
+void lightreaching(const vec &target, vec &color, vec &dir, bool fast, entities::classes::BaseEntity *t, float minambient)
 {
     if(fullbright && editmode)
     {
@@ -639,11 +639,11 @@ void lightreaching(const vec &target, vec &color, vec &dir, bool fast, extentity
     }
 
     color = dir = vec(0, 0, 0);
-    const vector<extentity *> &ents = entities::getents();
+    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     const vector<int> &lights = checklightcache(int(target.x), int(target.y));
     loopv(lights)
     {
-        extentity &e = *ents[lights[i]];
+        entities::classes::BaseEntity &e = *ents[lights[i]];
         if(e.type != ET_LIGHT || e.attr1 <= 0)
             continue;
 

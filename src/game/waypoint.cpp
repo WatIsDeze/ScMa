@@ -613,7 +613,7 @@ namespace ai
         if(waypoints.empty()) addwaypoint(vec(0, 0, 0));
         loopv(entities::ents)
         {
-            extentity &e = *entities::ents[i];
+            entities::classes::BaseEntity &e = *entities::ents[i];
             switch(e.type)
             {
                 case PLAYERSTART: case TELEPORT: case JUMPPAD: case FLAG:

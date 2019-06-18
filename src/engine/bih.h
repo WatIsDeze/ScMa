@@ -89,5 +89,5 @@ struct BIH
     void preload();
 };
 
-extern bool mmintersect(const extentity &e, const vec &o, const vec &ray, float maxdist, int mode, float &dist);
+extern bool mmintersect(const entities::classes::BaseEntity &e, const vec &o, const vec &ray, float maxdist, int mode, float &dist);
 

@@ -308,7 +308,7 @@ BIH::~BIH()
     delete[] tribbs;
 }
 
-bool mmintersect(const extentity &e, const vec &o, const vec &ray, float maxdist, int mode, float &dist)
+bool mmintersect(const entities::classes::BaseEntity &e, const vec &o, const vec &ray, float maxdist, int mode, float &dist)
 {
     model *m = loadmapmodel(e.attr1);
     if(!m) return false;

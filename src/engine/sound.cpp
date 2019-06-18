@@ -50,7 +50,7 @@ struct soundchannel
     bool inuse;
     vec loc;
     soundslot *slot;
-    extentity *ent;
+    entities::classes::BaseEntity *ent;
     int radius, volume, pan, flags;
     bool dirty;
 
@@ -75,7 +75,7 @@ struct soundchannel
 vector<soundchannel> channels;
 int maxchannels = 0;
 
-soundchannel &newchannel(int n, soundslot *slot, const vec *loc = NULL, extentity *ent = NULL, int flags = 0, int radius = 0)
+soundchannel &newchannel(int n, soundslot *slot, const vec *loc = NULL, entities::classes::BaseEntity *ent = NULL, int flags = 0, int radius = 0)
 {
     if(ent)
     {
@@ -446,7 +446,7 @@ void clearmapsounds()
     mapsounds.clear();
 }
 
-void stopmapsound(extentity *e)
+void stopmapsound(entities::classes::BaseEntity *e)
 {
     loopv(channels)
     {
@@ -461,10 +461,10 @@ void stopmapsound(extentity *e)
 
 void checkmapsounds()
 {
-    const vector<extentity *> &ents = entities::getents();
+    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     loopv(ents)
     {
-        extentity &e = *ents[i];
+        entities::classes::BaseEntity &e = *ents[i];
         if(e.type!=ET_SOUND) continue;
         if(camera1->o.dist(e.o) < e.attr2)
         {
@@ -566,15 +566,15 @@ void preloadmapsound(int n)
 
 void preloadmapsounds()
 {
-    const vector<extentity *> &ents = entities::getents();
+    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     loopv(ents)
     {
-        extentity &e = *ents[i];
+        entities::classes::BaseEntity &e = *ents[i];
         if(e.type==ET_SOUND) mapsounds.preloadsound(e.attr1);
     }
 }
 
-int playsound(int n, const vec *loc, extentity *ent, int flags, int loops, int fade, int chanid, int radius, int expire)
+int playsound(int n, const vec *loc, entities::classes::BaseEntity *ent, int flags, int loops, int fade, int chanid, int radius, int expire)
 {
     if(nosound || !soundvol || minimized) return -1;
 
