@@ -13,7 +13,7 @@ BaseEntity::~BaseEntity() {
 }
 
 void BaseEntity::preload() {
-    conoutf("%s", "Preloading playerstart entity");
+    conoutf("%s", "Preloading base entity");
 }
 
 void BaseEntity::think() {
