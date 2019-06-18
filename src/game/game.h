@@ -78,14 +78,6 @@ enum                            // static entity types
     I_LAST = -1
 };
 
-struct testentity : gameentity {
-    testentity() : gameentity() {
-        strcpy(str_attr1, "Test Ent Attr1");
-        strcpy(str_attr2, "Test Ent Attr2");
-        strcpy(str_attr3, "Test Ent Attr3");
-    }
-};
-
 enum { GUN_RAIL = 0, GUN_PULSE, NUMGUNS };
 enum { ACT_IDLE = 0, ACT_SHOOT, ACT_MELEE, NUMACTS };
 enum { ATK_RAIL_SHOOT = 0, ATK_RAIL_MELEE, ATK_PULSE_SHOOT, ATK_PULSE_MELEE, NUMATKS };

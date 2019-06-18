@@ -875,7 +875,7 @@ namespace ai
                 float radius = 18*18;
                 loopv(entities::ents) if(entities::ents[i]->type == JUMPPAD)
                 {
-                    gameentity &e = *(gameentity *)entities::ents[i];
+                    entities::classes::BaseEntity &e = *(entities::classes::BaseEntity *)entities::ents[i];
                     if(e.o.squaredist(pos) <= radius) { jump = false; break; }
                 }
             }

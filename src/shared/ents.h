@@ -15,7 +15,6 @@ public:
     short attr1, attr2, attr3, attr4, attr5;
     uchar type;                                 // type is one of the above (The enumerator is what they meant.)
     uchar reserved;
-
 };
 
 enum
@@ -32,66 +31,41 @@ enum
 
 };
 
-class extentity : public entity                       // part of the entity that doesn't get saved to disk
-{
-public:
-    int flags;
-
-    extentity() : entity(), flags(0) {}
-    virtual ~extentity() {}
-
-    bool spawned() const { return (flags&EF_SPAWNED) != 0; }
-    void setspawned(bool val) { if(val) flags |= EF_SPAWNED; else flags &= ~EF_SPAWNED; }
-    void setspawned() { flags |= EF_SPAWNED; }
-    void clearspawned() { flags &= ~EF_SPAWNED; }
-};
-
-// TODO: Is this still needed? May as well go class BaseEntity : public extentity and add the members in there.
-// Defined here, for several reasons, since it it is our base for BaseEntity.
-class gameentity : public extentity
-{
-public:
-    char classname[256];
-
-    char str_attr1[256];
-    char str_attr2[256];
-    char str_attr3[256];
-    char str_attr4[256];
-    char str_attr5[256];
-    char str_attr6[256];
-    char str_attr7[256];
-    char str_attr8[256];
-
-    gameentity() : extentity() {
-        memset(classname, 0, 256);
-        memset(str_attr1, 0, 256);
-        memset(str_attr2, 0, 256);
-        memset(str_attr3, 0, 256);
-        memset(str_attr4, 0, 256);
-        memset(str_attr5, 0, 256);
-        memset(str_attr6, 0, 256);
-        memset(str_attr7, 0, 256);
-        memset(str_attr8, 0, 256);
-    }
-    virtual ~gameentity() {}
-};
 
 // Defined here, for several reasons, since it has to replace good ol' extentity.
 namespace entities
 {
     namespace classes {
-        class BaseEntity : public gameentity {
+        class BaseEntity : public entity {
         public:
-
-            // Relocated from extentity to this class, temporarily.
-            // TODO: Maybe replace extentity with baseentity...
-            BaseEntity *attached;
-
             BaseEntity();
             virtual ~BaseEntity();
 
             virtual void preload();
             virtual void think();
+
+        // Taken from what was, gameentity.
+        public:
+            char classname[256];
+
+            char str_attr1[256];
+            char str_attr2[256];
+            char str_attr3[256];
+            char str_attr4[256];
+            char str_attr5[256];
+            char str_attr6[256];
+            char str_attr7[256];
+            char str_attr8[256];
+
+        // Taken from the old "extentity".
+        public:
+            int flags;
+            BaseEntity *attached;
+
+            bool spawned() const { return (flags&EF_SPAWNED) != 0; }
+            void setspawned(bool val) { if(val) flags |= EF_SPAWNED; else flags &= ~EF_SPAWNED; }
+            void setspawned() { flags |= EF_SPAWNED; }
+            void clearspawned() { flags &= ~EF_SPAWNED; }
 
         private:
 

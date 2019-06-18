@@ -1201,15 +1201,15 @@ void new_game_entity(char *strclass, char *a1, char *a2, char *a3, char *a4, cha
     t->type = ET_EMPTY; // Why would we want this here if we set e.type later
 
     // Copy string attributes.
-    copycubestr(((gameentity*)t)->classname, strclass, 256);
-    copycubestr(((gameentity*)t)->str_attr1, a1, 256);
-    copycubestr(((gameentity*)t)->str_attr2, a2, 256);
-    copycubestr(((gameentity*)t)->str_attr3, a3, 256);
-    copycubestr(((gameentity*)t)->str_attr4, a4, 256);
-    copycubestr(((gameentity*)t)->str_attr5, a5, 256);
-    copycubestr(((gameentity*)t)->str_attr6, a6, 256);
-    copycubestr(((gameentity*)t)->str_attr7, a7, 256);
-    copycubestr(((gameentity*)t)->str_attr8, a8, 256);
+    copycubestr(t->classname, strclass, 256);
+    copycubestr(t->str_attr1, a1, 256);
+    copycubestr(t->str_attr2, a2, 256);
+    copycubestr(t->str_attr3, a3, 256);
+    copycubestr(t->str_attr4, a4, 256);
+    copycubestr(t->str_attr5, a5, 256);
+    copycubestr(t->str_attr6, a6, 256);
+    copycubestr(t->str_attr7, a7, 256);
+    copycubestr(t->str_attr8, a8, 256);
 
     t->type = GAMEENTITY;
 
