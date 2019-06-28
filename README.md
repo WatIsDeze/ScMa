@@ -2,28 +2,7 @@
 SchizoMania game, using Tesseract engine.
 
 Although it is using Tesseract as a base, it does not refrain from heavily modifying parts that need a change.
-Feel free to join in on this project, which is best done for now by just hacking away at one of the things in the todo lists below.
-
-# New features so far for Alpha 0.0.1:
-- Command: ent_set_attr str_arg1 str_arg2 str_arg3 str_arg4 str_arg5 str_arg6 str_arg7 str_arg8
-- Command: ent_get_attr, this will output the string arguments as is.
-
-# TODO ENGINE Alpha 0.0.1:
-- Fix adding entity so newgent can become newent in world.cpp, currently this function has been added to add string support.
-
-- Add support for footstep audio based on material/texture type.
-- Add support for flickering light entities.
-- Add doors. (This is done by movable to my understanding, the code is partially there, it seems that the missing link is the mapmodel command not accepting integers anymore.)
-- Allow for 64 bots, maybe even more, so we can use these for AI. Otherwise, reimplement AI like in Cube 2, and work from there.
-
-# TODO GAME Alpha 0.0.1:
-- Create a basic test map.
-- Allow for the possibility of reloading a weapon.
-- Add a knife melee weapon.
-- Add a pellet gun single shot rifle.
-- Add a pellet gun machinegun.
-- Create a basic inventory for weapon switching and item management.
-- Create a basic dialogue entity.
+Feel free to join in on this project, which is best done for now by just hacking away at one of the things found in the todo list located in CHANGES.md
 
 # Useful Map Editing commands:
 - Must DO:

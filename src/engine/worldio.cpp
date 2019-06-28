@@ -70,7 +70,7 @@ static bool loadmapheader(stream *f, const char *ogzname, mapheader &hdr, octahe
 
 bool loadents(const char *fname, vector<entity> &ents, uint *crc)
 {
-    cubestr name;
+/*    cubestr name;
     validmapname(name, fname);
     defformatcubestr(ogzname, "media/map/%s.ogz", name);
     path(ogzname);
@@ -137,7 +137,7 @@ bool loadents(const char *fname, vector<entity> &ents, uint *crc)
 
     delete f;
 
-    return true;
+    return true;*/
 }
 
 #ifndef STANDALONE
@@ -657,7 +657,7 @@ bool save_world(const char *mname, bool nolms)
 
     f->putchar((int)strlen(game::gameident()));
     f->write(game::gameident(), (int)strlen(game::gameident())+1);
-    f->putlil<ushort>(entities::extraentinfosize());
+    //f->putlil<ushort>(entities::extraentinfosize());
     vector<char> extras;
     game::writegamedata(extras);
     f->putlil<ushort>(extras.length());
@@ -665,7 +665,6 @@ bool save_world(const char *mname, bool nolms)
 
     f->putlil<ushort>(texmru.length());
     loopv(texmru) f->putlil<ushort>(texmru[i]);
-    char *ebuf = new char[entities::extraentinfosize()];
 
     // JSON Entity storage.
     json j;
@@ -677,9 +676,6 @@ bool save_world(const char *mname, bool nolms)
             entities::classes::BaseEntity tmp = *ents[i];
             lilswap(&tmp.o.x, 3);
             lilswap(&tmp.attr1, 5);
-            //f->write(&tmp, sizeof(entity));
-            //entities::writeent(*ents[i], ebuf);
-            //if(entities::extraentinfosize()) f->write(ebuf, entities::extraentinfosize());
 
             // These are the default attributes, the old-school ones which are still used here and there in the engine.
             j[i]["type"] = tmp.type;
@@ -707,7 +703,6 @@ bool save_world(const char *mname, bool nolms)
             }
         }
     }
-    delete[] ebuf;
 
     // Generate JSON Entity filename.
     defformatcubestr(jsonname, "media/map/%s.json", mname);
@@ -835,11 +830,6 @@ bool load_world(const char *mname, const char *cname)        // still supports a
         conoutf(CON_WARN, "WARNING: loading map from %s game, ignoring entities except for lights/mapmodels", gametype);
     }
     int eif = f->getlil<ushort>();
-    int extrasize = f->getlil<ushort>();
-    vector<char> extras;
-    f->read(extras.pad(extrasize), extrasize);
-    if(samegame) game::readgamedata(extras);
-
     texmru.shrink(0);
     ushort nummru = f->getlil<ushort>();
     loopi(nummru) texmru.add(f->getlil<ushort>());
@@ -906,42 +896,6 @@ bool load_world(const char *mname, const char *cname)        // still supports a
         }
         //std::cout << element << '\n';
     }
-
-//    vector<extentity *> &ents = entities::getents();
-//    int einfosize = entities::extraentinfosize();
-//    char *ebuf = einfosize > 0 ? new char[einfosize] : NULL;
-
-    loopi(min(hdr.numents, MAXENTS))
-    {
-//        extentity &e = *entities::newgameentity();
-//        ents.add(&e);
-//        f->read(&e, sizeof(entity));
-//        lilswap(&e.o.x, 3);
-//        lilswap(&e.attr1, 5);
-//        fixent(e, hdr.version);
-//        if(samegame)
-//        {
-//            if(einfosize > 0) f->read(ebuf, einfosize);
-//            entities::readent(e, ebuf, mapversion);
-//        }
-//        else
-//        {
-//            if(eif > 0) f->seek(eif, SEEK_CUR);
-//            if(e.type>=ET_GAMESPECIFIC)
-//            {
-//                entities::deletegameentity(ents.pop());
-//                continue;
-//            }
-//        }
-//        if(!insideworld(e.o))
-//        {
-//            if(e.type != ET_LIGHT && e.type != ET_SPOTLIGHT)
-//            {
-//                conoutf(CON_WARN, "warning: ent outside of world: enttype[%s] index %d (%f, %f, %f)", entities::entname(e.type), i, e.o.x, e.o.y, e.o.z);
-//            }
-//        }
-    }
-//  if(ebuf) delete[] ebuf;
 
     if(hdr.numents > MAXENTS)
     {

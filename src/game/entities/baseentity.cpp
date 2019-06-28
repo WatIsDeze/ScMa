@@ -23,7 +23,7 @@ BaseEntity::~BaseEntity() {
 }
 
 void BaseEntity::preload() {
-    conoutf("%s", "Preloading BaseEntity entity");
+    //conoutf("%s", "Preloading BaseEntity entity");
 }
 
 void BaseEntity::think() {

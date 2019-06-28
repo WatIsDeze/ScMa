@@ -6,34 +6,6 @@ namespace entities
 {
     using namespace game;
 
-    int extraentinfosize() { return sizeof(entities::classes::BaseEntity); }       // size in bytes of what the 2 methods below read/write... so it can be skipped by other games
-
-    void writeent(entity &e, char *buf)   // write any additional data to disk (except for ET_ ents)
-    {
-//        memcpy(buf, ((gameentity&)e).classname, 256);
-//        memcpy(buf + 256, ((gameentity &)e).str_attr1, 256);
-//        memcpy(buf + (256 * 2), ((gameentity &)e).str_attr2, 256);
-//        memcpy(buf + (256 * 3), ((gameentity &)e).str_attr3, 256);
-//        memcpy(buf + (256 * 4), ((gameentity &)e).str_attr4, 256);
-//        memcpy(buf + (256 * 5), ((gameentity &)e).str_attr5, 256);
-//        memcpy(buf + (256 * 6), ((gameentity &)e).str_attr6, 256);
-//        memcpy(buf + (256 * 7), ((gameentity &)e).str_attr7, 256);
-//        memcpy(buf + (256 * 8), ((gameentity &)e).str_attr8, 256);
-    }
-
-    void readent(entity &e, char *buf, int ver)     // read from disk, and init
-    {
-//        memcpy(((gameentity &)e).classname, buf, 256);
-//        memcpy(((gameentity &)e).str_attr1, buf + 256, 256);
-//        memcpy(((gameentity &)e).str_attr2, buf + (256 * 2), 256);
-//        memcpy(((gameentity &)e).str_attr3, buf + (256 * 3), 256);
-//        memcpy(((gameentity &)e).str_attr4, buf + (256 * 4), 256);
-//        memcpy(((gameentity &)e).str_attr5, buf + (256 * 5), 256);
-//        memcpy(((gameentity &)e).str_attr6, buf + (256 * 6), 256);
-//        memcpy(((gameentity &)e).str_attr7, buf + (256 * 7), 256);
-//        memcpy(((gameentity &)e).str_attr8, buf + (256 * 8), 256);
-    }
-
 #ifndef STANDALONE
     vector<classes::BaseEntity *> ents;
 
