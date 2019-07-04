@@ -691,15 +691,15 @@ bool save_world(const char *mname, bool nolms)
 
             // Now comes the good stuff, our own custom attributes.
             if (tmp.type == GAMEENTITY) {
-                j[i]["classname"] = std::string(tmp.classname);
-                j[i]["str_attr1"] = std::string(tmp.str_attr1);
+                j[i]["classname"] = tmp.classname;
+/*                j[i]["str_attr1"] = std::string(tmp.str_attr1);
                 j[i]["str_attr2"] = std::string(tmp.str_attr2);
                 j[i]["str_attr3"] = std::string(tmp.str_attr3);
                 j[i]["str_attr4"] = std::string(tmp.str_attr4);
                 j[i]["str_attr5"] = std::string(tmp.str_attr5);
                 j[i]["str_attr6"] = std::string(tmp.str_attr6);
                 j[i]["str_attr7"] = std::string(tmp.str_attr7);
-                j[i]["str_attr8"] = std::string(tmp.str_attr8);
+                j[i]["str_attr8"] = std::string(tmp.str_attr8);*/
             }
         }
     }
@@ -857,10 +857,9 @@ bool load_world(const char *mname, const char *cname)        // still supports a
             std::string classname("");
             int type = element["type"];
 
-            //
+            // Have to do this here to ensure that classname can be passed to newgameentity.
             if (type == GAMEENTITY) {
-                // TODO: Ensure length is max 256... I guess.
-                classname = element["classname"];
+               classname = element["classname"];
             }
 
             // Allocate our entity.
@@ -880,21 +879,21 @@ bool load_world(const char *mname, const char *cname)        // still supports a
 
             // Fetch ScMa entity info.
             if (type == GAMEENTITY) {
-                // TODO: Ensure length is max 256... I guess.
-                copycubestr(&e.classname[0], classname.c_str(), 256);
-                copycubestr(&e.str_attr1[0], std::string(element["str_attr1"]).c_str(), 256);
+                // Store the classname.
+                e.classname = classname;
+
+/*                copycubestr(&e.str_attr1[0], std::string(element["str_attr1"]).c_str(), 256);
                 copycubestr(&e.str_attr2[0], std::string(element["str_attr2"]).c_str(), 256);
                 copycubestr(&e.str_attr3[0], std::string(element["str_attr3"]).c_str(), 256);
                 copycubestr(&e.str_attr4[0], std::string(element["str_attr4"]).c_str(), 256);
                 copycubestr(&e.str_attr5[0], std::string(element["str_attr5"]).c_str(), 256);
                 copycubestr(&e.str_attr6[0], std::string(element["str_attr6"]).c_str(), 256);
                 copycubestr(&e.str_attr7[0], std::string(element["str_attr7"]).c_str(), 256);
-                copycubestr(&e.str_attr8[0], std::string(element["str_attr8"]).c_str(), 256);
+                copycubestr(&e.str_attr8[0], std::string(element["str_attr8"]).c_str(), 256);*/
             }
 
             ents.add(&e);
         }
-        //std::cout << element << '\n';
     }
 
     if(hdr.numents > MAXENTS)

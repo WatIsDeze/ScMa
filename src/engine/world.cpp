@@ -1201,8 +1201,10 @@ void new_game_entity(char *strclass, char *a1, char *a2, char *a3, char *a4, cha
     t->type = ET_EMPTY; // Why would we want this here if we set e.type later
 
     // Copy string attributes.
-    copycubestr(t->classname, strclass, 256);
-    copycubestr(t->str_attr1, a1, 256);
+    //copycubestr(t->classname, strclass, 256);
+    t->classname = std::string(strclass);
+
+/*    copycubestr(t->str_attr1, a1, 256);
     copycubestr(t->str_attr2, a2, 256);
     copycubestr(t->str_attr3, a3, 256);
     copycubestr(t->str_attr4, a4, 256);
@@ -1210,7 +1212,7 @@ void new_game_entity(char *strclass, char *a1, char *a2, char *a3, char *a4, cha
     copycubestr(t->str_attr6, a6, 256);
     copycubestr(t->str_attr7, a7, 256);
     copycubestr(t->str_attr8, a8, 256);
-
+*/
     t->type = GAMEENTITY;
 
     enttoggle(idx);
@@ -1476,13 +1478,15 @@ int findentity_byclass(const char *strclass, int index, int attr1, int attr2)
     else for(int i = index; i<ents.length(); i++)
     {
         entities::classes::BaseEntity *e = ents[i];
-        if(strcmp(strclass, e->classname) == 0)
+        std::string stdstr = strclass;
+        if(e->classname == stdstr)
             return i;
     }
     loopj(index)
     {
         entities::classes::BaseEntity *e = ents[j];
-        if(strcmp(strclass, e->classname) == 0)
+        std::string stdstr = strclass;
+        if(e->classname == stdstr)
             return j;
     }
     return -1;

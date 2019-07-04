@@ -737,7 +737,6 @@ CMakeFiles/schizomania.dir/game/client.cpp.o
 CMakeFiles/schizomania.dir/game/entities.cpp.o
  /home/watisdeze/Dev/Projects/ScMa/src/game/ai.h
  /home/watisdeze/Dev/Projects/ScMa/src/game/entities.cpp
- /home/watisdeze/Dev/Projects/ScMa/src/game/entities/baseentity.h
  /home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.h
  /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
  ext/json-develop/single_include/nlohmann/json.hpp
@@ -753,7 +752,6 @@ CMakeFiles/schizomania.dir/game/entities.cpp.o
 CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o
  /home/watisdeze/Dev/Projects/ScMa/src/game/ai.h
  /home/watisdeze/Dev/Projects/ScMa/src/game/entities/baseentity.cpp
- /home/watisdeze/Dev/Projects/ScMa/src/game/entities/baseentity.h
  /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
  ext/json-develop/single_include/nlohmann/json.hpp
  shared/command.h
@@ -767,7 +765,6 @@ CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o
  shared/tools.h
 CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o
  /home/watisdeze/Dev/Projects/ScMa/src/game/ai.h
- /home/watisdeze/Dev/Projects/ScMa/src/game/entities/baseentity.h
  /home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.cpp
  /home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.h
  /home/watisdeze/Dev/Projects/ScMa/src/game/game.h

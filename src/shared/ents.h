@@ -46,16 +46,10 @@ namespace entities
 
         // Taken from what was, gameentity.
         public:
-            char classname[256];
+            std::string classname;
 
-            char str_attr1[256];
-            char str_attr2[256];
-            char str_attr3[256];
-            char str_attr4[256];
-            char str_attr5[256];
-            char str_attr6[256];
-            char str_attr7[256];
-            char str_attr8[256];
+            // Contains the json attributes.
+            std::map<std::string, std::string> attributes;
 
         // Taken from the old "extentity".
         public:

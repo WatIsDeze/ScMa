@@ -1,0 +1,17 @@
+[
+    {
+        "classname": "playerstart",
+        "int_attr1": 0,
+        "int_attr2": 0,
+        "int_attr3": 0,
+        "int_attr4": 0,
+        "int_attr5": 0,
+        "int_reserved": 0,
+        "o": {
+            "x": 948.0,
+            "y": 108.0,
+            "z": 540.0
+        },
+        "type": 13
+    }
+]

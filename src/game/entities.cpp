@@ -1,5 +1,4 @@
 #include "game.h"
-#include "entities/baseentity.h"
 #include "entities/playerstart.h"
 
 namespace entities
@@ -356,14 +355,14 @@ namespace entities
 		if (edit_entity > -1 && edit_entity < ents.length()) {
             entities::classes::BaseEntity *ent = (entities::classes::BaseEntity*)ents[edit_entity];
 
-			copycubestr(ent->str_attr1, s1, 256);
+        /*	copycubestr(ent->str_attr1, s1, 256);
 			copycubestr(ent->str_attr2, s2, 256);
 			copycubestr(ent->str_attr3, s3, 256);
 			copycubestr(ent->str_attr4, s4, 256);
 			copycubestr(ent->str_attr5, s5, 256);
 			copycubestr(ent->str_attr6, s6, 256);
 			copycubestr(ent->str_attr7, s7, 256);
-			copycubestr(ent->str_attr8, s8, 256);
+            copycubestr(ent->str_attr8, s8, 256);*/
 		} else {
 			conoutf("%s", "No valid in range entity selected.");
 		}
@@ -373,7 +372,7 @@ namespace entities
 		if (edit_entity > -1 && edit_entity < ents.length()) {
             entities::classes::BaseEntity *ent = (entities::classes::BaseEntity*)ents[edit_entity];
 
-			conoutf("%i %s %s %s %s %s %s %s %s",
+        /*	conoutf("%i %s %s %s %s %s %s %s %s",
 				ent->type,
 				ent->str_attr1,
 				ent->str_attr2,
@@ -383,7 +382,7 @@ namespace entities
 				ent->str_attr6,
 				ent->str_attr7,
 				ent->str_attr8
-			);
+            );*/
 		} else {
 
 		}
@@ -425,10 +424,10 @@ namespace entities
         entities::classes::BaseEntity  *ptr_e = (entities::classes::BaseEntity *)&e;
         std::string str;
         str = ptr_e->classname;
-        str += ",";
+        /*str += ",";
         str += ptr_e->str_attr1;
         str += ",";
-        str += ptr_e->str_attr2;
+        str += ptr_e->str_attr2;*/
         return str.c_str();
     }
     const char *entname(int i)

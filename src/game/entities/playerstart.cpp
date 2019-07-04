@@ -1,5 +1,5 @@
 #include "../game.h"
-#include "baseentity.h"
+//#include "baseentity.h"
 #include "playerstart.h"
 
 namespace entities {

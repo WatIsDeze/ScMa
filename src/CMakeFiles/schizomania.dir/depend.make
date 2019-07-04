@@ -736,7 +736,6 @@ CMakeFiles/schizomania.dir/game/client.cpp.o: shared/tools.h
 
 CMakeFiles/schizomania.dir/game/entities.cpp.o: game/ai.h
 CMakeFiles/schizomania.dir/game/entities.cpp.o: game/entities.cpp
-CMakeFiles/schizomania.dir/game/entities.cpp.o: game/entities/baseentity.h
 CMakeFiles/schizomania.dir/game/entities.cpp.o: game/entities/playerstart.h
 CMakeFiles/schizomania.dir/game/entities.cpp.o: game/game.h
 CMakeFiles/schizomania.dir/game/entities.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
@@ -752,7 +751,6 @@ CMakeFiles/schizomania.dir/game/entities.cpp.o: shared/tools.h
 
 CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: game/ai.h
 CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: game/entities/baseentity.cpp
-CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: game/entities/baseentity.h
 CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: game/game.h
 CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: shared/command.h
@@ -766,7 +764,6 @@ CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: shared/igame.h
 CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: shared/tools.h
 
 CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: game/ai.h
-CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: game/entities/baseentity.h
 CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: game/entities/playerstart.cpp
 CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: game/entities/playerstart.h
 CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: game/game.h

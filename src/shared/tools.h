@@ -1404,7 +1404,5 @@ struct ipmask
     bool check(enet_uint32 host) const { return (host & mask) == ip; }
 };
 
-#include <string>
-
 #endif
 

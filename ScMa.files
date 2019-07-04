@@ -522,7 +522,6 @@ src/xcode/Frameworks/SDL2_mixer.framework/Versions/Current/Frameworks/Vorbis.fra
 src/xcode/Frameworks/SDL2_mixer.framework/Versions/Current/Frameworks/Vorbis.framework/Versions/Current/Headers/vorbisfile.h
 src/xcode/Frameworks/SDL2_mixer.framework/Versions/Current/Headers/SDL_mixer.h
 src/xcode/Launcher.h
-src/game/entities/baseentity.h
 src/game/entities/playerstart.h
 src/game/entities/baseentity.cpp
 src/game/entities/playerstart.cpp
