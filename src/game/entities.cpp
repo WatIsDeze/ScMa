@@ -350,43 +350,48 @@ namespace entities
     // WatIs: Testing the set and get properties of entities.
 	int edit_entity = -1;
 
-	ICOMMAND(ent_set_attr, "ssssssss", (char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7, char *s8),
+    ICOMMAND(ent_set_attr, "ss", (char *s1, char *s2),
 	{
 		if (edit_entity > -1 && edit_entity < ents.length()) {
             entities::classes::BaseEntity *ent = (entities::classes::BaseEntity*)ents[edit_entity];
 
-        /*	copycubestr(ent->str_attr1, s1, 256);
-			copycubestr(ent->str_attr2, s2, 256);
-			copycubestr(ent->str_attr3, s3, 256);
-			copycubestr(ent->str_attr4, s4, 256);
-			copycubestr(ent->str_attr5, s5, 256);
-			copycubestr(ent->str_attr6, s6, 256);
-			copycubestr(ent->str_attr7, s7, 256);
-            copycubestr(ent->str_attr8, s8, 256);*/
+            // Ensure both string lengths are > 0
+            if (strlen(s1) > 0 && strlen(s2) > 0) {
+                // Set the attribute value.
+                // TODO: Check if it already exists or not? Maybe just ignore that.
+                ent->attributes[s1] = s2;
+            } else {
+                // Inform the user.
+                conoutf("%s", "No key:value string has been passed.");
+            }
 		} else {
 			conoutf("%s", "No valid in range entity selected.");
 		}
 	});
 
-	ICOMMAND(ent_get_attr, "", (), {
+    ICOMMAND(ent_get_attr, "s", (char *s1), {
 		if (edit_entity > -1 && edit_entity < ents.length()) {
             entities::classes::BaseEntity *ent = (entities::classes::BaseEntity*)ents[edit_entity];
 
-        /*	conoutf("%i %s %s %s %s %s %s %s %s",
-				ent->type,
-				ent->str_attr1,
-				ent->str_attr2,
-				ent->str_attr3,
-				ent->str_attr4,
-				ent->str_attr5,
-				ent->str_attr6,
-				ent->str_attr7,
-				ent->str_attr8
-            );*/
+            if (ent->attributes.find(s1) != ent->attributes.end()) {
+                conoutf("%s : %s", s1, ent->attributes[s1].c_str());
+            }
 		} else {
-
+            conoutf("%s", "No valid entity selected to fetch an attribute from.");
 		}
 	});
+
+    ICOMMAND(ent_list_attr, "", (), {
+        if (edit_entity > -1 && edit_entity < ents.length()) {
+            entities::classes::BaseEntity *ent = (entities::classes::BaseEntity*)ents[edit_entity];
+
+            for(std::map<std::string, std::string>::iterator i = ent->attributes.begin(); i != ent->attributes.end(); ++i) {
+                conoutf("%s : %s", i->first.c_str(), i->second.c_str());
+            }
+        } else {
+            conoutf("%s", "No valid entity selected to fetch an attribute from.");
+        }
+    });
 
     void entradius(entities::classes::BaseEntity &e, bool color)
     {
@@ -424,10 +429,7 @@ namespace entities
         entities::classes::BaseEntity  *ptr_e = (entities::classes::BaseEntity *)&e;
         std::string str;
         str = ptr_e->classname;
-        /*str += ",";
-        str += ptr_e->str_attr1;
-        str += ",";
-        str += ptr_e->str_attr2;*/
+        // TODO: List attributes here? Maybe...
         return str.c_str();
     }
     const char *entname(int i)

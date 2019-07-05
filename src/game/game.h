@@ -71,7 +71,7 @@ enum                            // static entity types
     TELEDEST,                   // attr1 = angle, attr2 = idx
     JUMPPAD,                    // attr1 = zpush, attr2 = ypush, attr3 = xpush
     FLAG,                       // attr1 = angle, attr2 = team
-    GAMEENTITY,					// str_attr1 = Entity Type, str_attr# is string arguments.
+    GAMEENTITY,					// classname = game entity class type, attributes list is what it is, and can be accessed in any derived BaseEntity class.
     MAXENTTYPES,
 
     I_FIRST = 0,

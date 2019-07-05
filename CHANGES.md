@@ -48,6 +48,14 @@ Ultimately we do not seek multiplayer, so it is best to try and erase it from th
 - Create a basic dialogue entity.
 
 -------------------------------------------------------------------------------------------------------------
+# Changes - 2019-08-05
+- The entity attributes map is now saved and loaded throughout json.
+- ent_set_attr and ent_get_attr have been modified to work with key:value.
+
+# Changes - 2019-07-04
+- Exchanged char classname[256] with std::string in BaseEntity class.
+- Removed str_attr# variables, added std::map<std::string, std::string> instead for properties. 
+
 # Changes - 2019-06-28
 - Removed writeent, saveent, and extraentinfosize functions. No need for them anymore since we now use JSON.
 
