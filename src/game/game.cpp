@@ -158,8 +158,9 @@ namespace game
     }
 
     bool allowmove(physent *d) {
-        if(d->type!=ENT_PLAYER) return true;
-        else return false;
+        return true;
+        //if(d->type!=ENT_PLAYER) return true;
+        //else return false;
         //if(d->type!=ENT_PLAYER) return true;
 
         // Checks whether the entity(usually a client/player) has done anything that requires waiting time.
