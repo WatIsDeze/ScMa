@@ -49,7 +49,11 @@ Ultimately we do not seek multiplayer, so it is best to try and erase it from th
 - Create a basic dialogue entity.
 
 -------------------------------------------------------------------------------------------------------------
-# Changes - 2019-08-05
+# Changes - 2019-07-06
+- Renamed the game folder to oldgame.
+- Created a minimal template, at the current moment there is no client/server handling. All we can do is move around.
+
+# Changes - 2019-07-05
 - The entity attributes map is now saved and loaded throughout json.
 - ent_set_attr and ent_get_attr have been modified to work with key:value.
 - added ent_list_attr
