@@ -744,6 +744,7 @@ CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: shared/iengine.h
 CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: shared/igame.h
 CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: shared/tools.h
 
+CMakeFiles/schizomania.dir/game/game.cpp.o: game/entities/playerstart.h
 CMakeFiles/schizomania.dir/game/game.cpp.o: game/game.cpp
 CMakeFiles/schizomania.dir/game/game.cpp.o: game/game.h
 CMakeFiles/schizomania.dir/game/game.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp

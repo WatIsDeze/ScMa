@@ -1,5 +1,4 @@
 #include "game.h"
-#include "entities/playerstart.h"
 
 namespace game
 {
@@ -158,8 +157,7 @@ namespace game
     }
 
     bool allowmove(physent *d) {
-        if(d->type!=ENT_PLAYER) return true;
-        else return false;
+        return true;
         //if(d->type!=ENT_PLAYER) return true;
 
         // Checks whether the entity(usually a client/player) has done anything that requires waiting time.
@@ -237,9 +235,7 @@ namespace game
     const char *autoexec() { return "config/autoexec.cfg"; }
     const char *savedservers() { return "config/servers.cfg"; }
 
-    void loadconfigs() {
-        execfile("config/auth.cfg", false);
-    }
+    void loadconfigs() {}
 
     void parseoptions(vector<const char *> &args) {}
     void connectattempt(const char *name, const char *password, const ENetAddress &address) {}
@@ -267,7 +263,7 @@ namespace game
     void initclient() {
         // This may work.
         // TODO: It may fail lol.
-        player1 = new entities::classes::PlayerStart();
+        player1 = new entities::classes::BaseEntity();
         player1->setspawned(true);
     }
 

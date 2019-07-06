@@ -745,6 +745,7 @@ CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o
  shared/igame.h
  shared/tools.h
 CMakeFiles/schizomania.dir/game/game.cpp.o
+ /home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.h
  /home/watisdeze/Dev/Projects/ScMa/src/game/game.cpp
  /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
  ext/json-develop/single_include/nlohmann/json.hpp

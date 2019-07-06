@@ -623,6 +623,8 @@ playerstart.h
 /home/watisdeze/Dev/Projects/ScMa/src/game/game.cpp
 game.h
 /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
+entities/playerstart.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.h
 
 /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
 cube.h

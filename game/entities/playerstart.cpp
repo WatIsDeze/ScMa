@@ -18,7 +18,7 @@ void PlayerStart::preload() {
 }
 
 void PlayerStart::think() {
-    moveplayer(this, 10, true);
+
 }
 
 } // classes

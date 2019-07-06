@@ -1,4 +1,5 @@
-cd src
+#!/bin/bash
+pushd src
 make
-cd ..
+popd
 ./schizomania_unix
