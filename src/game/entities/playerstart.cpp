@@ -18,6 +18,7 @@ void PlayerStart::preload() {
 }
 
 void PlayerStart::think() {
+    conoutf("%s", "Printf boy kijkt ff of deze functie wel opgeroepen word");
     moveplayer(this, 10, true);
 }
 
