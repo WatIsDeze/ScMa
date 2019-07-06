@@ -89,7 +89,7 @@ namespace entities
                     if(e.attr2 < 0) continue;
                     break;
                 default:
-                    if(!e.spawned() || !validitem(e.type)) continue;
+                    if(!e.spawned()) continue;
                     break;
             }
             const char *mdlname = entmodel(e);
@@ -102,207 +102,7 @@ namespace entities
         }
     }
 
-    void addammo(int type, int &v, bool local)
-    {
-#if 0
-        itemstat &is = itemstats[type-I_FIRST];
-        v += is.add;
-        if(v>is.max) v = is.max;
-        if(local) msgsound(is.sound);
-#endif
-    }
-
-    // these two functions are called when the server acknowledges that you really
-    // picked up the item (in multiplayer someone may grab it before you).
-
-    void pickupeffects(int n, gameent *d)
-    {
-#if 0
-        if(!ents.inrange(n)) return;
-        int type = ents[n]->type;
-        if(!validitem(type)) return;
-        ents[n]->clearspawned();
-        if(!d) return;
-        itemstat &is = itemstats[type-I_FIRST];
-        if(d!=player1 || isthirdperson())
-        {
-            //particle_text(d->abovehead(), is.name, PART_TEXT, 2000, 0xFFC864, 4.0f, -8);
-            particle_icon(d->abovehead(), is.icon%4, is.icon/4, PART_HUD_ICON_GREY, 2000, 0xFFFFFF, 2.0f, -8);
-        }
-        playsound(itemstats[type-I_FIRST].sound, d!=player1 ? &d->o : NULL, NULL, 0, 0, 0, -1, 0, 1500);
-        d->pickup(type);
-        if(d==player1) switch(type)
-        {
-        }
-#endif
-    }
-
-    // these functions are called when the client touches the item
-
-    void teleporteffects(gameent *d, int tp, int td, bool local)
-    {
-        if(ents.inrange(tp) && ents[tp]->type == TELEPORT)
-        {
-            entities::classes::BaseEntity &e = *ents[tp];
-            if(e.attr4 >= 0)
-            {
-                int snd = S_TELEPORT, flags = 0;
-                if(e.attr4 > 0) { snd = e.attr4; flags = SND_MAP; }
-                if(d == player1) playsound(snd, NULL, NULL, flags);
-                else
-                {
-                    playsound(snd, &e.o, NULL, flags);
-                    if(ents.inrange(td) && ents[td]->type == TELEDEST) playsound(snd, &ents[td]->o, NULL, flags);
-                }
-            }
-        }
-        if(local && d->clientnum >= 0)
-        {
-            sendposition(d);
-            packetbuf p(32, ENET_PACKET_FLAG_RELIABLE);
-            putint(p, N_TELEPORT);
-            putint(p, d->clientnum);
-            putint(p, tp);
-            putint(p, td);
-            sendclientpacket(p.finalize(), 0);
-            flushclient();
-        }
-    }
-
-    void jumppadeffects(gameent *d, int jp, bool local)
-    {
-        if(ents.inrange(jp) && ents[jp]->type == JUMPPAD)
-        {
-            entities::classes::BaseEntity &e = *ents[jp];
-            if(e.attr4 >= 0)
-            {
-                int snd = S_JUMPPAD, flags = 0;
-                if(e.attr4 > 0) { snd = e.attr4; flags = SND_MAP; }
-                if(d == player1) playsound(snd, NULL, NULL, flags);
-                else playsound(snd, &e.o, NULL, flags);
-            }
-        }
-        if(local && d->clientnum >= 0)
-        {
-            sendposition(d);
-            packetbuf p(16, ENET_PACKET_FLAG_RELIABLE);
-            putint(p, N_JUMPPAD);
-            putint(p, d->clientnum);
-            putint(p, jp);
-            sendclientpacket(p.finalize(), 0);
-            flushclient();
-        }
-    }
-
-    void teleport(int n, gameent *d)     // also used by monsters
-    {
-        int e = -1, tag = ents[n]->attr1, beenhere = -1;
-        for(;;)
-        {
-            e = findentity(TELEDEST, e+1);
-            if(e==beenhere || e<0) { conoutf(CON_WARN, "no teleport destination for tag %d", tag); return; }
-            if(beenhere<0) beenhere = e;
-            if(ents[e]->attr2==tag)
-            {
-                teleporteffects(d, n, e, true);
-                d->o = ents[e]->o;
-                d->yaw = ents[e]->attr1;
-                if(ents[e]->attr3 > 0)
-                {
-                    vec dir;
-                    vecfromyawpitch(d->yaw, 0, 1, 0, dir);
-                    float speed = d->vel.magnitude2();
-                    d->vel.x = dir.x*speed;
-                    d->vel.y = dir.y*speed;
-                }
-                else d->vel = vec(0, 0, 0);
-                entinmap(d);
-                updatedynentcache(d);
-                ai::inferwaypoints(d, ents[n]->o, ents[e]->o, 16.f);
-                break;
-            }
-        }
-    }
-
-    VARR(teleteam, 0, 1, 1);
-
-    void trypickup(int n, gameent *d)
-    {
-        switch(ents[n]->type)
-        {
-            default:
-                if(d->canpickup(ents[n]->type))
-                {
-                    addmsg(N_ITEMPICKUP, "rci", d, n);
-                    ents[n]->clearspawned(); // even if someone else gets it first
-                }
-                break;
-
-            case TELEPORT:
-            {
-                if(d->lastpickup==ents[n]->type && lastmillis-d->lastpickupmillis<500) break;
-                if(!teleteam && m_teammode) break;
-                if(ents[n]->attr3 > 0)
-                {
-                    defformatcubestr(hookname, "can_teleport_%d", ents[n]->attr3);
-                    if(!execidentbool(hookname, true)) break;
-                }
-                d->lastpickup = ents[n]->type;
-                d->lastpickupmillis = lastmillis;
-                teleport(n, d);
-                break;
-            }
-
-            case JUMPPAD:
-            {
-                if(d->lastpickup==ents[n]->type && lastmillis-d->lastpickupmillis<300) break;
-                d->lastpickup = ents[n]->type;
-                d->lastpickupmillis = lastmillis;
-                jumppadeffects(d, n, true);
-                if(d->ai) d->ai->becareful = true;
-                d->falling = vec(0, 0, 0);
-                d->physstate = PHYS_FALL;
-                d->timeinair = 1;
-                d->vel = vec(ents[n]->attr3*10.0f, ents[n]->attr2*10.0f, ents[n]->attr1*12.5f);
-                break;
-            }
-        }
-    }
-
-    void checkitems(gameent *d)
-    {
-        if(d->state!=CS_ALIVE) return;
-        vec o = d->feetpos();
-        loopv(ents)
-        {
-            entities::classes::BaseEntity &e = *ents[i];
-            if(e.type==NOTUSED) continue;
-            if(!e.spawned() && e.type!=TELEPORT && e.type!=JUMPPAD) continue;
-            float dist = e.o.dist(o);
-            if(dist<(e.type==TELEPORT ? 16 : 12)) trypickup(i, d);
-        }
-    }
-
-    void putitems(packetbuf &p)            // puts items in network stream and also spawns them locally
-    {
-        putint(p, N_ITEMLIST);
-        loopv(ents) if(validitem(ents[i]->type))
-        {
-            putint(p, i);
-            putint(p, ents[i]->type);
-        }
-        putint(p, -1);
-    }
-
     void resetspawns() { loopv(ents) ents[i]->clearspawned(); }
-
-    void spawnitems(bool force)
-    {
-        loopv(ents) if(validitem(ents[i]->type))
-        {
-            ents[i]->setspawned(force || !server::delayspawn(ents[i]->type));
-        }
-    }
 
     void setspawn(int i, bool on) { if(ents.inrange(i)) ents[i]->setspawned(on); }
 
@@ -448,10 +248,10 @@ namespace entities
         entities::classes::BaseEntity &e = *ents[i];
 
         edit_entity = i;
-        conoutf("%i", i);
+        //conoutf("%i", i);
 
         //e.flags = 0;
-        if(local) addmsg(N_EDITENT, "rii3ii5", i, (int)(e.o.x*DMF), (int)(e.o.y*DMF), (int)(e.o.z*DMF), e.type, e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
+        //if(local) addmsg(N_EDITENT, "rii3ii5", i, (int)(e.o.x*DMF), (int)(e.o.y*DMF), (int)(e.o.z*DMF), e.type, e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
     }
 
     float dropheight(entity &e)

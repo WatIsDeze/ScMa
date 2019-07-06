@@ -602,24 +602,6 @@ limits
 type_traits
 -
 
-/home/watisdeze/Dev/Projects/ScMa/src/game/ai.cpp
-game.h
-/home/watisdeze/Dev/Projects/ScMa/src/game/game.h
-
-/home/watisdeze/Dev/Projects/ScMa/src/game/ai.h
-
-/home/watisdeze/Dev/Projects/ScMa/src/game/aiman.h
-
-/home/watisdeze/Dev/Projects/ScMa/src/game/client.cpp
-game.h
-/home/watisdeze/Dev/Projects/ScMa/src/game/game.h
-ctf.h
-/home/watisdeze/Dev/Projects/ScMa/src/game/ctf.h
-ctf.h
-/home/watisdeze/Dev/Projects/ScMa/src/game/ctf.h
-
-/home/watisdeze/Dev/Projects/ScMa/src/game/ctf.h
-
 /home/watisdeze/Dev/Projects/ScMa/src/game/entities.cpp
 game.h
 /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
@@ -638,8 +620,6 @@ playerstart.h
 
 /home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.h
 
-/home/watisdeze/Dev/Projects/ScMa/src/game/extinfo.h
-
 /home/watisdeze/Dev/Projects/ScMa/src/game/game.cpp
 game.h
 /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
@@ -647,34 +627,8 @@ game.h
 /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
 cube.h
 /home/watisdeze/Dev/Projects/ScMa/src/game/cube.h
-ai.h
-/home/watisdeze/Dev/Projects/ScMa/src/game/ai.h
 
 /home/watisdeze/Dev/Projects/ScMa/src/game/render.cpp
-game.h
-/home/watisdeze/Dev/Projects/ScMa/src/game/game.h
-
-/home/watisdeze/Dev/Projects/ScMa/src/game/scoreboard.cpp
-game.h
-/home/watisdeze/Dev/Projects/ScMa/src/game/game.h
-
-/home/watisdeze/Dev/Projects/ScMa/src/game/server.cpp
-game.h
-/home/watisdeze/Dev/Projects/ScMa/src/game/game.h
-ctf.h
-/home/watisdeze/Dev/Projects/ScMa/src/game/ctf.h
-ctf.h
-/home/watisdeze/Dev/Projects/ScMa/src/game/ctf.h
-extinfo.h
-/home/watisdeze/Dev/Projects/ScMa/src/game/extinfo.h
-aiman.h
-/home/watisdeze/Dev/Projects/ScMa/src/game/aiman.h
-
-/home/watisdeze/Dev/Projects/ScMa/src/game/waypoint.cpp
-game.h
-/home/watisdeze/Dev/Projects/ScMa/src/game/game.h
-
-/home/watisdeze/Dev/Projects/ScMa/src/game/weapon.cpp
 game.h
 /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
 

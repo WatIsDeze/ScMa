@@ -4,6 +4,7 @@
 - Do proper file error handling for JSON IO.
 - Use internal engine streams for read/write JSON in world load/save.
 - Do proper error checking on JSON Entity data that is being loaded back in.
+- Add support for editing entities in coop mode using the newgent function etc. (Check for N_EDITENT as an example.)
 
 ### REGULAR TODO:
 ### SERVER/CLIENT SYSTEM:
@@ -51,6 +52,7 @@ Ultimately we do not seek multiplayer, so it is best to try and erase it from th
 # Changes - 2019-08-05
 - The entity attributes map is now saved and loaded throughout json.
 - ent_set_attr and ent_get_attr have been modified to work with key:value.
+- added ent_list_attr
 
 # Changes - 2019-07-04
 - Exchanged char classname[256] with std::string in BaseEntity class.

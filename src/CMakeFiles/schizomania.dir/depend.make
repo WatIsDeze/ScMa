@@ -671,7 +671,6 @@ CMakeFiles/schizomania.dir/engine/world.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/world.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/world.cpp.o: engine/world.cpp
 CMakeFiles/schizomania.dir/engine/world.cpp.o: engine/world.h
-CMakeFiles/schizomania.dir/engine/world.cpp.o: game/ai.h
 CMakeFiles/schizomania.dir/engine/world.cpp.o: game/game.h
 CMakeFiles/schizomania.dir/engine/world.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/world.cpp.o: shared/command.h
@@ -692,7 +691,6 @@ CMakeFiles/schizomania.dir/engine/worldio.cpp.o: engine/octa.h
 CMakeFiles/schizomania.dir/engine/worldio.cpp.o: engine/texture.h
 CMakeFiles/schizomania.dir/engine/worldio.cpp.o: engine/world.h
 CMakeFiles/schizomania.dir/engine/worldio.cpp.o: engine/worldio.cpp
-CMakeFiles/schizomania.dir/engine/worldio.cpp.o: game/ai.h
 CMakeFiles/schizomania.dir/engine/worldio.cpp.o: game/game.h
 CMakeFiles/schizomania.dir/engine/worldio.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/engine/worldio.cpp.o: shared/command.h
@@ -705,36 +703,6 @@ CMakeFiles/schizomania.dir/engine/worldio.cpp.o: shared/iengine.h
 CMakeFiles/schizomania.dir/engine/worldio.cpp.o: shared/igame.h
 CMakeFiles/schizomania.dir/engine/worldio.cpp.o: shared/tools.h
 
-CMakeFiles/schizomania.dir/game/ai.cpp.o: game/ai.cpp
-CMakeFiles/schizomania.dir/game/ai.cpp.o: game/ai.h
-CMakeFiles/schizomania.dir/game/ai.cpp.o: game/game.h
-CMakeFiles/schizomania.dir/game/ai.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
-CMakeFiles/schizomania.dir/game/ai.cpp.o: shared/command.h
-CMakeFiles/schizomania.dir/game/ai.cpp.o: shared/cube.h
-CMakeFiles/schizomania.dir/game/ai.cpp.o: shared/ents.h
-CMakeFiles/schizomania.dir/game/ai.cpp.o: shared/geom.h
-CMakeFiles/schizomania.dir/game/ai.cpp.o: shared/glemu.h
-CMakeFiles/schizomania.dir/game/ai.cpp.o: shared/glexts.h
-CMakeFiles/schizomania.dir/game/ai.cpp.o: shared/iengine.h
-CMakeFiles/schizomania.dir/game/ai.cpp.o: shared/igame.h
-CMakeFiles/schizomania.dir/game/ai.cpp.o: shared/tools.h
-
-CMakeFiles/schizomania.dir/game/client.cpp.o: game/ai.h
-CMakeFiles/schizomania.dir/game/client.cpp.o: game/client.cpp
-CMakeFiles/schizomania.dir/game/client.cpp.o: game/ctf.h
-CMakeFiles/schizomania.dir/game/client.cpp.o: game/game.h
-CMakeFiles/schizomania.dir/game/client.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
-CMakeFiles/schizomania.dir/game/client.cpp.o: shared/command.h
-CMakeFiles/schizomania.dir/game/client.cpp.o: shared/cube.h
-CMakeFiles/schizomania.dir/game/client.cpp.o: shared/ents.h
-CMakeFiles/schizomania.dir/game/client.cpp.o: shared/geom.h
-CMakeFiles/schizomania.dir/game/client.cpp.o: shared/glemu.h
-CMakeFiles/schizomania.dir/game/client.cpp.o: shared/glexts.h
-CMakeFiles/schizomania.dir/game/client.cpp.o: shared/iengine.h
-CMakeFiles/schizomania.dir/game/client.cpp.o: shared/igame.h
-CMakeFiles/schizomania.dir/game/client.cpp.o: shared/tools.h
-
-CMakeFiles/schizomania.dir/game/entities.cpp.o: game/ai.h
 CMakeFiles/schizomania.dir/game/entities.cpp.o: game/entities.cpp
 CMakeFiles/schizomania.dir/game/entities.cpp.o: game/entities/playerstart.h
 CMakeFiles/schizomania.dir/game/entities.cpp.o: game/game.h
@@ -749,7 +717,6 @@ CMakeFiles/schizomania.dir/game/entities.cpp.o: shared/iengine.h
 CMakeFiles/schizomania.dir/game/entities.cpp.o: shared/igame.h
 CMakeFiles/schizomania.dir/game/entities.cpp.o: shared/tools.h
 
-CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: game/ai.h
 CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: game/entities/baseentity.cpp
 CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: game/game.h
 CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
@@ -763,7 +730,6 @@ CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: shared/iengine.h
 CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: shared/igame.h
 CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: shared/tools.h
 
-CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: game/ai.h
 CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: game/entities/playerstart.cpp
 CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: game/entities/playerstart.h
 CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: game/game.h
@@ -778,7 +744,6 @@ CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: shared/iengine.h
 CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: shared/igame.h
 CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: shared/tools.h
 
-CMakeFiles/schizomania.dir/game/game.cpp.o: game/ai.h
 CMakeFiles/schizomania.dir/game/game.cpp.o: game/game.cpp
 CMakeFiles/schizomania.dir/game/game.cpp.o: game/game.h
 CMakeFiles/schizomania.dir/game/game.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
@@ -792,7 +757,6 @@ CMakeFiles/schizomania.dir/game/game.cpp.o: shared/iengine.h
 CMakeFiles/schizomania.dir/game/game.cpp.o: shared/igame.h
 CMakeFiles/schizomania.dir/game/game.cpp.o: shared/tools.h
 
-CMakeFiles/schizomania.dir/game/render.cpp.o: game/ai.h
 CMakeFiles/schizomania.dir/game/render.cpp.o: game/game.h
 CMakeFiles/schizomania.dir/game/render.cpp.o: game/render.cpp
 CMakeFiles/schizomania.dir/game/render.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
@@ -805,65 +769,6 @@ CMakeFiles/schizomania.dir/game/render.cpp.o: shared/glexts.h
 CMakeFiles/schizomania.dir/game/render.cpp.o: shared/iengine.h
 CMakeFiles/schizomania.dir/game/render.cpp.o: shared/igame.h
 CMakeFiles/schizomania.dir/game/render.cpp.o: shared/tools.h
-
-CMakeFiles/schizomania.dir/game/scoreboard.cpp.o: game/ai.h
-CMakeFiles/schizomania.dir/game/scoreboard.cpp.o: game/game.h
-CMakeFiles/schizomania.dir/game/scoreboard.cpp.o: game/scoreboard.cpp
-CMakeFiles/schizomania.dir/game/scoreboard.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
-CMakeFiles/schizomania.dir/game/scoreboard.cpp.o: shared/command.h
-CMakeFiles/schizomania.dir/game/scoreboard.cpp.o: shared/cube.h
-CMakeFiles/schizomania.dir/game/scoreboard.cpp.o: shared/ents.h
-CMakeFiles/schizomania.dir/game/scoreboard.cpp.o: shared/geom.h
-CMakeFiles/schizomania.dir/game/scoreboard.cpp.o: shared/glemu.h
-CMakeFiles/schizomania.dir/game/scoreboard.cpp.o: shared/glexts.h
-CMakeFiles/schizomania.dir/game/scoreboard.cpp.o: shared/iengine.h
-CMakeFiles/schizomania.dir/game/scoreboard.cpp.o: shared/igame.h
-CMakeFiles/schizomania.dir/game/scoreboard.cpp.o: shared/tools.h
-
-CMakeFiles/schizomania.dir/game/server.cpp.o: game/ai.h
-CMakeFiles/schizomania.dir/game/server.cpp.o: game/aiman.h
-CMakeFiles/schizomania.dir/game/server.cpp.o: game/ctf.h
-CMakeFiles/schizomania.dir/game/server.cpp.o: game/extinfo.h
-CMakeFiles/schizomania.dir/game/server.cpp.o: game/game.h
-CMakeFiles/schizomania.dir/game/server.cpp.o: game/server.cpp
-CMakeFiles/schizomania.dir/game/server.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
-CMakeFiles/schizomania.dir/game/server.cpp.o: shared/command.h
-CMakeFiles/schizomania.dir/game/server.cpp.o: shared/cube.h
-CMakeFiles/schizomania.dir/game/server.cpp.o: shared/ents.h
-CMakeFiles/schizomania.dir/game/server.cpp.o: shared/geom.h
-CMakeFiles/schizomania.dir/game/server.cpp.o: shared/glemu.h
-CMakeFiles/schizomania.dir/game/server.cpp.o: shared/glexts.h
-CMakeFiles/schizomania.dir/game/server.cpp.o: shared/iengine.h
-CMakeFiles/schizomania.dir/game/server.cpp.o: shared/igame.h
-CMakeFiles/schizomania.dir/game/server.cpp.o: shared/tools.h
-
-CMakeFiles/schizomania.dir/game/waypoint.cpp.o: game/ai.h
-CMakeFiles/schizomania.dir/game/waypoint.cpp.o: game/game.h
-CMakeFiles/schizomania.dir/game/waypoint.cpp.o: game/waypoint.cpp
-CMakeFiles/schizomania.dir/game/waypoint.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
-CMakeFiles/schizomania.dir/game/waypoint.cpp.o: shared/command.h
-CMakeFiles/schizomania.dir/game/waypoint.cpp.o: shared/cube.h
-CMakeFiles/schizomania.dir/game/waypoint.cpp.o: shared/ents.h
-CMakeFiles/schizomania.dir/game/waypoint.cpp.o: shared/geom.h
-CMakeFiles/schizomania.dir/game/waypoint.cpp.o: shared/glemu.h
-CMakeFiles/schizomania.dir/game/waypoint.cpp.o: shared/glexts.h
-CMakeFiles/schizomania.dir/game/waypoint.cpp.o: shared/iengine.h
-CMakeFiles/schizomania.dir/game/waypoint.cpp.o: shared/igame.h
-CMakeFiles/schizomania.dir/game/waypoint.cpp.o: shared/tools.h
-
-CMakeFiles/schizomania.dir/game/weapon.cpp.o: game/ai.h
-CMakeFiles/schizomania.dir/game/weapon.cpp.o: game/game.h
-CMakeFiles/schizomania.dir/game/weapon.cpp.o: game/weapon.cpp
-CMakeFiles/schizomania.dir/game/weapon.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
-CMakeFiles/schizomania.dir/game/weapon.cpp.o: shared/command.h
-CMakeFiles/schizomania.dir/game/weapon.cpp.o: shared/cube.h
-CMakeFiles/schizomania.dir/game/weapon.cpp.o: shared/ents.h
-CMakeFiles/schizomania.dir/game/weapon.cpp.o: shared/geom.h
-CMakeFiles/schizomania.dir/game/weapon.cpp.o: shared/glemu.h
-CMakeFiles/schizomania.dir/game/weapon.cpp.o: shared/glexts.h
-CMakeFiles/schizomania.dir/game/weapon.cpp.o: shared/iengine.h
-CMakeFiles/schizomania.dir/game/weapon.cpp.o: shared/igame.h
-CMakeFiles/schizomania.dir/game/weapon.cpp.o: shared/tools.h
 
 CMakeFiles/schizomania.dir/shared/crypto.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/shared/crypto.cpp.o: shared/command.h

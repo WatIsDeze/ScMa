@@ -672,7 +672,6 @@ CMakeFiles/schizomania.dir/engine/world.cpp.o
  /home/watisdeze/Dev/Projects/ScMa/src/engine/texture.h
  /home/watisdeze/Dev/Projects/ScMa/src/engine/world.cpp
  /home/watisdeze/Dev/Projects/ScMa/src/engine/world.h
- /home/watisdeze/Dev/Projects/ScMa/src/game/ai.h
  /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
  ext/json-develop/single_include/nlohmann/json.hpp
  shared/command.h
@@ -693,36 +692,6 @@ CMakeFiles/schizomania.dir/engine/worldio.cpp.o
  /home/watisdeze/Dev/Projects/ScMa/src/engine/texture.h
  /home/watisdeze/Dev/Projects/ScMa/src/engine/world.h
  /home/watisdeze/Dev/Projects/ScMa/src/engine/worldio.cpp
- /home/watisdeze/Dev/Projects/ScMa/src/game/ai.h
- /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
- ext/json-develop/single_include/nlohmann/json.hpp
- shared/command.h
- shared/cube.h
- shared/ents.h
- shared/geom.h
- shared/glemu.h
- shared/glexts.h
- shared/iengine.h
- shared/igame.h
- shared/tools.h
-CMakeFiles/schizomania.dir/game/ai.cpp.o
- /home/watisdeze/Dev/Projects/ScMa/src/game/ai.cpp
- /home/watisdeze/Dev/Projects/ScMa/src/game/ai.h
- /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
- ext/json-develop/single_include/nlohmann/json.hpp
- shared/command.h
- shared/cube.h
- shared/ents.h
- shared/geom.h
- shared/glemu.h
- shared/glexts.h
- shared/iengine.h
- shared/igame.h
- shared/tools.h
-CMakeFiles/schizomania.dir/game/client.cpp.o
- /home/watisdeze/Dev/Projects/ScMa/src/game/ai.h
- /home/watisdeze/Dev/Projects/ScMa/src/game/client.cpp
- /home/watisdeze/Dev/Projects/ScMa/src/game/ctf.h
  /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
  ext/json-develop/single_include/nlohmann/json.hpp
  shared/command.h
@@ -735,7 +704,6 @@ CMakeFiles/schizomania.dir/game/client.cpp.o
  shared/igame.h
  shared/tools.h
 CMakeFiles/schizomania.dir/game/entities.cpp.o
- /home/watisdeze/Dev/Projects/ScMa/src/game/ai.h
  /home/watisdeze/Dev/Projects/ScMa/src/game/entities.cpp
  /home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.h
  /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
@@ -750,7 +718,6 @@ CMakeFiles/schizomania.dir/game/entities.cpp.o
  shared/igame.h
  shared/tools.h
 CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o
- /home/watisdeze/Dev/Projects/ScMa/src/game/ai.h
  /home/watisdeze/Dev/Projects/ScMa/src/game/entities/baseentity.cpp
  /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
  ext/json-develop/single_include/nlohmann/json.hpp
@@ -764,7 +731,6 @@ CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o
  shared/igame.h
  shared/tools.h
 CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o
- /home/watisdeze/Dev/Projects/ScMa/src/game/ai.h
  /home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.cpp
  /home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.h
  /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
@@ -779,7 +745,6 @@ CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o
  shared/igame.h
  shared/tools.h
 CMakeFiles/schizomania.dir/game/game.cpp.o
- /home/watisdeze/Dev/Projects/ScMa/src/game/ai.h
  /home/watisdeze/Dev/Projects/ScMa/src/game/game.cpp
  /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
  ext/json-develop/single_include/nlohmann/json.hpp
@@ -793,68 +758,8 @@ CMakeFiles/schizomania.dir/game/game.cpp.o
  shared/igame.h
  shared/tools.h
 CMakeFiles/schizomania.dir/game/render.cpp.o
- /home/watisdeze/Dev/Projects/ScMa/src/game/ai.h
  /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
  /home/watisdeze/Dev/Projects/ScMa/src/game/render.cpp
- ext/json-develop/single_include/nlohmann/json.hpp
- shared/command.h
- shared/cube.h
- shared/ents.h
- shared/geom.h
- shared/glemu.h
- shared/glexts.h
- shared/iengine.h
- shared/igame.h
- shared/tools.h
-CMakeFiles/schizomania.dir/game/scoreboard.cpp.o
- /home/watisdeze/Dev/Projects/ScMa/src/game/ai.h
- /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
- /home/watisdeze/Dev/Projects/ScMa/src/game/scoreboard.cpp
- ext/json-develop/single_include/nlohmann/json.hpp
- shared/command.h
- shared/cube.h
- shared/ents.h
- shared/geom.h
- shared/glemu.h
- shared/glexts.h
- shared/iengine.h
- shared/igame.h
- shared/tools.h
-CMakeFiles/schizomania.dir/game/server.cpp.o
- /home/watisdeze/Dev/Projects/ScMa/src/game/ai.h
- /home/watisdeze/Dev/Projects/ScMa/src/game/aiman.h
- /home/watisdeze/Dev/Projects/ScMa/src/game/ctf.h
- /home/watisdeze/Dev/Projects/ScMa/src/game/extinfo.h
- /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
- /home/watisdeze/Dev/Projects/ScMa/src/game/server.cpp
- ext/json-develop/single_include/nlohmann/json.hpp
- shared/command.h
- shared/cube.h
- shared/ents.h
- shared/geom.h
- shared/glemu.h
- shared/glexts.h
- shared/iengine.h
- shared/igame.h
- shared/tools.h
-CMakeFiles/schizomania.dir/game/waypoint.cpp.o
- /home/watisdeze/Dev/Projects/ScMa/src/game/ai.h
- /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
- /home/watisdeze/Dev/Projects/ScMa/src/game/waypoint.cpp
- ext/json-develop/single_include/nlohmann/json.hpp
- shared/command.h
- shared/cube.h
- shared/ents.h
- shared/geom.h
- shared/glemu.h
- shared/glexts.h
- shared/iengine.h
- shared/igame.h
- shared/tools.h
-CMakeFiles/schizomania.dir/game/weapon.cpp.o
- /home/watisdeze/Dev/Projects/ScMa/src/game/ai.h
- /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
- /home/watisdeze/Dev/Projects/ScMa/src/game/weapon.cpp
  ext/json-develop/single_include/nlohmann/json.hpp
  shared/command.h
  shared/cube.h

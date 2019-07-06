@@ -79,18 +79,23 @@ if(SCHIZOMANIA_BUILD_CLIENT)
       engine/world.cpp
       engine/worldio.cpp
       
+      # Commented out but not deleted for reference reasons.
       # Game code.
-      game/ai.cpp
-      game/client.cpp
-      game/entities.cpp
-      game/game.cpp
+      #game/ai.cpp
+      #game/client.cpp
+      #game/entities.cpp
+      #game/game.cpp
       #game/movable.cpp
       #game/movables.cpp
+      #game/render.cpp
+      #game/scoreboard.cpp
+      #game/server.cpp
+      #game/waypoint.cpp
+      #game/weapon.cpp
+      game/entities.cpp
+      game/game.cpp
       game/render.cpp
-      game/scoreboard.cpp
-      game/server.cpp
-      game/waypoint.cpp
-      game/weapon.cpp
+      
       
       # Entities.
       game/entities/baseentity.cpp

@@ -8,7 +8,7 @@ enum { ET_EMPTY=0, ET_LIGHT, ET_MAPMODEL, ET_PLAYERSTART, ET_ENVMAP, ET_PARTICLE
 class entity                                   // persistent map entity
 {
 public:
-    entity() {}
+    entity() : o(0, 0, 0) {}
     virtual ~entity() {}
 
     vec o;                                      // position
@@ -32,40 +32,7 @@ enum
 };
 
 
-// Defined here, for several reasons, since it has to replace good ol' extentity.
-namespace entities
-{
-    namespace classes {
-        class BaseEntity : public entity {
-        public:
-            BaseEntity();
-            virtual ~BaseEntity();
 
-            virtual void preload();
-            virtual void think();
-
-        // Taken from what was, gameentity.
-        public:
-            std::string classname;
-
-            // Contains the json attributes.
-            std::map<std::string, std::string> attributes;
-
-        // Taken from the old "extentity".
-        public:
-            int flags;
-            BaseEntity *attached;
-
-            bool spawned() const { return (flags&EF_SPAWNED) != 0; }
-            void setspawned(bool val) { if(val) flags |= EF_SPAWNED; else flags &= ~EF_SPAWNED; }
-            void setspawned() { flags |= EF_SPAWNED; }
-            void clearspawned() { flags &= ~EF_SPAWNED; }
-
-        private:
-
-        };
-    } // classes
-} // entities
 
 #define MAXENTS 10000
 
@@ -82,9 +49,11 @@ enum { COLLIDE_NONE = 0, COLLIDE_ELLIPSE, COLLIDE_OBB, COLLIDE_TRI };
 #define CROUCHTIME 200
 #define CROUCHHEIGHT 0.75f
 
-struct physent                                  // base entity type, can be affected by physics
+class physent : public entity                  // base entity type, can be affected by physics
 {
-    vec o, vel, falling;                        // origin, velocity
+public:
+    //vec o, vel, falling;                        // origin, velocity
+    vec vel, falling;                        // origin, velocity
     vec deltapos, newpos;                       // movement interpolation
     float yaw, pitch, roll;
     float maxspeed;                             // cubes per second, 100 for player
@@ -99,17 +68,17 @@ struct physent                                  // base entity type, can be affe
 
     uchar physstate;                            // one of PHYS_* above
     uchar state, editstate;                     // one of CS_* above
-    uchar type;                                 // one of ENT_* above
+    //uchar type;                                 // one of ENT_* above
     uchar collidetype;                          // one of COLLIDE_* above
 
     bool blocked;                               // used by physics to signal ai
 
-    physent() : o(0, 0, 0), deltapos(0, 0, 0), newpos(0, 0, 0), yaw(0), pitch(0), roll(0), maxspeed(100),
+    physent() : deltapos(0, 0, 0), newpos(0, 0, 0), yaw(0), pitch(0), roll(0), maxspeed(100),
                radius(4.1f), eyeheight(18), maxheight(18), aboveeye(2), xradius(4.1f), yradius(4.1f), zmargin(0),
-               state(CS_ALIVE), editstate(CS_ALIVE), type(ENT_PLAYER),
+               state(CS_ALIVE), editstate(CS_ALIVE),
                collidetype(COLLIDE_ELLIPSE),
                blocked(false)
-               { reset(); }
+               {  type = ENT_PLAYER; reset(); }
 
     void resetinterp()
     {
@@ -227,3 +196,37 @@ struct dynent : physent                         // animated characters, or chara
 };
 
 
+// Defined here, for several reasons, since it has to replace good ol' extentity.
+namespace entities
+{
+    namespace classes {
+        class BaseEntity : public dynent {
+        public:
+            BaseEntity();
+            virtual ~BaseEntity();
+
+            virtual void preload();
+            virtual void think();
+
+        // Taken from what was, gameentity.
+        public:
+            std::string classname;
+
+            // Contains the json attributes.
+            std::map<std::string, std::string> attributes;
+
+        // Taken from the old "extentity".
+        public:
+            int flags;
+            BaseEntity *attached;
+
+            bool spawned() const { return (flags&EF_SPAWNED) != 0; }
+            void setspawned(bool val) { if(val) flags |= EF_SPAWNED; else flags &= ~EF_SPAWNED; }
+            void setspawned() { flags |= EF_SPAWNED; }
+            void clearspawned() { flags &= ~EF_SPAWNED; }
+
+        private:
+
+        };
+    } // classes
+} // entities

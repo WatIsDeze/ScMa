@@ -1,267 +1,237 @@
 [
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/shared/crypto.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/shared/crypto.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/shared/crypto.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/shared/crypto.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/shared/crypto.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/shared/geom.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/shared/geom.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/shared/geom.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/shared/geom.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/shared/geom.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/shared/glemu.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/shared/glemu.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/shared/glemu.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/shared/glemu.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/shared/glemu.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/shared/stream.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/shared/stream.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/shared/stream.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/shared/stream.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/shared/stream.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/shared/tools.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/shared/tools.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/shared/tools.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/shared/tools.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/shared/tools.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/shared/zip.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/shared/zip.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/shared/zip.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/shared/zip.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/shared/zip.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/aa.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/aa.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/aa.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/aa.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/aa.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/bih.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/bih.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/bih.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/bih.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/bih.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/blend.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/blend.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/blend.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/blend.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/blend.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/client.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/client.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/client.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/client.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/client.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/command.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/command.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/command.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/command.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/command.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/console.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/console.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/console.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/console.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/console.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/dynlight.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/dynlight.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/dynlight.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/dynlight.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/dynlight.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/grass.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/grass.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/grass.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/grass.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/grass.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/light.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/light.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/light.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/light.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/light.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/main.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/main.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/main.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/main.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/main.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/material.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/material.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/material.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/material.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/material.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/menus.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/menus.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/menus.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/menus.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/menus.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/movie.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/movie.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/movie.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/movie.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/movie.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/normal.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/normal.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/normal.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/normal.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/normal.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/octa.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/octa.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/octa.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/octa.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/octa.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/octaedit.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/octaedit.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/octaedit.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/octaedit.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/octaedit.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/octarender.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/octarender.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/octarender.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/octarender.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/octarender.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/physics.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/physics.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/physics.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/physics.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/physics.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/pvs.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/pvs.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/pvs.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/pvs.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/pvs.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/rendergl.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/rendergl.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/rendergl.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/rendergl.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/rendergl.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/renderlights.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/renderlights.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/renderlights.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/renderlights.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/renderlights.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/rendermodel.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/rendermodel.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/rendermodel.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/rendermodel.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/rendermodel.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/renderparticles.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/renderparticles.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/renderparticles.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/renderparticles.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/renderparticles.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/rendersky.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/rendersky.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/rendersky.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/rendersky.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/rendersky.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/rendertext.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/rendertext.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/rendertext.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/rendertext.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/rendertext.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/renderva.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/renderva.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/renderva.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/renderva.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/renderva.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/server.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/server.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/server.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/server.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/server.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/serverbrowser.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/serverbrowser.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/serverbrowser.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/serverbrowser.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/serverbrowser.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/shader.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/shader.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/shader.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/shader.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/shader.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/sound.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/sound.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/sound.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/sound.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/sound.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/stain.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/stain.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/stain.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/stain.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/stain.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/texture.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/texture.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/texture.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/texture.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/texture.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/ui.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/ui.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/ui.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/ui.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/ui.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/water.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/water.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/water.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/water.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/water.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/world.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/world.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/world.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/world.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/world.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/worldio.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/worldio.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/engine/worldio.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/engine/worldio.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/engine/worldio.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/game/ai.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/game/ai.cpp",
-  "file": "/home/watisdeze/Dev/Projects/ScMa/src/game/ai.cpp"
-},
-{
-  "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/game/client.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/game/client.cpp",
-  "file": "/home/watisdeze/Dev/Projects/ScMa/src/game/client.cpp"
-},
-{
-  "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/game/entities.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/game/entities.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/game/entities.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/game/entities.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/game/entities.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/game/game.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/game/game.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/game/game.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/game/game.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/game/game.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/game/render.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/game/render.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/game/render.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/game/render.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/game/render.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/game/scoreboard.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/game/scoreboard.cpp",
-  "file": "/home/watisdeze/Dev/Projects/ScMa/src/game/scoreboard.cpp"
-},
-{
-  "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/game/server.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/game/server.cpp",
-  "file": "/home/watisdeze/Dev/Projects/ScMa/src/game/server.cpp"
-},
-{
-  "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/game/waypoint.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/game/waypoint.cpp",
-  "file": "/home/watisdeze/Dev/Projects/ScMa/src/game/waypoint.cpp"
-},
-{
-  "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/game/weapon.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/game/weapon.cpp",
-  "file": "/home/watisdeze/Dev/Projects/ScMa/src/game/weapon.cpp"
-},
-{
-  "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/game/entities/baseentity.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/game/entities/baseentity.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/game/entities/baseentity.cpp"
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
-  "command": "/usr/bin/c++   -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.cpp",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.cpp"
 }
 ]

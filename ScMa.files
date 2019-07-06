@@ -527,3 +527,7 @@ src/game/entities/baseentity.cpp
 src/game/entities/playerstart.cpp
 src/game/entities/dynamiclight.h
 src/game/entities/dynamiclight.cpp
+src/game/entities.cpp
+src/game/game.h
+src/game/game.cpp
+src/game/render.cpp
