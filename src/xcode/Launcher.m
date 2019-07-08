@@ -1,5 +1,5 @@
 #import "Launcher.h"
-#import "SDL2/SDL.h"
+#import "SDL.h"
 #import <crt_externs.h>
 
 // If you make a MOD then please change this, the bundle indentifier, the file extensions (.ogz, .dmo), and the url registration.
