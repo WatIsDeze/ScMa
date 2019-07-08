@@ -226,6 +226,11 @@
 },
 {
   "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
+  "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/game/server.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/game/server.cpp",
+  "file": "/home/watisdeze/Dev/Projects/ScMa/src/game/server.cpp"
+},
+{
+  "directory": "/home/watisdeze/Dev/Projects/ScMa/src",
   "command": "/usr/bin/c++    -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared    -std=gnu++11 -o CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/game/entities/baseentity.cpp",
   "file": "/home/watisdeze/Dev/Projects/ScMa/src/game/entities/baseentity.cpp"
 },

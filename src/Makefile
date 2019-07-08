@@ -1230,6 +1230,33 @@ game/render.cpp.s:
 	$(MAKE) -f CMakeFiles/schizomania.dir/build.make CMakeFiles/schizomania.dir/game/render.cpp.s
 .PHONY : game/render.cpp.s
 
+game/server.o: game/server.cpp.o
+
+.PHONY : game/server.o
+
+# target to build an object file
+game/server.cpp.o:
+	$(MAKE) -f CMakeFiles/schizomania.dir/build.make CMakeFiles/schizomania.dir/game/server.cpp.o
+.PHONY : game/server.cpp.o
+
+game/server.i: game/server.cpp.i
+
+.PHONY : game/server.i
+
+# target to preprocess a source file
+game/server.cpp.i:
+	$(MAKE) -f CMakeFiles/schizomania.dir/build.make CMakeFiles/schizomania.dir/game/server.cpp.i
+.PHONY : game/server.cpp.i
+
+game/server.s: game/server.cpp.s
+
+.PHONY : game/server.s
+
+# target to generate assembly for a file
+game/server.cpp.s:
+	$(MAKE) -f CMakeFiles/schizomania.dir/build.make CMakeFiles/schizomania.dir/game/server.cpp.s
+.PHONY : game/server.cpp.s
+
 shared/crypto.o: shared/crypto.cpp.o
 
 .PHONY : shared/crypto.o
@@ -1524,6 +1551,9 @@ help:
 	@echo "... game/render.o"
 	@echo "... game/render.i"
 	@echo "... game/render.s"
+	@echo "... game/server.o"
+	@echo "... game/server.i"
+	@echo "... game/server.s"
 	@echo "... shared/crypto.o"
 	@echo "... shared/crypto.i"
 	@echo "... shared/crypto.s"

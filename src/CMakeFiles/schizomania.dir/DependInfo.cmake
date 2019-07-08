@@ -45,6 +45,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.cpp" "/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o"
   "/home/watisdeze/Dev/Projects/ScMa/src/game/game.cpp" "/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles/schizomania.dir/game/game.cpp.o"
   "/home/watisdeze/Dev/Projects/ScMa/src/game/render.cpp" "/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles/schizomania.dir/game/render.cpp.o"
+  "/home/watisdeze/Dev/Projects/ScMa/src/game/server.cpp" "/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles/schizomania.dir/game/server.cpp.o"
   "/home/watisdeze/Dev/Projects/ScMa/src/shared/crypto.cpp" "/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles/schizomania.dir/shared/crypto.cpp.o"
   "/home/watisdeze/Dev/Projects/ScMa/src/shared/geom.cpp" "/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles/schizomania.dir/shared/geom.cpp.o"
   "/home/watisdeze/Dev/Projects/ScMa/src/shared/glemu.cpp" "/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles/schizomania.dir/shared/glemu.cpp.o"

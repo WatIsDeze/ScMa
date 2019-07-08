@@ -1137,9 +1137,33 @@ CMakeFiles/schizomania.dir/game/render.cpp.o.provides: CMakeFiles/schizomania.di
 CMakeFiles/schizomania.dir/game/render.cpp.o.provides.build: CMakeFiles/schizomania.dir/game/render.cpp.o
 
 
+CMakeFiles/schizomania.dir/game/server.cpp.o: CMakeFiles/schizomania.dir/flags.make
+CMakeFiles/schizomania.dir/game/server.cpp.o: game/server.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_46) "Building CXX object CMakeFiles/schizomania.dir/game/server.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/schizomania.dir/game/server.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/game/server.cpp
+
+CMakeFiles/schizomania.dir/game/server.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/schizomania.dir/game/server.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/watisdeze/Dev/Projects/ScMa/src/game/server.cpp > CMakeFiles/schizomania.dir/game/server.cpp.i
+
+CMakeFiles/schizomania.dir/game/server.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/schizomania.dir/game/server.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/watisdeze/Dev/Projects/ScMa/src/game/server.cpp -o CMakeFiles/schizomania.dir/game/server.cpp.s
+
+CMakeFiles/schizomania.dir/game/server.cpp.o.requires:
+
+.PHONY : CMakeFiles/schizomania.dir/game/server.cpp.o.requires
+
+CMakeFiles/schizomania.dir/game/server.cpp.o.provides: CMakeFiles/schizomania.dir/game/server.cpp.o.requires
+	$(MAKE) -f CMakeFiles/schizomania.dir/build.make CMakeFiles/schizomania.dir/game/server.cpp.o.provides.build
+.PHONY : CMakeFiles/schizomania.dir/game/server.cpp.o.provides
+
+CMakeFiles/schizomania.dir/game/server.cpp.o.provides.build: CMakeFiles/schizomania.dir/game/server.cpp.o
+
+
 CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: CMakeFiles/schizomania.dir/flags.make
 CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o: game/entities/baseentity.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_46) "Building CXX object CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_47) "Building CXX object CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/game/entities/baseentity.cpp
 
 CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.i: cmake_force
@@ -1163,7 +1187,7 @@ CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o.provides.build: CMakeF
 
 CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: CMakeFiles/schizomania.dir/flags.make
 CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o: game/entities/playerstart.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_47) "Building CXX object CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Building CXX object CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.cpp
 
 CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.i: cmake_force
@@ -1232,6 +1256,7 @@ schizomania_OBJECTS = \
 "CMakeFiles/schizomania.dir/game/entities.cpp.o" \
 "CMakeFiles/schizomania.dir/game/game.cpp.o" \
 "CMakeFiles/schizomania.dir/game/render.cpp.o" \
+"CMakeFiles/schizomania.dir/game/server.cpp.o" \
 "CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o" \
 "CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o"
 
@@ -1283,6 +1308,7 @@ schizomania: CMakeFiles/schizomania.dir/engine/worldio.cpp.o
 schizomania: CMakeFiles/schizomania.dir/game/entities.cpp.o
 schizomania: CMakeFiles/schizomania.dir/game/game.cpp.o
 schizomania: CMakeFiles/schizomania.dir/game/render.cpp.o
+schizomania: CMakeFiles/schizomania.dir/game/server.cpp.o
 schizomania: CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o
 schizomania: CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o
 schizomania: CMakeFiles/schizomania.dir/build.make
@@ -1290,7 +1316,7 @@ schizomania: /usr/lib/x86_64-linux-gnu/libGLU.so
 schizomania: /usr/lib/x86_64-linux-gnu/libGL.so
 schizomania: /usr/lib/x86_64-linux-gnu/libz.so
 schizomania: CMakeFiles/schizomania.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Linking CXX executable schizomania"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_49) "Linking CXX executable schizomania"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/schizomania.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -1343,6 +1369,7 @@ CMakeFiles/schizomania.dir/requires: CMakeFiles/schizomania.dir/engine/worldio.c
 CMakeFiles/schizomania.dir/requires: CMakeFiles/schizomania.dir/game/entities.cpp.o.requires
 CMakeFiles/schizomania.dir/requires: CMakeFiles/schizomania.dir/game/game.cpp.o.requires
 CMakeFiles/schizomania.dir/requires: CMakeFiles/schizomania.dir/game/render.cpp.o.requires
+CMakeFiles/schizomania.dir/requires: CMakeFiles/schizomania.dir/game/server.cpp.o.requires
 CMakeFiles/schizomania.dir/requires: CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o.requires
 CMakeFiles/schizomania.dir/requires: CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o.requires
 

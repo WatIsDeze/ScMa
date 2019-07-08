@@ -13,10 +13,10 @@ Ultimately we do not seek multiplayer, so it is best to try and erase it from th
 
 ### ENTITY SYSTEM:
 - Create a macro such as in the HL1 SDK, where we can do LINK_ENTITY_CLASS(stringname, ClassName). This has the advantage that we don't have to scan for string class names in the newgameentity anymore. (It'll do so automatically instead of us having to add them by hand.)	
-- Resolve entity attributes. (Allow for an unlimited amount, store them by name/value, make them accessible.)
-
+- Rename PlayerStart to Player, but ensure it can be spawned by "playerstart", and there can be only 1 for now.
+  NOTE THAT: We should keep in mind this may need to be refactored since it could conflict in possible multiplayer cases.
+  
 ### OTHERS: 
-- Add BaseEntity to the engine folder instead of game folder. Since extentity has been sortof replaced by it.
 - Add support for footstep audio based on material/texture type.
 - Add a dynamic/flickering light entity that can move, and flicker based on a sequence. (Like sin wave etc.)
 - Add doors, this will be done by ENT_INANIMATE backporting.
@@ -49,6 +49,12 @@ Ultimately we do not seek multiplayer, so it is best to try and erase it from th
 - Create a basic dialogue entity.
 
 -------------------------------------------------------------------------------------------------------------
+# Changes - 2019-07-08
+- Placed the server code as it belongs, in a header and a cpp file.
+- Added setting up the type for PlayerStart, it is now ENT_PLAYER, however the classname is still off....
+- Added the basemonster entity type, which still requires a reimplementation of ENT_AI
+- Added commands.cpp for all commands that CubeScript can call.
+
 # Changes - 2019-07-06
 - Renamed the game folder to oldgame.
 - Created a minimal template, at the current moment there is no client/server handling. All we can do is move around.

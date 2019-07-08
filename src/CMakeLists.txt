@@ -95,8 +95,8 @@ if(SCHIZOMANIA_BUILD_CLIENT)
       game/entities.cpp
       game/game.cpp
       game/render.cpp
-      
-      
+      game/server.cpp
+            
       # Entities.
       game/entities/baseentity.cpp
       game/entities/playerstart.cpp

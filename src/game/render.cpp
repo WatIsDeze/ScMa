@@ -47,7 +47,9 @@ namespace game
         return offset;
     }
 
-    int numanims() { return 0; }
+    int numanims() {
+        return 0;
+    }
 
     void findanims(const char *pattern, vector<int> &anims)
     {

@@ -1,12 +1,12 @@
-#ifndef PLAYERSTART_H
-#define PLAYERSTART_H
+#ifndef BASEMONSTER_H
+#define BASEMONSTER_H
 
 namespace entities {
     namespace classes {
-        class PlayerStart : public BaseEntity {
+        class BaseMonster : public BaseEntity {
         public:
-            PlayerStart();
-            virtual ~PlayerStart();
+            BaseMonster();
+            virtual ~BaseMonster();
 
             void preload();
             void think();
@@ -18,4 +18,4 @@ namespace entities {
     } // classes
 } // entities
 
-#endif // PLAYERSTART_H
+#endif // BASEMONSTER_H

@@ -207,6 +207,7 @@ namespace entities
 
             virtual void preload();
             virtual void think();
+            virtual void render();
 
         // Taken from what was, gameentity.
         public:

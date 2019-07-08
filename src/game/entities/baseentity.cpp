@@ -20,5 +20,9 @@ void BaseEntity::think() {
 
 }
 
+void BaseEntity::render() {
+
+}
+
 } // classes
 } // entities

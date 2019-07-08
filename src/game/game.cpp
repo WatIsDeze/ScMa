@@ -28,14 +28,21 @@ namespace game
         physicsframe();
 
         // Update all our objects.
-        updateobjects();
-
-        // Last but not least, update our player entity.
-        player1->think();
+        updateentities();
     }
 
-    void updateobjects() {
+    void updateentities() {
+        // Execute think actions for entities.
+        loopv(entities::ents)
+        {
+            // Let's go at it!
+            entities::classes::BaseEntity *e = entities::ents[i];
+            e->think();
+//          if(e.type == ENT_PLAYER) {}
+        }
 
+        // Player specific think action.
+        player1->think();
     }
 
     void gameconnect(bool _remote)
@@ -83,8 +90,12 @@ namespace game
     void bounced(physent *d, const vec &surface) {}
 
     // Unsure what to do with these yet.
-    void edittrigger(const selinfo &sel, int op, int arg1, int arg2, int arg3, const VSlot *vs) {}
-    void vartrigger(ident *id) {}
+    void edittrigger(const selinfo &sel, int op, int arg1, int arg2, int arg3, const VSlot *vs) {
+
+    }
+    void vartrigger(ident *id) {
+
+    }
 
     // These speak for themselves.
     const char *getclientmap() {
@@ -115,7 +126,9 @@ namespace game
         findplayerspawn(player1);
     }
 
-    bool needminimap() { return false; }
+    bool needminimap() {
+        return false;
+    }
 
     float abovegameplayhud(int w, int h)
     {
@@ -187,9 +200,11 @@ namespace game
     }
 
     void rendergame(bool mainpass) {
-        // TODO: Fix this.
+         // TODO: Fix this.
         //if(isthirdperson()) renderclient(player1, "ogro", NULL, 0, ANIM_ATTACK1, 300, player1->lastaction, player1->lastpain);
-        //renderobjects();
+
+        // Loop through our entities and render them all.
+
     }
 
     const char *defaultcrosshair(int index) {
@@ -228,8 +243,12 @@ namespace game
     void particletrack(physent *owner, vec &o, vec &d) {
     }
 
-    void writegamedata(vector<char> &extras) {}
-    void readgamedata (vector<char> &extras) {}
+    void writegamedata(vector<char> &extras) {
+
+    }
+    void readgamedata (vector<char> &extras) {
+
+    }
 
     const char *gameconfig() { return "config/game.cfg"; }
     const char *savedconfig() { return "config/saved.cfg"; }
@@ -272,43 +291,13 @@ namespace game
         player1->setspawned(true);
     }
 
-    const char *gameident() { return "SchizoMania"; }
-    const char *getscreenshotinfo() { return NULL; }
+    const char *gameident() {
+        return "SchizoMania";
+    }
+    const char *getscreenshotinfo() {
+        return NULL;
+    }
 
 }; // namespace game.
 
-namespace server
-{
-    int protocolversion() { return 1; }
 
-    // --------------
-
-    void *newclientinfo() { return NULL; }
-    void deleteclientinfo(void *ci) {}
-    void serverinit() {}
-    int reserveclients() { return 0; }
-    int numchannels() { return 0; }
-    void clientdisconnect(int n) {}
-    int clientconnect(int n, uint ip) { return DISC_NONE; }
-    void localdisconnect(int n) {}
-    void localconnect(int n) {}
-    bool allowbroadcast(int n) { return true; }
-    void recordpacket(int chan, void *data, int len) {}
-    void parsepacket(int sender, int chan, packetbuf &p) {}
-    void sendservmsg(const char *s) {}
-    bool sendpackets(bool force) { return false; }
-    void serverinforeply(ucharbuf &req, ucharbuf &p) {}
-    void serverupdate() {}
-    bool servercompatible(char *name, char *sdec, char *map, int ping, const vector<int> &attr, int np) { return true; }
-
-    int serverinfoport(int servport) { return 0; }
-    int serverport() { return 0; }
-    const char *defaultmaster() { return ""; }
-    int masterport() { return 0; }
-    int laninfoport() { return 0; }
-    void processmasterinput(const char *cmd, int cmdlen, const char *args) {}
-    void masterconnected() {}
-    void masterdisconnected() {}
-    bool ispaused() { return false; }
-    int scaletime(int t) { return t*100; }
-}

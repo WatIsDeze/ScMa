@@ -68,7 +68,7 @@ namespace game
     extern void clearworld();
 
     // Update functions.
-    extern void updateobjects();
+    extern void updateentities();
 
     // Render functions.
     extern void rendergame(bool mainpass);

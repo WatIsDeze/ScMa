@@ -634,6 +634,14 @@ cube.h
 game.h
 /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
 
+/home/watisdeze/Dev/Projects/ScMa/src/game/server.cpp
+game.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/game.h
+server.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/server.h
+
+/home/watisdeze/Dev/Projects/ScMa/src/game/server.h
+
 /home/watisdeze/Dev/Projects/ScMa/src/shared/command.h
 
 /home/watisdeze/Dev/Projects/ScMa/src/shared/crypto.cpp

@@ -44,6 +44,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/schizomania.dir/game/entities.cpp.o"
   "CMakeFiles/schizomania.dir/game/game.cpp.o"
   "CMakeFiles/schizomania.dir/game/render.cpp.o"
+  "CMakeFiles/schizomania.dir/game/server.cpp.o"
   "CMakeFiles/schizomania.dir/game/entities/baseentity.cpp.o"
   "CMakeFiles/schizomania.dir/game/entities/playerstart.cpp.o"
   "schizomania.pdb"

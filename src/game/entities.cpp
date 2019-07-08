@@ -56,12 +56,21 @@ namespace entities
 
     void preloadentities()
     {
+        // Execute preload actions for entities.
+        loopv(ents)
+        {
+            // Let's go at it!
+            entities::classes::BaseEntity *e = ents[i];
+            e->preload();
+        }
+        // TODO: If stuff suddenly starts failing it is likely cuz of this being commented.
+/*
         loopi(MAXENTTYPES)
         {
             const char *mdl = entmdlname(i);
             if(!mdl) continue;
             preloadmodel(mdl);
-        }
+        }*/
 //        loopv(ents)
 //        {
 //            switch(e.type)
@@ -246,7 +255,6 @@ namespace entities
     void editent(int i, bool local)
     {
         entities::classes::BaseEntity &e = *ents[i];
-
         edit_entity = i;
         //conoutf("%i", i);
 

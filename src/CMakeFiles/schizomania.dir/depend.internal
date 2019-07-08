@@ -771,6 +771,20 @@ CMakeFiles/schizomania.dir/game/render.cpp.o
  shared/iengine.h
  shared/igame.h
  shared/tools.h
+CMakeFiles/schizomania.dir/game/server.cpp.o
+ /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
+ /home/watisdeze/Dev/Projects/ScMa/src/game/server.cpp
+ /home/watisdeze/Dev/Projects/ScMa/src/game/server.h
+ ext/json-develop/single_include/nlohmann/json.hpp
+ shared/command.h
+ shared/cube.h
+ shared/ents.h
+ shared/geom.h
+ shared/glemu.h
+ shared/glexts.h
+ shared/iengine.h
+ shared/igame.h
+ shared/tools.h
 CMakeFiles/schizomania.dir/shared/crypto.cpp.o
  /home/watisdeze/Dev/Projects/ScMa/src/ext/json-develop/single_include/nlohmann/json.hpp
  /home/watisdeze/Dev/Projects/ScMa/src/shared/command.h

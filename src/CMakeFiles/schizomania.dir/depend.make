@@ -771,6 +771,20 @@ CMakeFiles/schizomania.dir/game/render.cpp.o: shared/iengine.h
 CMakeFiles/schizomania.dir/game/render.cpp.o: shared/igame.h
 CMakeFiles/schizomania.dir/game/render.cpp.o: shared/tools.h
 
+CMakeFiles/schizomania.dir/game/server.cpp.o: game/game.h
+CMakeFiles/schizomania.dir/game/server.cpp.o: game/server.cpp
+CMakeFiles/schizomania.dir/game/server.cpp.o: game/server.h
+CMakeFiles/schizomania.dir/game/server.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
+CMakeFiles/schizomania.dir/game/server.cpp.o: shared/command.h
+CMakeFiles/schizomania.dir/game/server.cpp.o: shared/cube.h
+CMakeFiles/schizomania.dir/game/server.cpp.o: shared/ents.h
+CMakeFiles/schizomania.dir/game/server.cpp.o: shared/geom.h
+CMakeFiles/schizomania.dir/game/server.cpp.o: shared/glemu.h
+CMakeFiles/schizomania.dir/game/server.cpp.o: shared/glexts.h
+CMakeFiles/schizomania.dir/game/server.cpp.o: shared/iengine.h
+CMakeFiles/schizomania.dir/game/server.cpp.o: shared/igame.h
+CMakeFiles/schizomania.dir/game/server.cpp.o: shared/tools.h
+
 CMakeFiles/schizomania.dir/shared/crypto.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
 CMakeFiles/schizomania.dir/shared/crypto.cpp.o: shared/command.h
 CMakeFiles/schizomania.dir/shared/crypto.cpp.o: shared/crypto.cpp
