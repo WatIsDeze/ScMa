@@ -72,7 +72,7 @@ add_library(SchizoMania_Engine_Client STATIC
 #     server.cpp
 # )
 
-if (UNIX)
+if (UNIX AND NOT APPLE)
     list(APPEND OS_LIBS "rt")
 endif()
 
