@@ -72,6 +72,10 @@ add_library(SchizoMania_Engine_Client STATIC
 #     server.cpp
 # )
 
+if (UNIX)
+    list(APPEND OS_LIBS "rt")
+endif()
+
 target_include_directories(SchizoMania_Engine_Client
     PUBLIC
         ${CMAKE_SOURCE_DIR}
@@ -87,6 +91,7 @@ target_include_directories(SchizoMania_Engine_Client
 target_link_libraries(SchizoMania_Engine_Client
     PUBLIC
         SchizoMania_Shared_Client
+        ${OS_LIBS}
     PRIVATE
         ${SDL2_MIXER_LIBRARIES}
         ${SDL2_IMAGE_LIBRARIES}
