@@ -13,8 +13,7 @@ namespace game
     int maptime = 0;
     cubestr mapname = "";
 
-    void updateworld()
-    {
+    void updateworld() {
         // Update the world time.
         if(!maptime) {
             maptime = lastmillis;

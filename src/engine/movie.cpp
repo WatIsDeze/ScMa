@@ -9,9 +9,9 @@
 
 #include "engine.h"
 #ifdef __APPLE__
-  #include "SDL2_mixer/SDL_mixer.h"
+  #include "SDL_mixer.h"
 #else
-  #include "SDL2/SDL_mixer.h"
+  #include <SDL2/SDL_mixer.h>
 #endif
 
 VAR(dbgmovie, 0, 0, 1);

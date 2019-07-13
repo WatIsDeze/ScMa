@@ -97,10 +97,10 @@ engine.h
 /home/watisdeze/Dev/Projects/ScMa/src/engine/movie.cpp
 engine.h
 /home/watisdeze/Dev/Projects/ScMa/src/engine/engine.h
-SDL2_mixer/SDL_mixer.h
-/home/watisdeze/Dev/Projects/ScMa/src/engine/SDL2_mixer/SDL_mixer.h
+SDL_mixer.h
+/home/watisdeze/Dev/Projects/ScMa/src/engine/SDL_mixer.h
 SDL2/SDL_mixer.h
-/home/watisdeze/Dev/Projects/ScMa/src/engine/SDL2/SDL_mixer.h
+-
 
 /home/watisdeze/Dev/Projects/ScMa/src/engine/mpr.h
 
@@ -213,10 +213,10 @@ engine.h
 /home/watisdeze/Dev/Projects/ScMa/src/engine/sound.cpp
 engine.h
 /home/watisdeze/Dev/Projects/ScMa/src/engine/engine.h
-SDL2_mixer/SDL_mixer.h
-/home/watisdeze/Dev/Projects/ScMa/src/engine/SDL2_mixer/SDL_mixer.h
+SDL_mixer.h
+/home/watisdeze/Dev/Projects/ScMa/src/engine/SDL_mixer.h
 SDL2/SDL_mixer.h
-/home/watisdeze/Dev/Projects/ScMa/src/engine/SDL2/SDL_mixer.h
+-
 wchar.h
 -
 unistd.h
@@ -241,10 +241,10 @@ engine.h
 /home/watisdeze/Dev/Projects/ScMa/src/engine/texture.cpp
 engine.h
 /home/watisdeze/Dev/Projects/ScMa/src/engine/engine.h
-SDL2_image/SDL_image.h
-/home/watisdeze/Dev/Projects/ScMa/src/engine/SDL2_image/SDL_image.h
+SDL_image.h
+/home/watisdeze/Dev/Projects/ScMa/src/engine/SDL_image.h
 SDL2/SDL_image.h
-/home/watisdeze/Dev/Projects/ScMa/src/engine/SDL2/SDL_image.h
+-
 
 /home/watisdeze/Dev/Projects/ScMa/src/engine/texture.h
 
@@ -677,16 +677,16 @@ dbghelp.h
 -
 intrin.h
 -
-SDL2/SDL.h
-/home/watisdeze/Dev/Projects/ScMa/src/shared/SDL2/SDL.h
+SDL.h
+/home/watisdeze/Dev/Projects/ScMa/src/shared/SDL.h
 OpenGL/gl.h
 -
 SDL2/SDL.h
 -
 SDL2/SDL_opengl.h
 -
-enet/enet.h
--
+enet/include/enet/enet.h
+/home/watisdeze/Dev/Projects/ScMa/src/shared/enet/include/enet/enet.h
 zlib.h
 -
 iostream
@@ -759,6 +759,22 @@ cube.h
 /home/watisdeze/Dev/Projects/ScMa/src/shared/zip.cpp
 cube.h
 /home/watisdeze/Dev/Projects/ScMa/src/shared/cube.h
+
+enet/include/enet/enet.h
+stdlib.h
+-
+enet/win32.h
+enet/include/enet/enet/win32.h
+enet/unix.h
+enet/include/enet/enet/unix.h
+enet/types.h
+enet/include/enet/enet/types.h
+enet/protocol.h
+enet/include/enet/enet/protocol.h
+enet/list.h
+enet/include/enet/enet/list.h
+enet/callbacks.h
+enet/include/enet/enet/callbacks.h
 
 ext/json-develop/single_include/nlohmann/json.hpp
 algorithm
@@ -1119,16 +1135,16 @@ dbghelp.h
 -
 intrin.h
 -
-SDL2/SDL.h
-shared/SDL2/SDL.h
+SDL.h
+shared/SDL.h
 OpenGL/gl.h
 -
 SDL2/SDL.h
 -
 SDL2/SDL_opengl.h
 -
-enet/enet.h
--
+enet/include/enet/enet.h
+shared/enet/include/enet/enet.h
 zlib.h
 -
 iostream

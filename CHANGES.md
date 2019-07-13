@@ -8,6 +8,7 @@
 
 ### REGULAR TODO:
 ### SERVER/CLIENT SYSTEM:
+- Logs etc, also the private folder being used on Linux(and OsX?) are still named Tesseract.
 - Resolve how our "new entity system" truly works in the networking aspect of code. This is partially related to the game code.
 Ultimately we do not seek multiplayer, so it is best to try and erase it from the engine as is.
 

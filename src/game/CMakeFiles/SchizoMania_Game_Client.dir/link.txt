@@ -1,0 +1,2 @@
+/usr/bin/ar qc libSchizoMania_Game_Client.a  CMakeFiles/SchizoMania_Game_Client.dir/entities.cpp.o CMakeFiles/SchizoMania_Game_Client.dir/game.cpp.o CMakeFiles/SchizoMania_Game_Client.dir/render.cpp.o CMakeFiles/SchizoMania_Game_Client.dir/entities/baseentity.cpp.o CMakeFiles/SchizoMania_Game_Client.dir/entities/dynamiclight.cpp.o CMakeFiles/SchizoMania_Game_Client.dir/entities/playerstart.cpp.o
+/usr/bin/ranlib libSchizoMania_Game_Client.a

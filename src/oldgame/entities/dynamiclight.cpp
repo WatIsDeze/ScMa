@@ -1,5 +1,5 @@
 #include "../game.h"
-#include "baseentity.h"
+// #include "baseentity.h"
 #include "dynamiclight.h"
 
 namespace entities {

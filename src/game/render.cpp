@@ -4,8 +4,7 @@ namespace game
 {
 
 
-    void rendergame()
-    {
+    void rendergame() {
 
     }
 
@@ -19,29 +18,24 @@ namespace game
     float swayfade = 0, swayspeed = 0, swaydist = 0;
     vec swaydir(0, 0, 0);
 
-    void swayhudgun(int curtime)
-    {
+    void swayhudgun(int curtime) {
 
     }
 
 
-    void drawhudmodel(entities::classes::BaseEntity *d, int anim, int basetime)
-    {
+    void drawhudmodel(entities::classes::BaseEntity *d, int anim, int basetime) {
 
     }
 
-    void drawhudgun()
-    {
+    void drawhudgun() {
 
     }
 
-    void renderplayerpreview(int model, int color, int team, int weap)
-    {
+    void renderplayerpreview(int model, int color, int team, int weap) {
 
     }
 
-    vec hudgunorigin(int gun, const vec &from, const vec &to, entities::classes::BaseEntity *d)
-    {
+    vec hudgunorigin(int gun, const vec &from, const vec &to, entities::classes::BaseEntity *d) {
         vec offset(from);
 
         return offset;
@@ -51,13 +45,11 @@ namespace game
         return 0;
     }
 
-    void findanims(const char *pattern, vector<int> &anims)
-    {
+    void findanims(const char *pattern, vector<int> &anims) {
         //loopi(sizeof(animnames)/sizeof(animnames[0])) if(matchanim(animnames[i], pattern)) anims.add(i);
     }
 
-    void preloadweapons()
-    {
+    void preloadweapons() {
 
     }
 
