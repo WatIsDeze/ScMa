@@ -1,4 +1,4 @@
-# Install script for directory: /home/watisdeze/Dev/Projects/ScMa/src/enet
+# Install script for directory: /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/enet
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

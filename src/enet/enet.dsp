@@ -145,7 +145,11 @@ SOURCE=.\include\enet\protocol.h
 # End Source File
 # Begin Source File
 
+<<<<<<< HEAD
 SOURCE=.\include\enet\time.h
+=======
+SOURCE=.\include\enet\enettime.h
+>>>>>>> 0a5cb8b42f1443109788f656bdd4eb57f8c0f7e9
 # End Source File
 # Begin Source File
 

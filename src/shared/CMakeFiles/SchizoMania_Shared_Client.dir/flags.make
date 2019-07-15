@@ -5,13 +5,13 @@
 # compile CXX with /usr/bin/c++
 C_FLAGS =  
 
-C_DEFINES = 
+C_DEFINES = -DGL_SILENCE_DEPRECATION
 
-C_INCLUDES = -I/home/watisdeze/Dev/Projects/ScMa/src 
+C_INCLUDES = -I/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src -I/usr/include/SDL2 -I/usr/include/freetype2 -I/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/enet/include 
 
 CXX_FLAGS =   -std=gnu++11
 
-CXX_DEFINES = 
+CXX_DEFINES = -DGL_SILENCE_DEPRECATION
 
-CXX_INCLUDES = -I/home/watisdeze/Dev/Projects/ScMa/src 
+CXX_INCLUDES = -I/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src -I/usr/include/SDL2 -I/usr/include/freetype2 -I/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/enet/include 
 

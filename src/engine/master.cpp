@@ -8,7 +8,7 @@
 
 #include "cube.h"
 #include <signal.h>
-#include <enet/time.h>
+#include <enet/enettime.h>
 
 #define INPUT_LIMIT 4096
 #define OUTPUT_LIMIT (64*1024)

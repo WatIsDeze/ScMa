@@ -58,9 +58,9 @@ enet/CMakeFiles/enet.dir/peer.c.o: enet/include/enet/win32.h
 enet/CMakeFiles/enet.dir/protocol.c.o: enet/protocol.c
 enet/CMakeFiles/enet.dir/protocol.c.o: enet/include/enet/callbacks.h
 enet/CMakeFiles/enet.dir/protocol.c.o: enet/include/enet/enet.h
+enet/CMakeFiles/enet.dir/protocol.c.o: enet/include/enet/enettime.h
 enet/CMakeFiles/enet.dir/protocol.c.o: enet/include/enet/list.h
 enet/CMakeFiles/enet.dir/protocol.c.o: enet/include/enet/protocol.h
-enet/CMakeFiles/enet.dir/protocol.c.o: enet/include/enet/time.h
 enet/CMakeFiles/enet.dir/protocol.c.o: enet/include/enet/types.h
 enet/CMakeFiles/enet.dir/protocol.c.o: enet/include/enet/unix.h
 enet/CMakeFiles/enet.dir/protocol.c.o: enet/include/enet/utility.h
