@@ -2,9 +2,8 @@
 
 namespace game
 {
-
-
-    void rendergame() {
+    __attribute__((optimize("O0"))) void rendergame()
+    {
 
     }
 
@@ -45,7 +44,8 @@ namespace game
         return 0;
     }
 
-    void findanims(const char *pattern, vector<int> &anims) {
+    __attribute__((used)) void findanims(const char *pattern, vector<int> &anims)
+    {
         //loopi(sizeof(animnames)/sizeof(animnames[0])) if(matchanim(animnames[i], pattern)) anims.add(i);
     }
 

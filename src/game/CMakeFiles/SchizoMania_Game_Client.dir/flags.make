@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_FLAGS =   -std=gnu++11
 
-CXX_DEFINES = 
+CXX_DEFINES = -DGL_SILENCE_DEPRECATION
 
-CXX_INCLUDES = -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/game/../shared -I/home/watisdeze/Dev/Projects/ScMa/src/game/entities 
+CXX_INCLUDES = -I/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src -I/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/../shared -I/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/entities -I/usr/include/SDL2 -I/usr/include/freetype2 -I/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/enet/include 
 

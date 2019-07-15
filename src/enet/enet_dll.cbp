@@ -54,7 +54,11 @@
 		<Unit filename="include\enet\enet.h" />
 		<Unit filename="include\enet\list.h" />
 		<Unit filename="include\enet\protocol.h" />
+<<<<<<< HEAD
 		<Unit filename="include\enet\time.h" />
+=======
+		<Unit filename="include\enet\enettime.h" />
+>>>>>>> 0a5cb8b42f1443109788f656bdd4eb57f8c0f7e9
 		<Unit filename="include\enet\types.h" />
 		<Unit filename="include\enet\unix.h" />
 		<Unit filename="include\enet\utility.h" />

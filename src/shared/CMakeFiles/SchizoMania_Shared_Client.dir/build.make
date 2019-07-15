@@ -46,10 +46,10 @@ RM = /usr/local/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/watisdeze/Dev/Projects/ScMa/src
+CMAKE_SOURCE_DIR = /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/watisdeze/Dev/Projects/ScMa/src
+CMAKE_BINARY_DIR = /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src
 
 # Include any dependencies generated for this target.
 include shared/CMakeFiles/SchizoMania_Shared_Client.dir/depend.make
@@ -62,16 +62,16 @@ include shared/CMakeFiles/SchizoMania_Shared_Client.dir/flags.make
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/crypto.cpp.o: shared/CMakeFiles/SchizoMania_Shared_Client.dir/flags.make
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/crypto.cpp.o: shared/crypto.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object shared/CMakeFiles/SchizoMania_Shared_Client.dir/crypto.cpp.o"
-	cd /home/watisdeze/Dev/Projects/ScMa/src/shared && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SchizoMania_Shared_Client.dir/crypto.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/shared/crypto.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object shared/CMakeFiles/SchizoMania_Shared_Client.dir/crypto.cpp.o"
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SchizoMania_Shared_Client.dir/crypto.cpp.o -c /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/crypto.cpp
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/crypto.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SchizoMania_Shared_Client.dir/crypto.cpp.i"
-	cd /home/watisdeze/Dev/Projects/ScMa/src/shared && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/watisdeze/Dev/Projects/ScMa/src/shared/crypto.cpp > CMakeFiles/SchizoMania_Shared_Client.dir/crypto.cpp.i
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/crypto.cpp > CMakeFiles/SchizoMania_Shared_Client.dir/crypto.cpp.i
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/crypto.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SchizoMania_Shared_Client.dir/crypto.cpp.s"
-	cd /home/watisdeze/Dev/Projects/ScMa/src/shared && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/watisdeze/Dev/Projects/ScMa/src/shared/crypto.cpp -o CMakeFiles/SchizoMania_Shared_Client.dir/crypto.cpp.s
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/crypto.cpp -o CMakeFiles/SchizoMania_Shared_Client.dir/crypto.cpp.s
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/crypto.cpp.o.requires:
 
@@ -86,16 +86,16 @@ shared/CMakeFiles/SchizoMania_Shared_Client.dir/crypto.cpp.o.provides.build: sha
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/geom.cpp.o: shared/CMakeFiles/SchizoMania_Shared_Client.dir/flags.make
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/geom.cpp.o: shared/geom.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object shared/CMakeFiles/SchizoMania_Shared_Client.dir/geom.cpp.o"
-	cd /home/watisdeze/Dev/Projects/ScMa/src/shared && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SchizoMania_Shared_Client.dir/geom.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/shared/geom.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object shared/CMakeFiles/SchizoMania_Shared_Client.dir/geom.cpp.o"
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SchizoMania_Shared_Client.dir/geom.cpp.o -c /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/geom.cpp
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/geom.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SchizoMania_Shared_Client.dir/geom.cpp.i"
-	cd /home/watisdeze/Dev/Projects/ScMa/src/shared && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/watisdeze/Dev/Projects/ScMa/src/shared/geom.cpp > CMakeFiles/SchizoMania_Shared_Client.dir/geom.cpp.i
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/geom.cpp > CMakeFiles/SchizoMania_Shared_Client.dir/geom.cpp.i
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/geom.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SchizoMania_Shared_Client.dir/geom.cpp.s"
-	cd /home/watisdeze/Dev/Projects/ScMa/src/shared && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/watisdeze/Dev/Projects/ScMa/src/shared/geom.cpp -o CMakeFiles/SchizoMania_Shared_Client.dir/geom.cpp.s
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/geom.cpp -o CMakeFiles/SchizoMania_Shared_Client.dir/geom.cpp.s
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/geom.cpp.o.requires:
 
@@ -110,16 +110,16 @@ shared/CMakeFiles/SchizoMania_Shared_Client.dir/geom.cpp.o.provides.build: share
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/glemu.cpp.o: shared/CMakeFiles/SchizoMania_Shared_Client.dir/flags.make
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/glemu.cpp.o: shared/glemu.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object shared/CMakeFiles/SchizoMania_Shared_Client.dir/glemu.cpp.o"
-	cd /home/watisdeze/Dev/Projects/ScMa/src/shared && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SchizoMania_Shared_Client.dir/glemu.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/shared/glemu.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object shared/CMakeFiles/SchizoMania_Shared_Client.dir/glemu.cpp.o"
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SchizoMania_Shared_Client.dir/glemu.cpp.o -c /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/glemu.cpp
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/glemu.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SchizoMania_Shared_Client.dir/glemu.cpp.i"
-	cd /home/watisdeze/Dev/Projects/ScMa/src/shared && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/watisdeze/Dev/Projects/ScMa/src/shared/glemu.cpp > CMakeFiles/SchizoMania_Shared_Client.dir/glemu.cpp.i
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/glemu.cpp > CMakeFiles/SchizoMania_Shared_Client.dir/glemu.cpp.i
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/glemu.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SchizoMania_Shared_Client.dir/glemu.cpp.s"
-	cd /home/watisdeze/Dev/Projects/ScMa/src/shared && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/watisdeze/Dev/Projects/ScMa/src/shared/glemu.cpp -o CMakeFiles/SchizoMania_Shared_Client.dir/glemu.cpp.s
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/glemu.cpp -o CMakeFiles/SchizoMania_Shared_Client.dir/glemu.cpp.s
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/glemu.cpp.o.requires:
 
@@ -134,16 +134,16 @@ shared/CMakeFiles/SchizoMania_Shared_Client.dir/glemu.cpp.o.provides.build: shar
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/pch.cpp.o: shared/CMakeFiles/SchizoMania_Shared_Client.dir/flags.make
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/pch.cpp.o: shared/pch.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object shared/CMakeFiles/SchizoMania_Shared_Client.dir/pch.cpp.o"
-	cd /home/watisdeze/Dev/Projects/ScMa/src/shared && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SchizoMania_Shared_Client.dir/pch.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/shared/pch.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object shared/CMakeFiles/SchizoMania_Shared_Client.dir/pch.cpp.o"
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SchizoMania_Shared_Client.dir/pch.cpp.o -c /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/pch.cpp
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/pch.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SchizoMania_Shared_Client.dir/pch.cpp.i"
-	cd /home/watisdeze/Dev/Projects/ScMa/src/shared && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/watisdeze/Dev/Projects/ScMa/src/shared/pch.cpp > CMakeFiles/SchizoMania_Shared_Client.dir/pch.cpp.i
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/pch.cpp > CMakeFiles/SchizoMania_Shared_Client.dir/pch.cpp.i
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/pch.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SchizoMania_Shared_Client.dir/pch.cpp.s"
-	cd /home/watisdeze/Dev/Projects/ScMa/src/shared && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/watisdeze/Dev/Projects/ScMa/src/shared/pch.cpp -o CMakeFiles/SchizoMania_Shared_Client.dir/pch.cpp.s
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/pch.cpp -o CMakeFiles/SchizoMania_Shared_Client.dir/pch.cpp.s
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/pch.cpp.o.requires:
 
@@ -158,16 +158,16 @@ shared/CMakeFiles/SchizoMania_Shared_Client.dir/pch.cpp.o.provides.build: shared
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/stream.cpp.o: shared/CMakeFiles/SchizoMania_Shared_Client.dir/flags.make
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/stream.cpp.o: shared/stream.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object shared/CMakeFiles/SchizoMania_Shared_Client.dir/stream.cpp.o"
-	cd /home/watisdeze/Dev/Projects/ScMa/src/shared && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SchizoMania_Shared_Client.dir/stream.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/shared/stream.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object shared/CMakeFiles/SchizoMania_Shared_Client.dir/stream.cpp.o"
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SchizoMania_Shared_Client.dir/stream.cpp.o -c /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/stream.cpp
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/stream.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SchizoMania_Shared_Client.dir/stream.cpp.i"
-	cd /home/watisdeze/Dev/Projects/ScMa/src/shared && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/watisdeze/Dev/Projects/ScMa/src/shared/stream.cpp > CMakeFiles/SchizoMania_Shared_Client.dir/stream.cpp.i
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/stream.cpp > CMakeFiles/SchizoMania_Shared_Client.dir/stream.cpp.i
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/stream.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SchizoMania_Shared_Client.dir/stream.cpp.s"
-	cd /home/watisdeze/Dev/Projects/ScMa/src/shared && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/watisdeze/Dev/Projects/ScMa/src/shared/stream.cpp -o CMakeFiles/SchizoMania_Shared_Client.dir/stream.cpp.s
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/stream.cpp -o CMakeFiles/SchizoMania_Shared_Client.dir/stream.cpp.s
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/stream.cpp.o.requires:
 
@@ -182,16 +182,16 @@ shared/CMakeFiles/SchizoMania_Shared_Client.dir/stream.cpp.o.provides.build: sha
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/tessfont.c.o: shared/CMakeFiles/SchizoMania_Shared_Client.dir/flags.make
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/tessfont.c.o: shared/tessfont.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object shared/CMakeFiles/SchizoMania_Shared_Client.dir/tessfont.c.o"
-	cd /home/watisdeze/Dev/Projects/ScMa/src/shared && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/SchizoMania_Shared_Client.dir/tessfont.c.o   -c /home/watisdeze/Dev/Projects/ScMa/src/shared/tessfont.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object shared/CMakeFiles/SchizoMania_Shared_Client.dir/tessfont.c.o"
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/SchizoMania_Shared_Client.dir/tessfont.c.o   -c /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/tessfont.c
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/tessfont.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/SchizoMania_Shared_Client.dir/tessfont.c.i"
-	cd /home/watisdeze/Dev/Projects/ScMa/src/shared && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/watisdeze/Dev/Projects/ScMa/src/shared/tessfont.c > CMakeFiles/SchizoMania_Shared_Client.dir/tessfont.c.i
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/tessfont.c > CMakeFiles/SchizoMania_Shared_Client.dir/tessfont.c.i
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/tessfont.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/SchizoMania_Shared_Client.dir/tessfont.c.s"
-	cd /home/watisdeze/Dev/Projects/ScMa/src/shared && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/watisdeze/Dev/Projects/ScMa/src/shared/tessfont.c -o CMakeFiles/SchizoMania_Shared_Client.dir/tessfont.c.s
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/tessfont.c -o CMakeFiles/SchizoMania_Shared_Client.dir/tessfont.c.s
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/tessfont.c.o.requires:
 
@@ -206,16 +206,16 @@ shared/CMakeFiles/SchizoMania_Shared_Client.dir/tessfont.c.o.provides.build: sha
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/tools.cpp.o: shared/CMakeFiles/SchizoMania_Shared_Client.dir/flags.make
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/tools.cpp.o: shared/tools.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object shared/CMakeFiles/SchizoMania_Shared_Client.dir/tools.cpp.o"
-	cd /home/watisdeze/Dev/Projects/ScMa/src/shared && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SchizoMania_Shared_Client.dir/tools.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/shared/tools.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object shared/CMakeFiles/SchizoMania_Shared_Client.dir/tools.cpp.o"
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SchizoMania_Shared_Client.dir/tools.cpp.o -c /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/tools.cpp
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/tools.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SchizoMania_Shared_Client.dir/tools.cpp.i"
-	cd /home/watisdeze/Dev/Projects/ScMa/src/shared && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/watisdeze/Dev/Projects/ScMa/src/shared/tools.cpp > CMakeFiles/SchizoMania_Shared_Client.dir/tools.cpp.i
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/tools.cpp > CMakeFiles/SchizoMania_Shared_Client.dir/tools.cpp.i
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/tools.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SchizoMania_Shared_Client.dir/tools.cpp.s"
-	cd /home/watisdeze/Dev/Projects/ScMa/src/shared && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/watisdeze/Dev/Projects/ScMa/src/shared/tools.cpp -o CMakeFiles/SchizoMania_Shared_Client.dir/tools.cpp.s
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/tools.cpp -o CMakeFiles/SchizoMania_Shared_Client.dir/tools.cpp.s
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/tools.cpp.o.requires:
 
@@ -230,16 +230,16 @@ shared/CMakeFiles/SchizoMania_Shared_Client.dir/tools.cpp.o.provides.build: shar
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/zip.cpp.o: shared/CMakeFiles/SchizoMania_Shared_Client.dir/flags.make
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/zip.cpp.o: shared/zip.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object shared/CMakeFiles/SchizoMania_Shared_Client.dir/zip.cpp.o"
-	cd /home/watisdeze/Dev/Projects/ScMa/src/shared && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SchizoMania_Shared_Client.dir/zip.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/shared/zip.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object shared/CMakeFiles/SchizoMania_Shared_Client.dir/zip.cpp.o"
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SchizoMania_Shared_Client.dir/zip.cpp.o -c /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/zip.cpp
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/zip.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SchizoMania_Shared_Client.dir/zip.cpp.i"
-	cd /home/watisdeze/Dev/Projects/ScMa/src/shared && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/watisdeze/Dev/Projects/ScMa/src/shared/zip.cpp > CMakeFiles/SchizoMania_Shared_Client.dir/zip.cpp.i
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/zip.cpp > CMakeFiles/SchizoMania_Shared_Client.dir/zip.cpp.i
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/zip.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SchizoMania_Shared_Client.dir/zip.cpp.s"
-	cd /home/watisdeze/Dev/Projects/ScMa/src/shared && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/watisdeze/Dev/Projects/ScMa/src/shared/zip.cpp -o CMakeFiles/SchizoMania_Shared_Client.dir/zip.cpp.s
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/zip.cpp -o CMakeFiles/SchizoMania_Shared_Client.dir/zip.cpp.s
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/zip.cpp.o.requires:
 
@@ -276,9 +276,9 @@ shared/libSchizoMania_Shared_Client.a: shared/CMakeFiles/SchizoMania_Shared_Clie
 shared/libSchizoMania_Shared_Client.a: shared/CMakeFiles/SchizoMania_Shared_Client.dir/zip.cpp.o
 shared/libSchizoMania_Shared_Client.a: shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make
 shared/libSchizoMania_Shared_Client.a: shared/CMakeFiles/SchizoMania_Shared_Client.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX static library libSchizoMania_Shared_Client.a"
-	cd /home/watisdeze/Dev/Projects/ScMa/src/shared && $(CMAKE_COMMAND) -P CMakeFiles/SchizoMania_Shared_Client.dir/cmake_clean_target.cmake
-	cd /home/watisdeze/Dev/Projects/ScMa/src/shared && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/SchizoMania_Shared_Client.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX static library libSchizoMania_Shared_Client.a"
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared && $(CMAKE_COMMAND) -P CMakeFiles/SchizoMania_Shared_Client.dir/cmake_clean_target.cmake
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/SchizoMania_Shared_Client.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/build: shared/libSchizoMania_Shared_Client.a
@@ -297,10 +297,10 @@ shared/CMakeFiles/SchizoMania_Shared_Client.dir/requires: shared/CMakeFiles/Schi
 .PHONY : shared/CMakeFiles/SchizoMania_Shared_Client.dir/requires
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/clean:
-	cd /home/watisdeze/Dev/Projects/ScMa/src/shared && $(CMAKE_COMMAND) -P CMakeFiles/SchizoMania_Shared_Client.dir/cmake_clean.cmake
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared && $(CMAKE_COMMAND) -P CMakeFiles/SchizoMania_Shared_Client.dir/cmake_clean.cmake
 .PHONY : shared/CMakeFiles/SchizoMania_Shared_Client.dir/clean
 
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/depend:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/watisdeze/Dev/Projects/ScMa/src /home/watisdeze/Dev/Projects/ScMa/src/shared /home/watisdeze/Dev/Projects/ScMa/src /home/watisdeze/Dev/Projects/ScMa/src/shared /home/watisdeze/Dev/Projects/ScMa/src/shared/CMakeFiles/SchizoMania_Shared_Client.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/CMakeFiles/SchizoMania_Shared_Client.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : shared/CMakeFiles/SchizoMania_Shared_Client.dir/depend
 

@@ -51,10 +51,10 @@ RM = /usr/local/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/watisdeze/Dev/Projects/ScMa/src
+CMAKE_SOURCE_DIR = /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/watisdeze/Dev/Projects/ScMa/src
+CMAKE_BINARY_DIR = /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -83,14 +83,14 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(CMAKE_COMMAND) -E cmake_progress_start /home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles /home/watisdeze/Dev/Projects/ScMa/src/shared/CMakeFiles/progress.marks
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f CMakeFiles/Makefile2 shared/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles 0
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(CMAKE_COMMAND) -E cmake_progress_start /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/CMakeFiles /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/CMakeFiles/progress.marks
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f CMakeFiles/Makefile2 shared/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f CMakeFiles/Makefile2 shared/clean
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f CMakeFiles/Makefile2 shared/clean
 .PHONY : clean
 
 # The main clean target
@@ -100,22 +100,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f CMakeFiles/Makefile2 shared/preinstall
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f CMakeFiles/Makefile2 shared/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f CMakeFiles/Makefile2 shared/preinstall
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f CMakeFiles/Makefile2 shared/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 shared/CMakeFiles/SchizoMania_Shared_Client.dir/rule:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f CMakeFiles/Makefile2 shared/CMakeFiles/SchizoMania_Shared_Client.dir/rule
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f CMakeFiles/Makefile2 shared/CMakeFiles/SchizoMania_Shared_Client.dir/rule
 .PHONY : shared/CMakeFiles/SchizoMania_Shared_Client.dir/rule
 
 # Convenience name for target.
@@ -125,7 +125,7 @@ SchizoMania_Shared_Client: shared/CMakeFiles/SchizoMania_Shared_Client.dir/rule
 
 # fast build rule for target.
 SchizoMania_Shared_Client/fast:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/build
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/build
 .PHONY : SchizoMania_Shared_Client/fast
 
 crypto.o: crypto.cpp.o
@@ -134,7 +134,7 @@ crypto.o: crypto.cpp.o
 
 # target to build an object file
 crypto.cpp.o:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/crypto.cpp.o
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/crypto.cpp.o
 .PHONY : crypto.cpp.o
 
 crypto.i: crypto.cpp.i
@@ -143,7 +143,7 @@ crypto.i: crypto.cpp.i
 
 # target to preprocess a source file
 crypto.cpp.i:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/crypto.cpp.i
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/crypto.cpp.i
 .PHONY : crypto.cpp.i
 
 crypto.s: crypto.cpp.s
@@ -152,7 +152,7 @@ crypto.s: crypto.cpp.s
 
 # target to generate assembly for a file
 crypto.cpp.s:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/crypto.cpp.s
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/crypto.cpp.s
 .PHONY : crypto.cpp.s
 
 geom.o: geom.cpp.o
@@ -161,7 +161,7 @@ geom.o: geom.cpp.o
 
 # target to build an object file
 geom.cpp.o:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/geom.cpp.o
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/geom.cpp.o
 .PHONY : geom.cpp.o
 
 geom.i: geom.cpp.i
@@ -170,7 +170,7 @@ geom.i: geom.cpp.i
 
 # target to preprocess a source file
 geom.cpp.i:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/geom.cpp.i
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/geom.cpp.i
 .PHONY : geom.cpp.i
 
 geom.s: geom.cpp.s
@@ -179,7 +179,7 @@ geom.s: geom.cpp.s
 
 # target to generate assembly for a file
 geom.cpp.s:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/geom.cpp.s
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/geom.cpp.s
 .PHONY : geom.cpp.s
 
 glemu.o: glemu.cpp.o
@@ -188,7 +188,7 @@ glemu.o: glemu.cpp.o
 
 # target to build an object file
 glemu.cpp.o:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/glemu.cpp.o
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/glemu.cpp.o
 .PHONY : glemu.cpp.o
 
 glemu.i: glemu.cpp.i
@@ -197,7 +197,7 @@ glemu.i: glemu.cpp.i
 
 # target to preprocess a source file
 glemu.cpp.i:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/glemu.cpp.i
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/glemu.cpp.i
 .PHONY : glemu.cpp.i
 
 glemu.s: glemu.cpp.s
@@ -206,7 +206,7 @@ glemu.s: glemu.cpp.s
 
 # target to generate assembly for a file
 glemu.cpp.s:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/glemu.cpp.s
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/glemu.cpp.s
 .PHONY : glemu.cpp.s
 
 pch.o: pch.cpp.o
@@ -215,7 +215,7 @@ pch.o: pch.cpp.o
 
 # target to build an object file
 pch.cpp.o:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/pch.cpp.o
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/pch.cpp.o
 .PHONY : pch.cpp.o
 
 pch.i: pch.cpp.i
@@ -224,7 +224,7 @@ pch.i: pch.cpp.i
 
 # target to preprocess a source file
 pch.cpp.i:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/pch.cpp.i
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/pch.cpp.i
 .PHONY : pch.cpp.i
 
 pch.s: pch.cpp.s
@@ -233,7 +233,7 @@ pch.s: pch.cpp.s
 
 # target to generate assembly for a file
 pch.cpp.s:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/pch.cpp.s
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/pch.cpp.s
 .PHONY : pch.cpp.s
 
 stream.o: stream.cpp.o
@@ -242,7 +242,7 @@ stream.o: stream.cpp.o
 
 # target to build an object file
 stream.cpp.o:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/stream.cpp.o
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/stream.cpp.o
 .PHONY : stream.cpp.o
 
 stream.i: stream.cpp.i
@@ -251,7 +251,7 @@ stream.i: stream.cpp.i
 
 # target to preprocess a source file
 stream.cpp.i:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/stream.cpp.i
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/stream.cpp.i
 .PHONY : stream.cpp.i
 
 stream.s: stream.cpp.s
@@ -260,7 +260,7 @@ stream.s: stream.cpp.s
 
 # target to generate assembly for a file
 stream.cpp.s:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/stream.cpp.s
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/stream.cpp.s
 .PHONY : stream.cpp.s
 
 tessfont.o: tessfont.c.o
@@ -269,7 +269,7 @@ tessfont.o: tessfont.c.o
 
 # target to build an object file
 tessfont.c.o:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/tessfont.c.o
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/tessfont.c.o
 .PHONY : tessfont.c.o
 
 tessfont.i: tessfont.c.i
@@ -278,7 +278,7 @@ tessfont.i: tessfont.c.i
 
 # target to preprocess a source file
 tessfont.c.i:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/tessfont.c.i
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/tessfont.c.i
 .PHONY : tessfont.c.i
 
 tessfont.s: tessfont.c.s
@@ -287,7 +287,7 @@ tessfont.s: tessfont.c.s
 
 # target to generate assembly for a file
 tessfont.c.s:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/tessfont.c.s
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/tessfont.c.s
 .PHONY : tessfont.c.s
 
 tools.o: tools.cpp.o
@@ -296,7 +296,7 @@ tools.o: tools.cpp.o
 
 # target to build an object file
 tools.cpp.o:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/tools.cpp.o
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/tools.cpp.o
 .PHONY : tools.cpp.o
 
 tools.i: tools.cpp.i
@@ -305,7 +305,7 @@ tools.i: tools.cpp.i
 
 # target to preprocess a source file
 tools.cpp.i:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/tools.cpp.i
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/tools.cpp.i
 .PHONY : tools.cpp.i
 
 tools.s: tools.cpp.s
@@ -314,7 +314,7 @@ tools.s: tools.cpp.s
 
 # target to generate assembly for a file
 tools.cpp.s:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/tools.cpp.s
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/tools.cpp.s
 .PHONY : tools.cpp.s
 
 zip.o: zip.cpp.o
@@ -323,7 +323,7 @@ zip.o: zip.cpp.o
 
 # target to build an object file
 zip.cpp.o:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/zip.cpp.o
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/zip.cpp.o
 .PHONY : zip.cpp.o
 
 zip.i: zip.cpp.i
@@ -332,7 +332,7 @@ zip.i: zip.cpp.i
 
 # target to preprocess a source file
 zip.cpp.i:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/zip.cpp.i
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/zip.cpp.i
 .PHONY : zip.cpp.i
 
 zip.s: zip.cpp.s
@@ -341,7 +341,7 @@ zip.s: zip.cpp.s
 
 # target to generate assembly for a file
 zip.cpp.s:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/zip.cpp.s
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f shared/CMakeFiles/SchizoMania_Shared_Client.dir/build.make shared/CMakeFiles/SchizoMania_Shared_Client.dir/zip.cpp.s
 .PHONY : zip.cpp.s
 
 # Help Target
@@ -388,6 +388,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/watisdeze/Dev/Projects/ScMa/src && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 
