@@ -51,10 +51,10 @@ RM = /usr/local/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src
+CMAKE_SOURCE_DIR = /home/watisdeze/Dev/Projects/ScMa/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src
+CMAKE_BINARY_DIR = /home/watisdeze/Dev/Projects/ScMa/src
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -83,14 +83,14 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(CMAKE_COMMAND) -E cmake_progress_start /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/CMakeFiles /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/CMakeFiles/progress.marks
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f CMakeFiles/Makefile2 game/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/CMakeFiles 0
+	cd /home/watisdeze/Dev/Projects/ScMa/src && $(CMAKE_COMMAND) -E cmake_progress_start /home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles /home/watisdeze/Dev/Projects/ScMa/src/game/CMakeFiles/progress.marks
+	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f CMakeFiles/Makefile2 game/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f CMakeFiles/Makefile2 game/clean
+	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f CMakeFiles/Makefile2 game/clean
 .PHONY : clean
 
 # The main clean target
@@ -100,22 +100,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f CMakeFiles/Makefile2 game/preinstall
+	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f CMakeFiles/Makefile2 game/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f CMakeFiles/Makefile2 game/preinstall
+	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f CMakeFiles/Makefile2 game/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/watisdeze/Dev/Projects/ScMa/src && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 game/CMakeFiles/SchizoMania_Game_Client.dir/rule:
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f CMakeFiles/Makefile2 game/CMakeFiles/SchizoMania_Game_Client.dir/rule
+	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f CMakeFiles/Makefile2 game/CMakeFiles/SchizoMania_Game_Client.dir/rule
 .PHONY : game/CMakeFiles/SchizoMania_Game_Client.dir/rule
 
 # Convenience name for target.
@@ -125,7 +125,7 @@ SchizoMania_Game_Client: game/CMakeFiles/SchizoMania_Game_Client.dir/rule
 
 # fast build rule for target.
 SchizoMania_Game_Client/fast:
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/build
+	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/build
 .PHONY : SchizoMania_Game_Client/fast
 
 entities.o: entities.cpp.o
@@ -134,7 +134,7 @@ entities.o: entities.cpp.o
 
 # target to build an object file
 entities.cpp.o:
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/entities.cpp.o
+	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/entities.cpp.o
 .PHONY : entities.cpp.o
 
 entities.i: entities.cpp.i
@@ -143,7 +143,7 @@ entities.i: entities.cpp.i
 
 # target to preprocess a source file
 entities.cpp.i:
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/entities.cpp.i
+	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/entities.cpp.i
 .PHONY : entities.cpp.i
 
 entities.s: entities.cpp.s
@@ -152,7 +152,7 @@ entities.s: entities.cpp.s
 
 # target to generate assembly for a file
 entities.cpp.s:
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/entities.cpp.s
+	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/entities.cpp.s
 .PHONY : entities.cpp.s
 
 entities/baseentity.o: entities/baseentity.cpp.o
@@ -161,7 +161,7 @@ entities/baseentity.o: entities/baseentity.cpp.o
 
 # target to build an object file
 entities/baseentity.cpp.o:
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/entities/baseentity.cpp.o
+	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/entities/baseentity.cpp.o
 .PHONY : entities/baseentity.cpp.o
 
 entities/baseentity.i: entities/baseentity.cpp.i
@@ -170,7 +170,7 @@ entities/baseentity.i: entities/baseentity.cpp.i
 
 # target to preprocess a source file
 entities/baseentity.cpp.i:
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/entities/baseentity.cpp.i
+	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/entities/baseentity.cpp.i
 .PHONY : entities/baseentity.cpp.i
 
 entities/baseentity.s: entities/baseentity.cpp.s
@@ -179,7 +179,7 @@ entities/baseentity.s: entities/baseentity.cpp.s
 
 # target to generate assembly for a file
 entities/baseentity.cpp.s:
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/entities/baseentity.cpp.s
+	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/entities/baseentity.cpp.s
 .PHONY : entities/baseentity.cpp.s
 
 entities/dynamiclight.o: entities/dynamiclight.cpp.o
@@ -188,7 +188,7 @@ entities/dynamiclight.o: entities/dynamiclight.cpp.o
 
 # target to build an object file
 entities/dynamiclight.cpp.o:
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/entities/dynamiclight.cpp.o
+	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/entities/dynamiclight.cpp.o
 .PHONY : entities/dynamiclight.cpp.o
 
 entities/dynamiclight.i: entities/dynamiclight.cpp.i
@@ -197,7 +197,7 @@ entities/dynamiclight.i: entities/dynamiclight.cpp.i
 
 # target to preprocess a source file
 entities/dynamiclight.cpp.i:
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/entities/dynamiclight.cpp.i
+	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/entities/dynamiclight.cpp.i
 .PHONY : entities/dynamiclight.cpp.i
 
 entities/dynamiclight.s: entities/dynamiclight.cpp.s
@@ -206,7 +206,7 @@ entities/dynamiclight.s: entities/dynamiclight.cpp.s
 
 # target to generate assembly for a file
 entities/dynamiclight.cpp.s:
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/entities/dynamiclight.cpp.s
+	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/entities/dynamiclight.cpp.s
 .PHONY : entities/dynamiclight.cpp.s
 
 entities/playerstart.o: entities/playerstart.cpp.o
@@ -215,7 +215,7 @@ entities/playerstart.o: entities/playerstart.cpp.o
 
 # target to build an object file
 entities/playerstart.cpp.o:
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/entities/playerstart.cpp.o
+	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/entities/playerstart.cpp.o
 .PHONY : entities/playerstart.cpp.o
 
 entities/playerstart.i: entities/playerstart.cpp.i
@@ -224,7 +224,7 @@ entities/playerstart.i: entities/playerstart.cpp.i
 
 # target to preprocess a source file
 entities/playerstart.cpp.i:
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/entities/playerstart.cpp.i
+	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/entities/playerstart.cpp.i
 .PHONY : entities/playerstart.cpp.i
 
 entities/playerstart.s: entities/playerstart.cpp.s
@@ -233,7 +233,7 @@ entities/playerstart.s: entities/playerstart.cpp.s
 
 # target to generate assembly for a file
 entities/playerstart.cpp.s:
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/entities/playerstart.cpp.s
+	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/entities/playerstart.cpp.s
 .PHONY : entities/playerstart.cpp.s
 
 game.o: game.cpp.o
@@ -242,7 +242,7 @@ game.o: game.cpp.o
 
 # target to build an object file
 game.cpp.o:
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/game.cpp.o
+	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/game.cpp.o
 .PHONY : game.cpp.o
 
 game.i: game.cpp.i
@@ -251,7 +251,7 @@ game.i: game.cpp.i
 
 # target to preprocess a source file
 game.cpp.i:
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/game.cpp.i
+	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/game.cpp.i
 .PHONY : game.cpp.i
 
 game.s: game.cpp.s
@@ -260,7 +260,7 @@ game.s: game.cpp.s
 
 # target to generate assembly for a file
 game.cpp.s:
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/game.cpp.s
+	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/game.cpp.s
 .PHONY : game.cpp.s
 
 render.o: render.cpp.o
@@ -269,7 +269,7 @@ render.o: render.cpp.o
 
 # target to build an object file
 render.cpp.o:
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/render.cpp.o
+	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/render.cpp.o
 .PHONY : render.cpp.o
 
 render.i: render.cpp.i
@@ -278,7 +278,7 @@ render.i: render.cpp.i
 
 # target to preprocess a source file
 render.cpp.i:
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/render.cpp.i
+	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/render.cpp.i
 .PHONY : render.cpp.i
 
 render.s: render.cpp.s
@@ -287,7 +287,7 @@ render.s: render.cpp.s
 
 # target to generate assembly for a file
 render.cpp.s:
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/render.cpp.s
+	cd /home/watisdeze/Dev/Projects/ScMa/src && $(MAKE) -f game/CMakeFiles/SchizoMania_Game_Client.dir/build.make game/CMakeFiles/SchizoMania_Game_Client.dir/render.cpp.s
 .PHONY : render.cpp.s
 
 # Help Target
@@ -328,6 +328,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/watisdeze/Dev/Projects/ScMa/src && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

@@ -41,6 +41,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/schizomania.dir/engine/water.cpp.o"
   "CMakeFiles/schizomania.dir/engine/world.cpp.o"
   "CMakeFiles/schizomania.dir/engine/worldio.cpp.o"
+  "CMakeFiles/schizomania.dir/game/commands.cpp.o"
   "CMakeFiles/schizomania.dir/game/entities.cpp.o"
   "CMakeFiles/schizomania.dir/game/game.cpp.o"
   "CMakeFiles/schizomania.dir/game/render.cpp.o"

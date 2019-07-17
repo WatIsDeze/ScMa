@@ -51,10 +51,10 @@ RM = /usr/local/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src
+CMAKE_SOURCE_DIR = /home/watisdeze/Dev/Projects/ScMa/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src
+CMAKE_BINARY_DIR = /home/watisdeze/Dev/Projects/ScMa/src
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -83,9 +83,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/CMakeFiles /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles /home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -1150,6 +1150,33 @@ engine/worldio.cpp.s:
 	$(MAKE) -f CMakeFiles/schizomania.dir/build.make CMakeFiles/schizomania.dir/engine/worldio.cpp.s
 .PHONY : engine/worldio.cpp.s
 
+game/commands.o: game/commands.cpp.o
+
+.PHONY : game/commands.o
+
+# target to build an object file
+game/commands.cpp.o:
+	$(MAKE) -f CMakeFiles/schizomania.dir/build.make CMakeFiles/schizomania.dir/game/commands.cpp.o
+.PHONY : game/commands.cpp.o
+
+game/commands.i: game/commands.cpp.i
+
+.PHONY : game/commands.i
+
+# target to preprocess a source file
+game/commands.cpp.i:
+	$(MAKE) -f CMakeFiles/schizomania.dir/build.make CMakeFiles/schizomania.dir/game/commands.cpp.i
+.PHONY : game/commands.cpp.i
+
+game/commands.s: game/commands.cpp.s
+
+.PHONY : game/commands.s
+
+# target to generate assembly for a file
+game/commands.cpp.s:
+	$(MAKE) -f CMakeFiles/schizomania.dir/build.make CMakeFiles/schizomania.dir/game/commands.cpp.s
+.PHONY : game/commands.cpp.s
+
 game/entities.o: game/entities.cpp.o
 
 .PHONY : game/entities.o
@@ -1595,6 +1622,9 @@ help:
 	@echo "... engine/worldio.o"
 	@echo "... engine/worldio.i"
 	@echo "... engine/worldio.s"
+	@echo "... game/commands.o"
+	@echo "... game/commands.i"
+	@echo "... game/commands.s"
 	@echo "... game/entities.o"
 	@echo "... game/entities.i"
 	@echo "... game/entities.s"

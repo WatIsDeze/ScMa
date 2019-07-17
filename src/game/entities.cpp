@@ -111,7 +111,10 @@ namespace entities
         }
     }
 
-    void resetspawns() { loopv(ents) ents[i]->clearspawned(); }
+    void resetspawns() {
+        loopv(ents)
+                ents[i]->clearspawned();
+    }
 
     void setspawn(int i, bool on) { if(ents.inrange(i)) ents[i]->setspawned(on); }
 
@@ -155,52 +158,6 @@ namespace entities
                 break;
         }
     }
-
-    // WatIs: Testing the set and get properties of entities.
-	int edit_entity = -1;
-
-    ICOMMAND(ent_set_attr, "ss", (char *s1, char *s2),
-	{
-		if (edit_entity > -1 && edit_entity < ents.length()) {
-            entities::classes::BaseEntity *ent = (entities::classes::BaseEntity*)ents[edit_entity];
-
-            // Ensure both string lengths are > 0
-            if (strlen(s1) > 0 && strlen(s2) > 0) {
-                // Set the attribute value.
-                // TODO: Check if it already exists or not? Maybe just ignore that.
-                ent->attributes[s1] = s2;
-            } else {
-                // Inform the user.
-                conoutf("%s", "No key:value string has been passed.");
-            }
-		} else {
-			conoutf("%s", "No valid in range entity selected.");
-		}
-	});
-
-    ICOMMAND(ent_get_attr, "s", (char *s1), {
-		if (edit_entity > -1 && edit_entity < ents.length()) {
-            entities::classes::BaseEntity *ent = (entities::classes::BaseEntity*)ents[edit_entity];
-
-            if (ent->attributes.find(s1) != ent->attributes.end()) {
-                conoutf("%s : %s", s1, ent->attributes[s1].c_str());
-            }
-		} else {
-            conoutf("%s", "No valid entity selected to fetch an attribute from.");
-		}
-	});
-
-    ICOMMAND(ent_list_attr, "", (), {
-        if (edit_entity > -1 && edit_entity < ents.length()) {
-            entities::classes::BaseEntity *ent = (entities::classes::BaseEntity*)ents[edit_entity];
-
-            for(std::map<std::string, std::string>::iterator i = ent->attributes.begin(); i != ent->attributes.end(); ++i) {
-                conoutf("%s : %s", i->first.c_str(), i->second.c_str());
-            }
-        } else {
-            conoutf("%s", "No valid entity selected to fetch an attribute from.");
-        }
-    });
 
     void entradius(entities::classes::BaseEntity &e, bool color)
     {
@@ -254,7 +211,8 @@ namespace entities
 
     void editent(int i, bool local)
     {
-        entities::classes::BaseEntity &e = *ents[i];
+//        entities::classes::BaseEntity &e = *ents[i];
+        extern int edit_entity;
         edit_entity = i;
         //conoutf("%i", i);
 

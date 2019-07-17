@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/tessfont.c
+/home/watisdeze/Dev/Projects/ScMa/src/shared/tessfont.c
 stdlib.h
 -
 string.h

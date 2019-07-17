@@ -18,6 +18,7 @@ Ultimately we do not seek multiplayer, so it is best to try and erase it from th
   NOTE THAT: We should keep in mind this may need to be refactored since it could conflict in possible multiplayer cases.
   
 ### OTHERS: 
+- Change the COMMAND macros so they can allow for an extra string that serves as a help(how to use) message.
 - Add support for footstep audio based on material/texture type.
 - Add a dynamic/flickering light entity that can move, and flicker based on a sequence. (Like sin wave etc.)
 - Add doors, this will be done by ENT_INANIMATE backporting.

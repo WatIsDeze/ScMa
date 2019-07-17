@@ -74,13 +74,10 @@ namespace game
             emptymap(0, true, name);
     }
 
-    void forceedit(const char *name)
-    {
+    void forceedit(const char *name) {
         // Trigger a changemap by force edit, which in return toggles edit mode.
         changemap(name);
     }
-
-    ICOMMAND(map, "s", (char *s), changemap(s));
 
     // Never seen an implementation of this function, should be part of BaseEntity.
     void dynentcollide(physent *d, physent *o, const vec &dir) {}
@@ -129,8 +126,7 @@ namespace game
         return false;
     }
 
-    float abovegameplayhud(int w, int h)
-    {
+    float abovegameplayhud(int w, int h) {
         switch(player1->state)
         {
             case CS_EDITING:
@@ -140,8 +136,7 @@ namespace game
         }
     }
 
-    void gameplayhud(int w, int h)
-    {
+    void gameplayhud(int w, int h) {
 
     }
 
@@ -261,7 +256,10 @@ namespace game
     }
 
     void parseoptions(vector<const char *> &args) {}
-    void connectattempt(const char *name, const char *password, const ENetAddress &address) {}
+    void connectattempt(const char *name, const char *password, const ENetAddress &address) {
+        // Will need this to even join a game.
+        //copycubestr(connectpass, password);
+    }
     void connectfail() {}
     void parsepacketclient(int chan, packetbuf &p) {}
     bool allowedittoggle() { return true; }

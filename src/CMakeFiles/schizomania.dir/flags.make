@@ -6,5 +6,5 @@ CXX_FLAGS =   -std=gnu++11
 
 CXX_DEFINES = -DGL_SILENCE_DEPRECATION
 
-CXX_INCLUDES = -I/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src -I/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/engine -I/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared -I/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/enet/include 
+CXX_INCLUDES = -I/home/watisdeze/Dev/Projects/ScMa/src -I/home/watisdeze/Dev/Projects/ScMa/src/engine -I/home/watisdeze/Dev/Projects/ScMa/src/shared -I/home/watisdeze/Dev/Projects/ScMa/src/enet/include 
 

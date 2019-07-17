@@ -955,6 +955,26 @@ CMakeFiles/schizomania.dir/engine/worldio.cpp.o: shared/iengine.h
 CMakeFiles/schizomania.dir/engine/worldio.cpp.o: shared/igame.h
 CMakeFiles/schizomania.dir/engine/worldio.cpp.o: shared/tools.h
 
+CMakeFiles/schizomania.dir/game/commands.cpp.o: game/commands.cpp
+CMakeFiles/schizomania.dir/game/commands.cpp.o: game/game.h
+CMakeFiles/schizomania.dir/game/commands.cpp.o: enet/include/enet/callbacks.h
+CMakeFiles/schizomania.dir/game/commands.cpp.o: enet/include/enet/enet.h
+CMakeFiles/schizomania.dir/game/commands.cpp.o: enet/include/enet/list.h
+CMakeFiles/schizomania.dir/game/commands.cpp.o: enet/include/enet/protocol.h
+CMakeFiles/schizomania.dir/game/commands.cpp.o: enet/include/enet/types.h
+CMakeFiles/schizomania.dir/game/commands.cpp.o: enet/include/enet/unix.h
+CMakeFiles/schizomania.dir/game/commands.cpp.o: enet/include/enet/win32.h
+CMakeFiles/schizomania.dir/game/commands.cpp.o: ext/json-develop/single_include/nlohmann/json.hpp
+CMakeFiles/schizomania.dir/game/commands.cpp.o: shared/command.h
+CMakeFiles/schizomania.dir/game/commands.cpp.o: shared/cube.h
+CMakeFiles/schizomania.dir/game/commands.cpp.o: shared/ents.h
+CMakeFiles/schizomania.dir/game/commands.cpp.o: shared/geom.h
+CMakeFiles/schizomania.dir/game/commands.cpp.o: shared/glemu.h
+CMakeFiles/schizomania.dir/game/commands.cpp.o: shared/glexts.h
+CMakeFiles/schizomania.dir/game/commands.cpp.o: shared/iengine.h
+CMakeFiles/schizomania.dir/game/commands.cpp.o: shared/igame.h
+CMakeFiles/schizomania.dir/game/commands.cpp.o: shared/tools.h
+
 CMakeFiles/schizomania.dir/game/entities.cpp.o: game/entities.cpp
 CMakeFiles/schizomania.dir/game/entities.cpp.o: game/entities/playerstart.h
 CMakeFiles/schizomania.dir/game/entities.cpp.o: game/game.h

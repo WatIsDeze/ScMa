@@ -7,10 +7,10 @@ set(CMAKE_DEPENDS_GENERATOR "Unix Makefiles")
 # The top level Makefile was generated from the following files:
 set(CMAKE_MAKEFILE_DEPENDS
   "CMakeCache.txt"
-  "/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/cmake/FindSDL2.cmake"
-  "/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/cmake/FindSDL2_image.cmake"
-  "/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/cmake/FindSDL2_mixer.cmake"
-  "/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/cmake/FindWEBP.cmake"
+  "/home/watisdeze/Dev/Projects/ScMa/cmake/FindSDL2.cmake"
+  "/home/watisdeze/Dev/Projects/ScMa/cmake/FindSDL2_image.cmake"
+  "/home/watisdeze/Dev/Projects/ScMa/cmake/FindSDL2_mixer.cmake"
+  "/home/watisdeze/Dev/Projects/ScMa/cmake/FindWEBP.cmake"
   "CMakeFiles/3.10.1/CMakeCCompiler.cmake"
   "CMakeFiles/3.10.1/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.10.1/CMakeSystem.cmake"

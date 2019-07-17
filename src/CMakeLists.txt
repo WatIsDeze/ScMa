@@ -162,6 +162,7 @@ if(SCHIZOMANIA_BUILD_CLIENT)
       #game/server.cpp
       #game/waypoint.cpp
       #game/weapon.cpp
+      game/commands.cpp
       game/entities.cpp
       game/game.cpp
       game/render.cpp

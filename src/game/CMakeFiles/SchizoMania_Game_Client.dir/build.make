@@ -46,10 +46,10 @@ RM = /usr/local/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src
+CMAKE_SOURCE_DIR = /home/watisdeze/Dev/Projects/ScMa/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src
+CMAKE_BINARY_DIR = /home/watisdeze/Dev/Projects/ScMa/src
 
 # Include any dependencies generated for this target.
 include game/CMakeFiles/SchizoMania_Game_Client.dir/depend.make
@@ -62,16 +62,16 @@ include game/CMakeFiles/SchizoMania_Game_Client.dir/flags.make
 
 game/CMakeFiles/SchizoMania_Game_Client.dir/entities.cpp.o: game/CMakeFiles/SchizoMania_Game_Client.dir/flags.make
 game/CMakeFiles/SchizoMania_Game_Client.dir/entities.cpp.o: game/entities.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object game/CMakeFiles/SchizoMania_Game_Client.dir/entities.cpp.o"
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SchizoMania_Game_Client.dir/entities.cpp.o -c /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/entities.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object game/CMakeFiles/SchizoMania_Game_Client.dir/entities.cpp.o"
+	cd /home/watisdeze/Dev/Projects/ScMa/src/game && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SchizoMania_Game_Client.dir/entities.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/game/entities.cpp
 
 game/CMakeFiles/SchizoMania_Game_Client.dir/entities.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SchizoMania_Game_Client.dir/entities.cpp.i"
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/entities.cpp > CMakeFiles/SchizoMania_Game_Client.dir/entities.cpp.i
+	cd /home/watisdeze/Dev/Projects/ScMa/src/game && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/watisdeze/Dev/Projects/ScMa/src/game/entities.cpp > CMakeFiles/SchizoMania_Game_Client.dir/entities.cpp.i
 
 game/CMakeFiles/SchizoMania_Game_Client.dir/entities.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SchizoMania_Game_Client.dir/entities.cpp.s"
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/entities.cpp -o CMakeFiles/SchizoMania_Game_Client.dir/entities.cpp.s
+	cd /home/watisdeze/Dev/Projects/ScMa/src/game && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/watisdeze/Dev/Projects/ScMa/src/game/entities.cpp -o CMakeFiles/SchizoMania_Game_Client.dir/entities.cpp.s
 
 game/CMakeFiles/SchizoMania_Game_Client.dir/entities.cpp.o.requires:
 
@@ -86,16 +86,16 @@ game/CMakeFiles/SchizoMania_Game_Client.dir/entities.cpp.o.provides.build: game/
 
 game/CMakeFiles/SchizoMania_Game_Client.dir/game.cpp.o: game/CMakeFiles/SchizoMania_Game_Client.dir/flags.make
 game/CMakeFiles/SchizoMania_Game_Client.dir/game.cpp.o: game/game.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object game/CMakeFiles/SchizoMania_Game_Client.dir/game.cpp.o"
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SchizoMania_Game_Client.dir/game.cpp.o -c /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/game.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object game/CMakeFiles/SchizoMania_Game_Client.dir/game.cpp.o"
+	cd /home/watisdeze/Dev/Projects/ScMa/src/game && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SchizoMania_Game_Client.dir/game.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/game/game.cpp
 
 game/CMakeFiles/SchizoMania_Game_Client.dir/game.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SchizoMania_Game_Client.dir/game.cpp.i"
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/game.cpp > CMakeFiles/SchizoMania_Game_Client.dir/game.cpp.i
+	cd /home/watisdeze/Dev/Projects/ScMa/src/game && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/watisdeze/Dev/Projects/ScMa/src/game/game.cpp > CMakeFiles/SchizoMania_Game_Client.dir/game.cpp.i
 
 game/CMakeFiles/SchizoMania_Game_Client.dir/game.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SchizoMania_Game_Client.dir/game.cpp.s"
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/game.cpp -o CMakeFiles/SchizoMania_Game_Client.dir/game.cpp.s
+	cd /home/watisdeze/Dev/Projects/ScMa/src/game && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/watisdeze/Dev/Projects/ScMa/src/game/game.cpp -o CMakeFiles/SchizoMania_Game_Client.dir/game.cpp.s
 
 game/CMakeFiles/SchizoMania_Game_Client.dir/game.cpp.o.requires:
 
@@ -110,16 +110,16 @@ game/CMakeFiles/SchizoMania_Game_Client.dir/game.cpp.o.provides.build: game/CMak
 
 game/CMakeFiles/SchizoMania_Game_Client.dir/render.cpp.o: game/CMakeFiles/SchizoMania_Game_Client.dir/flags.make
 game/CMakeFiles/SchizoMania_Game_Client.dir/render.cpp.o: game/render.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object game/CMakeFiles/SchizoMania_Game_Client.dir/render.cpp.o"
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SchizoMania_Game_Client.dir/render.cpp.o -c /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/render.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object game/CMakeFiles/SchizoMania_Game_Client.dir/render.cpp.o"
+	cd /home/watisdeze/Dev/Projects/ScMa/src/game && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SchizoMania_Game_Client.dir/render.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/game/render.cpp
 
 game/CMakeFiles/SchizoMania_Game_Client.dir/render.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SchizoMania_Game_Client.dir/render.cpp.i"
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/render.cpp > CMakeFiles/SchizoMania_Game_Client.dir/render.cpp.i
+	cd /home/watisdeze/Dev/Projects/ScMa/src/game && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/watisdeze/Dev/Projects/ScMa/src/game/render.cpp > CMakeFiles/SchizoMania_Game_Client.dir/render.cpp.i
 
 game/CMakeFiles/SchizoMania_Game_Client.dir/render.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SchizoMania_Game_Client.dir/render.cpp.s"
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/render.cpp -o CMakeFiles/SchizoMania_Game_Client.dir/render.cpp.s
+	cd /home/watisdeze/Dev/Projects/ScMa/src/game && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/watisdeze/Dev/Projects/ScMa/src/game/render.cpp -o CMakeFiles/SchizoMania_Game_Client.dir/render.cpp.s
 
 game/CMakeFiles/SchizoMania_Game_Client.dir/render.cpp.o.requires:
 
@@ -134,16 +134,16 @@ game/CMakeFiles/SchizoMania_Game_Client.dir/render.cpp.o.provides.build: game/CM
 
 game/CMakeFiles/SchizoMania_Game_Client.dir/entities/baseentity.cpp.o: game/CMakeFiles/SchizoMania_Game_Client.dir/flags.make
 game/CMakeFiles/SchizoMania_Game_Client.dir/entities/baseentity.cpp.o: game/entities/baseentity.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object game/CMakeFiles/SchizoMania_Game_Client.dir/entities/baseentity.cpp.o"
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SchizoMania_Game_Client.dir/entities/baseentity.cpp.o -c /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/entities/baseentity.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object game/CMakeFiles/SchizoMania_Game_Client.dir/entities/baseentity.cpp.o"
+	cd /home/watisdeze/Dev/Projects/ScMa/src/game && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SchizoMania_Game_Client.dir/entities/baseentity.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/game/entities/baseentity.cpp
 
 game/CMakeFiles/SchizoMania_Game_Client.dir/entities/baseentity.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SchizoMania_Game_Client.dir/entities/baseentity.cpp.i"
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/entities/baseentity.cpp > CMakeFiles/SchizoMania_Game_Client.dir/entities/baseentity.cpp.i
+	cd /home/watisdeze/Dev/Projects/ScMa/src/game && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/watisdeze/Dev/Projects/ScMa/src/game/entities/baseentity.cpp > CMakeFiles/SchizoMania_Game_Client.dir/entities/baseentity.cpp.i
 
 game/CMakeFiles/SchizoMania_Game_Client.dir/entities/baseentity.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SchizoMania_Game_Client.dir/entities/baseentity.cpp.s"
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/entities/baseentity.cpp -o CMakeFiles/SchizoMania_Game_Client.dir/entities/baseentity.cpp.s
+	cd /home/watisdeze/Dev/Projects/ScMa/src/game && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/watisdeze/Dev/Projects/ScMa/src/game/entities/baseentity.cpp -o CMakeFiles/SchizoMania_Game_Client.dir/entities/baseentity.cpp.s
 
 game/CMakeFiles/SchizoMania_Game_Client.dir/entities/baseentity.cpp.o.requires:
 
@@ -158,16 +158,16 @@ game/CMakeFiles/SchizoMania_Game_Client.dir/entities/baseentity.cpp.o.provides.b
 
 game/CMakeFiles/SchizoMania_Game_Client.dir/entities/dynamiclight.cpp.o: game/CMakeFiles/SchizoMania_Game_Client.dir/flags.make
 game/CMakeFiles/SchizoMania_Game_Client.dir/entities/dynamiclight.cpp.o: game/entities/dynamiclight.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object game/CMakeFiles/SchizoMania_Game_Client.dir/entities/dynamiclight.cpp.o"
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SchizoMania_Game_Client.dir/entities/dynamiclight.cpp.o -c /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/entities/dynamiclight.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object game/CMakeFiles/SchizoMania_Game_Client.dir/entities/dynamiclight.cpp.o"
+	cd /home/watisdeze/Dev/Projects/ScMa/src/game && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SchizoMania_Game_Client.dir/entities/dynamiclight.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/game/entities/dynamiclight.cpp
 
 game/CMakeFiles/SchizoMania_Game_Client.dir/entities/dynamiclight.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SchizoMania_Game_Client.dir/entities/dynamiclight.cpp.i"
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/entities/dynamiclight.cpp > CMakeFiles/SchizoMania_Game_Client.dir/entities/dynamiclight.cpp.i
+	cd /home/watisdeze/Dev/Projects/ScMa/src/game && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/watisdeze/Dev/Projects/ScMa/src/game/entities/dynamiclight.cpp > CMakeFiles/SchizoMania_Game_Client.dir/entities/dynamiclight.cpp.i
 
 game/CMakeFiles/SchizoMania_Game_Client.dir/entities/dynamiclight.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SchizoMania_Game_Client.dir/entities/dynamiclight.cpp.s"
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/entities/dynamiclight.cpp -o CMakeFiles/SchizoMania_Game_Client.dir/entities/dynamiclight.cpp.s
+	cd /home/watisdeze/Dev/Projects/ScMa/src/game && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/watisdeze/Dev/Projects/ScMa/src/game/entities/dynamiclight.cpp -o CMakeFiles/SchizoMania_Game_Client.dir/entities/dynamiclight.cpp.s
 
 game/CMakeFiles/SchizoMania_Game_Client.dir/entities/dynamiclight.cpp.o.requires:
 
@@ -182,16 +182,16 @@ game/CMakeFiles/SchizoMania_Game_Client.dir/entities/dynamiclight.cpp.o.provides
 
 game/CMakeFiles/SchizoMania_Game_Client.dir/entities/playerstart.cpp.o: game/CMakeFiles/SchizoMania_Game_Client.dir/flags.make
 game/CMakeFiles/SchizoMania_Game_Client.dir/entities/playerstart.cpp.o: game/entities/playerstart.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object game/CMakeFiles/SchizoMania_Game_Client.dir/entities/playerstart.cpp.o"
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SchizoMania_Game_Client.dir/entities/playerstart.cpp.o -c /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/entities/playerstart.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object game/CMakeFiles/SchizoMania_Game_Client.dir/entities/playerstart.cpp.o"
+	cd /home/watisdeze/Dev/Projects/ScMa/src/game && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SchizoMania_Game_Client.dir/entities/playerstart.cpp.o -c /home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.cpp
 
 game/CMakeFiles/SchizoMania_Game_Client.dir/entities/playerstart.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SchizoMania_Game_Client.dir/entities/playerstart.cpp.i"
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/entities/playerstart.cpp > CMakeFiles/SchizoMania_Game_Client.dir/entities/playerstart.cpp.i
+	cd /home/watisdeze/Dev/Projects/ScMa/src/game && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.cpp > CMakeFiles/SchizoMania_Game_Client.dir/entities/playerstart.cpp.i
 
 game/CMakeFiles/SchizoMania_Game_Client.dir/entities/playerstart.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SchizoMania_Game_Client.dir/entities/playerstart.cpp.s"
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/entities/playerstart.cpp -o CMakeFiles/SchizoMania_Game_Client.dir/entities/playerstart.cpp.s
+	cd /home/watisdeze/Dev/Projects/ScMa/src/game && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.cpp -o CMakeFiles/SchizoMania_Game_Client.dir/entities/playerstart.cpp.s
 
 game/CMakeFiles/SchizoMania_Game_Client.dir/entities/playerstart.cpp.o.requires:
 
@@ -224,9 +224,9 @@ game/libSchizoMania_Game_Client.a: game/CMakeFiles/SchizoMania_Game_Client.dir/e
 game/libSchizoMania_Game_Client.a: game/CMakeFiles/SchizoMania_Game_Client.dir/entities/playerstart.cpp.o
 game/libSchizoMania_Game_Client.a: game/CMakeFiles/SchizoMania_Game_Client.dir/build.make
 game/libSchizoMania_Game_Client.a: game/CMakeFiles/SchizoMania_Game_Client.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX static library libSchizoMania_Game_Client.a"
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game && $(CMAKE_COMMAND) -P CMakeFiles/SchizoMania_Game_Client.dir/cmake_clean_target.cmake
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/SchizoMania_Game_Client.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/watisdeze/Dev/Projects/ScMa/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX static library libSchizoMania_Game_Client.a"
+	cd /home/watisdeze/Dev/Projects/ScMa/src/game && $(CMAKE_COMMAND) -P CMakeFiles/SchizoMania_Game_Client.dir/cmake_clean_target.cmake
+	cd /home/watisdeze/Dev/Projects/ScMa/src/game && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/SchizoMania_Game_Client.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 game/CMakeFiles/SchizoMania_Game_Client.dir/build: game/libSchizoMania_Game_Client.a
@@ -243,10 +243,10 @@ game/CMakeFiles/SchizoMania_Game_Client.dir/requires: game/CMakeFiles/SchizoMani
 .PHONY : game/CMakeFiles/SchizoMania_Game_Client.dir/requires
 
 game/CMakeFiles/SchizoMania_Game_Client.dir/clean:
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game && $(CMAKE_COMMAND) -P CMakeFiles/SchizoMania_Game_Client.dir/cmake_clean.cmake
+	cd /home/watisdeze/Dev/Projects/ScMa/src/game && $(CMAKE_COMMAND) -P CMakeFiles/SchizoMania_Game_Client.dir/cmake_clean.cmake
 .PHONY : game/CMakeFiles/SchizoMania_Game_Client.dir/clean
 
 game/CMakeFiles/SchizoMania_Game_Client.dir/depend:
-	cd /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/CMakeFiles/SchizoMania_Game_Client.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/watisdeze/Dev/Projects/ScMa/src && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/watisdeze/Dev/Projects/ScMa/src /home/watisdeze/Dev/Projects/ScMa/src/game /home/watisdeze/Dev/Projects/ScMa/src /home/watisdeze/Dev/Projects/ScMa/src/game /home/watisdeze/Dev/Projects/ScMa/src/game/CMakeFiles/SchizoMania_Game_Client.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : game/CMakeFiles/SchizoMania_Game_Client.dir/depend
 

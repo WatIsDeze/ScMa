@@ -1,4 +1,4 @@
-# Install script for directory: /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src
+# Install script for directory: /home/watisdeze/Dev/Projects/ScMa/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -39,10 +39,10 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/enet/cmake_install.cmake")
-  include("/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/cmake_install.cmake")
-  include("/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/cmake_install.cmake")
-  include("/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/engine/cmake_install.cmake")
+  include("/home/watisdeze/Dev/Projects/ScMa/src/enet/cmake_install.cmake")
+  include("/home/watisdeze/Dev/Projects/ScMa/src/shared/cmake_install.cmake")
+  include("/home/watisdeze/Dev/Projects/ScMa/src/game/cmake_install.cmake")
+  include("/home/watisdeze/Dev/Projects/ScMa/src/engine/cmake_install.cmake")
 
 endif()
 
@@ -54,5 +54,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/watisdeze/Dev/Projects/ScMa/src/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

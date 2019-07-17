@@ -1,4 +1,4 @@
-# Install script for directory: /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared
+# Install script for directory: /home/watisdeze/Dev/Projects/ScMa/src/shared
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

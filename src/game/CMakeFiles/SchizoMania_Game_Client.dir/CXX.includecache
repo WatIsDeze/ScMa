@@ -6,45 +6,45 @@
 
 #IncludeRegexTransform: 
 
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/entities.cpp
+/home/watisdeze/Dev/Projects/ScMa/src/game/entities.cpp
 game.h
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/game.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/game.h
 entities/playerstart.h
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/entities/playerstart.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.h
 
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/entities/baseentity.cpp
+/home/watisdeze/Dev/Projects/ScMa/src/game/entities/baseentity.cpp
 ../game.h
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/game.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/game.h
 
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/entities/dynamiclight.cpp
+/home/watisdeze/Dev/Projects/ScMa/src/game/entities/dynamiclight.cpp
 ../game.h
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/game.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/game.h
 dynamiclight.h
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/entities/dynamiclight.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/entities/dynamiclight.h
 
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/entities/dynamiclight.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/entities/dynamiclight.h
 
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/entities/playerstart.cpp
+/home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.cpp
 ../game.h
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/game.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/game.h
 playerstart.h
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/entities/playerstart.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.h
 
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/entities/playerstart.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.h
 
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/game.cpp
+/home/watisdeze/Dev/Projects/ScMa/src/game/game.cpp
 game.h
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/game.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/game.h
 entities/playerstart.h
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/entities/playerstart.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.h
 
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/game.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/game.h
 cube.h
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/cube.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/cube.h
 
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/render.cpp
+/home/watisdeze/Dev/Projects/ScMa/src/game/render.cpp
 game.h
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game/game.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/game.h
 
 /usr/include/SDL2/SDL.h
 SDL_main.h

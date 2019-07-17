@@ -1,4 +1,4 @@
-# Install script for directory: /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/engine
+# Install script for directory: /home/watisdeze/Dev/Projects/ScMa/src/engine
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

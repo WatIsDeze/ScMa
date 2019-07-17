@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/ext/json-develop/single_include/nlohmann/json.hpp
+/home/watisdeze/Dev/Projects/ScMa/src/ext/json-develop/single_include/nlohmann/json.hpp
 algorithm
 -
 cassert
@@ -334,13 +334,13 @@ limits
 type_traits
 -
 
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/command.h
+/home/watisdeze/Dev/Projects/ScMa/src/shared/command.h
 
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/crypto.cpp
+/home/watisdeze/Dev/Projects/ScMa/src/shared/crypto.cpp
 cube.h
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/cube.h
+/home/watisdeze/Dev/Projects/ScMa/src/shared/cube.h
 
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/cube.h
+/home/watisdeze/Dev/Projects/ScMa/src/shared/cube.h
 math.h
 -
 string.h
@@ -362,7 +362,7 @@ assert.h
 time.h
 -
 windows.h
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/windows.h
+/home/watisdeze/Dev/Projects/ScMa/src/shared/windows.h
 eh.h
 -
 dbghelp.h
@@ -370,7 +370,7 @@ dbghelp.h
 intrin.h
 -
 SDL.h
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/SDL.h
+/home/watisdeze/Dev/Projects/ScMa/src/shared/SDL.h
 OpenGL/gl.h
 -
 SDL2/SDL.h
@@ -378,7 +378,7 @@ SDL2/SDL.h
 SDL2/SDL_opengl.h
 -
 enet/include/enet/enet.h
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/enet/include/enet/enet.h
+/home/watisdeze/Dev/Projects/ScMa/src/shared/enet/include/enet/enet.h
 zlib.h
 -
 iostream
@@ -390,51 +390,51 @@ iomanip
 string
 -
 ../ext/json-develop/single_include/nlohmann/json.hpp
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/ext/json-develop/single_include/nlohmann/json.hpp
+/home/watisdeze/Dev/Projects/ScMa/src/ext/json-develop/single_include/nlohmann/json.hpp
 tools.h
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/tools.h
+/home/watisdeze/Dev/Projects/ScMa/src/shared/tools.h
 geom.h
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/geom.h
+/home/watisdeze/Dev/Projects/ScMa/src/shared/geom.h
 ents.h
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/ents.h
+/home/watisdeze/Dev/Projects/ScMa/src/shared/ents.h
 command.h
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/command.h
+/home/watisdeze/Dev/Projects/ScMa/src/shared/command.h
 glexts.h
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/glexts.h
+/home/watisdeze/Dev/Projects/ScMa/src/shared/glexts.h
 glemu.h
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/glemu.h
+/home/watisdeze/Dev/Projects/ScMa/src/shared/glemu.h
 iengine.h
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/iengine.h
+/home/watisdeze/Dev/Projects/ScMa/src/shared/iengine.h
 igame.h
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/igame.h
+/home/watisdeze/Dev/Projects/ScMa/src/shared/igame.h
 
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/ents.h
+/home/watisdeze/Dev/Projects/ScMa/src/shared/ents.h
 
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/geom.cpp
+/home/watisdeze/Dev/Projects/ScMa/src/shared/geom.cpp
 cube.h
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/cube.h
+/home/watisdeze/Dev/Projects/ScMa/src/shared/cube.h
 
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/geom.h
+/home/watisdeze/Dev/Projects/ScMa/src/shared/geom.h
 
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/glemu.cpp
+/home/watisdeze/Dev/Projects/ScMa/src/shared/glemu.cpp
 cube.h
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/cube.h
+/home/watisdeze/Dev/Projects/ScMa/src/shared/cube.h
 
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/glemu.h
+/home/watisdeze/Dev/Projects/ScMa/src/shared/glemu.h
 
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/glexts.h
+/home/watisdeze/Dev/Projects/ScMa/src/shared/glexts.h
 
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/iengine.h
+/home/watisdeze/Dev/Projects/ScMa/src/shared/iengine.h
 
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/igame.h
+/home/watisdeze/Dev/Projects/ScMa/src/shared/igame.h
 
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/pch.cpp
+/home/watisdeze/Dev/Projects/ScMa/src/shared/pch.cpp
 cube.h
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/cube.h
+/home/watisdeze/Dev/Projects/ScMa/src/shared/cube.h
 
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/stream.cpp
+/home/watisdeze/Dev/Projects/ScMa/src/shared/stream.cpp
 cube.h
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/cube.h
+/home/watisdeze/Dev/Projects/ScMa/src/shared/cube.h
 shlobj.h
 -
 unistd.h
@@ -446,15 +446,15 @@ sys/types.h
 dirent.h
 -
 
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/tools.cpp
+/home/watisdeze/Dev/Projects/ScMa/src/shared/tools.cpp
 cube.h
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/cube.h
+/home/watisdeze/Dev/Projects/ScMa/src/shared/cube.h
 
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/tools.h
+/home/watisdeze/Dev/Projects/ScMa/src/shared/tools.h
 
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/zip.cpp
+/home/watisdeze/Dev/Projects/ScMa/src/shared/zip.cpp
 cube.h
-/home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/shared/cube.h
+/home/watisdeze/Dev/Projects/ScMa/src/shared/cube.h
 
 /usr/include/SDL2/SDL.h
 SDL_main.h

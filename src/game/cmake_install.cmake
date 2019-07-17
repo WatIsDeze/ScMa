@@ -1,4 +1,4 @@
-# Install script for directory: /home/watisdeze/Dev/Projects/PRs/Micha/ScMa/src/game
+# Install script for directory: /home/watisdeze/Dev/Projects/ScMa/src/game
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
