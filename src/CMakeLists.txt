@@ -105,8 +105,8 @@ if (APPLE)
 else()
     target_link_libraries(SchizoMania_Client
         SchizoMania_Shared_Client
-        SchizoMania_Game_Client
         SchizoMania_Engine_Client
+        SchizoMania_Game_Client
     )
 endif()
 
