@@ -88,6 +88,7 @@ target_include_directories(SchizoMania_Engine_Client
         # ${TIFF_INCLUDE_DIRS}
         ${OPENGL_INCLUDE_DIRS}
 )
+
 target_link_libraries(SchizoMania_Engine_Client
     PUBLIC
         SchizoMania_Shared_Client
@@ -101,6 +102,8 @@ target_link_libraries(SchizoMania_Engine_Client
         ${WEBP_LIBRARIES}
         ${OPENGL_LIBRARIES}
 )
+
+
 # target_compile_definitions(SchizoMania_Engine_Server PUBLIC -DSTANDALONE)
 
 # target_include_directories(SchizoMania_Engine_Server PUBLIC ${CMAKE_SOURCE_DIR})
