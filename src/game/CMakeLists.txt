@@ -6,6 +6,8 @@ add_library(SchizoMania_Game_Client STATIC
     game.cpp
     game.h
     render.cpp
+    server.cpp
+    commands.cpp
 
     entities/baseentity.cpp
     entities/dynamiclight.cpp
