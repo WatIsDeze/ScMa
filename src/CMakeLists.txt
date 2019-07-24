@@ -1,4 +1,4 @@
-# -*- mode: CMake; tab-width: 2; indent-tabs-mode: nil; -*-
+#CMake Configuration for Tesseract "The Right Way (tm)"
 cmake_minimum_required(VERSION 3.5)
 project(SchizoMania)
 
@@ -10,228 +10,127 @@ option(SCHIZOMANIA_BUILD_SERVER "Build the game server" ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 11)
 
-message("CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}")
+#Module helpers
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake")
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
+#For OSX, find the Shared libraries and ignore the static ones
 if (APPLE)
-  SET(CMAKE_FIND_LIBRARY_SUFFIXES ".dylib")
-  list(REMOVE_ITEM CMAKE_FIND_LIBRARY_SUFFIXES ".a")
-  list(INSERT      CMAKE_FIND_LIBRARY_SUFFIXES 0 ".dylib" )
+    set(CMAKE_FIND_LIBRARY_SUFFIXES ".dylib")
+    list(REMOVE_ITEM CMAKE_FIND_LIBRARY_SUFFIXES ".a")
+    list(INSERT CMAKE_FIND_LIBRARY_SUFFIXES 0 ".dylib" )
 endif()
 
-#Libs
+#Libraries
 find_package(ZLIB REQUIRED)
-message(DEBUG "Found ZLIB? ${ZLIB_FOUND} ${ZLIB_INCLUDE_DIRS} ${ZLIB_LIBRARY} ${ZLIB_LIBRARIES}")
-
 find_package(PNG REQUIRED)
-message(DEBUG "Found PNG? ${PNG_FOUND} ${PNG_INCLUDE_DIRS} ${PNG_LIBRARY} ${PNG_LIBRARIES}")
-
 find_package(JPEG REQUIRED)
-message(DEBUG "Found JPEG? ${JPEG_FOUND} ${JPEG_INCLUDE_DIRS} ${JPEG_LIBRARY} ${JPEG_LIBRARIES}")
-
 find_package(TIFF REQUIRED)
-message(DEBUG "Found TIFF? ${TIFF_FOUND} ${TIFF_INCLUDE_DIRS} ${TIFF_LIBRARY} ${TIFF_LIBRARIES}")
-
 find_package(WEBP REQUIRED)
-message(DEBUG "Found WEBP? ${WEBP_FOUND} ${WEBP_INCLUDE_DIRS} ${WEBP_LIBRARY} ${WEBP_LIBRARIES}")
-
 find_package(Freetype REQUIRED)
-message(DEBUG "Found FREETYPE? ${FREETYPE_FOUND} ${FREETYPE_INCLUDE_DIRS} ${FREETYPE_LIBRARY} ${FREETYPE_LIBRARIES}")
-
-if (LINUX)
+#For Linux, prime the SDL2 finder by setting the include dir
+if (UNIX AND NOT APPLE)
     set(SDL2_INCLUDE_DIR "/usr/include/SDL2")
 endif()
 find_package(SDL2 REQUIRED)
-message(DEBUG "Found SDL2? ${SDL2_FOUND} ${SDL2_INCLUDE_DIRS} ${SDL2_LIBRARY} ${SDL2_LIBRARIES}")
-
 find_package(SDL2_mixer REQUIRED)
-message(DEBUG "Found SDL2_MIXER? ${SDL2_MIXER_FOUND} ${SDL2_MIXER_INCLUDE_DIRS} ${SDL2_MIXER_LIBRARY} ${SDL2_MIXER_LIBRARIES}")
-
 find_package(SDL2_image REQUIRED)
-message(DEBUG "Found SDL2_IMAGE? ${SDL2_IMAGE_FOUND} ${SDL2_IMAGE_INCLUDE_DIRS} ${SDL2_IMAGE_LIBRARY} ${SDL2_IMAGE_LIBRARIES}")
-
 find_package(OpenGL REQUIRED)
-message(DEBUG "Found OPENGL? ${OPENGL_FOUND} ${OPENGL_INCLUDE_DIRS} ${OPENGL_LIBRARY} ${OPENGL_LIBRARIES}")
-
 #find_package(ModPlug REQUIRED)
 #message(DEBUG "Found MODPLUG? ${MODPLUG_FOUND} ${MODPLUG_INCLUDE_DIRS} ${MODPLUG_LIBRARY} ${MODPLUG_LIBRARIES}")
 
 if (APPLE)
     find_library(COREAUDIO CoreAudio REQUIRED)
-    message(DEBUG "Found COREAUDIO? ${COREAUDIO} ${COREAUDIO_INCLUDE_DIRS} ${COREAUDIO_LIBRARY} ${COREAUDIO_LIBRARIES}")
-
     find_library(AVFOUNDATION AVFoundation REQUIRED)
-    message(DEBUG "Found AVFOUNDATION? ${AVFOUNDATION} ${AVFOUNDATION_INCLUDE_DIRS} ${AVFOUNDATION_LIBRARY} ${AVFOUNDATION_LIBRARIES}")
+    find_library(COCOA Cocoa REQUIRED)
+    find_library(COREFOUNDATION CoreFoundation REQUIRED)
+    find_library(APPLICATIONSERVICES ApplicationServices REQUIRED)
+    find_library(FOUNDATION Foundation REQUIRED)
+    find_library(COREFOUNDATION CoreFoundation REQUIRED)
+    find_library(AUDIOTOOLBOX AudioToolbox REQUIRED)
+    find_library(BULLSHITLIB BullShitLib REQUIRED)
+
+    #Normally, you would mark the OSX Frameworks as "Advanced", no idea what it does, nor did it make any change
+    # MARK_AS_ADVANCED (
+    # )
 endif()
-
-# Add zlib.
-find_package(ZLIB REQUIRED)
-
-if(SCHIZOMANIA_BUILD_CLIENT)
-  # Add OpenGL.
-  find_package(OpenGL REQUIRED)
-
-  # Platform specific libraries.
-  if(UNIX AND NOT APPLE)
-    set(PLATFORM_LIBRARIES rt)
-  endif()
-endif()
-
-
-# Add third party libraries (e.g. built from source).
-#add_subdirectory(third_party)
 
 #defines, project wide
+#Silence OpenGL deprecations .. yes Apple, you like Metal and you can't shutup about it .. :rolleyes:
 add_definitions("-DGL_SILENCE_DEPRECATION")
 
-#The engine, server and shared
+#The engine, server and shared sub projects
 add_subdirectory(enet)
 add_subdirectory(shared)
 add_subdirectory(game)
 add_subdirectory(engine)
 
+#Everything ready, now define the executables
 if (APPLE)
     add_executable(SchizoMania_Client MACOSX_BUNDLE
-        engine/main.cpp)
+        engine/main.cpp
+
+        xcode/English.lproj/InfoPlist.strings
+        xcode/English.lproj/MainMenu.nib
+        xcode/English.lproj/MainMenu.nib/designable.nib
+        xcode/English.lproj/MainMenu.nib/keyedobjects.nib
+        xcode/Launcher.h
+        xcode/Launcher.m
+        xcode/Maps.icns
+        xcode/main.m
+        xcode/tesseract.icns
+        xcode/tesseract.plist    
+    )
+else()
+    add_executable(SchizoMania_Client engine/main.cpp)
 endif()
 
-# Additional compiler flags.
-if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  # Silence warnings from Clang.
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-missing-exception-spec")
+#Link the libraries
+target_include_directories(SchizoMania_Client
+    PRIVATE
+        shared
+        game
+        engine
+)
+
+if (APPLE)
+    target_link_libraries(SchizoMania_Client
+        SchizoMania_Shared_Client
+        SchizoMania_Game_Client
+        SchizoMania_Engine_Client
+        # ${MODPLUG_LIBRARIES}
+
+        ${COCOA}
+        ${COREFOUNDATION}
+        ${AUDIOTOOLBOX}
+        ${COREAUDIO}
+        # ${AVFOUNDATION}
+        # ${APLICATIONSERVICES}
+        # ${FOUNDATION}
+        # ${COREFOUNDATION}
+    )
+else()
+    target_link_libraries(SchizoMania_Client
+        SchizoMania_Shared_Client
+        SchizoMania_Engine_Client
+        SchizoMania_Game_Client
+    )
 endif()
 
-if(SCHIZOMANIA_BUILD_CLIENT)
-  # Client executable.
-  set(CLIENT_SOURCES
-      # Engine code.
-      shared/crypto.cpp
-      shared/geom.cpp
-      shared/glemu.cpp
-      shared/stream.cpp
-      shared/tools.cpp
-      shared/zip.cpp
-      engine/aa.cpp
-      engine/bih.cpp
-      engine/blend.cpp
-      engine/client.cpp
-      engine/command.cpp
-      engine/console.cpp
-      engine/dynlight.cpp
-      engine/grass.cpp
-      engine/light.cpp
-      engine/main.cpp
-      engine/material.cpp
-      engine/menus.cpp
-      engine/movie.cpp
-      engine/normal.cpp
-      engine/octa.cpp
-      engine/octaedit.cpp
-      engine/octarender.cpp
-      engine/physics.cpp
-      engine/pvs.cpp
-      engine/rendergl.cpp
-      engine/renderlights.cpp
-      engine/rendermodel.cpp
-      engine/renderparticles.cpp
-      engine/rendersky.cpp
-      engine/rendertext.cpp
-      engine/renderva.cpp
-      engine/server.cpp
-      engine/serverbrowser.cpp
-      engine/shader.cpp
-      engine/sound.cpp
-      engine/stain.cpp
-      engine/texture.cpp
-      engine/ui.cpp
-      engine/water.cpp
-      engine/world.cpp
-      engine/worldio.cpp
-      
-      # Commented out but not deleted for reference reasons.
-      # Game code.
-      #game/ai.cpp
-      #game/client.cpp
-      #game/entities.cpp
-      #game/game.cpp
-      #game/movable.cpp
-      #game/movables.cpp
-      #game/render.cpp
-      #game/scoreboard.cpp
-      #game/server.cpp
-      #game/waypoint.cpp
-      #game/weapon.cpp
-      game/commands.cpp
-      game/entities.cpp
-      game/game.cpp
-      game/render.cpp
-      game/server.cpp
-            
-      # Entities.
-      game/entities/baseentity.cpp
-      game/entities/playerstart.cpp
-  )
-  set(CLIENT_INCLUDES
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/engine
-    ${CMAKE_CURRENT_SOURCE_DIR}/shared
-  )
-  set(CLIENT_LIBRARIES
-      enet
-      SDL2
-      SDL2_mixer
-      SDL2_image
-      ${OPENGL_LIBRARIES}
-      ${ZLIB_LIBRARIES}
-      ${PLATFORM_LIBRARIES}
-  )
-  add_executable(schizomania ${CLIENT_SOURCES})
-  target_include_directories(schizomania PRIVATE ${CLIENT_INCLUDES} )
-  target_link_libraries(schizomania ${CLIENT_LIBRARIES})
-endif()
+#Apple specific stuff
+if (APPLE)
+    set_property(TARGET SchizoMania_Client PROPERTY MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_LIST_DIR}/xcode/tesseract.plist.in)
+    set_target_properties(SchizoMania_Client PROPERTIES RESOURCE "${CMAKE_CURRENT_LIST_DIR}/xcode/English.lproj/MainMenu.nib")
 
-if(SCHIZOMANIA_BUILD_SERVER)
-  # Server executable.
-  set(SERVER_SOURCES
-      shared/crypto.cpp
-      shared/stream.cpp
-      shared/tools.cpp
-      engine/command.cpp
-      engine/server.cpp
-      engine/worldio.cpp
-      game/entities.cpp
-      game/server.cpp
-  )
-  set(SERVER_INCLUDES
-      ${CMAKE_CURRENT_SOURCE_DIR}
-  )
-  set(SERVER_LIBRARIES
-      enet
-      ${ZLIB_LIBRARIES}
-  )
-  add_executable(schizomania_server ${SERVER_SOURCES})
-  target_compile_definitions(schizomania_server PRIVATE -DSTANDALONE)
-  target_include_directories(schizomania_server PRIVATE ${SERVER_INCLUDES})
-  target_link_libraries(schizomania_server ${SERVER_LIBRARIES})
+    set_source_files_properties(
+        ${CMAKE_CURRENT_LIST_DIR}/xcode/English.lproj/MainMenu.nib/designable.nib
+        PROPERTIES
+        MACOSX_PACKAGE_LOCATION Resources/MainMenu.nib
+    )
 
-  # Master executable.
-  set(MASTER_SOURCES
-      shared/crypto.cpp
-      shared/stream.cpp
-      shared/tools.cpp
-      engine/command.cpp
-      engine/master.cpp
-  )
-  set(MASTER_INCLUDES
-      ${CMAKE_CURRENT_SOURCE_DIR}
-  )
-  set(MASTER_LIBRARIES
-      enet
-      ${ZLIB_LIBRARIES}
-  )
-  add_executable(schizomania_master ${MASTER_SOURCES})
-  target_compile_definitions(schizomania_master PRIVATE -DSTANDALONE)
-  target_include_directories(schizomania_master PRIVATE ${MASTER_INCLUDES})
-  target_link_libraries(schizomania_master ${MASTER_LIBRARIES})
+    set_source_files_properties(
+        ${CMAKE_CURRENT_LIST_DIR}/xcode/English.lproj/MainMenu.nib/keyedobjects.nib
+        PROPERTIES
+        MACOSX_PACKAGE_LOCATION Resources/MainMenu.nib
+    )
 endif()
