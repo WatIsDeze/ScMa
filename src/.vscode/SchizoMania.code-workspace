@@ -1,10 +1,10 @@
 {
 	"folders": [
 		{
-			"path": "/Users/micha/dev/ScMa/src"
+			"path": ".."
 		},
 		{
-			"path": "/Users/micha/dev/ScMa/cmake"
+			"path": "../../cmake"
 		}
 	],
 	"settings": {}
