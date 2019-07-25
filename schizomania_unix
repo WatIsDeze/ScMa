@@ -53,7 +53,7 @@ fi
 #if [ -x ${TESS_BIN}/${SYSTEM_NAME}${MACHINE_NAME}client ]
 #then
   cd ${TESS_DATA}
-  exec ${TESS_BIN}/schizomania ${TESS_OPTIONS} "$@"
+  exec ${TESS_BIN}/SchizoMania_Client ${TESS_OPTIONS} "$@"
 #else
 #  echo "Your platform does not have a pre-compiled Tesseract client."
 #  echo "Please follow the following steps to build a native client:"
