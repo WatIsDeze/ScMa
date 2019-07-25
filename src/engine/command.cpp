@@ -812,14 +812,59 @@ bool addcommand(const char *name, identfun fun, const char *args, int type)
     uint argmask = 0;
     int numargs = 0;
     bool limit = true;
-    if(args) for(const char *fmt = args; *fmt; fmt++) switch(*fmt)
+
+    std::vector<std::string> argList;
+    static std::map<char, std::string> argTypeStrings = {
+        {'i', "int"},
+        {'b', "bool"},
+        {'f', "float"},
+        {'F', "Float"}, //?
+        {'t', "tea?"}, //??
+        {'T', "Tea?"}, //??
+        {'E', "Exp?"}, //??
+        {'N', "Number?"}, //??
+        {'D', "Double?"}, //??
+        {'S', "String?"},
+        {'s', "string"},
+        {'e', "e?"},
+        {'r', "r?"},
+        {'$', "$?"},
+        {'1', "1?"},
+        {'2', "2?"},
+        {'3', "3?"},
+        {'4', "4?"},
+        {'C', "C?"},
+        {'V', "V?"}
+    };
+
+    argList.push_back(std::string(name));
+
+    if(args)
     {
-        case 'i': case 'b': case 'f': case 'F': case 't': case 'T': case 'E': case 'N': case 'D': if(numargs < MAXARGS) numargs++; break;
-        case 'S': case 's': case 'e': case 'r': case '$': if(numargs < MAXARGS) { argmask |= 1<<numargs; numargs++; } break;
-        case '1': case '2': case '3': case '4': if(numargs < MAXARGS) fmt -= *fmt-'0'+1; break;
-        case 'C': case 'V': limit = false; break;
-        default: fatal("builtin %s declared with illegal type: %s", name, args); break;
-    }
+        for(const char *fmt = args; *fmt; fmt++)
+        {
+            switch(*fmt)
+            {
+                case 'i': case 'b': case 'f': case 'F': case 't': case 'T': case 'E': case 'N': case 'D': if(numargs < MAXARGS) numargs++; break;
+                case 'S': case 's': case 'e': case 'r': case '$': if(numargs < MAXARGS) { argmask |= 1<<numargs; numargs++; } break;
+                case '1': case '2': case '3': case '4': if(numargs < MAXARGS) fmt -= *fmt-'0'+1; break;
+                case 'C': case 'V': limit = false; break;
+                default: fatal("builtin %s declared with illegal type: %s", name, args); break;
+            }
+
+            if (argTypeStrings.find(*fmt) != argTypeStrings.end())
+            {
+                argList.push_back(argTypeStrings.at(*fmt));
+            }
+            else
+            {
+                argList.push_back("'" + std::string(1, *fmt) + "'!?");
+            }
+        }
+    } 
+
+    RegisterHelp(HelpSection::Commands, argList);
+
     if(limit && numargs > MAXCOMARGS) fatal("builtin %s declared with too many args: %d", name, numargs);
     addident(ident(type, name, args, argmask, numargs, (void *)fun));
     return false;

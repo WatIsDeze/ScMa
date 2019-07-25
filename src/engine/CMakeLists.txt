@@ -14,6 +14,8 @@ add_library(SchizoMania_Engine_Client STATIC
     engine.h
     explosion.h
     grass.cpp
+    help.h
+    help.cpp
     hitzone.h
     iqm.h
     lensflare.h
