@@ -1214,7 +1214,7 @@ void new_game_entity(char *strclass, char *a1, char *a2, char *a3, char *a4, cha
     copycubestr(t->str_attr8, a8, 256);
 */
     t->type = GAMEENTITY;
-
+    conoutf("%f %f %f", t->o[0], t->o[1], t->o[2]);
     enttoggle(idx);
     makeundoent();
     entedit(idx, e.type = GAMEENTITY);
