@@ -1,5 +1,7 @@
 #include "game.h"
 #include "entities/playerstart.h"
+#include "entities/basemonster.h"
+#include "entities/player.h"
 
 namespace entities
 {
@@ -124,6 +126,9 @@ namespace entities
             conoutf("%s", "Found Playerstart");
             return new entities::classes::PlayerStart();
         } else {
+            if (strclass != NULL && strcmp(strclass, "basemonster") == 0) {
+                return new entities::classes::BaseMonster();
+            }
             return new entities::classes::BaseEntity();
         }
     }

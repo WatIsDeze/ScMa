@@ -6,7 +6,9 @@ file(REMOVE_RECURSE
   "CMakeFiles/SchizoMania_Game_Client.dir/commands.cpp.o"
   "CMakeFiles/SchizoMania_Game_Client.dir/entities/baseentity.cpp.o"
   "CMakeFiles/SchizoMania_Game_Client.dir/entities/dynamiclight.cpp.o"
+  "CMakeFiles/SchizoMania_Game_Client.dir/entities/basemonster.cpp.o"
   "CMakeFiles/SchizoMania_Game_Client.dir/entities/playerstart.cpp.o"
+  "CMakeFiles/SchizoMania_Game_Client.dir/entities/player.cpp.o"
   "libSchizoMania_Game_Client.pdb"
   "libSchizoMania_Game_Client.a"
 )

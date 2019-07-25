@@ -536,3 +536,5 @@ src/game/server.cpp
 src/game/entities/basemonster.h
 src/game/entities/basemonster.cpp
 src/game/commands.cpp
+src/game/entities/player.cpp
+src/game/entities/player.h

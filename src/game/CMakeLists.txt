@@ -12,8 +12,12 @@ add_library(SchizoMania_Game_Client STATIC
     entities/baseentity.cpp
     entities/dynamiclight.cpp
     entities/dynamiclight.h
+	entities/basemonster.cpp
+	entities/basemonster.h
     entities/playerstart.cpp
     entities/playerstart.h
+    entities/player.cpp
+    entities/player.h
 )
 
 # add_library(SchizoMania_Game_Server STATIC

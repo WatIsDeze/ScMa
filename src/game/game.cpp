@@ -1,10 +1,11 @@
 #include "game.h"
 #include "entities/playerstart.h"
+#include "entities/player.h"
 
 namespace game
 {
     // Global player entity pointer.
-    entities::classes::BaseEntity *player1 = NULL;
+    entities::classes::Player *player1 = NULL;
 
     // Networking State properties.
     bool connected = false;
@@ -284,7 +285,7 @@ namespace game
     void initclient() {
         // This may work.
         // TODO: It may fail lol.
-        player1 = new entities::classes::PlayerStart();
+        player1 = new entities::classes::Player();
         player1->setspawned(true);
     }
 

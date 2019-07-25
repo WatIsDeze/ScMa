@@ -17,7 +17,7 @@ void PlayerStart::preload() {
 }
 
 void PlayerStart::think() {
-    moveplayer(this, 10, true);
+    //moveplayer(this, 10, true);
 }
 
 void PlayerStart::render() {

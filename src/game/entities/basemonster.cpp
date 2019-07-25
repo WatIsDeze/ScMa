@@ -4,7 +4,7 @@
 namespace entities {
 namespace classes {
 
-BaseMonster::BaseMonster() : BaseMonster() {
+BaseMonster::BaseMonster() : BaseEntity() {
     //type = ENT_AI;
 }
 
@@ -13,7 +13,7 @@ BaseMonster::~BaseMonster() {
 }
 
 void BaseMonster::preload() {
-    conoutf("%s", "Preloading playerstart entity");
+    conoutf("%s", "Preloading basemonster entity");
 }
 
 void BaseMonster::think() {

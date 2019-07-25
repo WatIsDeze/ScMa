@@ -15,10 +15,22 @@ game.h
 /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
 entities/playerstart.h
 /home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.h
+entities/basemonster.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/entities/basemonster.h
+entities/player.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/entities/player.h
 
 /home/watisdeze/Dev/Projects/ScMa/src/game/entities/baseentity.cpp
 ../game.h
 /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
+
+/home/watisdeze/Dev/Projects/ScMa/src/game/entities/basemonster.cpp
+../game.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/game.h
+basemonster.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/entities/basemonster.h
+
+/home/watisdeze/Dev/Projects/ScMa/src/game/entities/basemonster.h
 
 /home/watisdeze/Dev/Projects/ScMa/src/game/entities/dynamiclight.cpp
 ../game.h
@@ -27,6 +39,14 @@ dynamiclight.h
 /home/watisdeze/Dev/Projects/ScMa/src/game/entities/dynamiclight.h
 
 /home/watisdeze/Dev/Projects/ScMa/src/game/entities/dynamiclight.h
+
+/home/watisdeze/Dev/Projects/ScMa/src/game/entities/player.cpp
+../game.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/game.h
+player.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/entities/player.h
+
+/home/watisdeze/Dev/Projects/ScMa/src/game/entities/player.h
 
 /home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.cpp
 ../game.h
@@ -41,6 +61,8 @@ game.h
 /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
 entities/playerstart.h
 /home/watisdeze/Dev/Projects/ScMa/src/game/entities/playerstart.h
+entities/player.h
+/home/watisdeze/Dev/Projects/ScMa/src/game/entities/player.h
 
 /home/watisdeze/Dev/Projects/ScMa/src/game/game.h
 cube.h

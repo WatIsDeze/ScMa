@@ -49,6 +49,7 @@ namespace entities
 {
     namespace classes {
         class BaseEntity;
+        class Player;
     }
 
     // Yup, entity array.
@@ -62,7 +63,7 @@ namespace entities
 namespace game
 {
     // Player entity.
-    extern entities::classes::BaseEntity *player1;
+    extern entities::classes::Player *player1;
 
     // Entities.
     extern void clearworld();
