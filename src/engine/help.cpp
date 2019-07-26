@@ -21,46 +21,50 @@ namespace {
         return output;
     }
 
-    std::string sectionToString(Help::HelpSection section)
-    {
-        if (Help::g_SectionToString.find(section) != Help::g_SectionToString.end())
-            return Help::g_SectionToString.at(section);
-
-        return "Other";
-    }
 }
 
-std::map<std::string, Help::HelpSection> Help::g_StringToSection;
-std::map<Help::HelpSection, std::string> Help::g_SectionToString;
-std::map<Help::HelpSection, std::vector<std::string> > Help::g_SectionLines;
-bool Help::initialized = false;
-
-void Help::Initialize()
+Help::HelpSection Help::StringToSection(const std::string& sectionName)
 {
-    if (!initialized)
-    {
-        g_StringToSection = std::map<std::string, Help::HelpSection> {
-            {"commands", HelpSection::Commands}
-        };
-        g_SectionToString = std::map<Help::HelpSection, std::string> {
-            {HelpSection::Commands, "commands"}
-        };
-        g_SectionLines = std::map<Help::HelpSection, std::vector<std::string> > {
-            {HelpSection::Commands, {} }
-        };
+    static std::map<std::string, Help::HelpSection> g_StringToSection = std::map<std::string, Help::HelpSection> {
+        {"Commands", HelpSection::Commands}
+    };
 
-        initialized = true;
+    if (g_StringToSection.find(sectionName) != g_StringToSection.end())
+    {
+        return g_StringToSection.at(sectionName);
     }
+
+    return HelpSection::Other;
 }
 
-void Help::Register(HelpSection section, const std::vector<std::string>& data)
+std::string Help::SectionToString(HelpSection section)
 {
-    if (g_SectionLines.find(section) == g_SectionLines.end())
+    static std::map<HelpSection, std::string> g_SectionToString = std::map<Help::HelpSection, std::string> {
+        {HelpSection::Commands, "Commands"},
+        {HelpSection::Other, "Other"}
+    };
+
+    if (g_SectionToString.find(section) != g_SectionToString.end())
     {
-        Initialize();
+        return g_SectionToString.at(section);
     }
 
-    auto& sectionLineData = g_SectionLines[section];
+    return g_SectionToString.at(HelpSection::Other);
+}
+
+std::map<Help::HelpSection, std::vector<std::string> >& Help::SectionLines()
+{
+    static std::map<Help::HelpSection, std::vector<std::string> > g_SectionLines = std::map<Help::HelpSection, std::vector<std::string> > {
+        {HelpSection::Commands, {} },
+        {HelpSection::Other, {} }
+    };
+
+    return g_SectionLines;
+}
+
+void Help::Register(Help::HelpSection section, const std::vector<std::string>& data)
+{
+    auto& sectionLineData = SectionLines()[section];
     sectionLineData.push_back(formatData(data));
 }
 
@@ -70,9 +74,9 @@ void Help::Print(const char* arg)
 
     if (sArg.empty())
     {
-        for (auto section : g_SectionLines)
+        for (auto section : SectionLines())
         {
-            conoutf("==== %s ====", sectionToString(section.first).c_str());
+            conoutf("==== %s ====", SectionToString(section.first).c_str());
 
             for (auto line : section.second)
             {
