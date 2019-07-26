@@ -863,7 +863,7 @@ bool addcommand(const char *name, identfun fun, const char *args, int type)
         }
     } 
 
-    RegisterHelp(HelpSection::Commands, argList);
+    Help::Register(Help::HelpSection::Commands, argList);
 
     if(limit && numargs > MAXCOMARGS) fatal("builtin %s declared with too many args: %d", name, numargs);
     addident(ident(type, name, args, argmask, numargs, (void *)fun));
