@@ -1,2 +1,0 @@
-/usr/bin/ar qc libSchizoMania_Shared_Client.a  CMakeFiles/SchizoMania_Shared_Client.dir/crypto.cpp.o CMakeFiles/SchizoMania_Shared_Client.dir/geom.cpp.o CMakeFiles/SchizoMania_Shared_Client.dir/glemu.cpp.o CMakeFiles/SchizoMania_Shared_Client.dir/pch.cpp.o CMakeFiles/SchizoMania_Shared_Client.dir/stream.cpp.o CMakeFiles/SchizoMania_Shared_Client.dir/tessfont.c.o CMakeFiles/SchizoMania_Shared_Client.dir/tools.cpp.o CMakeFiles/SchizoMania_Shared_Client.dir/zip.cpp.o
-/usr/bin/ranlib libSchizoMania_Shared_Client.a
