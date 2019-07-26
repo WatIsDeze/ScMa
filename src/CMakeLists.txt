@@ -9,6 +9,8 @@ option(SCHIZOMANIA_BUILD_SERVER "Build the game server" ON)
 # Generate compile commands (compile_commands.json) for clang tooling etc.
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED OFF)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 #Module helpers
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake")
@@ -19,6 +21,10 @@ if (APPLE)
     set(CMAKE_FIND_LIBRARY_SUFFIXES ".dylib")
     list(REMOVE_ITEM CMAKE_FIND_LIBRARY_SUFFIXES ".a")
     list(INSERT CMAKE_FIND_LIBRARY_SUFFIXES 0 ".dylib" )
+
+    set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LIBRARY "libc++")
+    set(CMAKE_XCODE_ATTRIBUTE_CLANG_LANGUAGE_STANDARD "c++11")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -std=c++11")
 endif()
 
 #Libraries
@@ -121,6 +127,7 @@ endif()
 if (APPLE)
     set_property(TARGET SchizoMania_Client PROPERTY MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_LIST_DIR}/xcode/tesseract.plist.in)
     set_target_properties(SchizoMania_Client PROPERTIES RESOURCE "${CMAKE_CURRENT_LIST_DIR}/xcode/English.lproj/MainMenu.nib")
+    target_compile_features(SchizoMania_Client PUBLIC cxx_std_11)
 
     set_source_files_properties(
         ${CMAKE_CURRENT_LIST_DIR}/xcode/English.lproj/MainMenu.nib/designable.nib
