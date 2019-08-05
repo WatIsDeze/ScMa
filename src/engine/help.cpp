@@ -76,11 +76,14 @@ void Help::Print(const char* arg)
     {
         for (auto section : SectionLines())
         {
-            conoutf("==== %s ====", SectionToString(section.first).c_str());
-
-            for (auto line : section.second)
+            if (section.second.size())
             {
-                conoutf("    %s", line.c_str());
+                conoutf("==== %s ====", SectionToString(section.first).c_str());
+
+                for (auto line : section.second)
+                {
+                    conoutf("    %s", line.c_str());
+                }
             }
         }
     }

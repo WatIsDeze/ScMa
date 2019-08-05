@@ -13,6 +13,20 @@
             "cppStandard": "c++11",
             "intelliSenseMode": "clang-x64",
             "compileCommands": "${workspaceFolder}/build/compile_commands.json"
+        },
+        {
+            "name": "OSX",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "GL_SILENCE_DEPRECATION=1"
+            ],
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c11",
+            "cppStandard": "c++11",
+            "intelliSenseMode": "clang-x64",
+            "compileCommands": "${workspaceFolder}/build/compile_commands.json"
         }
     ],
     "version": 4

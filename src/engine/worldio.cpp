@@ -22,7 +22,8 @@ void validmapname(char *dst, const char *src, const char *prefix = NULL, const c
     else if(dst != alt) copycubestr(dst, alt, maxlen);
 }
 
-void fixmapname(char *name)
+/* Make the name of the map great again (tm) */
+__attribute__((annotate("script_export"))) void fixmapname(char *name)
 {
     validmapname(name, name, NULL, "");
 }
@@ -961,7 +962,7 @@ bool load_world(const char *mname, const char *cname)        // still supports a
 }
 
 void savecurrentmap() { save_world(game::getclientmap()); }
-void savemap(char *mname) { save_world(mname); }
+__attribute__((annotate("script_export"))) void savemap(char *mname) { save_world(mname); }
 
 COMMAND(savemap, "s");
 COMMAND(savecurrentmap, "");

@@ -15,6 +15,15 @@
             "environment": [],
             "externalConsole": false,
             "MIMode": "lldb"
-        }
+        },
+        {
+            "name": "ScriptBind",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/binding/index.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/binding"
+        },
+
     ]
 }
