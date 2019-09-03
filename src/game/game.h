@@ -52,8 +52,9 @@ namespace entities
         class Player;
     }
 
-    // Yup, entity array.
-    extern vector<entities::classes::BaseEntity *> ents;
+    // Entity arrays.
+    extern vector<entities::classes::BaseEntity *> g_ents;
+    extern vector<entities::classes::BaseEntity *> g_lightEnts;
 
     // Silly functions yup.
     extern void preloadentities();

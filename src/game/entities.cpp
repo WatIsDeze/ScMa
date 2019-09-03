@@ -1,6 +1,11 @@
 #include "game.h"
-#include "entities/playerstart.h"
+
+// Base entities.
 #include "entities/basemonster.h"
+
+// Game entities.
+#include "entities/dynamiclight.h"
+#include "entities/playerstart.h"
 #include "entities/player.h"
 
 namespace entities
@@ -8,9 +13,10 @@ namespace entities
     using namespace game;
 
 #ifndef STANDALONE
-    vector<classes::BaseEntity *> ents;
+    vector<classes::BaseEntity *> g_ents;
+    vector<classes::BaseEntity *> g_lightEnts;
 
-    vector<classes::BaseEntity *> &getents() { return ents; }
+    vector<classes::BaseEntity *> &getents() { return g_ents; }
 
     bool mayattach(classes::BaseEntity &e) { return false; }
     bool attachent(classes::BaseEntity &e, classes::BaseEntity &a) { return false; }
@@ -59,12 +65,13 @@ namespace entities
     void preloadentities()
     {
         // Execute preload actions for entities.
-        loopv(ents)
+        loopv(g_ents)
         {
             // Let's go at it!
-            entities::classes::BaseEntity *e = ents[i];
+            entities::classes::BaseEntity *e = g_ents[i];
             e->preload();
         }
+
         // TODO: If stuff suddenly starts failing it is likely cuz of this being commented.
 /*
         loopi(MAXENTTYPES)
@@ -90,15 +97,18 @@ namespace entities
 
     void renderentities()
     {
-        loopv(ents)
+        loopv(g_ents)
         {
-            entities::classes::BaseEntity &e = *ents[i];
+            entities::classes::BaseEntity &e = *g_ents[i];
             int revs = 10;
+
             switch(e.type)
             {
                 case TELEPORT:
                     if(e.attr2 < 0) continue;
                     break;
+                case ENT_PLAYER:
+
                 default:
                     if(!e.spawned()) continue;
                     break;
@@ -114,11 +124,11 @@ namespace entities
     }
 
     void resetspawns() {
-        loopv(ents)
-                ents[i]->clearspawned();
+        loopv(g_ents)
+                g_ents[i]->clearspawned();
     }
 
-    void setspawn(int i, bool on) { if(ents.inrange(i)) ents[i]->setspawned(on); }
+    void setspawn(int i, bool on) { if(g_ents.inrange(i)) g_ents[i]->setspawned(on); }
 
     // Returns the entity class respectively according to its registered name.
     entities::classes::BaseEntity *newgameentity(char *strclass) {
@@ -128,6 +138,9 @@ namespace entities
         } else {
             if (strclass != NULL && strcmp(strclass, "basemonster") == 0) {
                 return new entities::classes::BaseMonster();
+            }
+            if (strclass != NULL && strcmp(strclass, "dynamiclight") == 0) {
+                return new entities::classes::DynamicLight();
             }
             return new entities::classes::BaseEntity();
         }
@@ -140,7 +153,7 @@ namespace entities
     // Deletes all game entities in the stack.
     void clearents()
     {
-        while(ents.length()) deletegameentity(ents.pop());
+        while(g_ents.length()) deletegameentity(g_ents.pop());
     }
 
     void animatemapmodel(const entities::classes::BaseEntity &e, int &anim, int &basetime)
@@ -169,9 +182,9 @@ namespace entities
         switch(e.type)
         {
             case TELEPORT:
-                loopv(ents) if(ents[i]->type == TELEDEST && e.attr1==ents[i]->attr2)
+                loopv(g_ents) if(g_ents[i]->type == TELEDEST && e.attr1==g_ents[i]->attr2)
                 {
-                    renderentarrow(e, vec(ents[i]->o).sub(e.o).normalize(), e.o.dist(ents[i]->o));
+                    renderentarrow(e, vec(g_ents[i]->o).sub(e.o).normalize(), e.o.dist(g_ents[i]->o));
                     break;
                 }
                 break;

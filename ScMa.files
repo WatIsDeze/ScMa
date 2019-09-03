@@ -525,8 +525,6 @@ src/xcode/Launcher.h
 src/game/entities/playerstart.h
 src/game/entities/baseentity.cpp
 src/game/entities/playerstart.cpp
-src/game/entities/dynamiclight.h
-src/game/entities/dynamiclight.cpp
 src/game/entities.cpp
 src/game/game.h
 src/game/game.cpp
@@ -538,3 +536,7 @@ src/game/entities/basemonster.cpp
 src/game/commands.cpp
 src/game/entities/player.cpp
 src/game/entities/player.h
+src/engine/help.h
+src/engine/help.cpp
+src/game/entities/dynamiclight.cpp
+src/game/entities/dynamiclight.h

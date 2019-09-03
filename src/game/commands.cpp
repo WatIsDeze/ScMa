@@ -26,8 +26,8 @@ namespace game {
         // TODO: Fix the namespace variable issues.
         //extern vector<entities::classes::BaseEntity *> entities::ents;
 
-        if (entities::edit_entity > -1 && entities::edit_entity < entities::ents.length()) {
-            entities::classes::BaseEntity *ent = (entities::classes::BaseEntity*)entities::ents[entities::edit_entity];
+        if (entities::edit_entity > -1 && entities::edit_entity < entities::g_ents.length()) {
+            entities::classes::BaseEntity *ent = (entities::classes::BaseEntity*)entities::g_ents[entities::edit_entity];
 
             // Ensure both string lengths are > 0
             if (strlen(s1) > 0 && strlen(s2) > 0) {
@@ -49,8 +49,8 @@ namespace game {
         // TODO: Fix the namespace variable issues.
         //extern vector<entities::classes::BaseEntity *> entities::ents;
 
-        if (entities::edit_entity > -1 && entities::edit_entity < entities::ents.length()) {
-            entities::classes::BaseEntity *ent = (entities::classes::BaseEntity*)entities::ents[entities::edit_entity];
+        if (entities::edit_entity > -1 && entities::edit_entity < entities::g_ents.length()) {
+            entities::classes::BaseEntity *ent = (entities::classes::BaseEntity*)entities::g_ents[entities::edit_entity];
 
             if (ent->attributes.find(s1) != ent->attributes.end()) {
                 conoutf("%s : %s", s1, ent->attributes[s1].c_str());
@@ -65,8 +65,8 @@ namespace game {
         // TODO: Fix the namespace variable issues.
         //extern vector<entities::classes::BaseEntity *> entities::ents;
 
-        if (entities::edit_entity > -1 && entities::edit_entity < entities::ents.length()) {
-            entities::classes::BaseEntity *ent = (entities::classes::BaseEntity*)entities::ents[entities::edit_entity];
+        if (entities::edit_entity > -1 && entities::edit_entity < entities::g_ents.length()) {
+            entities::classes::BaseEntity *ent = (entities::classes::BaseEntity*)entities::g_ents[entities::edit_entity];
 
             for(std::map<std::string, std::string>::iterator i = ent->attributes.begin(); i != ent->attributes.end(); ++i) {
                 conoutf("%s : %s", i->first.c_str(), i->second.c_str());

@@ -33,10 +33,10 @@ namespace game
 
     void updateentities() {
         // Execute think actions for entities.
-        loopv(entities::ents)
+        loopv(entities::g_ents)
         {
             // Let's go at it!
-            entities::classes::BaseEntity *e = entities::ents[i];
+            entities::classes::BaseEntity *e = entities::g_ents[i];
             e->think();
 //          if(e.type == ENT_PLAYER) {}
         }
@@ -195,11 +195,16 @@ namespace game
     }
 
     void rendergame(bool mainpass) {
-         // TODO: Fix this.
-        //if(isthirdperson()) renderclient(player1, "ogro", NULL, 0, ANIM_ATTACK1, 300, player1->lastaction, player1->lastpain);
-
         // Loop through our entities and render them all.
+        loopv(entities::g_ents)
+        {
+            // Let's go at it!
+            entities::classes::BaseEntity *e = entities::g_ents[i];
+            e->render();
+        }
 
+        // Render our client player.
+        player1->render();
     }
 
     const char *defaultcrosshair(int index) {
@@ -229,7 +234,14 @@ namespace game
     void lighteffects(dynent *e, vec &color, vec &dir) {
     }
 
-    void adddynlights() {
+    void renderDynamicLights() {
+        // Loop through our light entities and render them all.
+        loopv(entities::g_lightEnts)
+        {
+            // Let's go at it!
+            entities::classes::BaseEntity *e = entities::g_lightEnts[i];
+            e->render();
+        }
     }
 
     void dynlighttrack(physent *owner, vec &o, vec &hud) {
@@ -283,8 +295,7 @@ namespace game
     }
 
     void initclient() {
-        // This may work.
-        // TODO: It may fail lol.
+        // Initialize the player class used for this client.
         player1 = new entities::classes::Player();
         player1->setspawned(true);
     }
