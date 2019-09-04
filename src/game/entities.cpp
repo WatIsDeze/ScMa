@@ -72,6 +72,9 @@ namespace entities
             e->preload();
         }
 
+        // Specifically load in the client player model.
+        game::player1->preload();
+
         // TODO: If stuff suddenly starts failing it is likely cuz of this being commented.
 /*
         loopi(MAXENTTYPES)
@@ -108,11 +111,14 @@ namespace entities
                     if(e.attr2 < 0) continue;
                     break;
                 case ENT_PLAYER:
-
+                    // Specifically render the player model.
+                    game::player1->render();
                 default:
                     if(!e.spawned()) continue;
                     break;
             }
+
+            // This code seems to render the default models.
             const char *mdlname = entmodel(e);
             if(mdlname)
             {
