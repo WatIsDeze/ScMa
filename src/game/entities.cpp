@@ -98,36 +98,36 @@ namespace entities
 //        }
     }
 
-    void renderentities()
-    {
-        loopv(g_ents)
-        {
-            entities::classes::BaseEntity &e = *g_ents[i];
-            int revs = 10;
+// TODO: Wonder what this function was for anyway, we don't need it.
+//    void renderentities()
+//    {
+//        loopv(g_ents)
+//        {
+//            entities::classes::BaseEntity &e = *g_ents[i];
+//            int revs = 10;
 
-            switch(e.type)
-            {
-                case TELEPORT:
-                    if(e.attr2 < 0) continue;
-                    break;
-                case ENT_PLAYER:
-                    // Specifically render the player model.
-                    game::player1->render();
-                default:
-                    if(!e.spawned()) continue;
-                    break;
-            }
+//            switch(e.type)
+//            {
+//                case TELEPORT:
+//                    if(e.attr2 < 0) continue;
+//                    break;
+//                case ENT_PLAYER:
 
-            // This code seems to render the default models.
-            const char *mdlname = entmodel(e);
-            if(mdlname)
-            {
-                vec p = e.o;
-                p.z += 1+sinf(lastmillis/100.0+e.o.x+e.o.y)/20;
-                rendermodel(mdlname, ANIM_MAPMODEL|ANIM_LOOP, p, lastmillis/(float)revs, 0, 0, MDL_CULL_VFC | MDL_CULL_DIST | MDL_CULL_OCCLUDED);
-            }
-        }
-    }
+//                default:
+//                    if(!e.spawned()) continue;
+//                    break;
+//            }
+
+//            // This code seems to render the default models.
+//            const char *mdlname = entmodel(e);
+//            if(mdlname)
+//            {
+//                vec p = e.o;
+//                p.z += 1+sinf(lastmillis/100.0+e.o.x+e.o.y)/20;
+//                rendermodel(mdlname, ANIM_MAPMODEL|ANIM_LOOP, p, lastmillis/(float)revs, 0, 0, MDL_CULL_VFC | MDL_CULL_DIST | MDL_CULL_OCCLUDED);
+//            }
+//        }
+//    }
 
     void resetspawns() {
         loopv(g_ents)

@@ -194,17 +194,9 @@ namespace game
         return 1;
     }
 
+    // This function should be used to render HUD View stuff etc.
     void rendergame(bool mainpass) {
-        // Loop through our entities and render them all.
-        loopv(entities::g_ents)
-        {
-            // Let's go at it!
-            entities::classes::BaseEntity *e = entities::g_ents[i];
-            e->render();
-        }
-
-        // Render our client player.
-        player1->render();
+    // This function should be used to render HUD View stuff etc.
     }
 
     const char *defaultcrosshair(int index) {

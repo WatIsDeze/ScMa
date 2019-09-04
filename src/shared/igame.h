@@ -74,7 +74,7 @@ namespace game
     extern bool allowmove(physent *d);
     extern dynent *iterdynents(int i);
     extern int numdynents();
-    extern void rendergame();
+    extern void RenderGameEntities();
     extern void renderavatar();
     extern void renderplayerpreview(int model, int color, int team, int weap);
     extern int numanims();

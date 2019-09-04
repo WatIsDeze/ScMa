@@ -4517,7 +4517,7 @@ void workinoq()
 
     if(drawtex) return;
 
-    game::rendergame();
+    game::RenderGameEntities();
 
     if(shouldworkinoq())
     {

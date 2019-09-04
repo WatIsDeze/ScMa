@@ -14,7 +14,7 @@ Player::~Player() {
 
 void Player::preload() {
     conoutf("%s", "Preloading player entity");
-    preloadmodel("player_azul");
+    preloadmodel("player/bones");
 }
 
 void Player::think() {
@@ -39,11 +39,13 @@ enum
 };
 
 void Player::render() {
-    // TODO: Fix this.
-    //if(isthirdperson())
-    //    renderclient(game::player1, "ogro", NULL, 0, ANIM_ATTACK1, 300, player1->lastaction, player1->lastpain);
-    rendermodel("player_azul", ANIM_RUN_N, o, 0, 0, 0);
-    //rendermodel(mdlname, anim, o, yaw, pitch, 0, flags, d, a[0].tag ? a : NULL, basetime, 0, fade, vec4(vec::hexcolor(color)));
+    if (isthirdperson) {
+        // Calculate the position.
+        vec pos = o;
+        pos.z -= eyeheight;
+
+        rendermodel("player/bones", ANIM_IDLE, pos, 0, 0, 0);
+    }
 }
 
 } // classes
