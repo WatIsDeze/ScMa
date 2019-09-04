@@ -39,7 +39,7 @@ enum
 };
 
 void Player::render() {
-    if (isthirdperson) {
+    if (isthirdperson()) {
         // Calculate the position.
         vec pos = o;
         pos.z -= eyeheight;
