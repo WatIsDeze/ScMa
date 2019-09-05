@@ -540,3 +540,4 @@ src/engine/help.h
 src/engine/help.cpp
 src/game/entities/dynamiclight.cpp
 src/game/entities/dynamiclight.h
+dev_docs/entities
