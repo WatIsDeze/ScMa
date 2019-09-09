@@ -28,8 +28,8 @@ void Door::think() {
 
 void Door::render() {
 
-    //rendermodel("world/door", ANIM_ALL, o, 0, 0, 0);
-    rendermodel("world/door", ANIM_MAPMODEL|ANIM_LOOP, o, yaw, 0, 0, MDL_CULL_VFC | MDL_CULL_DIST | MDL_CULL_OCCLUDED, this);
+    rendermodel("world/door", ANIM_ALL, o, 0, 0, 0);
+    //rendermodel("world/door", ANIM_MAPMODEL|ANIM_LOOP, o, yaw, 0, 0, MDL_CULL_VFC | MDL_CULL_DIST | MDL_CULL_OCCLUDED, this);
 }
 
 } // classes
