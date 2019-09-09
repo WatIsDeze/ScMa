@@ -1,12 +1,12 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#ifndef DOOR_H
+#define DOOR_H
 
 namespace entities {
     namespace classes {
-        class Player : public BaseEntity {
+        class Door : public BaseEntity {
         public:
-            Player();
-            virtual ~Player();
+            Door();
+            virtual ~Door();
 
             void preload();
             void think();
@@ -18,4 +18,4 @@ namespace entities {
     } // classes
 } // entities
 
-#endif // PLAYER_H
+#endif // DOOR_H

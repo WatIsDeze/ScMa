@@ -191,7 +191,7 @@ namespace game
     }
     // int numdynents() { return players.length()+monsters.length()+movables.length(); }
     int numdynents() {
-        return 1;
+        return entities::g_ents.length() + 1;
     }
 
     // This function should be used to render HUD View stuff etc.

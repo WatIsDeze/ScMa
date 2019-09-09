@@ -5,14 +5,6 @@ namespace game
 {
     __attribute__((optimize("O0"))) void RenderGameEntities()
     {
-        // Loop through our entities and render them all.
-        loopv(entities::g_ents)
-        {
-            // Let's go at it!
-            entities::classes::BaseEntity *e = entities::g_ents[i];
-            e->render();
-        }
-
         // Render our client player.
         game::player1->render();
     }

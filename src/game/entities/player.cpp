@@ -5,6 +5,7 @@ namespace entities {
 namespace classes {
 
 Player::Player() : BaseEntity() {
+    state = CS_ALIVE;
     type = ENT_PLAYER;
 }
 

@@ -4,6 +4,7 @@
 #include "entities/basemonster.h"
 
 // Game entities.
+#include "entities/door.h"
 #include "entities/dynamiclight.h"
 #include "entities/playerstart.h"
 #include "entities/player.h"
@@ -139,15 +140,16 @@ namespace entities
     // Returns the entity class respectively according to its registered name.
     entities::classes::BaseEntity *newgameentity(char *strclass) {
         if (strclass != NULL && strcmp(strclass, "playerstart") == 0) {
+            // TODO: Remove this one after we are further into development.
             conoutf("%s", "Found Playerstart");
             return new entities::classes::PlayerStart();
         } else {
-            if (strclass != NULL && strcmp(strclass, "basemonster") == 0) {
-                return new entities::classes::BaseMonster();
-            }
-            if (strclass != NULL && strcmp(strclass, "dynamiclight") == 0) {
-                return new entities::classes::DynamicLight();
-            }
+            if (strclass != NULL && strcmp(strclass, "basemonster") == 0) { return new entities::classes::BaseMonster(); }
+            if (strclass != NULL && strcmp(strclass, "dynamiclight") == 0) { return new entities::classes::DynamicLight(); }
+            if (strclass != NULL && strcmp(strclass, "door") == 0) { return new entities::classes::Door(); }
+
+            // No entity was found, so we'll return base entity for now.
+            // TODO: Should we do this at all? I guess returning NULL is fine too and warning our user instead.
             return new entities::classes::BaseEntity();
         }
     }
