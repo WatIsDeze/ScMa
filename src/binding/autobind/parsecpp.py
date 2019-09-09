@@ -14,6 +14,8 @@ libclang_paths = [
     "/usr/local/lib/libclang.so"
 ]
 
+EXPORT_ANNOTATION = "scriptexport"
+
 class CppParser:
 
     def __init__(self, file):
@@ -39,7 +41,7 @@ class CppParser:
             if cursor.kind.name == "FUNCTION_DECL":
                 first_child = next(cursor.get_children(), None)
                 if not first_child is None:
-                    if first_child.kind.name == "ANNOTATE_ATTR" and first_child.spelling == "script_export":
+                    if first_child.kind.name == "ANNOTATE_ATTR" and first_child.spelling == EXPORT_ANNOTATION:
                         return CxxFunction(cursor, parent)
 
             return None

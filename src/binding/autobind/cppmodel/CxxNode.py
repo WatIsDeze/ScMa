@@ -1,6 +1,6 @@
 
 
-class CxxNode:
+class CxxNode():
     
     def __init__(self, sourceObject, parent = None):
         # self.cxxtype = cxxtype

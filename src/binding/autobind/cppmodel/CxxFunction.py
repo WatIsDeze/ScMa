@@ -27,7 +27,9 @@ class CxxFunction(CxxNode):
         return self.sourceObject.spelling + "(" + (", ".join(args)) + ")"
 
     def generate(self):
-        template = 'COMMAND({functioname}, "{proto}", "{doc}")'
+        template = """extern {fwddecl};
+COMMAND({functioname}, "{proto}", "{doc}");
+"""
 
         # {'i', "int"},
         # {'b', "bool"},
@@ -56,12 +58,15 @@ class CxxFunction(CxxNode):
             "bool": "b",
             "const char *": "s",
             "char *": "s",
+            "int *": "D"
         }
 
         proto = ""
+        cppargs = []
         for arg in self.forEachArgument():
             if (arg.spelling in spelling2proto):
                 proto = proto + spelling2proto[arg.spelling]
+                cppargs.append(arg.spelling)
             else:
                 raise ValueError("Function argument type not implemented", arg.spelling, self.sourceObject.spelling)
             # for typedef in arg.get_children():
@@ -71,7 +76,9 @@ class CxxFunction(CxxNode):
             #         else:
             #             raise ValueError("Function argument type not implemented", typedef.spelling, self.sourceObject.spelling)
 
+        cppdecl = self.sourceObject.spelling + "(" + ", ".join(cppargs) + ")"
         return template.format(
+            fwddecl = cppdecl,
             functioname = self.sourceObject.spelling,
             proto = proto,
             doc = self.comment()
