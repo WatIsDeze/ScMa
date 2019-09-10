@@ -543,3 +543,5 @@ src/game/entities/dynamiclight.h
 dev_docs/entities
 src/game/entities/door.cpp
 src/game/entities/door.h
+src/shared/physent.cpp
+src/shared/dynent.cpp

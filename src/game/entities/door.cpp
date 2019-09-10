@@ -7,6 +7,7 @@ namespace classes {
 Door::Door() : BaseEntity() {
     state = CS_ALIVE;
     type = ENT_INANIMATE;
+    collidetype = COLLIDE_TRI;
 }
 
 Door::~Door() {

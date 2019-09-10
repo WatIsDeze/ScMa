@@ -49,59 +49,41 @@ enum { COLLIDE_NONE = 0, COLLIDE_ELLIPSE, COLLIDE_OBB, COLLIDE_TRI };
 #define CROUCHTIME 200
 #define CROUCHHEIGHT 0.75f
 
-class physent : public entity                  // base entity type, can be affected by physics
+// Base Entity type, can be affected by physics
+class physent : public entity
 {
 public:
-    //vec o, vel, falling;                        // origin, velocity
-    vec vel, falling;                        // origin, velocity
-    vec deltapos, newpos;                       // movement interpolation
+    //vec o, vel, falling;                          // origin, velocity
+    vec vel, falling;                               // origin, velocity
+    vec deltapos, newpos;                           // movement interpolation
     float yaw, pitch, roll;
-    float maxspeed;                             // cubes per second, 100 for player
+    float maxspeed;                                 // cubes per second, 100 for player
     int timeinair;
-    float radius, eyeheight, maxheight, aboveeye; // bounding box size
+    float radius, eyeheight, maxheight, aboveeye;   // bounding box size
     float xradius, yradius, zmargin;
-    vec floor;                                  // the normal of floor the dynent is on
+    vec floor;                                      // the normal of floor the dynent is on
 
     int inwater;
     bool jumping;
     char move, strafe, crouching;
 
-    uchar physstate;                            // one of PHYS_* above
-    uchar state, editstate;                     // one of CS_* above
-    //uchar type;                                 // one of ENT_* above
-    uchar collidetype;                          // one of COLLIDE_* above
+    uchar physstate;            // one of PHYS_* above
+    uchar state, editstate;     // one of CS_* above
+    //uchar type;               // one of ENT_* above NOTE: This one is now located in entity structure.
+    uchar collidetype;          // one of COLLIDE_* above
 
-    bool blocked;                               // used by physics to signal ai
+    bool blocked;               // used by physics to signal ai
 
-    physent() : deltapos(0, 0, 0), newpos(0, 0, 0), yaw(0), pitch(0), roll(0), maxspeed(100),
-               radius(4.1f), eyeheight(18), maxheight(18), aboveeye(2), xradius(4.1f), yradius(4.1f), zmargin(0),
-               state(CS_ALIVE), editstate(CS_ALIVE),
-               collidetype(COLLIDE_ELLIPSE),
-               blocked(false)
-               {  type = ENT_PLAYER; reset(); }
+    physent();
 
-    void resetinterp()
-    {
-        newpos = o;
-        deltapos = vec(0, 0, 0);
-    }
+    void resetinterp();
 
-    void reset()
-    {
-        inwater = 0;
-        timeinair = 0;
-        eyeheight = maxheight;
-        jumping = false;
-        strafe = move = crouching = 0;
-        physstate = PHYS_FALL;
-        vel = falling = vec(0, 0, 0);
-        floor = vec(0, 0, 1);
-    }
+    void reset();
 
-    vec feetpos(float offset = 0) const { return vec(o).addz(offset - eyeheight); }
-    vec headpos(float offset = 0) const { return vec(o).addz(offset); }
+    vec feetpos(float offset) const;
+    vec headpos(float offset) const;
 
-    bool crouched() const { return fabs(eyeheight - maxheight*CROUCHHEIGHT) < 1e-4f; }
+    bool crouched() const;
 };
 
 enum
@@ -157,42 +139,25 @@ struct animinterpinfo // used for animation blending of animated characters
 struct occludequery;
 struct ragdolldata;
 
-struct dynent : physent                         // animated characters, or characters that can receive input
+// Animated Characters, or Characters that can receive input
+struct dynent : physent
 {
-    bool k_left, k_right, k_up, k_down;         // see input code
+    bool k_left, k_right, k_up, k_down;         // see input code - I think they meant, determine which key is pressed lolol.
 
     animinterpinfo animinterp[MAXANIMPARTS];
     ragdolldata *ragdoll;
     occludequery *query;
     int lastrendered;
 
-    dynent() : ragdoll(NULL), query(NULL), lastrendered(0)
-    {
-        reset();
-    }
+    dynent();
 
-    ~dynent()
-    {
-#ifndef STANDALONE
-        extern void cleanragdoll(dynent *d);
-        if(ragdoll) cleanragdoll(this);
-#endif
-    }
+    ~dynent();
 
-    void stopmoving()
-    {
-        k_left = k_right = k_up = k_down = jumping = false;
-        move = strafe = crouching = 0;
-    }
+    void stopmoving();
 
-    void reset()
-    {
-        physent::reset();
-        stopmoving();
-        loopi(MAXANIMPARTS) animinterp[i].reset();
-    }
+    void reset();
 
-    vec abovehead() { return vec(o).addz(aboveeye+4); }
+    vec abovehead();
 };
 
 

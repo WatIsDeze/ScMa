@@ -5,6 +5,7 @@ add_library(SchizoMania_Shared_Client STATIC
     command.h
     crypto.cpp
     cube.h
+    dynent.cpp
     ents.h
     geom.cpp
     geom.h
@@ -14,6 +15,7 @@ add_library(SchizoMania_Shared_Client STATIC
     iengine.h
     igame.h
     pch.cpp
+    physent.cpp
     stream.cpp
     tessfont.c
     tools.cpp
