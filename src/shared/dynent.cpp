@@ -27,5 +27,6 @@ void dynent::reset()
 }
 
 vec dynent::abovehead() {
+    // WatIsDeze: Seems to determine to which lengths the camera and the character are allowed to go when jumping or crouching through a tunnel etc.
     return vec(o).addz(aboveeye+4);
 }

@@ -209,6 +209,7 @@ namespace game
     }
 
     void setupcamera() {
+
     }
 
     bool allowthirdperson() {
