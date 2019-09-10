@@ -1,0 +1,19 @@
+[
+    {
+        "game": {
+            "classname": "door"
+        },
+        "int_attr1": 0,
+        "int_attr2": 0,
+        "int_attr3": 0,
+        "int_attr4": 0,
+        "int_attr5": 0,
+        "int_reserved": 0,
+        "o": {
+            "x": 516.0,
+            "y": 508.0,
+            "z": 516.0
+        },
+        "type": 13
+    }
+]

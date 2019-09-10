@@ -1369,7 +1369,7 @@ FVAR(thirdpersondistance, 0, 30, 50);
 FVAR(thirdpersonup, -25, 0, 25);
 FVAR(thirdpersonside, -25, 0, 25);
 */
-VAR(thirdperson, 0, 0, 2);
+VAR(thirdperson, 0, 1, 2);
 FVAR(thirdpersondistance, 0, 10, 25);
 FVAR(thirdpersonup, -25, 0, 25);
 FVAR(thirdpersonside, -25, 0, 25);
@@ -2633,6 +2633,7 @@ void drawcrosshair(int w, int h)
     if(!windowhit && (hidehud || mainmenu)) return; //(hidehud || player->state==CS_SPECTATOR || player->state==CS_DEAD)) return;
 
     vec color(1, 1, 1);
+    // TODO: Change crosshair over here?
     float cx = 0.5f, cy = 0.5f, chsize;
     Texture *crosshair;
     if(windowhit)
