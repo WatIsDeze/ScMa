@@ -596,7 +596,7 @@ void entselectionbox(const entity &e, vec &eo, vec &es)
         eo.y += e.o.y;
         eo.z = e.o.z - entselradius + es.z;
     }
-    else if(e.type == ET_MAPMODEL && (m = loadmapmodel(e.attr1)))
+    else if(e.type == ET_MAPMODEL && (m = loadmapmodel(e.model_idx)))
     {
         mmcollisionbox(e, m, eo, es);
         es.max(entselradius);
@@ -1040,7 +1040,7 @@ bool dropentity(entity &e, int drop = -1)
     if(drop<0) drop = entdrop;
     if(e.type == ET_MAPMODEL)
     {
-        model *m = loadmapmodel(e.attr1);
+        model *m = loadmapmodel(e.model_idx);
         if(m)
         {
             vec center;

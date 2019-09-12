@@ -15,6 +15,8 @@ public:
     short attr1, attr2, attr3, attr4, attr5;
     uchar type;                                 // type is one of the above (The enumerator is what they meant.)
     uchar reserved;
+
+    int model_idx; // Only used for BaseMapModelEntities.
 };
 
 enum
@@ -192,10 +194,6 @@ namespace entities
             void clearspawned() { flags &= ~EF_SPAWNED; }
 
         private:
-
-        // This is actually only used for mapmodel entities.
-        public:
-            int model_idx; // Only used for BaseMapModelEntity.
 
         };
     } // classes
