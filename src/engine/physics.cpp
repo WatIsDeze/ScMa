@@ -424,12 +424,12 @@ int collideinside; // whether an internal collision happened
 physent *collideplayer; // whether the collection hit a player
 vec collidewall; // just the normal vectors.
 
-const float STAIRHEIGHT = 4.1f;
+const float STAIRHEIGHT = 4.1f; // Original was 4.1, let's change this to the new player radius which was 4.1 also.
 const float FLOORZ = 0.867f;
 const float SLOPEZ = 0.5f;
 const float WALLZ = 0.2f;
-extern const float JUMPVEL = 125.0f;
-extern const float GRAVITY = 200.0f;
+extern const float JUMPVEL = 62.5f; // WatIsDeze: Original was 125, maybe make these FVARS instead?
+extern const float GRAVITY = 200.0f; // WatIsDeze: Original was 200, sounds odd.
 
 bool ellipseboxcollide(physent *d, const vec &dir, const vec &o, const vec &center, float yaw, float xr, float yr, float hi, float lo)
 {

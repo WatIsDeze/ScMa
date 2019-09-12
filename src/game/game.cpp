@@ -111,6 +111,7 @@ namespace game
 
     }
     void loadingmap(const char *name) {
+
     }
 
     void startmap(const char *name)

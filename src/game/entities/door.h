@@ -1,9 +1,11 @@
 #ifndef DOOR_H
 #define DOOR_H
 
+#include "basemapmodelentity.h"
+
 namespace entities {
     namespace classes {
-        class Door : public BaseEntity {
+        class Door : public BaseMapModelEntity {
         public:
             Door();
             virtual ~Door();

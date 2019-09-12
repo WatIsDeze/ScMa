@@ -689,6 +689,29 @@ static inline model *loadmapmodel(int n)
     return NULL;
 }
 
+// WatIsDeze: Added so we can load mapmodels by string filename, the idx reference is used to store the index.
+static inline int loadmapmodel(const char *filename)
+{
+    // MapModelInfo struct.
+    mapmodelinfo &mmi = mapmodels.add();
+    mmi.m = NULL;
+    mmi.collide = NULL;
+
+    // Setup the name.
+    if(filename[0]) formatcubestr(mmi.name, "%s%s", "world/", filename);
+    else mmi.name[0] = '\0';
+
+    model *mdl = loadmodel(filename);
+
+    if (mdl) {
+        conoutf("%s %s %i", "Succesfully loaded MapModel: ", filename, mapmodels.length() - 1);
+        return mapmodels.length() - 1;;
+    } else {
+        conoutf("%s %s %i", "Failed to load MapModel: ", filename);
+        return NULL;
+    }
+}
+
 static inline mapmodelinfo *getmminfo(int n) { return mapmodels.inrange(n) ? &mapmodels[n] : NULL; }
 
 // renderparticles
