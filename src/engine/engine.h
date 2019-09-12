@@ -689,7 +689,7 @@ static inline model *loadmapmodel(int n)
     return NULL;
 }
 
-// WatIsDeze: Added so we can load mapmodels by string filename, the idx reference is used to store the index.
+// WatIsDeze: Added so we can load mapmodels by string filename
 static inline int loadmapmodel(const char *filename)
 {
     // MapModelInfo struct.
@@ -705,9 +705,9 @@ static inline int loadmapmodel(const char *filename)
 
     if (mdl) {
         conoutf("%s %s %i", "Succesfully loaded MapModel: ", filename, mapmodels.length() - 1);
-        return mapmodels.length() - 1;;
+        return mapmodels.length() - 1;
     } else {
-        conoutf("%s %s %i", "Failed to load MapModel: ", filename);
+        conoutf("%s %s", "Failed to load MapModel: ", filename);
         return NULL;
     }
 }

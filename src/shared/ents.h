@@ -193,6 +193,10 @@ namespace entities
 
         private:
 
+        // This is actually only used for mapmodel entities.
+        public:
+            int model_idx; // Only used for BaseMapModelEntity.
+
         };
     } // classes
 } // entities

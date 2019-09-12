@@ -16,9 +16,6 @@ namespace entities {
             virtual void render();
 
             void preloadMapModel(const std::string &filename);
-
-        protected:
-            int model_idx;
         };
     } // classes
 } // entities

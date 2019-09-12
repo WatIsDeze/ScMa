@@ -105,19 +105,34 @@ void modifyoctaentity(int flags, int id, entities::classes::BaseEntity &e, cube 
                     oe.bbmin.min(bo).max(oe.o);
                     oe.bbmax.max(br).min(ivec(oe.o).add(oe.size));
                     break;
-                case ET_MAPMODEL:
-                    if(loadmapmodel(e.attr1))
-                    {
-                        if(va)
+                // WatIsDeze: Testing for map models.
+//                case ET_MAPMODEL:
+//                    if(loadmapmodel(e.attr1))
+//                    {
+//                        if(va)
+//                        {
+//                            va->bbmin.x = -1;
+//                            if(oe.mapmodels.empty()) va->mapmodels.add(&oe);
+//                        }
+//                        oe.mapmodels.add(id);
+//                        oe.bbmin.min(bo).max(oe.o);
+//                        oe.bbmax.max(br).min(ivec(oe.o).add(oe.size));
+//                        break;
+//                    }
+                    case ET_MAPMODEL:
+                        if(loadmapmodel(e.model_idx))
                         {
-                            va->bbmin.x = -1;
-                            if(oe.mapmodels.empty()) va->mapmodels.add(&oe);
+                            if(va)
+                            {
+                                va->bbmin.x = -1;
+                                if(oe.mapmodels.empty()) va->mapmodels.add(&oe);
+                            }
+                            oe.mapmodels.add(id);
+                            oe.bbmin.min(bo).max(oe.o);
+                            oe.bbmax.max(br).min(ivec(oe.o).add(oe.size));
+                            break;
                         }
-                        oe.mapmodels.add(id);
-                        oe.bbmin.min(bo).max(oe.o);
-                        oe.bbmax.max(br).min(ivec(oe.o).add(oe.size));
-                        break;
-                    }
+
                     // invisible mapmodel
                 default:
                     oe.other.add(id);
@@ -152,31 +167,56 @@ void modifyoctaentity(int flags, int id, entities::classes::BaseEntity &e, cube 
                     oe.bbmin.max(oe.o);
                     oe.bbmax.min(ivec(oe.o).add(oe.size));
                     break;
-                case ET_MAPMODEL:
-                    if(loadmapmodel(e.attr1))
-                    {
-                        oe.mapmodels.removeobj(id);
-                        if(va)
-                        {
-                            va->bbmin.x = -1;
-                            if(oe.mapmodels.empty()) va->mapmodels.removeobj(&oe);
-                        }
-                        oe.bbmin = oe.bbmax = oe.o;
-                        oe.bbmin.add(oe.size);
-                        loopvj(oe.mapmodels)
-                        {
-                            entities::classes::BaseEntity &e = *entities::getents()[oe.mapmodels[j]];
-                            ivec eo, er;
-                            if(getentboundingbox(e, eo, er))
-                            {
-                                oe.bbmin.min(eo);
-                                oe.bbmax.max(er);
-                            }
-                        }
-                        oe.bbmin.max(oe.o);
-                        oe.bbmax.min(ivec(oe.o).add(oe.size));
-                        break;
-                    }
+//                case ET_MAPMODEL:
+//                    if(loadmapmodel(e.attr1))
+//                    {
+//                        oe.mapmodels.removeobj(id);
+//                        if(va)
+//                        {
+//                            va->bbmin.x = -1;
+//                            if(oe.mapmodels.empty()) va->mapmodels.removeobj(&oe);
+//                        }
+//                        oe.bbmin = oe.bbmax = oe.o;
+//                        oe.bbmin.add(oe.size);
+//                        loopvj(oe.mapmodels)
+//                        {
+//                            entities::classes::BaseEntity &e = *entities::getents()[oe.mapmodels[j]];
+//                            ivec eo, er;
+//                            if(getentboundingbox(e, eo, er))
+//                            {
+//                                oe.bbmin.min(eo);
+//                                oe.bbmax.max(er);
+//                            }
+//                        }
+//                        oe.bbmin.max(oe.o);
+//                        oe.bbmax.min(ivec(oe.o).add(oe.size));
+//                        break;
+//                    }
+                            case ET_MAPMODEL:
+                                if(loadmapmodel(e.model_idx))
+                                {
+                                    oe.mapmodels.removeobj(id);
+                                    if(va)
+                                    {
+                                        va->bbmin.x = -1;
+                                        if(oe.mapmodels.empty()) va->mapmodels.removeobj(&oe);
+                                    }
+                                    oe.bbmin = oe.bbmax = oe.o;
+                                    oe.bbmin.add(oe.size);
+                                    loopvj(oe.mapmodels)
+                                    {
+                                        entities::classes::BaseEntity &e = *entities::getents()[oe.mapmodels[j]];
+                                        ivec eo, er;
+                                        if(getentboundingbox(e, eo, er))
+                                        {
+                                            oe.bbmin.min(eo);
+                                            oe.bbmax.max(er);
+                                        }
+                                    }
+                                    oe.bbmin.max(oe.o);
+                                    oe.bbmax.min(ivec(oe.o).add(oe.size));
+                                    break;
+                                }
                     // invisible mapmodel
                 default:
                     oe.other.removeobj(id);
