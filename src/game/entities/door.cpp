@@ -9,11 +9,18 @@ namespace classes {
 Door::Door() : entities::classes::BaseMapModelEntity() {
     state = CS_ALIVE;
     ent_type = ENT_INANIMATE;
-    collidetype = COLLIDE_OBB;
-    physstate = PHYS_SLIDE;
+    collidetype = COLLIDE_TRI;
 
     conoutf("%s", "Preloading door entity");
-    preloadMapModel("world/door");
+
+    if (attributes.find("model") != attributes.end()) {
+        preloadMapModel(attributes["model"]);
+    } else {
+        preloadMapModel("world/door");
+        attributes["model"] = std::string("world/door");
+    }
+
+    conoutf("%s", attributes["model"].c_str());
 }
 
 Door::~Door() {

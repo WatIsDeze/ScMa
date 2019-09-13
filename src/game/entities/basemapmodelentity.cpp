@@ -8,6 +8,7 @@ namespace classes {
 BaseMapModelEntity::BaseMapModelEntity() : BaseEntity() {
     et_type = ET_MAPMODEL;
     ent_type = ENT_INANIMATE;
+    game_type = GAMEENTITY;
 }
 
 BaseMapModelEntity::~BaseMapModelEntity() {

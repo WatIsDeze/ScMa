@@ -8,7 +8,7 @@ enum { ET_EMPTY=0, ET_LIGHT, ET_MAPMODEL, ET_PLAYERSTART, ET_ENVMAP, ET_PARTICLE
 class entity                                   // persistent map entity
 {
 public:
-    entity() : o(0, 0, 0) {}
+    entity() : o(0, 0, 0), attr1(0), attr2(0), attr3(0), attr4(0), attr5(0), et_type(0), ent_type(0), game_type(0), reserved(0), model_idx(0) {}
     virtual ~entity() {}
 
     vec o;                                      // position

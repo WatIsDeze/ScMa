@@ -74,9 +74,9 @@ namespace entities
             entities::classes::BaseEntity *e = g_ents[i];
 
             // Ensure that they don't get preloaded in preload, should be done in the constructor of ET_MAPMODEL entities.
-            if (e->et_type != ET_MAPMODEL) {
+            //if (e->et_type != ET_MAPMODEL) {
                 e->preload();
-            }
+            //}
         }
 
         // Specifically load in the client player model.

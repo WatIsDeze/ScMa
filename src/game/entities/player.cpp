@@ -6,7 +6,9 @@ namespace classes {
 
 Player::Player() : BaseEntity() {
     state = CS_ALIVE;
+    et_type = ET_GAMESPECIFIC;
     ent_type = ENT_PLAYER;
+    game_type = GAMEENTITY;
     collidetype = COLLIDE_ELLIPSE;
 }
 

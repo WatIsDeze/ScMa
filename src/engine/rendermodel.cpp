@@ -361,6 +361,9 @@ void flushpreloadedmodels(bool msg)
     loadprogress = 0;
 }
 
+// Place elsewhere.
+#include "../game/entities/basemapmodelentity.h"
+
 void preloadusedmapmodels(bool msg, bool bih)
 {
     vector<entities::classes::BaseEntity *> &ents = entities::getents();
@@ -369,7 +372,10 @@ void preloadusedmapmodels(bool msg, bool bih)
     {
         entities::classes::BaseEntity &e = *ents[i];
         // TODO: Maybe model_idx has to be attr1 after all?
-        if(e.et_type==ET_MAPMODEL && e.model_idx >= 0 && used.find(e.model_idx) < 0) used.add(e.model_idx);
+        //if(e.et_type==ET_MAPMODEL && e.model_idx >= 0 && used.find(e.model_idx) < 0) used.add(e.model_idx);
+        if (e.et_type == ET_MAPMODEL) {
+            ((entities::classes::BaseMapModelEntity&)e).preloadMapModel(e.attributes["model"]);
+        }
     }
 
     vector<const char *> col;

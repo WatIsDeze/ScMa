@@ -365,7 +365,7 @@ void findents(int low, int high, bool notspawned, const vec &pos, const vec &rad
 char *entname(entity &e)
 {
     static cubestr fullentname;
-    copycubestr(fullentname, entities::entname(e.et_type));
+    copycubestr(fullentname, entities::entname(e.game_type));
     const char *einfo = entities::entnameinfo(e);
     if(*einfo)
     {

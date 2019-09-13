@@ -693,7 +693,7 @@ bool save_world(const char *mname, bool nolms)
             j[i]["model_idx"] = tmp.model_idx;
 
             // Now comes the good stuff, our own custom attributes.
-            //if (tmp.et_type == GAMEENTITY) {
+            //if (tmp.et_type == ET_GAMESPECIFIC) {
                 // Store classname.
                 j[i]["game"]["classname"] = tmp.classname;
 
@@ -857,10 +857,11 @@ bool load_world(const char *mname, const char *cname)        // still supports a
             // Classname and type, used to determine what to load in and allocate the precise class firsthand.
             std::string classname("");
             int et_type = element["et_type"];
+            int ent_type = element["ent_type"];
             int game_type = element["game_type"];
 
             // Have to do this here to ensure that classname can be passed to newgameentity.
-            //if (game_type >= GAMEENTITY) {
+            //if (et_type >= ET_GAMESPECIFIC) {
                classname = element["game"]["classname"];
             //}
 
@@ -883,7 +884,7 @@ bool load_world(const char *mname, const char *cname)        // still supports a
             e.model_idx = element["model_idx"];
 
             // Fetch ScMa entity info.
-            //if (et_type >= GAMEENTITY) {
+            //if (et_type >= ET_GAMESPECIFIC) {
                 // Store the classname.
                 e.classname = classname;
                 //e.attributes = element.at("game").at("attributes");

@@ -5,7 +5,9 @@ namespace entities {
 namespace classes {
 
 PlayerStart::PlayerStart() : BaseEntity() {
-
+    et_type = ET_PLAYERSTART;
+    ent_type = ENT_INANIMATE;
+    game_type = PLAYERSTART;
 }
 
 PlayerStart::~PlayerStart() {
