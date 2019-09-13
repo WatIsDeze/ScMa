@@ -6,7 +6,8 @@ namespace classes {
 
 Player::Player() : BaseEntity() {
     state = CS_ALIVE;
-    type = ENT_PLAYER;
+    ent_type = ENT_PLAYER;
+    collidetype = COLLIDE_ELLIPSE;
 }
 
 Player::~Player() {

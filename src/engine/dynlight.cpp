@@ -107,7 +107,7 @@ int finddynlights()
     closedynlights.setsize(0);
     if(!usedynlights) return 0;
     physent e;
-    e.type = ENT_CAMERA;
+    e.ent_type = ENT_CAMERA;
     loopvj(dynlights)
     {
         dynlight &d = dynlights[j];

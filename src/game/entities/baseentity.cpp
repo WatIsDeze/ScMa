@@ -6,6 +6,7 @@ namespace classes {
 
 BaseEntity::BaseEntity() : dynent(), flags(0), attached(NULL) {
     // Setup defaults.
+    game_type = GAMEENTITY;
 }
 
 BaseEntity::~BaseEntity() {

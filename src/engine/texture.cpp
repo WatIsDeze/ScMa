@@ -3034,7 +3034,7 @@ void initenvmaps()
     loopv(ents)
     {
         const entities::classes::BaseEntity &ent = *ents[i];
-        if(ent.type != ET_ENVMAP) continue;
+        if(ent.et_type != ET_ENVMAP) continue;
         envmap &em = envmaps.add();
         em.radius = ent.attr1 ? clamp(int(ent.attr1), 0, 10000) : envmapradius;
         em.size = ent.attr2 ? clamp(int(ent.attr2), 4, 9) : 0;

@@ -689,7 +689,7 @@ struct stainrenderer
         loopv(oe.mapmodels)
         {
             entities::classes::BaseEntity &e = *ents[oe.mapmodels[i]];
-            model *m = loadmapmodel(e.attr1);
+            model *m = loadmapmodel(e.model_idx);
             if(!m) continue;
 
             vec center, radius;

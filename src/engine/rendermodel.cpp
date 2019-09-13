@@ -368,7 +368,8 @@ void preloadusedmapmodels(bool msg, bool bih)
     loopv(ents)
     {
         entities::classes::BaseEntity &e = *ents[i];
-        if(e.type==ET_MAPMODEL && e.attr1 >= 0 && used.find(e.attr1) < 0) used.add(e.attr1);
+        // TODO: Maybe model_idx has to be attr1 after all?
+        if(e.et_type==ET_MAPMODEL && e.model_idx >= 0 && used.find(e.model_idx) < 0) used.add(e.model_idx);
     }
 
     vector<const char *> col;
@@ -893,6 +894,9 @@ void clearbatchedmapmodels()
 
 void rendermapmodel(int idx, int anim, const vec &o, float yaw, float pitch, float roll, int flags, int basetime, float size)
 {
+    // WatIsDeze: TODO: Remove.
+    //conoutf("rendermapmodel: %d (%.2f/%.2f/%.2f) %s", idx, o.x, o.y, o.z, mapmodels.inrange(idx) ? "found" : "not found");
+
     if(!mapmodels.inrange(idx)) return;
     mapmodelinfo &mmi = mapmodels[idx];
     model *m = mmi.m ? mmi.m : loadmodel(mmi.name);

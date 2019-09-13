@@ -1574,7 +1574,7 @@ struct lightinfo
         o(e.o), color(vec(e.attr2, e.attr3, e.attr4).max(0)), radius(e.attr1), dist(camera1->o.dist(e.o)),
         dir(0, 0, 0), spot(0), query(NULL)
     {
-        if(e.attached && e.attached->type == ET_SPOTLIGHT)
+        if(e.attached && e.attached->et_type == ET_SPOTLIGHT)
         {
             dir = vec(e.attached->o).sub(e.o).normalize();
             spot = clamp(int(e.attached->attr1), 1, 89);
@@ -3421,7 +3421,7 @@ void viewlightscissor()
     loopv(entgroup)
     {
         int idx = entgroup[i];
-        if(ents.inrange(idx) && ents[idx]->type == ET_LIGHT)
+        if(ents.inrange(idx) && ents[idx]->et_type == ET_LIGHT)
         {
             entities::classes::BaseEntity &e = *ents[idx];
             loopvj(lights) if(lights[j].o == e.o)
@@ -3451,7 +3451,7 @@ void collectlights()
     if(!editmode || !fullbright) loopv(ents)
     {
         const entities::classes::BaseEntity *e = ents[i];
-        if(e->type != ET_LIGHT || e->attr1 <= 0) continue;
+        if(e->et_type != ET_LIGHT || e->attr1 <= 0) continue;
 
         if(smviscull)
         {
@@ -4296,7 +4296,7 @@ int calcshadowinfo(const entities::classes::BaseEntity &e, vec &origin, float &r
     radius = e.attr1;
     int type, w, border;
     float lod;
-    if(e.attached && e.attached->type == ET_SPOTLIGHT)
+    if(e.attached && e.attached->et_type == ET_SPOTLIGHT)
     {
         type = SM_SPOT;
         w = 1;

@@ -310,7 +310,7 @@ BIH::~BIH()
 
 bool mmintersect(const entities::classes::BaseEntity &e, const vec &o, const vec &ray, float maxdist, int mode, float &dist)
 {
-    model *m = loadmapmodel(e.attr1);
+    model *m = loadmapmodel(e.model_idx);
     if(!m) return false;
     if(mode&RAY_SHADOW)
     {
@@ -511,7 +511,7 @@ inline void BIH::tricollide<COLLIDE_ELLIPSE>(const mesh &m, int tidx, physent *d
     if(!dir.iszero())
     {
         if(n.dot(dir) >= -cutoff*dir.magnitude()) return;
-        if(d->type==ENT_PLAYER &&
+        if(d->ent_type==ENT_PLAYER &&
             pdist < (dir.z*n.z < 0 ?
                2*radius.z*(d->zmargin/(d->aboveeye+d->eyeheight)-(dir.z < 0 ? 1/3.0f : 1/4.0f)) :
                (dir.x*n.x < 0 || dir.y*n.y < 0 ? -radius.x : 0)))
@@ -544,7 +544,7 @@ inline void BIH::tricollide<COLLIDE_OBB>(const mesh &m, int tidx, physent *d, co
     if(!dir.iszero())
     {
         if(n.dot(dir) >= -cutoff*dir.magnitude()) return;
-        if(d->type==ENT_PLAYER &&
+        if(d->ent_type==ENT_PLAYER &&
             pdist < (dir.z*n.z < 0 ?
                2*radius.z*(d->zmargin/(d->aboveeye+d->eyeheight)-(dir.z < 0 ? 1/3.0f : 1/4.0f)) :
                (dir.x*n.x < 0 || dir.y*n.y < 0 ? -max(radius.x, radius.y) : 0)))

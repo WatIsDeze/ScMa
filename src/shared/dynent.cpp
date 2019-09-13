@@ -1,6 +1,7 @@
 #include "cube.h"
 
-dynent::dynent() : ragdoll(NULL), query(NULL), lastrendered(0)
+// WatIsDeze: TODO: Maybe remove the physent constructor from here.
+dynent::dynent() : physent(), ragdoll(NULL), query(NULL), lastrendered(0)
 {
     reset();
 }

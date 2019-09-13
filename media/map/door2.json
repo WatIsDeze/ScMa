@@ -1,0 +1,19 @@
+[
+    {
+        "ent_type": 2,
+        "et_type": 2,
+        "game_type": 0,
+        "int_attr1": 0,
+        "int_attr2": 0,
+        "int_attr3": 0,
+        "int_attr4": 0,
+        "int_attr5": 0,
+        "int_reserved": 0,
+        "model_idx": 70,
+        "o": {
+            "x": 524.0,
+            "y": 500.0,
+            "z": 512.0
+        }
+    }
+]

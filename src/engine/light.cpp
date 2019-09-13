@@ -309,7 +309,7 @@ const vector<int> &checklightcache(int x, int y)
     loopv(ents)
     {
         const entities::classes::BaseEntity &light = *ents[i];
-        switch(light.type)
+        switch(light.et_type)
         {
             case ET_LIGHT:
             {
@@ -644,7 +644,7 @@ void lightreaching(const vec &target, vec &color, vec &dir, bool fast, entities:
     loopv(lights)
     {
         entities::classes::BaseEntity &e = *ents[lights[i]];
-        if(e.type != ET_LIGHT || e.attr1 <= 0)
+        if(e.et_type != ET_LIGHT || e.attr1 <= 0)
             continue;
 
         vec ray(target);
@@ -662,7 +662,7 @@ void lightreaching(const vec &target, vec &color, vec &dir, bool fast, entities:
         }
 
         float intensity = 1 - mag / float(e.attr1);
-        if(e.attached && e.attached->type==ET_SPOTLIGHT)
+        if(e.attached && e.attached->et_type==ET_SPOTLIGHT)
         {
             vec spot = vec(e.attached->o).sub(e.o).normalize();
             float spotatten = 1 - (1 - ray.dot(spot)) / (1 - cos360(clamp(int(e.attached->attr1), 1, 89)));

@@ -13,10 +13,12 @@ public:
 
     vec o;                                      // position
     short attr1, attr2, attr3, attr4, attr5;
-    uchar type;                                 // type is one of the above (The enumerator is what they meant.)
+    uchar et_type;                              // These are for the ET(Engine Type) values.
+    uchar ent_type;                             // These are for ENT_(DynEnt/PhysEnt Type) values.
+    uchar game_type;                            // the internal game entity type values.
     uchar reserved;
 
-    int model_idx; // Only used for BaseMapModelEntities.
+    int model_idx;                              // Only used for BaseMapModelEntities.
 };
 
 enum

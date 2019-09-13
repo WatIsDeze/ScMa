@@ -8,7 +8,12 @@ namespace classes {
 
 Door::Door() : entities::classes::BaseMapModelEntity() {
     state = CS_ALIVE;
-    collidetype = COLLIDE_TRI;
+    ent_type = ENT_INANIMATE;
+    collidetype = COLLIDE_OBB;
+    physstate = PHYS_SLIDE;
+
+    conoutf("%s", "Preloading door entity");
+    preloadMapModel("world/door");
 }
 
 Door::~Door() {
@@ -16,9 +21,7 @@ Door::~Door() {
 }
 
 void Door::preload() {
-    conoutf("%s", "Preloading door entity");
-    preloadMapModel("world/door");
-    //setbbfrommodel(this, "world/door");
+
 }
 
 void Door::think() {

@@ -1443,7 +1443,7 @@ void recomputecamera()
             detachedcamera = shoulddetach;
         }
         camera1->reset();
-        camera1->type = ENT_CAMERA;
+        camera1->ent_type = ENT_CAMERA;
         camera1->move = -1;
         camera1->eyeheight = camera1->aboveeye = camera1->radius = camera1->xradius = camera1->yradius = 2;
 
@@ -2089,7 +2089,7 @@ void drawminimap()
     static physent cmcamera;
     cmcamera = *player;
     cmcamera.reset();
-    cmcamera.type = ENT_CAMERA;
+    cmcamera.ent_type = ENT_CAMERA;
     cmcamera.o = vec(minimapcenter.x, minimapcenter.y, minimapheight > 0 ? minimapheight : minimapcenter.z + minimapradius.z + 1);
     cmcamera.yaw = 0;
     cmcamera.pitch = -90;
@@ -2171,7 +2171,7 @@ void drawcubemap(int size, const vec &o, float yaw, float pitch, const cubemapsi
     static physent cmcamera;
     cmcamera = *player;
     cmcamera.reset();
-    cmcamera.type = ENT_CAMERA;
+    cmcamera.ent_type = ENT_CAMERA;
     cmcamera.o = o;
     cmcamera.yaw = yaw;
     cmcamera.pitch = pitch;
@@ -2297,7 +2297,7 @@ namespace modelpreview
         oldcamera = camera1;
         camera = *camera1;
         camera.reset();
-        camera.type = ENT_CAMERA;
+        camera.ent_type = ENT_CAMERA;
         camera.o = vec(0, 0, 0);
         camera.yaw = 0;
         camera.pitch = modelpreviewpitch;

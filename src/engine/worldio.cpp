@@ -31,7 +31,7 @@ static void fixent(entity &e, int version)
 {
     if(version <= 0)
     {
-        if(e.type >= ET_DECAL) e.type++;
+        if(e.et_type >= ET_DECAL) e.et_type++;
     }
 }
 
@@ -615,7 +615,7 @@ bool save_world(const char *mname, bool nolms)
     hdr.worldsize = worldsize;
     hdr.numents = 0;
     const vector<entities::classes::BaseEntity *> &ents = entities::getents();
-    loopv(ents) if(ents[i]->type!=ET_EMPTY || nolms) hdr.numents++;
+    loopv(ents) if(ents[i]->et_type!=ET_EMPTY || nolms) hdr.numents++;
     hdr.numpvs = nolms ? 0 : getnumviewcells();
     hdr.blendmap = shouldsaveblendmap();
     hdr.numvars = 0;
@@ -671,14 +671,16 @@ bool save_world(const char *mname, bool nolms)
 
     loopv(ents)
     {
-        if(ents[i]->type!=ET_EMPTY || nolms)
+        if(ents[i]->et_type!=ET_EMPTY || nolms)
         {
             entities::classes::BaseEntity tmp = *ents[i];
             lilswap(&tmp.o.x, 3);
             lilswap(&tmp.attr1, 5);
 
             // These are the default attributes, the old-school ones which are still used here and there in the engine.
-            j[i]["type"] = tmp.type;
+            j[i]["et_type"] = tmp.et_type;
+            j[i]["ent_type"] = tmp.ent_type;
+            j[i]["game_type"] = tmp.game_type;
             j[i]["o"]["x"] = tmp.o.x;
             j[i]["o"]["y"] = tmp.o.y;
             j[i]["o"]["z"] = tmp.o.z;
@@ -688,9 +690,10 @@ bool save_world(const char *mname, bool nolms)
             j[i]["int_attr4"] = tmp.attr4;
             j[i]["int_attr5"] = tmp.attr5;
             j[i]["int_reserved"] = tmp.reserved;
+            j[i]["model_idx"] = tmp.model_idx;
 
             // Now comes the good stuff, our own custom attributes.
-            if (tmp.type == GAMEENTITY) {
+            //if (tmp.et_type == GAMEENTITY) {
                 // Store classname.
                 j[i]["game"]["classname"] = tmp.classname;
 
@@ -698,7 +701,7 @@ bool save_world(const char *mname, bool nolms)
                 for (std::map<std::string, std::string>::iterator k = tmp.attributes.begin(); k != tmp.attributes.end(); ++k) {
                     j[i]["game"]["attributes"][k->first] = k->second;
                 }
-            }
+            //}
         }
     }
 
@@ -850,21 +853,24 @@ bool load_world(const char *mname, const char *cname)        // still supports a
     // Parse entities and allocate them, or rather, add them to the list! ;-)
     for (auto& element : j) {
         // For now only proceed if a type is available.
-        if (element.find("type") != element.end()) {
+        if (element.find("et_type") != element.end()) {
             // Classname and type, used to determine what to load in and allocate the precise class firsthand.
             std::string classname("");
-            int type = element["type"];
+            int et_type = element["et_type"];
+            int game_type = element["game_type"];
 
             // Have to do this here to ensure that classname can be passed to newgameentity.
-            if (type == GAMEENTITY) {
+            //if (game_type >= GAMEENTITY) {
                classname = element["game"]["classname"];
-            }
+            //}
 
             // Allocate our entity.
             entities::classes::BaseEntity &e = *entities::newgameentity((char*)classname.c_str());
 
             // Fetch base entity data. (Old ancient entity info.)
-            e.type = element["type"];
+            e.et_type = element["et_type"];
+            e.ent_type = element["ent_type"];
+            e.game_type = element["game_type"];
             e.o.x = element["o"]["x"];
             e.o.y = element["o"]["y"];
             e.o.z = element["o"]["z"];
@@ -874,9 +880,10 @@ bool load_world(const char *mname, const char *cname)        // still supports a
             e.attr4 = element["int_attr4"];
             e.attr5 = element["int_attr5"];
             e.reserved = element["int_reserved"];
+            e.model_idx = element["model_idx"];
 
             // Fetch ScMa entity info.
-            if (type == GAMEENTITY) {
+            //if (et_type >= GAMEENTITY) {
                 // Store the classname.
                 e.classname = classname;
                 //e.attributes = element.at("game").at("attributes");
@@ -885,7 +892,7 @@ bool load_world(const char *mname, const char *cname)        // still supports a
                 for (auto& element : json::iterator_wrapper(rh)) {
                     e.attributes[element.key()] = element.value();
                 }
-            }
+            //}
 
             ents.add(&e);
         }
@@ -1076,14 +1083,14 @@ void writecollideobj(char *name)
     loopv(entgroup)
     {
         entities::classes::BaseEntity &e = *ents[entgroup[i]];
-        if(e.type != ET_MAPMODEL || !pointinsel(sel, e.o)) continue;
+        if(e.et_type != ET_MAPMODEL || !pointinsel(sel, e.o)) continue;
         mm = &e;
         break;
     }
     if(!mm) loopv(ents)
     {
         entities::classes::BaseEntity &e = *ents[i];
-        if(e.type != ET_MAPMODEL || !pointinsel(sel, e.o)) continue;
+        if(e.et_type != ET_MAPMODEL || !pointinsel(sel, e.o)) continue;
         mm = &e;
         break;
     }
@@ -1092,12 +1099,12 @@ void writecollideobj(char *name)
         conoutf(CON_ERROR, "could not find map model in selection");
         return;
     }
-    model *m = loadmapmodel(mm->attr1);
+    model *m = loadmapmodel(mm->model_idx);
     if(!m)
     {
-        mapmodelinfo *mmi = getmminfo(mm->attr1);
+        mapmodelinfo *mmi = getmminfo(mm->model_idx);
         if(mmi) conoutf(CON_ERROR, "could not load map model: %s", mmi->name);
-        else conoutf(CON_ERROR, "could not find map model: %d", mm->attr1);
+        else conoutf(CON_ERROR, "could not find map model: %d", mm->model_idx);
         return;
     }
 

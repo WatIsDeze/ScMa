@@ -6,7 +6,7 @@ namespace entities {
 namespace classes {
 
 DynamicLight::DynamicLight() : BaseEntity() {
-    //type = ET_LIGHT;
+    et_type = ET_LIGHT;
 }
 
 DynamicLight::~DynamicLight() {

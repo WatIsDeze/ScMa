@@ -81,7 +81,13 @@ namespace game
     }
 
     // Never seen an implementation of this function, should be part of BaseEntity.
-    void dynentcollide(physent *d, physent *o, const vec &dir) {}
+    void dynentcollide(physent *d, physent *o, const vec &dir) {
+        conoutf("dynentcollide D et_type: %i ent_type: %i game_type: %i --- O et_type: %i ent_type: %i game_type %i", d->et_type, d->ent_type, d->game_type, o->et_type, o->ent_type, o->game_type);
+    }
+
+    void mapmodelcollide(physent *d, entities::classes::BaseEntity *o, const vec &dir) {
+        conoutf("mmcollide D et_type: %i ent_type: %i game_type: %i --- O et_type: %i ent_type: %i game_type %i", d->et_type, d->ent_type, d->game_type, o->et_type, o->ent_type, o->game_type);
+    }
 
     // Never seen an implementation of this function, should be part of BaseEntity.
     void bounced(physent *d, const vec &surface) {}

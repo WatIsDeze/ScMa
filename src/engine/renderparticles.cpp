@@ -84,7 +84,7 @@ void addparticleemitters()
     loopv(ents)
     {
         entities::classes::BaseEntity &e = *ents[i];
-        if(e.type != ET_PARTICLES) continue;
+        if(e.et_type != ET_PARTICLES) continue;
         emitters.add(particleemitter(&e));
     }
     regenemitters = false;
@@ -1345,13 +1345,13 @@ bool printparticles(entities::classes::BaseEntity &e, char *buf, int len)
     switch(e.attr1)
     {
         case 0: case 4: case 7: case 8: case 9: case 10: case 11: case 12: case 13:
-            nformatcubestr(buf, len, "%s %d %d %d 0x%.3hX %d", entities::entname(e.type), e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
+            nformatcubestr(buf, len, "%s %d %d %d 0x%.3hX %d", entities::entname(e.et_type), e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
             return true;
         case 3:
-            nformatcubestr(buf, len, "%s %d %d 0x%.3hX %d %d", entities::entname(e.type), e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
+            nformatcubestr(buf, len, "%s %d %d 0x%.3hX %d %d", entities::entname(e.et_type), e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
             return true;
         case 5: case 6:
-            nformatcubestr(buf, len, "%s %d %d 0x%.3hX 0x%.3hX %d", entities::entname(e.type), e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
+            nformatcubestr(buf, len, "%s %d %d 0x%.3hX 0x%.3hX %d", entities::entname(e.et_type), e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
             return true;
     }
     return false;
@@ -1434,7 +1434,7 @@ void updateparticles()
         loopv(ents)
         {
             entity &e = *ents[i];
-            if(e.type==ET_EMPTY) continue;
+            if(e.et_type==ET_EMPTY) continue;
             particle_textcopy(e.o, entname(e), PART_TEXT, 1, 0x1EC850, 2.0f);
             regular_particle_splash(PART_EDIT, 2, 40, e.o, 0x3232FF, 0.32f*particlesize/100.0f);
         }

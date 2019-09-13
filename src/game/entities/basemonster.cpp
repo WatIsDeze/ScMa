@@ -5,7 +5,7 @@ namespace entities {
 namespace classes {
 
 BaseMonster::BaseMonster() : BaseEntity() {
-    //type = ENT_AI;
+    ent_type = ENT_AI;
 }
 
 BaseMonster::~BaseMonster() {

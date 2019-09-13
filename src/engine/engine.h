@@ -690,15 +690,26 @@ static inline model *loadmapmodel(int n)
 }
 
 // WatIsDeze: Added so we can load mapmodels by string filename
-static inline int loadmapmodel(const char *filename)
+static inline int loadmapmodel(const char *filename, const entities::classes::BaseEntity *e)
 {
+    // Check if it already exists.
+    if (!e) {
+        return -1;
+    }
+
+    if (e->model_idx != -1) {
+        loopv(mapmodels) if(!strcmp(mapmodels[i].name, filename)) return i;
+    } else {
+        loopv(mapmodels) if (mapmodels.inrange(e->model_idx)) return e->model_idx; else return -1;
+    }
+
     // MapModelInfo struct.
     mapmodelinfo &mmi = mapmodels.add();
     mmi.m = NULL;
     mmi.collide = NULL;
 
     // Setup the name.
-    if(filename[0]) formatcubestr(mmi.name, "%s%s", "world/", filename);
+    if(filename[0]) copycubestr(mmi.name, filename);
     else mmi.name[0] = '\0';
 
     model *mdl = loadmodel(filename);
@@ -708,7 +719,7 @@ static inline int loadmapmodel(const char *filename)
         return mapmodels.length() - 1;
     } else {
         conoutf("%s %s", "Failed to load MapModel: ", filename);
-        return NULL;
+        return -1;
     }
 }
 

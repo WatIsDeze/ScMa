@@ -44,23 +44,25 @@ namespace entities
 
     const char *entmdlname(int type)
     {
-        static const char * const entmdlnames[MAXENTTYPES] =
+        /*static const char * const entmdlnames[MAXENTTYPES] =
         {
             NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
             "game/teleport", NULL, NULL,
             NULL, NULL
         };
-        return entmdlnames[type];
+        return entmdlnames[type];*/
+        return NULL;
     }
 
     const char *entmodel(const entity &e)
     {
-        if(e.type == TELEPORT)
+       /* if(e.game_type == TELEPORT)
         {
             if(e.attr2 > 0) return mapmodelname(e.attr2);
             if(e.attr2 < 0) return NULL;
         }
-        return e.type < MAXENTTYPES ? entmdlname(e.type) : NULL;
+        return e.type < MAXENTTYPES ? entmdlname(e.type) : NULL;*/
+        return NULL;
     }
 
     void preloadentities()
@@ -70,7 +72,11 @@ namespace entities
         {
             // Let's go at it!
             entities::classes::BaseEntity *e = g_ents[i];
-            e->preload();
+
+            // Ensure that they don't get preloaded in preload, should be done in the constructor of ET_MAPMODEL entities.
+            if (e->et_type != ET_MAPMODEL) {
+                e->preload();
+            }
         }
 
         // Specifically load in the client player model.
@@ -172,7 +178,7 @@ namespace entities
     // TODO: Do we need this? Remove it?
     void fixentity(entities::classes::BaseEntity &e)
     {
-        switch(e.type)
+        switch(e.game_type)
         {
             case FLAG:
                 e.attr5 = e.attr4;
@@ -187,10 +193,10 @@ namespace entities
 
     void entradius(entities::classes::BaseEntity &e, bool color)
     {
-        switch(e.type)
+        switch(e.game_type)
         {
             case TELEPORT:
-                loopv(g_ents) if(g_ents[i]->type == TELEDEST && e.attr1==g_ents[i]->attr2)
+                loopv(g_ents) if(g_ents[i]->game_type == TELEDEST && e.attr1==g_ents[i]->attr2)
                 {
                     renderentarrow(e, vec(g_ents[i]->o).sub(e.o).normalize(), e.o.dist(g_ents[i]->o));
                     break;
@@ -248,7 +254,7 @@ namespace entities
 
     float dropheight(entity &e)
     {
-        if(e.type==FLAG) return 0.0f;
+        if(e.game_type==FLAG) return 0.0f;
         return 4.0f;
     }
 #endif

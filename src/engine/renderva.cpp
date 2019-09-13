@@ -508,7 +508,7 @@ static inline void rendermapmodel(entities::classes::BaseEntity &e)
 {
     int anim = ANIM_MAPMODEL|ANIM_LOOP, basetime = 0;
     if(e.flags&EF_ANIM) entities::animatemapmodel(e, anim, basetime);
-    rendermapmodel(e.attr1, anim, e.o, e.attr2, e.attr3, e.attr4, MDL_CULL_VFC | MDL_CULL_DIST, basetime, e.attr5 > 0 ? e.attr5/100.0f : 1.0f);
+    rendermapmodel(e.model_idx, anim, e.o, e.attr2, e.attr3, e.attr4, MDL_CULL_VFC | MDL_CULL_DIST, basetime, e.attr5 > 0 ? e.attr5/100.0f : 1.0f);
 }
 
 void rendermapmodels()
@@ -524,6 +524,7 @@ void rendermapmodels()
         loopv(oe->mapmodels)
         {
             entities::classes::BaseEntity &e = *ents[oe->mapmodels[i]];
+            //conoutf("oe mapmodel: %d (%s)", oe->mapmodels[i], e.flags&EF_RENDER ? "render" : "no render");
             if(!(e.flags&EF_RENDER)) continue;
             if(!rendered)
             {
@@ -2606,7 +2607,7 @@ static void genshadowmeshmapmodels(shadowmesh &m, int sides, shadowdrawinfo draw
         e.flags &= ~EF_RENDER;
 
 
-        model *mm = loadmapmodel(e.attr1);
+        model *mm = loadmapmodel(e.model_idx);
         if(!mm || !mm->shadow || mm->animated() || (mm->alphashadow && mm->alphatested())) continue;
 
         matrix4x3 orient;
@@ -2690,7 +2691,7 @@ void genshadowmeshes()
     loopv(ents)
     {
         entities::classes::BaseEntity &e = *ents[i];
-        if(e.type != ET_LIGHT) continue;
+        if(e.et_type != ET_LIGHT) continue;
         genshadowmesh(i, e);
     }
 }
@@ -2702,7 +2703,7 @@ shadowmesh *findshadowmesh(int idx, entities::classes::BaseEntity &e)
     switch(m->type)
     {
         case SM_SPOT:
-            if(!e.attached || e.attached->type != ET_SPOTLIGHT || m->spotloc != e.attached->o || m->spotangle < clamp(int(e.attached->attr1), 1, 89))
+            if(!e.attached || e.attached->et_type != ET_SPOTLIGHT || m->spotloc != e.attached->o || m->spotangle < clamp(int(e.attached->attr1), 1, 89))
                 return NULL;
             break;
     }

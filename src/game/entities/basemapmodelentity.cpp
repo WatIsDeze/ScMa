@@ -6,7 +6,8 @@ namespace entities {
 namespace classes {
 
 BaseMapModelEntity::BaseMapModelEntity() : BaseEntity() {
-    type = MAPMODEL;
+    et_type = ET_MAPMODEL;
+    ent_type = ENT_INANIMATE;
 }
 
 BaseMapModelEntity::~BaseMapModelEntity() {
@@ -27,7 +28,7 @@ void BaseMapModelEntity::preloadMapModel(const std::string &filename) {
     preloadmodel(filename.c_str());
 
     // Now store the map model index.
-    model_idx = loadmapmodel(filename.c_str());
+    model_idx = loadmapmodel(filename.c_str(), this);
 }
 
 } // classes

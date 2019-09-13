@@ -15,7 +15,7 @@ physent::physent() : deltapos(0, 0, 0), newpos(0, 0, 0), yaw(0), pitch(0), roll(
            collidetype(COLLIDE_ELLIPSE),
            blocked(false)
 {
-    type = ENT_PLAYER; reset();
+    ent_type = ENT_PLAYER; reset();
 }
 
 void physent::resetinterp() {

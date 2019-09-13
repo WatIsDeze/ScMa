@@ -465,7 +465,7 @@ void checkmapsounds()
     loopv(ents)
     {
         entities::classes::BaseEntity &e = *ents[i];
-        if(e.type!=ET_SOUND) continue;
+        if(e.et_type!=ET_SOUND) continue;
         if(camera1->o.dist(e.o) < e.attr2)
         {
             if(!(e.flags&EF_SOUND)) playsound(e.attr1, NULL, &e, SND_MAP, -1);
@@ -570,7 +570,7 @@ void preloadmapsounds()
     loopv(ents)
     {
         entities::classes::BaseEntity &e = *ents[i];
-        if(e.type==ET_SOUND) mapsounds.preloadsound(e.attr1);
+        if(e.et_type==ET_SOUND) mapsounds.preloadsound(e.attr1);
     }
 }
 
