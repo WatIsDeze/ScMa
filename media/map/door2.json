@@ -44,7 +44,7 @@
         "et_type": 2,
         "game": {
             "attributes": {
-                "model": "world/door"
+                "model": "world/door_2"
             },
             "classname": "door"
         },
@@ -53,7 +53,7 @@
         "int_attr2": 0,
         "int_attr3": 0,
         "int_attr4": 0,
-        "int_attr5": 0,
+        "int_attr5": 48,
         "int_reserved": 0,
         "model_idx": 70,
         "o": {
@@ -78,7 +78,7 @@
         "int_attr4": 50,
         "int_attr5": 500,
         "int_reserved": 0,
-        "model_idx": 70,
+        "model_idx": 71,
         "o": {
             "x": 332.0,
             "y": 468.0,

@@ -17,6 +17,7 @@ Door::Door() : entities::classes::BaseMapModelEntity("world/door") {
     }
 
     conoutf("%s", attributes["model"].c_str());*/
+    animinterp[0].anim = ANIM_ALL;
 }
 
 Door::~Door() {

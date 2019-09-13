@@ -17,7 +17,7 @@ BaseMapModelEntity::BaseMapModelEntity(const std::string &filename) : BaseEntity
 
     // And our game entity type.
     game_type = GAMEENTITY;
-
+physstate = PHYS_FALL;
     // Last but not least, set our collide method.
     collidetype = COLLIDE_TRI;
 
