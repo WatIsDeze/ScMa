@@ -6,12 +6,8 @@
 namespace entities {
 namespace classes {
 
-Door::Door() : entities::classes::BaseMapModelEntity() {
-    state = CS_ALIVE;
-    ent_type = ENT_INANIMATE;
-    collidetype = COLLIDE_TRI;
-
-    conoutf("%s", "Preloading door entity");
+Door::Door() : entities::classes::BaseMapModelEntity("world/door") {
+/*    conoutf("%s", "Preloading door entity");
 
     if (attributes.find("model") != attributes.end()) {
         preloadMapModel(attributes["model"]);
@@ -20,7 +16,7 @@ Door::Door() : entities::classes::BaseMapModelEntity() {
         attributes["model"] = std::string("world/door");
     }
 
-    conoutf("%s", attributes["model"].c_str());
+    conoutf("%s", attributes["model"].c_str());*/
 }
 
 Door::~Door() {
