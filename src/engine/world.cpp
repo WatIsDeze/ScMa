@@ -1554,7 +1554,7 @@ int findentity_byclass(const char *strclass, int index, int attr1, int attr2)
     return -1;
 }
 
-void findplayerspawn(dynent *d, int forceent, int tag) // place at random spawn
+void findplayerspawn(entities::classes::BaseEntity *d, int forceent, int tag) // place at random spawn
 {
     int pick = forceent;
     if(pick<0)

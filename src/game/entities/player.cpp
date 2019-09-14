@@ -43,26 +43,27 @@ enum
 };
 
 void Player::render() {
-    if (isthirdperson()) {
+    //if (isthirdperson()) {
         // Calculate the position.
         vec pos = o;
         pos.z -= eyeheight;
-
-        int anim = ANIM_IDLE;
-        if (!vel.iszero())
-            anim = ANIM_RUN_N;
-        rendermodel("player/bones", anim, pos, 0, 0, 0);
-    }
+        rendermodel("player/bones", ANIM_IDLE, pos, 0, 0, 0);
+    //}
 }
 
 bool Player::onTrigger(entities::classes::BaseEntity *otherEnt, const vec &dir) {
-    conoutf("%s %s %s %f %f %f", "Player triggered by entity: ", otherEnt->classname,
+    if (otherEnt != NULL)
+        conoutf("%s %s %s %f %f %f", "Player triggered by entity: ", otherEnt->classname.c_str(),
             "from Vector Direction: ", dir.x, dir.y, dir.z);
+    return true;
 }
 
 bool Player::onTouch(entities::classes::BaseEntity *otherEnt, const vec &dir) {
-    conoutf("%s %s %s %f %f %f", "Player touched by entity: ", otherEnt->classname,
+    if (otherEnt != NULL)
+        conoutf("%s %s %s %f %f %f", "Player touched by entity: ", otherEnt->classname.c_str(),
             "from Vector Direction: ", dir.x, dir.y, dir.z);
+
+    return true;
 }
 
 } // classes

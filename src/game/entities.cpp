@@ -44,12 +44,23 @@ namespace entities
 
     const char *entmdlname(int type)
     {
-        return NULL;
+        static const char * const entmdlnames[MAXENTTYPES] =
+        {
+            NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+            "game/teleport", NULL, NULL,
+            NULL
+        };
+        return entmdlnames[type];
     }
 
     const char *entmodel(const entity &e)
     {
-        return NULL;
+        if(e.game_type == TELEPORT)
+        {
+            if(e.attr2 > 0) return mapmodelname(e.attr2);
+            if(e.attr2 < 0) return NULL;
+        }
+        return e.game_type < MAXENTTYPES ? entmdlname(e.et_type) : NULL;
     }
 
     void preloadentities()

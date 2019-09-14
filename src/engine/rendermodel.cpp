@@ -26,6 +26,7 @@ static model *__loadmodel__##modelclass(const char *filename) \
 } \
 UNUSED static int __dummy__##modelclass = addmodeltype((modeltype), __loadmodel__##modelclass);
 
+
 #include "md2.h"
 #include "md3.h"
 #include "md5.h"
@@ -375,7 +376,7 @@ void preloadusedmapmodels(bool msg, bool bih)
         //if(e.et_type==ET_MAPMODEL && e.model_idx >= 0 && used.find(e.model_idx) < 0) used.add(e.model_idx);
         if (e.et_type == ET_MAPMODEL) {
             if (e.model_idx >= 0 && used.find(e.model_idx) < 0) used.add(e.model_idx);
-            ((entities::classes::BaseMapModelEntity&)e).preloadMapModel(e.attributes["model"]);
+                ((entities::classes::BaseMapModelEntity&)e).preloadMapModel(e.attributes["model"]);
         }
     }
 
@@ -495,7 +496,7 @@ struct batchedmodel
         int visible;
         int culled;
     };
-    dynent *d;
+    entities::classes::BaseEntity *d;
     int next;
 };
 struct modelbatch
@@ -561,7 +562,7 @@ static inline void enablecullmodelquery()
     startbb();
 }
 
-static inline void rendercullmodelquery(model *m, dynent *d, const vec &center, float radius)
+static inline void rendercullmodelquery(model *m, entities::classes::BaseEntity *d, const vec &center, float radius)
 {
     if(fabs(camera1->o.x-center.x) < radius+1 &&
        fabs(camera1->o.y-center.y) < radius+1 &&
@@ -583,7 +584,7 @@ static inline void disablecullmodelquery()
     endbb();
 }
 
-static inline int cullmodel(model *m, const vec &center, float radius, int flags, dynent *d = NULL)
+static inline int cullmodel(model *m, const vec &center, float radius, int flags, entities::classes::BaseEntity *d = NULL)
 {
     if(flags&MDL_CULL_DIST && center.dist(camera1->o)/radius>maxmodelradiusdistance) return MDL_CULL_DIST;
     if(flags&MDL_CULL_VFC && isfoggedsphere(radius, center)) return MDL_CULL_VFC;
@@ -948,7 +949,7 @@ void rendermapmodel(int idx, int anim, const vec &o, float yaw, float pitch, flo
     addbatchedmodel(m, b, batchedmodels.length()-1);
 }
 
-void rendermodel(const char *mdl, int anim, const vec &o, float yaw, float pitch, float roll, int flags, dynent *d, modelattach *a, int basetime, int basetime2, float size, const vec4 &color)
+void rendermodel(const char *mdl, int anim, const vec &o, float yaw, float pitch, float roll, int flags, entities::classes::BaseEntity *d, modelattach *a, int basetime, int basetime2, float size, const vec4 &color)
 {
     model *m = loadmodel(mdl);
     if(!m) return;
@@ -1039,7 +1040,7 @@ hasboundbox:
     addbatchedmodel(m, b, batchedmodels.length()-1);
 }
 
-int intersectmodel(const char *mdl, int anim, const vec &pos, float yaw, float pitch, float roll, const vec &o, const vec &ray, float &dist, int mode, dynent *d, modelattach *a, int basetime, int basetime2, float size)
+int intersectmodel(const char *mdl, int anim, const vec &pos, float yaw, float pitch, float roll, const vec &o, const vec &ray, float &dist, int mode, entities::classes::BaseEntity *d, modelattach *a, int basetime, int basetime2, float size)
 {
     model *m = loadmodel(mdl);
     if(!m) return -1;
@@ -1121,7 +1122,7 @@ void loadskin(const char *dir, const char *altdir, Texture *&skin, Texture *&mas
     tryload(masks, NULL, NULL, "masks");
 }
 
-void setbbfrommodel(dynent *d, const char *mdl)
+void setbbfrommodel(entities::classes::BaseEntity *d, const char *mdl)
 {
     model *m = loadmodel(mdl);
     if(!m) return;

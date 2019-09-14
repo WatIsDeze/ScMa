@@ -4,8 +4,10 @@
 namespace entities {
 namespace classes {
 
-BaseEntity::BaseEntity() : dynent(), flags(0), attached(NULL) {
+BaseEntity::BaseEntity() : dynent(), flags(EF_RENDER), attached(NULL) {
     // Setup defaults.
+    et_type = ET_EMPTY;
+    ent_type = ENT_INANIMATE;
     game_type = GAMEENTITY;
 }
 

@@ -209,7 +209,7 @@ struct ragdolldata
         loopv(skel->verts) radius = max(radius, verts[i].pos.dist(center));
     }
 
-    void init(dynent *d)
+    void init(entities::classes::BaseEntity *d)
     {
         extern int ragdolltimestepmin;
         float ts = ragdolltimestepmin/1000.0f;
@@ -223,7 +223,7 @@ struct ragdolldata
         offset.z += (d->eyeheight + d->aboveeye)/2;
     }
 
-    void move(dynent *pl, float ts);
+    void move(entities::classes::BaseEntity *pl, float ts);
     void constrain();
     void constraindist();
     void applyrotlimit(ragdollskel::tri &t1, ragdollskel::tri &t2, float angle, const vec &axis);
@@ -234,7 +234,7 @@ struct ragdolldata
 
     static inline bool collidevert(const vec &pos, const vec &dir, float radius)
     {
-        static struct vertent : physent
+        static struct vertent : entities::classes::BaseEntity
         {
             vertent()
             {
@@ -244,7 +244,7 @@ struct ragdolldata
         } v;
         v.o = pos;
         if(v.radius != radius) v.radius = v.xradius = v.yradius = v.eyeheight = v.aboveeye = radius;
-        return collide(&v, dir, 0, false);
+        return collide(((entities::classes::BaseEntity*)&v), dir, 0, false);
     }
 };
 
@@ -446,7 +446,7 @@ FVAR(ragdollunstick, 0, 10, 1e3f);
 VAR(ragdollexpireoffset, 0, 2500, 30000);
 VAR(ragdollwaterexpireoffset, 0, 4000, 30000);
 
-void ragdolldata::move(dynent *pl, float ts)
+void ragdolldata::move(entities::classes::BaseEntity *pl, float ts)
 {
     extern const float GRAVITY;
     if(collidemillis && lastmillis > collidemillis) return;
@@ -509,7 +509,7 @@ void ragdolldata::move(dynent *pl, float ts)
 FVAR(ragdolleyesmooth, 0, 0.5f, 1);
 VAR(ragdolleyesmoothmillis, 1, 250, 10000);
 
-void moveragdoll(dynent *d)
+void moveragdoll(entities::classes::BaseEntity *d)
 {
     if(!curtime || !d->ragdoll) return;
 

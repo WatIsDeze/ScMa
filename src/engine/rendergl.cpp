@@ -1374,7 +1374,7 @@ FVAR(thirdpersondistance, 0, 10, 25);
 FVAR(thirdpersonup, -25, 0, 25);
 FVAR(thirdpersonside, -25, 0, 25);
 
-physent *camera1 = NULL;
+entities::classes::BaseEntity *camera1 = NULL;
 bool detachedcamera = false;
 bool isthirdperson() { return player!=camera1 || detachedcamera; }
 
@@ -1434,7 +1434,7 @@ void recomputecamera()
     }
     else
     {
-        static physent tempcamera;
+        static entities::classes::BaseEntity tempcamera;
         camera1 = &tempcamera;
         if(detachedcamera && shoulddetach) camera1->o = player->o;
         else
@@ -2085,8 +2085,8 @@ void drawminimap()
     minimapradius.x = minimapradius.y = max(minimapradius.x, minimapradius.y);
     minimapscale = vec((0.5f - 1.0f/size)/minimapradius.x, (0.5f - 1.0f/size)/minimapradius.y, 1.0f);
 
-    physent *oldcamera = camera1;
-    static physent cmcamera;
+    entities::classes::BaseEntity *oldcamera = camera1;
+    static entities::classes::BaseEntity cmcamera;
     cmcamera = *player;
     cmcamera.reset();
     cmcamera.ent_type = ENT_CAMERA;
@@ -2167,8 +2167,8 @@ void drawcubemap(int size, const vec &o, float yaw, float pitch, const cubemapsi
 {
     drawtex = DRAWTEX_ENVMAP;
 
-    physent *oldcamera = camera1;
-    static physent cmcamera;
+    entities::classes::BaseEntity *oldcamera = camera1;
+    static entities::classes::BaseEntity cmcamera;
     cmcamera = *player;
     cmcamera.reset();
     cmcamera.ent_type = ENT_CAMERA;
@@ -2270,8 +2270,8 @@ VAR(modelpreviewpitch, -90, -15, 90);
 
 namespace modelpreview
 {
-    physent *oldcamera;
-    physent camera;
+    entities::classes::BaseEntity *oldcamera;
+    entities::classes::BaseEntity camera;
 
     float oldaspect, oldfovy, oldfov, oldldrscale, oldldrscaleb;
     int oldfarplane, oldvieww, oldviewh;

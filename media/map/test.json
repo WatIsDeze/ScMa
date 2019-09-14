@@ -1,0 +1,45 @@
+[
+    {
+        "ent_type": 2,
+        "et_type": 2,
+        "game": {
+            "attributes": {
+                "model": "world/door_redeclipse"
+            },
+            "classname": "door"
+        },
+        "game_type": 13,
+        "int_attr1": 0,
+        "int_attr2": 0,
+        "int_attr3": 0,
+        "int_attr4": 0,
+        "int_attr5": 0,
+        "int_reserved": 0,
+        "model_idx": 70,
+        "o": {
+            "x": 516.0,
+            "y": 524.5023803710938,
+            "z": 528.3060302734375
+        }
+    },
+    {
+        "ent_type": 2,
+        "et_type": 3,
+        "game": {
+            "classname": "playerstart"
+        },
+        "game_type": 3,
+        "int_attr1": 0,
+        "int_attr2": 0,
+        "int_attr3": 0,
+        "int_attr4": 0,
+        "int_attr5": 0,
+        "int_reserved": 0,
+        "model_idx": 0,
+        "o": {
+            "x": 556.0,
+            "y": 484.0,
+            "z": 516.0
+        }
+    }
+]

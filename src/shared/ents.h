@@ -1,3 +1,6 @@
+#ifndef ENTS_H
+#define ENTS_H
+
 // this file defines static map entities ("entity") and dynamic entities (players/monsters, "dynent")
 // the gamecode extends these types to add game specific functionality
 
@@ -214,3 +217,5 @@ namespace entities
         };
     } // classes
 } // entities
+
+#endif // ENTS_H

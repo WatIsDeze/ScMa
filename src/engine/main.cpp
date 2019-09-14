@@ -77,7 +77,7 @@ SDL_GLContext glcontext = NULL;
 
 int curtime = 0, lastmillis = 1, elapsedtime = 0, totalmillis = 1;
 
-dynent *player = NULL;
+entities::classes::BaseEntity *player = NULL;
 
 int initing = NOT_INITING;
 

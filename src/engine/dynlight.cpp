@@ -9,7 +9,7 @@ struct dynlight
     float radius, initradius, curradius, dist;
     vec color, initcolor, curcolor;
     int fade, peak, expire, flags;
-    physent *owner;
+    entities::classes::BaseEntity *owner;
     vec dir;
     int spot;
 
@@ -52,7 +52,7 @@ struct dynlight
 vector<dynlight> dynlights;
 vector<dynlight *> closedynlights;
 
-void adddynlight(const vec &o, float radius, const vec &color, int fade, int peak, int flags, float initradius, const vec &initcolor, physent *owner, const vec &dir, int spot)
+void adddynlight(const vec &o, float radius, const vec &color, int fade, int peak, int flags, float initradius, const vec &initcolor, entities::classes::BaseEntity *owner, const vec &dir, int spot)
 {
     if(!usedynlights) return;
     if(o.dist(camera1->o) > dynlightdist || radius <= 0) return;
@@ -83,7 +83,7 @@ void cleardynlights()
     else if(faded>0) dynlights.remove(0, faded);
 }
 
-void removetrackeddynlights(physent *owner)
+void removetrackeddynlights(entities::classes::BaseEntity *owner)
 {
     loopvrev(dynlights) if(owner ? dynlights[i].owner == owner : dynlights[i].owner != NULL) dynlights.remove(i);
 }
@@ -106,7 +106,7 @@ int finddynlights()
 {
     closedynlights.setsize(0);
     if(!usedynlights) return 0;
-    physent e;
+    entities::classes::BaseEntity e;
     e.ent_type = ENT_CAMERA;
     loopvj(dynlights)
     {
