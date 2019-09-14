@@ -73,6 +73,9 @@ namespace game
         // If world loading fails, start a new empty map instead.
         if(!load_world(name))
             emptymap(0, true, name);
+
+        // Add the player entity to index 0 of the entity list.
+
     }
 
     void forceedit(const char *name) {
@@ -81,16 +84,16 @@ namespace game
     }
 
     // Never seen an implementation of this function, should be part of BaseEntity.
-    void dynentcollide(physent *d, physent *o, const vec &dir) {
+    void dynentcollide(entities::classes::BaseEntity *d, entities::classes::BaseEntity *o, const vec &dir) {
         conoutf("dynentcollide D et_type: %i ent_type: %i game_type: %i --- O et_type: %i ent_type: %i game_type %i", d->et_type, d->ent_type, d->game_type, o->et_type, o->ent_type, o->game_type);
     }
 
-    void mapmodelcollide(physent *d, entities::classes::BaseEntity *o, const vec &dir) {
+    void mapmodelcollide(entities::classes::BaseEntity *d, entities::classes::BaseEntity *o, const vec &dir) {
         conoutf("mmcollide D et_type: %i ent_type: %i game_type: %i --- O et_type: %i ent_type: %i game_type %i", d->et_type, d->ent_type, d->game_type, o->et_type, o->ent_type, o->game_type);
     }
 
     // Never seen an implementation of this function, should be part of BaseEntity.
-    void bounced(physent *d, const vec &surface) {}
+    void bounced(entities::classes::BaseEntity *d, const vec &surface) {}
 
     // Unsure what to do with these yet.
     void edittrigger(const selinfo &sel, int op, int arg1, int arg2, int arg3, const VSlot *vs) {
@@ -110,7 +113,7 @@ namespace game
     void resetgamestate() {
 
     }
-    void suicide(physent *d) {
+    void suicide(entities::classes::BaseEntity *d) {
 
     }
     void newmap(int size) {
@@ -172,7 +175,7 @@ namespace game
         return player1->state!=CS_DEAD;
     }
 
-    bool allowmove(physent *d) {
+    bool allowmove(entities::classes::BaseEntity *d) {
         return true;
         //if(d->type!=ENT_PLAYER) return true;
         //else return false;
@@ -182,7 +185,17 @@ namespace game
         //return !((entities::classes::BaseEntity *)d)->lasttaunt || lastmillis-((entities::classes::BaseEntity *)d)->lasttaunt>=1000;
     }
 
-    dynent *iterdynents(int i) {
+    entities::classes::BaseEntity *iterdynents(int i) {
+       /* if (i == 0) {
+            return player1;
+        }
+
+        if (i != -1 || i >= entities::g_ents.length()) {
+            return NULL;
+        } else {
+            return entities::g_ents[i];
+        }*/
+
         // TODO: Fix this, objects should be the ents array I guess.
         // Reference is found in fps code.
 //        dynent *iterdynents(int i)
@@ -231,7 +244,7 @@ namespace game
         return player1->state!=CS_EDITING;
     }
 
-    void lighteffects(dynent *e, vec &color, vec &dir) {
+    void lighteffects(entities::classes::BaseEntity *e, vec &color, vec &dir) {
     }
 
     void renderDynamicLights() {
@@ -244,10 +257,10 @@ namespace game
         }
     }
 
-    void dynlighttrack(physent *owner, vec &o, vec &hud) {
+    void dynlighttrack(entities::classes::BaseEntity *owner, vec &o, vec &hud) {
     }
 
-    void particletrack(physent *owner, vec &o, vec &d) {
+    void particletrack(entities::classes::BaseEntity *owner, vec &o, vec &d) {
     }
 
     void writegamedata(vector<char> &extras) {
@@ -285,7 +298,7 @@ namespace game
 
     //---------------------------------------------------------------
 
-    void physicstrigger(physent *d, bool local, int floorlevel, int waterlevel, int material)
+    void physicstrigger(entities::classes::BaseEntity *d, bool local, int floorlevel, int waterlevel, int material)
     {
         // This function seems to be used for playing material audio. No worries about that atm.
 /*        if     (waterlevel>0) { if(material!=MAT_LAVA) playsound(S_SPLASHOUT, d==player1 ? NULL : &d->o); }

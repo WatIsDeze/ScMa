@@ -365,7 +365,7 @@ void findents(int low, int high, bool notspawned, const vec &pos, const vec &rad
 char *entname(entity &e)
 {
     static cubestr fullentname;
-    copycubestr(fullentname, entities::entname(e.et_type));
+    copycubestr(fullentname, entities::entname(e.game_type));
     const char *einfo = entities::entnameinfo(e);
     if(*einfo)
     {
@@ -1122,6 +1122,8 @@ entities::classes::BaseEntity *newentity(bool local, const vec &o, int type, int
     e.attr4 = v4;
     e.attr5 = v5;
     e.et_type = type;
+    e.ent_type = type;
+    e.game_type = -1;
     e.reserved = 0;
     if(local && fix)
     {
@@ -1162,7 +1164,7 @@ void newentity(int type, int a1, int a2, int a3, int a4, int a5, bool fix = true
     t->et_type = ET_EMPTY;
     enttoggle(idx);
     makeundoent();
-    entedit(idx, e.et_type = e.et_type);
+    entedit(idx, e.et_type = type);
     commitchanges();
 }
 
@@ -1552,7 +1554,7 @@ int findentity_byclass(const char *strclass, int index, int attr1, int attr2)
     return -1;
 }
 
-void findplayerspawn(dynent *d, int forceent, int tag) // place at random spawn
+void findplayerspawn(entities::classes::BaseEntity *d, int forceent, int tag) // place at random spawn
 {
     int pick = forceent;
     if(pick<0)

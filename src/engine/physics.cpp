@@ -23,7 +23,7 @@ static inline clipplanes &getclipbounds(const cube &c, const ivec &o, int size, 
     return p;
 }
 
-static inline clipplanes &getclipbounds(const cube &c, const ivec &o, int size, physent *d)
+static inline clipplanes &getclipbounds(const cube &c, const ivec &o, int size, entities::classes::BaseEntity *d)
 {
     int offset = !(c.visible&0x80) || d->ent_type==ENT_PLAYER ? 0 : 1;
     return getclipbounds(c, o, size, offset);
@@ -421,7 +421,7 @@ float rayfloor(const vec &o, vec &floor, int mode, float radius)
 
 // info about collisions
 int collideinside; // whether an internal collision happened
-physent *collideplayer; // whether the collection hit a player
+entities::classes::BaseEntity *collideplayer; // whether the collection hit a player
 vec collidewall; // just the normal vectors.
 
 const float STAIRHEIGHT = 4.1f; // Original was 4.1, let's change this to the new player radius which was 4.1 also.
@@ -431,7 +431,7 @@ const float WALLZ = 0.2f;
 extern const float JUMPVEL = 62.5f; // WatIsDeze: Original was 125, maybe make these FVARS instead?
 extern const float GRAVITY = 200.0f; // WatIsDeze: Original was 200, sounds odd.
 
-bool ellipseboxcollide(physent *d, const vec &dir, const vec &o, const vec &center, float yaw, float xr, float yr, float hi, float lo)
+bool ellipseboxcollide(entities::classes::BaseEntity *d, const vec &dir, const vec &o, const vec &center, float yaw, float xr, float yr, float hi, float lo)
 {
     float below = (o.z+center.z-lo) - (d->o.z+d->aboveeye),
           above = (d->o.z-d->eyeheight) - (o.z+center.z+hi);
@@ -486,7 +486,7 @@ bool ellipseboxcollide(physent *d, const vec &dir, const vec &o, const vec &cent
     return false;
 }
 
-bool ellipsecollide(physent *d, const vec &dir, const vec &o, const vec &center, float yaw, float xr, float yr, float hi, float lo)
+bool ellipsecollide(entities::classes::BaseEntity *d, const vec &dir, const vec &o, const vec &center, float yaw, float xr, float yr, float hi, float lo)
 {
     float below = (o.z+center.z-lo) - (d->o.z+d->aboveeye),
           above = (d->o.z-d->eyeheight) - (o.z+center.z+hi);
@@ -532,7 +532,7 @@ static struct dynentcacheentry
 {
     int x, y;
     uint frame;
-    vector<physent *> dynents;
+    vector<entities::classes::BaseEntity *> dynents;
 } dynentcache[DYNENTCACHESIZE];
 
 void cleardynentcache()
@@ -546,7 +546,7 @@ VARF(dynentsize, 4, 7, 12, cleardynentcache());
 
 #define DYNENTHASH(x, y) (((((x)^(y))<<5) + (((x)^(y))>>5)) & (DYNENTCACHESIZE - 1))
 
-const vector<physent *> &checkdynentcache(int x, int y)
+const vector<entities::classes::BaseEntity *> &checkdynentcache(int x, int y)
 {
     dynentcacheentry &dec = dynentcache[DYNENTHASH(x, y)];
     if(dec.x == x && dec.y == y && dec.frame == dynentframe) return dec.dynents;
@@ -557,7 +557,7 @@ const vector<physent *> &checkdynentcache(int x, int y)
     int numdyns = game::numdynents(), dsize = 1<<dynentsize, dx = x<<dynentsize, dy = y<<dynentsize;
     loopi(numdyns)
     {
-        dynent *d = game::iterdynents(i);
+        entities::classes::BaseEntity *d = game::iterdynents(i);
         if(d->state != CS_ALIVE ||
            d->o.x+d->radius <= dx || d->o.x-d->radius >= dx+dsize ||
            d->o.y+d->radius <= dy || d->o.y-d->radius >= dy+dsize)
@@ -571,7 +571,7 @@ const vector<physent *> &checkdynentcache(int x, int y)
     for(int curx = max(int(o.x-radius), 0)>>dynentsize, endx = min(int(o.x+radius), worldsize-1)>>dynentsize; curx <= endx; curx++) \
     for(int cury = max(int(o.y-radius), 0)>>dynentsize, endy = min(int(o.y+radius), worldsize-1)>>dynentsize; cury <= endy; cury++)
 
-void updatedynentcache(physent *d)
+void updatedynentcache(entities::classes::BaseEntity *d)
 {
     loopdynentcache(x, y, d->o, d->radius)
     {
@@ -585,10 +585,10 @@ bool overlapsdynent(const vec &o, float radius)
 {
     loopdynentcache(x, y, o, radius)
     {
-        const vector<physent *> &dynents = checkdynentcache(x, y);
+        const vector<entities::classes::BaseEntity *> &dynents = checkdynentcache(x, y);
         loopv(dynents)
         {
-            physent *d = dynents[i];
+            entities::classes::BaseEntity *d = dynents[i];
             if(o.dist(d->o)-d->radius < radius) return true;
         }
     }
@@ -596,7 +596,7 @@ bool overlapsdynent(const vec &o, float radius)
 }
 
 template<class E, class O>
-static inline bool plcollide(physent *d, const vec &dir, physent *o)
+static inline bool plcollide(entities::classes::BaseEntity *d, const vec &dir, entities::classes::BaseEntity *o)
 {
     E entvol(d);
     O obvol(o);
@@ -611,7 +611,7 @@ static inline bool plcollide(physent *d, const vec &dir, physent *o)
     return false;
 }
 
-static inline bool plcollide(physent *d, const vec &dir, physent *o)
+static inline bool plcollide(entities::classes::BaseEntity *d, const vec &dir, entities::classes::BaseEntity *o)
 {
     switch(d->collidetype)
     {
@@ -625,22 +625,23 @@ static inline bool plcollide(physent *d, const vec &dir, physent *o)
     }
 }
 
-bool plcollide(physent *d, const vec &dir, bool insideplayercol)    // collide with player
+bool plcollide(entities::classes::BaseEntity *d, const vec &dir, bool insideplayercol)    // collide with player
 {
     if(d->ent_type==ENT_CAMERA || d->state!=CS_ALIVE) return false;
     int lastinside = collideinside;
-    physent *insideplayer = NULL;
+    entities::classes::BaseEntity *insideplayer = NULL;
     loopdynentcache(x, y, d->o, d->radius)
     {
-        const vector<physent *> &dynents = checkdynentcache(x, y);
+        const vector<entities::classes::BaseEntity *> &dynents = checkdynentcache(x, y);
         loopv(dynents)
         {
-            physent *o = dynents[i];
+            entities::classes::BaseEntity *o = dynents[i];
             if(o==d || d->o.reject(o->o, d->radius+o->radius)) continue;
             if(plcollide(d, dir, o))
             {   
                 collideplayer = o;
-                game::dynentcollide(d, o, collidewall);
+                //game::dynentcollide(d, o, collidewall);
+                ((entities::classes::BaseEntity*)d)->onTouch(o, collidewall);
                 return true;
             }
             if(collideinside > lastinside)
@@ -653,7 +654,8 @@ bool plcollide(physent *d, const vec &dir, bool insideplayercol)    // collide w
     if(insideplayer && insideplayercol)
     {
         collideplayer = insideplayer;
-        game::dynentcollide(d, insideplayer, vec(0, 0, 0));
+        //game::dynentcollide(d, insideplayer, vec(0, 0, 0));
+        ((entities::classes::BaseEntity*)d)->onTouch(insideplayer, vec(0, 0, 0));
         return true;
     }
     return false;
@@ -671,7 +673,7 @@ void rotatebb(vec &center, vec &radius, int yaw, int pitch, int roll)
 }
 
 template<class E, class M>
-static inline bool mmcollide(physent *d, const vec &dir, const entities::classes::BaseEntity &e, const vec &center, const vec &radius, int yaw, int pitch, int roll)
+static inline bool mmcollide(entities::classes::BaseEntity *d, const vec &dir, const entities::classes::BaseEntity &e, const vec &center, const vec &radius, int yaw, int pitch, int roll)
 {
     E entvol(d);
     M mdlvol(e.o, center, radius, yaw, pitch, roll);
@@ -684,7 +686,8 @@ static inline bool mmcollide(physent *d, const vec &dir, const entities::classes
         // WatIsDeze: Original.
         //if(!collidewall.iszero()) return true;
         if(!collidewall.iszero()) {
-            game::mapmodelcollide(d, (entities::classes::BaseEntity*)&e, collidewall);
+            //game::mapmodelcollide(d, (entities::classes::BaseEntity*)&e, collidewall);
+            ((entities::classes::BaseEntity*)d)->onTouch((entities::classes::BaseEntity*)&e, collidewall);
             return true;
         }
         collideinside++;
@@ -693,7 +696,7 @@ static inline bool mmcollide(physent *d, const vec &dir, const entities::classes
 }
 
 template<class E>
-static bool fuzzycollidebox(physent *d, const vec &dir, float cutoff, const vec &o, const vec &center, const vec &radius, int yaw, int pitch, int roll)
+static bool fuzzycollidebox(entities::classes::BaseEntity *d, const vec &dir, float cutoff, const vec &o, const vec &center, const vec &radius, int yaw, int pitch, int roll)
 {
     mpr::ModelOBB mdlvol(o, center, radius, yaw, pitch, roll);
     vec bbradius = mdlvol.orient.abstransposedtransform(radius);
@@ -745,7 +748,7 @@ static bool fuzzycollidebox(physent *d, const vec &dir, float cutoff, const vec 
 }
 
 template<class E>
-static bool fuzzycollideellipse(physent *d, const vec &dir, float cutoff, const vec &o, const vec &center, const vec &radius, int yaw, int pitch, int roll)
+static bool fuzzycollideellipse(entities::classes::BaseEntity *d, const vec &dir, float cutoff, const vec &o, const vec &center, const vec &radius, int yaw, int pitch, int roll)
 {
     mpr::ModelEllipse mdlvol(o, center, radius, yaw, pitch, roll);
     vec bbradius = mdlvol.orient.abstransposedtransform(radius);
@@ -804,7 +807,7 @@ static bool fuzzycollideellipse(physent *d, const vec &dir, float cutoff, const 
 
 VAR(testtricol, 0, 0, 2);
 
-bool mmcollide(physent *d, const vec &dir, float cutoff, octaentities &oc) // collide with a mapmodel
+bool mmcollide(entities::classes::BaseEntity *d, const vec &dir, float cutoff, octaentities &oc) // collide with a mapmodel
 {
     const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     loopv(oc.mapmodels)
@@ -878,7 +881,7 @@ bool mmcollide(physent *d, const vec &dir, float cutoff, octaentities &oc) // co
 }
 
 template<class E>
-static bool fuzzycollidesolid(physent *d, const vec &dir, float cutoff, const cube &c, const ivec &co, int size) // collide with solid cube geometry
+static bool fuzzycollidesolid(entities::classes::BaseEntity *d, const vec &dir, float cutoff, const cube &c, const ivec &co, int size) // collide with solid cube geometry
 {
     int crad = size/2;
     if(fabs(d->o.x - co.x - crad) > d->radius + crad || fabs(d->o.y - co.y - crad) > d->radius + crad ||
@@ -944,7 +947,7 @@ static inline bool clampcollide(const clipplanes &p, const E &entvol, const plan
 }
 
 template<class E>
-static bool fuzzycollideplanes(physent *d, const vec &dir, float cutoff, const cube &c, const ivec &co, int size) // collide with deformed cube geometry
+static bool fuzzycollideplanes(entities::classes::BaseEntity *d, const vec &dir, float cutoff, const cube &c, const ivec &co, int size) // collide with deformed cube geometry
 {
     clipplanes &p = getclipbounds(c, co, size, d);
 
@@ -996,7 +999,7 @@ static bool fuzzycollideplanes(physent *d, const vec &dir, float cutoff, const c
 }
 
 template<class E>
-static bool cubecollidesolid(physent *d, const vec &dir, float cutoff, const cube &c, const ivec &co, int size) // collide with solid cube geometry
+static bool cubecollidesolid(entities::classes::BaseEntity *d, const vec &dir, float cutoff, const cube &c, const ivec &co, int size) // collide with solid cube geometry
 {
     int crad = size/2;
     if(fabs(d->o.x - co.x - crad) > d->radius + crad || fabs(d->o.y - co.y - crad) > d->radius + crad ||
@@ -1026,7 +1029,7 @@ static bool cubecollidesolid(physent *d, const vec &dir, float cutoff, const cub
 }
 
 template<class E>
-static bool cubecollideplanes(physent *d, const vec &dir, float cutoff, const cube &c, const ivec &co, int size) // collide with deformed cube geometry
+static bool cubecollideplanes(entities::classes::BaseEntity *d, const vec &dir, float cutoff, const cube &c, const ivec &co, int size) // collide with deformed cube geometry
 {
     clipplanes &p = getclipbounds(c, co, size, d);
     if(fabs(d->o.x - p.o.x) > p.r.x + d->radius || fabs(d->o.y - p.o.y) > p.r.y + d->radius ||
@@ -1078,7 +1081,7 @@ static bool cubecollideplanes(physent *d, const vec &dir, float cutoff, const cu
     return true;
 }
 
-static inline bool cubecollide(physent *d, const vec &dir, float cutoff, const cube &c, const ivec &co, int size, bool solid)
+static inline bool cubecollide(entities::classes::BaseEntity *d, const vec &dir, float cutoff, const cube &c, const ivec &co, int size, bool solid)
 {
     switch(d->collidetype)
     {
@@ -1092,7 +1095,7 @@ static inline bool cubecollide(physent *d, const vec &dir, float cutoff, const c
     }
 }
 
-static inline bool octacollide(physent *d, const vec &dir, float cutoff, const ivec &bo, const ivec &bs, const cube *c, const ivec &cor, int size) // collide with octants
+static inline bool octacollide(entities::classes::BaseEntity *d, const vec &dir, float cutoff, const ivec &bo, const ivec &bs, const cube *c, const ivec &cor, int size) // collide with octants
 {
     loopoctabox(cor, size, bo, bs)
     {
@@ -1117,7 +1120,7 @@ static inline bool octacollide(physent *d, const vec &dir, float cutoff, const i
     return false;
 }
 
-static inline bool octacollide(physent *d, const vec &dir, float cutoff, const ivec &bo, const ivec &bs)
+static inline bool octacollide(entities::classes::BaseEntity *d, const vec &dir, float cutoff, const ivec &bo, const ivec &bs)
 {
     int diff = (bo.x^bs.x) | (bo.y^bs.y) | (bo.z^bs.z),
         scale = worldscale-1;
@@ -1145,7 +1148,7 @@ static inline bool octacollide(physent *d, const vec &dir, float cutoff, const i
 }
 
 // all collision happens here
-bool collide(physent *d, const vec &dir, float cutoff, bool playercol, bool insideplayercol)
+bool collide(entities::classes::BaseEntity *d, const vec &dir, float cutoff, bool playercol, bool insideplayercol)
 {
     collideinside = 0;
     collideplayer = NULL;
@@ -1156,7 +1159,7 @@ bool collide(physent *d, const vec &dir, float cutoff, bool playercol, bool insi
     return octacollide(d, dir, cutoff, bo, bs) || (playercol && plcollide(d, dir, insideplayercol)); // collide with world
 }
 
-void recalcdir(physent *d, const vec &oldvel, vec &dir)
+void recalcdir(entities::classes::BaseEntity *d, const vec &oldvel, vec &dir)
 {
     float speed = oldvel.magnitude();
     if(speed > 1e-6f)
@@ -1168,7 +1171,7 @@ void recalcdir(physent *d, const vec &oldvel, vec &dir)
     }
 }
 
-void slideagainst(physent *d, vec &dir, const vec &obstacle, bool foundfloor, bool slidecollide)
+void slideagainst(entities::classes::BaseEntity *d, vec &dir, const vec &obstacle, bool foundfloor, bool slidecollide)
 {
     vec wall(obstacle);
     if(foundfloor ? wall.z > 0 : slidecollide)
@@ -1183,7 +1186,7 @@ void slideagainst(physent *d, vec &dir, const vec &obstacle, bool foundfloor, bo
     recalcdir(d, oldvel, dir);
 }
 
-void switchfloor(physent *d, vec &dir, const vec &floor)
+void switchfloor(entities::classes::BaseEntity *d, vec &dir, const vec &floor)
 {
     if(floor.z >= FLOORZ) d->falling = vec(0, 0, 0);
 
@@ -1199,7 +1202,7 @@ void switchfloor(physent *d, vec &dir, const vec &floor)
     recalcdir(d, oldvel, dir);
 }
 
-bool trystepup(physent *d, vec &dir, const vec &obstacle, float maxstep, const vec &floor)
+bool trystepup(entities::classes::BaseEntity *d, vec &dir, const vec &obstacle, float maxstep, const vec &floor)
 {
     vec old(d->o), stairdir = (obstacle.z >= 0 && obstacle.z < SLOPEZ ? vec(-obstacle.x, -obstacle.y, 0) : vec(dir.x, dir.y, 0)).rescale(1);
     bool cansmooth = true;
@@ -1290,7 +1293,7 @@ bool trystepup(physent *d, vec &dir, const vec &obstacle, float maxstep, const v
     return false;
 }
 
-bool trystepdown(physent *d, vec &dir, float step, float xy, float z, bool init = false)
+bool trystepdown(entities::classes::BaseEntity *d, vec &dir, float step, float xy, float z, bool init = false)
 {
     vec stepdir(dir.x, dir.y, 0);
     stepdir.z = -stepdir.magnitude2()*z/xy;
@@ -1341,7 +1344,7 @@ bool trystepdown(physent *d, vec &dir, float step, float xy, float z, bool init 
     return false;
 }
 
-bool trystepdown(physent *d, vec &dir, bool init = false)
+bool trystepdown(entities::classes::BaseEntity *d, vec &dir, bool init = false)
 {
     if((!d->move && !d->strafe) || !game::allowmove(d)) return false;
     vec old(d->o);
@@ -1367,7 +1370,7 @@ bool trystepdown(physent *d, vec &dir, bool init = false)
     return false;
 }
 
-void falling(physent *d, vec &dir, const vec &floor)
+void falling(entities::classes::BaseEntity *d, vec &dir, const vec &floor)
 {
     if(floor.z > 0.0f && floor.z < SLOPEZ)
     {
@@ -1380,7 +1383,7 @@ void falling(physent *d, vec &dir, const vec &floor)
         d->physstate = PHYS_FALL;
 }
 
-void landing(physent *d, vec &dir, const vec &floor, bool collided)
+void landing(entities::classes::BaseEntity *d, vec &dir, const vec &floor, bool collided)
 {
 #if 0
     if(d->physstate == PHYS_FALL)
@@ -1396,7 +1399,7 @@ void landing(physent *d, vec &dir, const vec &floor, bool collided)
     d->floor = floor;
 }
 
-bool findfloor(physent *d, const vec &dir, bool collided, const vec &obstacle, bool &slide, vec &floor)
+bool findfloor(entities::classes::BaseEntity *d, const vec &dir, bool collided, const vec &obstacle, bool &slide, vec &floor)
 {
     bool found = false;
     vec moved(d->o);
@@ -1454,7 +1457,7 @@ foundfloor:
     return found;
 }
 
-bool move(physent *d, vec &dir)
+bool move(entities::classes::BaseEntity *d, vec &dir)
 {
     vec old(d->o);
     bool collided = false, slidecollide = false;
@@ -1515,7 +1518,7 @@ bool move(physent *d, vec &dir)
     return !collided;
 }
 
-void crouchplayer(physent *pl, int moveres, bool local)
+void crouchplayer(entities::classes::BaseEntity *pl, int moveres, bool local)
 {
     if(!curtime) return;
     float minheight = pl->maxheight * CROUCHHEIGHT, speed = (pl->maxheight - minheight) * curtime / float(CROUCHTIME);
@@ -1556,7 +1559,7 @@ void crouchplayer(physent *pl, int moveres, bool local)
     }
 }
 
-bool bounce(physent *d, float secs, float elasticity, float waterfric, float grav)
+bool bounce(entities::classes::BaseEntity *d, float secs, float elasticity, float waterfric, float grav)
 {
     // make sure bouncers don't start inside geometry
     if(d->physstate!=PHYS_BOUNCE && collide(d, vec(0, 0, 0), 0, false)) return true;
@@ -1600,7 +1603,7 @@ bool bounce(physent *d, float secs, float elasticity, float waterfric, float gra
     return collideplayer!=NULL;
 }
 
-void avoidcollision(physent *d, const vec &dir, physent *obstacle, float space)
+void avoidcollision(entities::classes::BaseEntity *d, const vec &dir, entities::classes::BaseEntity *obstacle, float space)
 {
     float rad = obstacle->radius+d->radius;
     vec bbmin(obstacle->o);
@@ -1625,7 +1628,7 @@ void avoidcollision(physent *d, const vec &dir, physent *obstacle, float space)
     if(mindist >= 0.0f && mindist < 1e15f) d->o.add(vec(dir).mul(mindist));
 }
 
-bool movecamera(physent *pl, const vec &dir, float dist, float stepdist)
+bool movecamera(entities::classes::BaseEntity *pl, const vec &dir, float dist, float stepdist)
 {
     int steps = (int)ceil(dist/stepdist);
     if(steps <= 0) return true;
@@ -1647,7 +1650,7 @@ bool movecamera(physent *pl, const vec &dir, float dist, float stepdist)
 
 bool droptofloor(vec &o, float radius, float height)
 {
-    static struct dropent : physent
+    static struct dropent : entities::classes::BaseEntity
     {
         dropent()
         {
@@ -1743,7 +1746,7 @@ FVAR(straferoll, 0, 0.033f, 90);
 FVAR(faderoll, 0, 0.95f, 1);
 VAR(floatspeed, 1, 100, 10000);
 
-void modifyvelocity(physent *pl, bool local, bool water, bool floating, int curtime)
+void modifyvelocity(entities::classes::BaseEntity *pl, bool local, bool water, bool floating, int curtime)
 {
     bool allowmove = game::allowmove(pl);
     if(floating)
@@ -1804,7 +1807,7 @@ void modifyvelocity(physent *pl, bool local, bool water, bool floating, int curt
 //    pl->vel.lerp(pl->vel, d, fpsfric);
 }
 
-void modifygravity(physent *pl, bool water, int curtime)
+void modifygravity(entities::classes::BaseEntity *pl, bool water, int curtime)
 {
     float secs = curtime/1000.0f;
     vec g(0, 0, 0);
@@ -1835,7 +1838,7 @@ void modifygravity(physent *pl, bool water, int curtime)
 // moveres indicated the physics precision (which is lower for monsters and multiplayer prediction)
 // local is false for multiplayer prediction
 
-bool moveplayer(physent *pl, int moveres, bool local, int curtime)
+bool moveplayer(entities::classes::BaseEntity *pl, int moveres, bool local, int curtime)
 {
     int material = lookupmaterial(vec(pl->o.x, pl->o.y, pl->o.z + (3*pl->aboveeye - pl->eyeheight)/4));
     bool water = isliquid(material&MATF_VOLUME);
@@ -1918,7 +1921,7 @@ void physicsframe()          // optimally schedule physics frames inside the gra
 
 VAR(physinterp, 0, 1, 1);
 
-void interppos(physent *pl)
+void interppos(entities::classes::BaseEntity *pl)
 {
     pl->o = pl->newpos;
 
@@ -1930,7 +1933,7 @@ void interppos(physent *pl)
     pl->o.add(deltapos);
 }
 
-void moveplayer(physent *pl, int moveres, bool local)
+void moveplayer(entities::classes::BaseEntity *pl, int moveres, bool local)
 {
     if(physsteps <= 0)
     {
@@ -1950,7 +1953,7 @@ void moveplayer(physent *pl, int moveres, bool local)
     }
 }
 
-bool bounce(physent *d, float elasticity, float waterfric, float grav)
+bool bounce(entities::classes::BaseEntity *d, float elasticity, float waterfric, float grav)
 {
     if(physsteps <= 0)
     {
@@ -1972,7 +1975,7 @@ bool bounce(physent *d, float elasticity, float waterfric, float grav)
     return hitplayer;
 }
 
-void updatephysstate(physent *d)
+void updatephysstate(entities::classes::BaseEntity *d)
 {
     if(d->physstate == PHYS_FALL) return;
     d->timeinair = 0;
@@ -2017,7 +2020,7 @@ dir(right,    strafe, -1, k_right, k_left);
 ICOMMAND(jump,   "D", (int *down), { if(!*down || game::canjump()) player->jumping = *down!=0; });
 ICOMMAND(crouch, "D", (int *down), { if(!*down) player->crouching = abs(player->crouching); else if(game::cancrouch()) player->crouching = -1; });
 
-bool entinmap(dynent *d, bool avoidplayers)        // brute force but effective way to find a free spawn spot in the map
+bool entinmap(entities::classes::BaseEntity *d, bool avoidplayers)        // brute force but effective way to find a free spawn spot in the map
 {
     d->o.z += d->eyeheight; // pos specified is at feet
     vec orig = d->o;

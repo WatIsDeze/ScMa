@@ -1,19 +1,88 @@
 [
     {
         "ent_type": 2,
-        "et_type": 2,
-        "game_type": 13,
-        "int_attr1": 0,
+        "et_type": 3,
+        "game": {
+            "classname": "playerstart"
+        },
+        "game_type": 3,
+        "int_attr1": 145,
         "int_attr2": 0,
         "int_attr3": 0,
         "int_attr4": 0,
         "int_attr5": 0,
         "int_reserved": 0,
+        "model_idx": 0,
+        "o": {
+            "x": 404.0,
+            "y": 556.0,
+            "z": 532.0
+        }
+    },
+    {
+        "ent_type": 2,
+        "et_type": 3,
+        "game": {
+            "classname": "playerstart"
+        },
+        "game_type": 3,
+        "int_attr1": 163,
+        "int_attr2": 0,
+        "int_attr3": 0,
+        "int_attr4": 0,
+        "int_attr5": 0,
+        "int_reserved": 0,
+        "model_idx": 0,
+        "o": {
+            "x": 308.0,
+            "y": 652.0,
+            "z": 532.0
+        }
+    },
+    {
+        "ent_type": 2,
+        "et_type": 2,
+        "game": {
+            "attributes": {
+                "model": "world/door_2"
+            },
+            "classname": "door"
+        },
+        "game_type": 13,
+        "int_attr1": 0,
+        "int_attr2": 0,
+        "int_attr3": 0,
+        "int_attr4": 0,
+        "int_attr5": 38,
+        "int_reserved": 0,
         "model_idx": 70,
         "o": {
-            "x": 516.0,
-            "y": 516.0,
-            "z": 512.0
+            "x": 364.0,
+            "y": 468.0,
+            "z": 520.0
+        }
+    },
+    {
+        "ent_type": 2,
+        "et_type": 2,
+        "game": {
+            "attributes": {
+                "model": "world/door"
+            },
+            "classname": "door"
+        },
+        "game_type": 13,
+        "int_attr1": 0,
+        "int_attr2": 68,
+        "int_attr3": 30,
+        "int_attr4": 50,
+        "int_attr5": 500,
+        "int_reserved": 0,
+        "model_idx": 71,
+        "o": {
+            "x": 332.0,
+            "y": 468.0,
+            "z": 520.0
         }
     }
 ]

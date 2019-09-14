@@ -13,8 +13,8 @@
 #include "bih.h"
 #include "model.h"
 
-extern dynent *player;
-extern physent *camera1;                // special ent that acts as camera, same object as player1 in FPS mode
+extern entities::classes::BaseEntity *player;
+extern entities::classes::BaseEntity *camera1;                // special ent that acts as camera, same object as player1 in FPS mode
 
 extern int worldscale, worldsize;
 extern int mapversion;
@@ -690,17 +690,22 @@ static inline model *loadmapmodel(int n)
 }
 
 // WatIsDeze: Added so we can load mapmodels by string filename
-static inline int loadmapmodel(const char *filename, const entities::classes::BaseEntity *e)
+static inline int loadmapmodel(const char *filename, entities::classes::BaseEntity *e)
 {
     // Check if it already exists.
     if (!e) {
         return -1;
     }
 
+    // WatIsDeze: TODO: Check if this is actually... smart.
     if (e->model_idx != -1) {
-        loopv(mapmodels) if(!strcmp(mapmodels[i].name, filename)) return i;
+        loopv(mapmodels) if(!strcmp(mapmodels[i].name, filename)) {
+            e->model_idx = i;
+            return i;
+        }
     } else {
-        loopv(mapmodels) if (mapmodels.inrange(e->model_idx)) return e->model_idx; else return -1;
+        //loopv(mapmodels)
+        if (mapmodels.inrange(e->model_idx)) return e->model_idx; else return -1;
     }
 
     // MapModelInfo struct.

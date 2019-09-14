@@ -6,8 +6,10 @@ namespace classes {
 
 Player::Player() : BaseEntity() {
     state = CS_ALIVE;
+    et_type = ET_GAMESPECIFIC;
     ent_type = ENT_PLAYER;
-    collidetype = COLLIDE_ELLIPSE;
+    game_type = GAMEENTITY;
+    collidetype = COLLIDE_OBB;
 }
 
 Player::~Player() {
@@ -41,13 +43,27 @@ enum
 };
 
 void Player::render() {
-    if (isthirdperson()) {
+    //if (isthirdperson()) {
         // Calculate the position.
         vec pos = o;
         pos.z -= eyeheight;
-
         rendermodel("player/bones", ANIM_IDLE, pos, 0, 0, 0);
-    }
+    //}
+}
+
+bool Player::onTrigger(entities::classes::BaseEntity *otherEnt, const vec &dir) {
+    if (otherEnt != NULL)
+        conoutf("%s %s %s %f %f %f", "Player triggered by entity: ", otherEnt->classname.c_str(),
+            "from Vector Direction: ", dir.x, dir.y, dir.z);
+    return true;
+}
+
+bool Player::onTouch(entities::classes::BaseEntity *otherEnt, const vec &dir) {
+    if (otherEnt != NULL)
+        conoutf("%s %s %s %f %f %f", "Player touched by entity: ", otherEnt->classname.c_str(),
+            "from Vector Direction: ", dir.x, dir.y, dir.z);
+
+    return true;
 }
 
 } // classes

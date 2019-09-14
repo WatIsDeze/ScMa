@@ -490,7 +490,7 @@ static inline bool triboxoverlap(const vec &radius, const vec &a, const vec &b, 
 }
 
 template<>
-inline void BIH::tricollide<COLLIDE_ELLIPSE>(const mesh &m, int tidx, physent *d, const vec &dir, float cutoff, const vec &center, const vec &radius, const matrix4x3 &orient, float &dist, const ivec &bo, const ivec &br)
+inline void BIH::tricollide<COLLIDE_ELLIPSE>(const mesh &m, int tidx, entities::classes::BaseEntity *d, const vec &dir, float cutoff, const vec &center, const vec &radius, const matrix4x3 &orient, float &dist, const ivec &bo, const ivec &br)
 {
     if(m.tribbs[tidx].outside(bo, br)) return; 
 
@@ -523,7 +523,7 @@ inline void BIH::tricollide<COLLIDE_ELLIPSE>(const mesh &m, int tidx, physent *d
 }
 
 template<>
-inline void BIH::tricollide<COLLIDE_OBB>(const mesh &m, int tidx, physent *d, const vec &dir, float cutoff, const vec &center, const vec &radius, const matrix4x3 &orient, float &dist, const ivec &bo, const ivec &br)
+inline void BIH::tricollide<COLLIDE_OBB>(const mesh &m, int tidx, entities::classes::BaseEntity *d, const vec &dir, float cutoff, const vec &center, const vec &radius, const matrix4x3 &orient, float &dist, const ivec &bo, const ivec &br)
 {
     if(m.tribbs[tidx].outside(bo, br)) return;
 
@@ -556,7 +556,7 @@ inline void BIH::tricollide<COLLIDE_OBB>(const mesh &m, int tidx, physent *d, co
 }
 
 template<int C>
-inline void BIH::collide(const mesh &m, physent *d, const vec &dir, float cutoff, const vec &center, const vec &radius, const matrix4x3 &orient, float &dist, node *curnode, const ivec &bo, const ivec &br)
+inline void BIH::collide(const mesh &m, entities::classes::BaseEntity *d, const vec &dir, float cutoff, const vec &center, const vec &radius, const matrix4x3 &orient, float &dist, node *curnode, const ivec &bo, const ivec &br)
 {
     node *stack[128];
     int stacksize = 0;
@@ -621,7 +621,7 @@ inline void BIH::collide(const mesh &m, physent *d, const vec &dir, float cutoff
 }
 
 
-bool BIH::ellipsecollide(physent *d, const vec &dir, float cutoff, const vec &o, int yaw, int pitch, int roll, float scale)
+bool BIH::ellipsecollide(entities::classes::BaseEntity *d, const vec &dir, float cutoff, const vec &o, int yaw, int pitch, int roll, float scale)
 {
     if(!numnodes) return false;
 
@@ -657,7 +657,7 @@ bool BIH::ellipsecollide(physent *d, const vec &dir, float cutoff, const vec &o,
     return dist > -1e9f;
 }
 
-bool BIH::boxcollide(physent *d, const vec &dir, float cutoff, const vec &o, int yaw, int pitch, int roll, float scale)
+bool BIH::boxcollide(entities::classes::BaseEntity *d, const vec &dir, float cutoff, const vec &o, int yaw, int pitch, int roll, float scale)
 {
     if(!numnodes) return false;
 

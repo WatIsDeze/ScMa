@@ -1,3 +1,6 @@
+#ifndef ENTS_H
+#define ENTS_H
+
 // this file defines static map entities ("entity") and dynamic entities (players/monsters, "dynent")
 // the gamecode extends these types to add game specific functionality
 
@@ -8,7 +11,7 @@ enum { ET_EMPTY=0, ET_LIGHT, ET_MAPMODEL, ET_PLAYERSTART, ET_ENVMAP, ET_PARTICLE
 class entity                                   // persistent map entity
 {
 public:
-    entity() : o(0, 0, 0) {}
+    entity() : o(0, 0, 0), attr1(0), attr2(0), attr3(0), attr4(0), attr5(0), et_type(0), ent_type(0), game_type(0), reserved(0), model_idx(0) {}
     virtual ~entity() {}
 
     vec o;                                      // position
@@ -18,7 +21,9 @@ public:
     uchar game_type;                            // the internal game entity type values.
     uchar reserved;
 
-    int model_idx;                              // Only used for BaseMapModelEntities.
+    // Only used for BaseMapModelEntities.
+    int model_idx;
+    char model_name[256];
 };
 
 enum
@@ -174,9 +179,25 @@ namespace entities
             BaseEntity();
             virtual ~BaseEntity();
 
+            //
+            // Base functions.
+            //
+            // Called every time a map is being loaded.
             virtual void preload();
+
+            // Called each frame, to "think", AI logic should go here.
             virtual void think();
+
+            // Called each frame to render.
             virtual void render();
+
+            //
+            // Trigger and touch commands.
+            //
+            // ent = the entity which has triggered you.
+            virtual bool onTrigger(BaseEntity *otherEnt, const vec &dir);
+            // ent = the entity which has touched you.
+            virtual bool onTouch(BaseEntity *otherEnt, const vec &dir);
 
         // Taken from what was, gameentity.
         public:
@@ -185,7 +206,6 @@ namespace entities
             // Contains the json attributes.
             std::map<std::string, std::string> attributes;
 
-        // Taken from the old "extentity".
         public:
             int flags;
             BaseEntity *attached;
@@ -194,9 +214,8 @@ namespace entities
             void setspawned(bool val) { if(val) flags |= EF_SPAWNED; else flags &= ~EF_SPAWNED; }
             void setspawned() { flags |= EF_SPAWNED; }
             void clearspawned() { flags &= ~EF_SPAWNED; }
-
-        private:
-
         };
     } // classes
 } // entities
+
+#endif // ENTS_H

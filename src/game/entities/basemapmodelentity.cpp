@@ -5,9 +5,39 @@
 namespace entities {
 namespace classes {
 
-BaseMapModelEntity::BaseMapModelEntity() : BaseEntity() {
+BaseMapModelEntity::BaseMapModelEntity(const std::string &filename) : BaseEntity() {
+    // State (Alive)
+    state = CS_ALIVE;
+
+    // Internal engine type.
     et_type = ET_MAPMODEL;
+
+    // Internal engine entity type.
     ent_type = ENT_INANIMATE;
+
+    // And our game entity type.
+    game_type = GAMEENTITY;
+
+    // Ensure it has a physstate, think this is the best.
+    physstate = PHYS_FALL;
+
+    // Last but not least, set our collide method.
+    collidetype = COLLIDE_TRI;
+
+    if (attributes.find("model") != attributes.end()) {
+        // Try to load the model that is saved in the attributes.
+        preloadMapModel(attributes["model"]);
+    } else {
+        // Try to preload the model passed to the constructor.
+        preloadMapModel(filename.c_str());
+
+        // Warn our user in case the model has not been found.
+        if (model_idx == -1) {
+            conoutf(CON_WARN, "Failed to load model: %s", filename.c_str());
+        } else {
+            attributes["model"] = filename;
+        }
+    }
 }
 
 BaseMapModelEntity::~BaseMapModelEntity() {

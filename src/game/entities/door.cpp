@@ -6,37 +6,35 @@
 namespace entities {
 namespace classes {
 
-Door::Door() : entities::classes::BaseMapModelEntity() {
-    state = CS_ALIVE;
-    ent_type = ENT_INANIMATE;
-    collidetype = COLLIDE_OBB;
-    physstate = PHYS_SLIDE;
-
-    conoutf("%s", "Preloading door entity");
-    preloadMapModel("world/door");
+Door::Door() : entities::classes::BaseMapModelEntity("world/door_redeclipse") {
+    // Doors animate, makes sense.
+    flags |= EF_ANIM;
 }
 
 Door::~Door() {
 
 }
 
-void Door::preload() {
+void Door::preload() {}
+void Door::think() {}
+void Door::render() {}
 
+bool Door::onTrigger(entities::classes::BaseEntity *otherEnt, const vec &dir) {
+    if (otherEnt == NULL) {
+        return false;
+    }
+    conoutf("%s %s %s %f %f %f", "Door triggered by entity: ", otherEnt->classname.c_str(),
+            "from Vector Direction: ", dir.x, dir.y, dir.z);
+    return true;
 }
 
-void Door::think() {
-    //conoutf("%s")
-    //moveplayer(this, 1, true);
-}
-
-void Door::render() {
-    //int anim = ANIM_MAPMODEL|ANIM_LOOP, basetime = 0;
-    //if(e.flags&EF_ANIM) entities::animatemapmodel(e, anim, basetime);
-    //rendermapmodel(model_idx, ANIM_MAPMODEL|ANIM_LOOP, o, attr2, attr3, attr4, MDL_CULL_VFC | MDL_CULL_DIST, 0, attr5 > 0 ? attr5/100.0f : 1.0f);
-    //rendermapmodel(model_idx, ANIM_MAPMODE,)
-    //rendermapmodel(model_idx, ANIM_MAPMODEL|ANIM_LOOP, o, 0, 0, 1, MDL_CULL, 1, 1.0f);
-    //rendermodel("world/door", ANIM_ALL, o, 0, 0, 0);
-    //rendermodel("world/door", ANIM_MAPMODEL|ANIM_LOOP, o, yaw, 0, 0, MDL_CULL_VFC | MDL_CULL_DIST | MDL_CULL_OCCLUDED, this);
+bool Door::onTouch(entities::classes::BaseEntity *otherEnt, const vec &dir) {
+    if (otherEnt == NULL) {
+        return false;
+    }
+    conoutf("%s %s %s %f %f %f", "Door touched by entity: ", otherEnt->classname.c_str(),
+            "from Vector Direction: ", dir.x, dir.y, dir.z);
+    return true;
 }
 
 } // classes

@@ -287,12 +287,12 @@ enum
     DL_FLASH  = 1<<10
 };
 
-extern void adddynlight(const vec &o, float radius, const vec &color, int fade = 0, int peak = 0, int flags = 0, float initradius = 0, const vec &initcolor = vec(0, 0, 0), physent *owner = NULL, const vec &dir = vec(0, 0, 0), int spot = 0);
+extern void adddynlight(const vec &o, float radius, const vec &color, int fade = 0, int peak = 0, int flags = 0, float initradius = 0, const vec &initcolor = vec(0, 0, 0), entities::classes::BaseEntity *owner = NULL, const vec &dir = vec(0, 0, 0), int spot = 0);
 extern void dynlightreaching(const vec &target, vec &color, vec &dir, bool hud = false);
-extern void removetrackeddynlights(physent *owner = NULL);
+extern void removetrackeddynlights(entities::classes::BaseEntity *owner = NULL);
 
 // rendergl
-extern physent *camera1;
+extern entities::classes::BaseEntity *camera1;
 extern vec worldpos, camdir, camright, camup;
 extern float curfov, fovy, aspect;
 
@@ -347,9 +347,9 @@ extern void particle_text(const vec &s, const char *t, int type, int fade = 2000
 extern void particle_textcopy(const vec &s, const char *t, int type, int fade = 2000, int color = 0xFFFFFF, float size = 2.0f, int gravity = 0);
 extern void particle_icon(const vec &s, int ix, int iy, int type, int fade = 2000, int color = 0xFFFFFF, float size = 2.0f, int gravity = 0);
 extern void particle_meter(const vec &s, float val, int type, int fade = 1, int color = 0xFFFFFF, int color2 = 0xFFFFF, float size = 2.0f);
-extern void particle_flare(const vec &p, const vec &dest, int fade, int type, int color = 0xFFFFFF, float size = 0.28f, physent *owner = NULL);
+extern void particle_flare(const vec &p, const vec &dest, int fade, int type, int color = 0xFFFFFF, float size = 0.28f, entities::classes::BaseEntity *owner = NULL);
 extern void particle_fireball(const vec &dest, float max, int type, int fade = -1, int color = 0xFFFFFF, float size = 4.0f);
-extern void removetrackedparticles(physent *owner = NULL);
+extern void removetrackedparticles(entities::classes::BaseEntity *owner = NULL);
 
 // stain
 enum
@@ -379,28 +379,28 @@ extern bool loadents(const char *fname, vector<entity> &ents, uint *crc = NULL);
 // physics
 extern vec collidewall;
 extern int collideinside;
-extern physent *collideplayer;
+extern entities::classes::BaseEntity *collideplayer;
 
-extern void moveplayer(physent *pl, int moveres, bool local);
-extern bool moveplayer(physent *pl, int moveres, bool local, int curtime);
-extern void crouchplayer(physent *pl, int moveres, bool local);
-extern bool collide(physent *d, const vec &dir = vec(0, 0, 0), float cutoff = 0.0f, bool playercol = true, bool insideplayercol = false);
-extern bool bounce(physent *d, float secs, float elasticity, float waterfric, float grav);
-extern bool bounce(physent *d, float elasticity, float waterfric, float grav);
-extern void avoidcollision(physent *d, const vec &dir, physent *obstacle, float space);
+extern void moveplayer(entities::classes::BaseEntity *pl, int moveres, bool local);
+extern bool moveplayer(entities::classes::BaseEntity *pl, int moveres, bool local, int curtime);
+extern void crouchplayer(entities::classes::BaseEntity *pl, int moveres, bool local);
+extern bool collide(entities::classes::BaseEntity *d, const vec &dir = vec(0, 0, 0), float cutoff = 0.0f, bool playercol = true, bool insideplayercol = false);
+extern bool bounce(entities::classes::BaseEntity *d, float secs, float elasticity, float waterfric, float grav);
+extern bool bounce(entities::classes::BaseEntity *d, float elasticity, float waterfric, float grav);
+extern void avoidcollision(entities::classes::BaseEntity *d, const vec &dir, entities::classes::BaseEntity *obstacle, float space);
 extern bool overlapsdynent(const vec &o, float radius);
-extern bool movecamera(physent *pl, const vec &dir, float dist, float stepdist);
+extern bool movecamera(entities::classes::BaseEntity *pl, const vec &dir, float dist, float stepdist);
 extern void physicsframe();
 extern void dropenttofloor(entity *e);
 extern bool droptofloor(vec &o, float radius, float height);
 
 extern void vecfromyawpitch(float yaw, float pitch, int move, int strafe, vec &m);
 extern void vectoyawpitch(const vec &v, float &yaw, float &pitch);
-extern void updatephysstate(physent *d);
+extern void updatephysstate(entities::classes::BaseEntity *d);
 extern void cleardynentcache();
-extern void updatedynentcache(physent *d);
-extern bool entinmap(dynent *d, bool avoidplayers = false);
-extern void findplayerspawn(dynent *d, int forceent = -1, int tag = 0);
+extern void updatedynentcache(entities::classes::BaseEntity *d);
+extern bool entinmap(entities::classes::BaseEntity *d, bool avoidplayers = false);
+extern void findplayerspawn(entities::classes::BaseEntity *d, int forceent = -1, int tag = 0);
 
 // sound
 enum
@@ -432,12 +432,12 @@ struct modelattach
     modelattach(const char *tag, vec *pos) : tag(tag), name(NULL), anim(-1), basetime(0), pos(pos), m(NULL) {}
 };
 
-extern void rendermodel(const char *mdl, int anim, const vec &o, float yaw = 0, float pitch = 0, float roll = 0, int cull = MDL_CULL_VFC | MDL_CULL_DIST | MDL_CULL_OCCLUDED, dynent *d = NULL, modelattach *a = NULL, int basetime = 0, int basetime2 = 0, float size = 1, const vec4 &color = vec4(1, 1, 1, 1));
-extern int intersectmodel(const char *mdl, int anim, const vec &pos, float yaw, float pitch, float roll, const vec &o, const vec &ray, float &dist, int mode = 0, dynent *d = NULL, modelattach *a = NULL, int basetime = 0, int basetime2 = 0, float size = 1);
+extern void rendermodel(const char *mdl, int anim, const vec &o, float yaw = 0, float pitch = 0, float roll = 0, int cull = MDL_CULL_VFC | MDL_CULL_DIST | MDL_CULL_OCCLUDED, entities::classes::BaseEntity *d = NULL, modelattach *a = NULL, int basetime = 0, int basetime2 = 0, float size = 1, const vec4 &color = vec4(1, 1, 1, 1));
+extern int intersectmodel(const char *mdl, int anim, const vec &pos, float yaw, float pitch, float roll, const vec &o, const vec &ray, float &dist, int mode = 0, entities::classes::BaseEntity *d = NULL, modelattach *a = NULL, int basetime = 0, int basetime2 = 0, float size = 1);
 extern void abovemodel(vec &o, const char *mdl);
-extern void renderclient(dynent *d, const char *mdlname, modelattach *attachments, int hold, int attack, int attackdelay, int lastaction, int lastpain, float scale = 1, bool ragdoll = false, float trans = 1);
-extern void interpolateorientation(dynent *d, float &interpyaw, float &interppitch);
-extern void setbbfrommodel(dynent *d, const char *mdl);
+extern void renderclient(entities::classes::BaseEntity *d, const char *mdlname, modelattach *attachments, int hold, int attack, int attackdelay, int lastaction, int lastpain, float scale = 1, bool ragdoll = false, float trans = 1);
+extern void interpolateorientation(entities::classes::BaseEntity *d, float &interpyaw, float &interppitch);
+extern void setbbfrommodel(entities::classes::BaseEntity *d, const char *mdl);
 extern const char *mapmodelname(int i);
 extern model *loadmodel(const char *name, int i = -1, bool msg = false);
 extern void preloadmodel(const char *name);
@@ -457,7 +457,7 @@ namespace UI
 
 // ragdoll
 
-extern void moveragdoll(dynent *d);
+extern void moveragdoll(entities::classes::BaseEntity *d);
 extern void cleanragdoll(dynent *d);
 
 // server

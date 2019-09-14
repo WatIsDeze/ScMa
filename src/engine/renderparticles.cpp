@@ -135,7 +135,7 @@ struct particle
     {
         const char *text;
         float val;
-        physent *owner;
+        entities::classes::BaseEntity *owner;
         struct
         {
             uchar color2[3];
@@ -177,7 +177,7 @@ struct partrenderer
 
     virtual void init(int n) { }
     virtual void reset() = 0;
-    virtual void resettracked(physent *owner) { }
+    virtual void resettracked(entities::classes::BaseEntity *owner) { }
     virtual particle *addpart(const vec &o, const vec &d, int fade, int color, float size, int gravity = 0) = 0;
     virtual void update() { }
     virtual void render() = 0;
@@ -299,7 +299,7 @@ struct listrenderer : partrenderer
         list = NULL;
     }
 
-    void resettracked(physent *owner)
+    void resettracked(entities::classes::BaseEntity *owner)
     {
         if(!(type&PT_TRACK)) return;
         for(listparticle **prev = &list, *cur = list; cur; cur = *prev)
@@ -650,7 +650,7 @@ struct varenderer : partrenderer
         lastupdate = -1;
     }
 
-    void resettracked(physent *owner)
+    void resettracked(entities::classes::BaseEntity *owner)
     {
         if(!(type&PT_TRACK)) return;
         loopi(numparts)
@@ -894,7 +894,7 @@ void cleanupparticles()
     loopi(sizeof(parts)/sizeof(parts[0])) parts[i]->cleanup();
 }
 
-void removetrackedparticles(physent *owner)
+void removetrackedparticles(entities::classes::BaseEntity *owner)
 {
     loopi(sizeof(parts)/sizeof(parts[0])) parts[i]->resettracked(owner);
 }
@@ -1102,7 +1102,7 @@ void particle_meter(const vec &s, float val, int type, int fade, int color, int 
     p->progress = clamp(int(val*100), 0, 100);
 }
 
-void particle_flare(const vec &p, const vec &dest, int fade, int type, int color, float size, physent *owner)
+void particle_flare(const vec &p, const vec &dest, int fade, int type, int color, float size, entities::classes::BaseEntity *owner)
 {
     if(!canaddparticles()) return;
     newparticle(p, dest, fade, type, color, size)->owner = owner;
