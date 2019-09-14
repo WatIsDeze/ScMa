@@ -1122,6 +1122,8 @@ entities::classes::BaseEntity *newentity(bool local, const vec &o, int type, int
     e.attr4 = v4;
     e.attr5 = v5;
     e.et_type = type;
+    e.ent_type = type;
+    e.game_type = -1;
     e.reserved = 0;
     if(local && fix)
     {
@@ -1162,7 +1164,7 @@ void newentity(int type, int a1, int a2, int a3, int a4, int a5, bool fix = true
     t->et_type = ET_EMPTY;
     enttoggle(idx);
     makeundoent();
-    entedit(idx, e.et_type = e.et_type);
+    entedit(idx, e.et_type = type);
     commitchanges();
 }
 

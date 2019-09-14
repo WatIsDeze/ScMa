@@ -13,17 +13,12 @@ BaseEntity::~BaseEntity() {
 
 }
 
-void BaseEntity::preload() {
-    //conoutf("%s", "Preloading BaseEntity entity");
-}
+void BaseEntity::preload() {}
+void BaseEntity::think() {}
+void BaseEntity::render() {}
 
-void BaseEntity::think() {
-
-}
-
-void BaseEntity::render() {
-
-}
+bool BaseEntity::onTrigger(entities::classes::BaseEntity *otherEnt, const vec &dir) {}
+bool BaseEntity::onTouch(entities::classes::BaseEntity *otherEnt, const vec &dir) {}
 
 } // classes
 } // entities

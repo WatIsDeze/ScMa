@@ -15,6 +15,7 @@ namespace entities {
             virtual void think();
             virtual void render();
 
+        public:
             void preloadMapModel(const std::string &filename);
         };
     } // classes

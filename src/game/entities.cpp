@@ -44,24 +44,11 @@ namespace entities
 
     const char *entmdlname(int type)
     {
-        /*static const char * const entmdlnames[MAXENTTYPES] =
-        {
-            NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-            "game/teleport", NULL, NULL,
-            NULL, NULL
-        };
-        return entmdlnames[type];*/
         return NULL;
     }
 
     const char *entmodel(const entity &e)
     {
-       /* if(e.game_type == TELEPORT)
-        {
-            if(e.attr2 > 0) return mapmodelname(e.attr2);
-            if(e.attr2 < 0) return NULL;
-        }
-        return e.type < MAXENTTYPES ? entmdlname(e.type) : NULL;*/
         return NULL;
     }
 
@@ -81,60 +68,7 @@ namespace entities
 
         // Specifically load in the client player model.
         game::player1->preload();
-
-        // TODO: If stuff suddenly starts failing it is likely cuz of this being commented.
-/*
-        loopi(MAXENTTYPES)
-        {
-            const char *mdl = entmdlname(i);
-            if(!mdl) continue;
-            preloadmodel(mdl);
-        }*/
-//        loopv(ents)
-//        {
-//            switch(e.type)
-//            {
-//                case TELEPORT:
-//                    if(e.attr2 > 0) preloadmodel(mapmodelname(e.attr2));
-//                case JUMPPAD:
-//                    if(e.attr4 > 0) preloadmapsound(e.attr4);
-//                    break;
-//                //case ET_GAMESPECIFIC:
-//                //	conoutf("%s", "Found a gamespecific entity");
-//            }
-//        }
     }
-
-// TODO: Wonder what this function was for anyway, we don't need it.
-//    void renderentities()
-//    {
-//        loopv(g_ents)
-//        {
-//            entities::classes::BaseEntity &e = *g_ents[i];
-//            int revs = 10;
-
-//            switch(e.type)
-//            {
-//                case TELEPORT:
-//                    if(e.attr2 < 0) continue;
-//                    break;
-//                case ENT_PLAYER:
-
-//                default:
-//                    if(!e.spawned()) continue;
-//                    break;
-//            }
-
-//            // This code seems to render the default models.
-//            const char *mdlname = entmodel(e);
-//            if(mdlname)
-//            {
-//                vec p = e.o;
-//                p.z += 1+sinf(lastmillis/100.0+e.o.x+e.o.y)/20;
-//                rendermodel(mdlname, ANIM_MAPMODEL|ANIM_LOOP, p, lastmillis/(float)revs, 0, 0, MDL_CULL_VFC | MDL_CULL_DIST | MDL_CULL_OCCLUDED);
-//            }
-//        }
-//    }
 
     void resetspawns() {
         loopv(g_ents)
@@ -171,7 +105,19 @@ namespace entities
     }
 
     void animatemapmodel(const entities::classes::BaseEntity &e, int &anim, int &basetime)
-    {
+    {/*        const fpsentity &f = (const fpsentity &)e;
+        if(validtrigger(f.attr3)) switch(f.triggerstate)
+        {
+            case TRIGGER_RESET: anim = ANIM_TRIGGER|ANIM_START; break;
+            case TRIGGERING: anim = ANIM_TRIGGER; basetime = f.lasttrigger; break;
+            case TRIGGERED: anim = ANIM_TRIGGER|ANIM_END; break;
+            case TRIGGER_RESETTING: anim = ANIM_TRIGGER|ANIM_REVERSE; basetime = f.lasttrigger; break;
+        }*/
+        //const entities::classes::BaseMapModelEntity &ent = (const entities::classes::BaseMapModelEntity&)e;
+        //anim = ANIM_MAPMODEL | ANIM_START | ANIM_LOOP;
+        //basetime = SDL_GetTicks() - e.reserved;
+        //e.reserved = SDL_GetTicks();
+
     }
 
     // Fixes entities, which mainly just mangles the attributes. I see little reason to keep this around...

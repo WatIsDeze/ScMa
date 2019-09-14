@@ -73,6 +73,9 @@ namespace game
         // If world loading fails, start a new empty map instead.
         if(!load_world(name))
             emptymap(0, true, name);
+
+        // Add the player entity to index 0 of the entity list.
+
     }
 
     void forceedit(const char *name) {
@@ -183,6 +186,7 @@ namespace game
     }
 
     dynent *iterdynents(int i) {
+
         // TODO: Fix this, objects should be the ents array I guess.
         // Reference is found in fps code.
 //        dynent *iterdynents(int i)
