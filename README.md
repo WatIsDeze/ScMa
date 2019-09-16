@@ -28,7 +28,7 @@ SchizoMania game, using [Tesseract](http://tesseract.gg) engine.
 Although it is using [Tesseract](http://tesseract.gg) as a base, it does not refrain from heavily modifying parts that need a change.
 
 # Helping out:
-In order to help us out, there is an irc channel on, irc.freenode.net #schizomania, and there is a (Discord)[https://discord.gg/euwTtYx] server which we strongly advise you to join instead. 
+In order to help us out, there is an irc channel on, irc.freenode.net #schizomania, and there is a [Discord](https://discord.gg/euwTtYx) server which we strongly advise you to join instead. 
 
 # License:
 All our media falls under this license, unless it is still temporary art from [Tesseract](http://tesseract.gg). https://creativecommons.org/licenses/by-nc-nd/4.0/
