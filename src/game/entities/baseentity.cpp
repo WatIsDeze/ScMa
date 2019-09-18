@@ -19,6 +19,9 @@ void BaseEntity::preload() {}
 void BaseEntity::think() {}
 void BaseEntity::render() {}
 
+
+void BaseEntity::onAttributeSet(const std::string &key, const std::string &value) {}
+
 bool BaseEntity::onTrigger(entities::classes::BaseEntity *otherEnt, const vec &dir) {}
 bool BaseEntity::onTouch(entities::classes::BaseEntity *otherEnt, const vec &dir) {}
 

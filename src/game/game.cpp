@@ -156,7 +156,7 @@ namespace game
     }
 
     void preload() {
-        entities::preloadentities();
+        //entities::preloadentities();
     }
 
     void renderavatar() {

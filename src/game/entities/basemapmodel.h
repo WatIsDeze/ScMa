@@ -15,6 +15,8 @@ namespace entities {
             virtual void think();
             virtual void render();
 
+            virtual void onAttributeSet(const std::string &key, const std::string &value);
+
         private:
             void loadModelAttributes();
 

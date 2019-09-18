@@ -34,6 +34,9 @@ namespace game {
                 // Set the attribute value.
                 // TODO: Check if it already exists or not? Maybe just ignore that.
                 ent->attributes[s1] = s2;
+
+                // Update our entity about the changes.
+                ent->onAttributeSet(s1, s2);
             } else {
                 // Inform the user.
                 conoutf("%s", "No key:value string has been passed.");

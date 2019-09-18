@@ -191,6 +191,11 @@ namespace entities
             virtual void render();
 
             //
+            // Attribute events.
+            //
+            virtual void onAttributeSet(const std::string &key, const std::string &value);
+
+            //
             // Trigger and touch commands.
             //
             // ent = the entity which has triggered you.

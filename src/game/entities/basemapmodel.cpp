@@ -23,13 +23,15 @@ BaseMapModel::BaseMapModel(const std::string &filename) : BaseEntity() {
 
     // Last but not least, set our collide method.
     collidetype = COLLIDE_TRI;
-
-    // Load it in here.
-    preloadMapModel("world/door_redeclipse");
 }
 
 BaseMapModel::~BaseMapModel() {
 
+}
+
+void BaseMapModel::onAttributeSet(const std::string &key, const std::string &value) {
+    if (key == "model")
+        preloadMapModel(value);
 }
 
 void BaseMapModel::preload() {
