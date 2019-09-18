@@ -694,7 +694,7 @@ bool save_world(const char *mname, bool nolms)
 
             // Store game related attributes.
             j[i]["game"]["classname"] = tmp.classname;
-            j[i]["game"]["attributes"] = j.object(tmp.attributes);
+            j[i]["game"]["attributes"] = json(tmp.attributes);
         }
     }
 
@@ -727,7 +727,7 @@ static uint mapcrc = 0;
 uint getmapcrc() { return mapcrc; }
 void clearmapcrc() { mapcrc = 0; }
 
-bool load_world(const char *mname, const char *cname)        // still supports all map formats that have existed since the earliest cube betas!
+bool load_world(const char *mname, const char *cname)        // Does not support old map formats anymore.
 {
     int loadingstart = SDL_GetTicks();
     setmapfilenames(mname, cname);

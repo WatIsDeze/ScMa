@@ -83,7 +83,7 @@ namespace entities
 
     void resetspawns() {
         loopv(g_ents)
-                g_ents[i]->clearspawned();
+            g_ents[i]->clearspawned();
     }
 
     void setspawn(int i, bool on) { if(g_ents.inrange(i)) g_ents[i]->setspawned(on); }

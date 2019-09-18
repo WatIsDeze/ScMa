@@ -12,11 +12,11 @@ Door::Door() : entities::classes::BaseMapModel("") {
 }
 
 Door::~Door() {
-
+    
 }
 
 void Door::preload() {
-
+    
 }
 void Door::think() {}
 void Door::render() {}

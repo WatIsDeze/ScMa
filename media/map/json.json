@@ -1,0 +1,26 @@
+[
+    {
+        "ent_type": 2,
+        "et_type": 2,
+        "game": {
+            "attributes": {
+                "model": "world/door_redeclipse",
+                "model_idx": "70"
+            },
+            "classname": "door"
+        },
+        "game_type": 13,
+        "int_attr1": 0,
+        "int_attr2": 0,
+        "int_attr3": 0,
+        "int_attr4": 0,
+        "int_attr5": 0,
+        "int_reserved": 0,
+        "model_idx": 70,
+        "o": {
+            "x": 540.0,
+            "y": 499.32904052734375,
+            "z": 526.9541015625
+        }
+    }
+]
