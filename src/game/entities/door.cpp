@@ -1,21 +1,24 @@
 #include "../game.h"
 #include "../engine/engine.h"
 #include "door.h"
-#include "basemapmodelentity.h"
+#include "basemapmodel.h"
 
 namespace entities {
 namespace classes {
 
-Door::Door() : entities::classes::BaseMapModelEntity("world/door_redeclipse") {
+Door::Door() : entities::classes::BaseMapModel("") {
     // Doors animate, makes sense.
     flags |= EF_ANIM;
+    preloadMapModel("world/door_redeclipse");
 }
 
 Door::~Door() {
 
 }
 
-void Door::preload() {}
+void Door::preload() {
+    preloadMapModel("world/door_redeclipse");
+}
 void Door::think() {}
 void Door::render() {}
 

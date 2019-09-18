@@ -23,7 +23,6 @@ public:
 
     // Only used for BaseMapModelEntities.
     int model_idx;
-    char model_name[256];
 };
 
 enum

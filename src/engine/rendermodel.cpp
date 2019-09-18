@@ -363,7 +363,7 @@ void flushpreloadedmodels(bool msg)
 }
 
 // Place elsewhere.
-#include "../game/entities/basemapmodelentity.h"
+#include "../game/entities/basemapmodel.h"
 
 void preloadusedmapmodels(bool msg, bool bih)
 {
@@ -376,7 +376,7 @@ void preloadusedmapmodels(bool msg, bool bih)
         //if(e.et_type==ET_MAPMODEL && e.model_idx >= 0 && used.find(e.model_idx) < 0) used.add(e.model_idx);
         if (e.et_type == ET_MAPMODEL) {
             if (e.model_idx >= 0 && used.find(e.model_idx) < 0) used.add(e.model_idx);
-                ((entities::classes::BaseMapModelEntity&)e).preloadMapModel(e.attributes["model"]);
+                ((entities::classes::BaseMapModel&)e).preloadMapModel(e.attributes["model"]);
         }
     }
 

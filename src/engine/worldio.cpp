@@ -692,16 +692,9 @@ bool save_world(const char *mname, bool nolms)
             j[i]["int_reserved"] = tmp.reserved;
             j[i]["model_idx"] = tmp.model_idx;
 
-            // Now comes the good stuff, our own custom attributes.
-            //if (tmp.et_type == ET_GAMESPECIFIC) {
-                // Store classname.
-                j[i]["game"]["classname"] = tmp.classname;
-
-                // Store attributes.
-                for (std::map<std::string, std::string>::iterator k = tmp.attributes.begin(); k != tmp.attributes.end(); ++k) {
-                    j[i]["game"]["attributes"][k->first] = k->second;
-                }
-            //}
+            // Store game related attributes.
+            j[i]["game"]["classname"] = tmp.classname;
+            j[i]["game"]["attributes"] = j.object(tmp.attributes);
         }
     }
 
@@ -846,7 +839,7 @@ bool load_world(const char *mname, const char *cname)        // still supports a
     json j;
     i >> j;
 
-    // Fetch the entities array, which, I suppose can be a BaseEntity from here on to begin with.
+    // Reference to our entities vector list stored in the entities namespace.
     vector<entities::classes::BaseEntity*> &ents = entities::getents();
 
     // TODO: Ensure that our data is valid, do not access invalid or nonexistent elements.
@@ -861,14 +854,13 @@ bool load_world(const char *mname, const char *cname)        // still supports a
             int game_type = element["game_type"];
 
             // Have to do this here to ensure that classname can be passed to newgameentity.
-            //if (et_type >= ET_GAMESPECIFIC) {
-               classname = element["game"]["classname"];
-            //}
+            classname = element["game"]["classname"];
 
             // Allocate our entity.
             entities::classes::BaseEntity &e = *entities::newgameentity((char*)classname.c_str());
 
             // Fetch base entity data. (Old ancient entity info.)
+            e.classname = classname;
             e.et_type = element["et_type"];
             e.ent_type = element["ent_type"];
             e.game_type = element["game_type"];
@@ -883,18 +875,14 @@ bool load_world(const char *mname, const char *cname)        // still supports a
             e.reserved = element["int_reserved"];
             e.model_idx = element["model_idx"];
 
-            // Fetch ScMa entity info.
-            //if (et_type >= ET_GAMESPECIFIC) {
-                // Store the classname.
-                e.classname = classname;
-                //e.attributes = element.at("game").at("attributes");
-                const json& rh = element["game"]["attributes"];
+            // Fetch a reference to the game attributes json element.
+            const json& game_element = element["game"]["attributes"];
 
-                for (auto& element : json::iterator_wrapper(rh)) {
-                    e.attributes[element.key()] = element.value();
-                }
-            //}
+            for (auto& element : json::iterator_wrapper(game_element)) {
+                e.attributes[element.key()] = element.value();
+            }
 
+            // All went well, so lets add our entity to the list.
             ents.add(&e);
         }
     }
@@ -949,7 +937,6 @@ bool load_world(const char *mname, const char *cname)        // still supports a
     identflags &= ~IDF_OVERRIDDEN;
 
     preloadusedmapmodels(true);
-
     game::preload();
     flushpreloadedmodels();
 

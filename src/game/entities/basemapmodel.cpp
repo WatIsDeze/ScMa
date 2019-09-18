@@ -1,11 +1,11 @@
 #include "../game.h"
 #include "../engine/engine.h"
-#include "basemapmodelentity.h"
+#include "basemapmodel.h"
 
 namespace entities {
 namespace classes {
 
-BaseMapModelEntity::BaseMapModelEntity(const std::string &filename) : BaseEntity() {
+BaseMapModel::BaseMapModel(const std::string &filename) : BaseEntity() {
     // State (Alive)
     state = CS_ALIVE;
 
@@ -23,42 +23,52 @@ BaseMapModelEntity::BaseMapModelEntity(const std::string &filename) : BaseEntity
 
     // Last but not least, set our collide method.
     collidetype = COLLIDE_TRI;
+}
 
-    if (attributes.find("model") != attributes.end()) {
-        // Try to load the model that is saved in the attributes.
-        preloadMapModel(attributes["model"]);
-    } else {
-        // Try to preload the model passed to the constructor.
-        preloadMapModel(filename.c_str());
+BaseMapModel::~BaseMapModel() {
 
-        // Warn our user in case the model has not been found.
-        if (model_idx == -1) {
-            conoutf(CON_WARN, "Failed to load model: %s", filename.c_str());
+}
+
+void BaseMapModel::preload() {
+
+}
+
+void BaseMapModel::think() {
+}
+
+void BaseMapModel::render() {
+}
+
+void BaseMapModel::loadModelAttributes() {
+    if (filename != "" && !filename.empty()) {
+        if (attributes.find("model") != attributes.end()) {
+            // Try to load the model that is saved in the attributes.
+            preloadMapModel(attributes["model"]);
         } else {
-            attributes["model"] = filename;
+            // Try to preload the model passed to the constructor.
+            preloadMapModel(filename.c_str());
+
+            // Warn our user in case the model has not been found.
+            if (model_idx == -1)
+                conoutf(CON_WARN, "Failed to load model: %s", filename.c_str());
         }
+    } else {
+        conoutf(CON_WARN, "No model filename supplied to BaseMapModel entity.");
     }
 }
 
-BaseMapModelEntity::~BaseMapModelEntity() {
-
-}
-
-void BaseMapModelEntity::preload() {
-}
-
-void BaseMapModelEntity::think() {
-}
-
-void BaseMapModelEntity::render() {
-}
-
-void BaseMapModelEntity::preloadMapModel(const std::string &filename) {
+void BaseMapModel::preloadMapModel(const std::string &filename) {
     // Let's first preload this model.
     preloadmodel(filename.c_str());
 
     // Now store the map model index.
     model_idx = loadmapmodel(filename.c_str(), this);
+
+    if (model_idx != -1) {
+        // store attributes since all went well.
+        attributes["model"] = filename;
+        attributes["model_idx"] = model_idx;
+    }
 }
 
 } // classes

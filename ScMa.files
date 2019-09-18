@@ -545,6 +545,6 @@ src/game/entities/door.cpp
 src/game/entities/door.h
 src/shared/physent.cpp
 src/shared/dynent.cpp
-src/game/entities/basemapmodelentity.h
-src/game/entities/basemapmodelentity.cpp
+src/game/entities/basemapmodel.h
+src/game/entities/basemapmodel.cpp
 dev_docs/mapeditorbindings.txt

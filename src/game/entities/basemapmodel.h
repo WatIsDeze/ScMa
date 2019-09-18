@@ -1,19 +1,22 @@
-#ifndef BASEMAPMODELENTITY_H
-#define BASEMAPMODELENTITY_H
+#ifndef BASEMAPMODEL_H
+#define BASEMAPMODEL_H
 
 namespace entities {
     namespace classes {
 
         // The base entity class for any model. (This could be a tree, or even doors and other interactive items.)
         // NOTE: Never change its type, it is MAPMODEL for a reason.
-        class BaseMapModelEntity : public BaseEntity {
+        class BaseMapModel : public BaseEntity {
         public:
-            BaseMapModelEntity(const std::string &filename);
-            virtual ~BaseMapModelEntity();
+            BaseMapModel(const std::string &filename);
+            virtual ~BaseMapModel();
 
             virtual void preload();
             virtual void think();
             virtual void render();
+
+        private:
+            void loadModelAttributes();
 
         public:
             void preloadMapModel(const std::string &filename);
@@ -21,4 +24,4 @@ namespace entities {
     } // classes
 } // entities
 
-#endif // BASEMAPMODELENTITY_H
+#endif // BASEMAPMODEL_H

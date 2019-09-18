@@ -6,7 +6,7 @@
             "classname": "playerstart"
         },
         "game_type": 3,
-        "int_attr1": 0,
+        "int_attr1": 91,
         "int_attr2": 0,
         "int_attr3": 0,
         "int_attr4": 0,
@@ -14,9 +14,9 @@
         "int_reserved": 0,
         "model_idx": 0,
         "o": {
-            "x": 588.0,
-            "y": 420.0,
-            "z": 524.0
+            "x": 538.0,
+            "y": 378.0,
+            "z": 520.0
         }
     },
     {
@@ -27,16 +27,16 @@
         },
         "game_type": 13,
         "int_attr1": 0,
-        "int_attr2": 273,
+        "int_attr2": 0,
         "int_attr3": 0,
         "int_attr4": 0,
         "int_attr5": 0,
         "int_reserved": 0,
         "model_idx": 70,
         "o": {
-            "x": 584.0,
-            "y": 520.1575317382813,
-            "z": 542.5111694335938
+            "x": 398.0,
+            "y": 361.07537841796875,
+            "z": 530.1116943359375
         }
     }
 ]
