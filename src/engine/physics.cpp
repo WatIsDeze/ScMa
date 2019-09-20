@@ -6,6 +6,8 @@
 #include "engine.h"
 #include "mpr.h"
 
+#include "../game/entities/player.h"
+
 const int MAXCLIPOFFSET = 4;
 const int MAXCLIPPLANES = 1024;
 static clipplanes clipcache[MAXCLIPPLANES];

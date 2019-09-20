@@ -5,30 +5,35 @@
 namespace game
 {
     // Global player entity pointer.
-    entities::classes::Player *player1 = NULL;
+    entities::classes::BaseEntity *player = NULL;
 
     // Networking State properties.
     bool connected = false;
 
     // Map Game State properties.
-    int maptime = 0;
+    int maptime = 0, maprealtime = 0, maplimit = -1;
     cubestr mapname = "";
 
     void updateworld() {
         // Update the world time.
-        if(!maptime) {
-            maptime = lastmillis;
-            return;
-        }
-
-        // Escape this function if there is no currenttime. (Meaning it is 0.)
-        if(!curtime) return;
+        if(!maptime) { maptime = lastmillis; maprealtime = totalmillis; return; }
+        // Escape this function if there is no currenttime yet from server to client. (Meaning it is 0.)
+        if(!curtime) return; // { gets2c(); if(player->clientnum>=0) c2sinfo(); return; }
 
         // Update the physics.
         physicsframe();
 
-        // Update all our objects.
+        // Update all our entity objects.
+       // gets2c();
         updateentities();
+
+        // Allow for crouching and moving.
+        //if (connected) {
+        //    crouchplayer(player, 10, true);
+        //    moveplayer(player, 10, true);
+        //}
+
+       // if(player->clientnum >=0) c2sinfo();   // do this last, to reduce the effective frame lag
     }
 
     void updateentities() {
@@ -36,13 +41,16 @@ namespace game
         loopv(entities::g_ents)
         {
             // Let's go at it!
-            entities::classes::BaseEntity *e = entities::g_ents[i];
-            e->think();
-//          if(e.type == ENT_PLAYER) {}
+            if (entities::g_ents.inrange(i)) {
+                entities::classes::BaseEntity *e = entities::g_ents[i];
+                    if (e != NULL) ;
+                        e->think();
+            }
+
         }
 
-        // Player specific think action.
-        player1->think();
+        if (game::player)
+            game::player->think();
     }
 
     void gameconnect(bool _remote)
@@ -117,10 +125,21 @@ namespace game
 
     }
     void newmap(int size) {
+        // Copy into mapname and reset maptime.
+        //copycubestr(mapname, name ? name : "");
+        maptime = 0;
 
+        // Reset spawns.
+        //entities::resetspawns();
+        //player = new entities::classes::Player();
+        //player->setspawned(true);
+
+//        // Find our playerspawn.
+//        findplayerspawn(player, -1, 0);
     }
     void loadingmap(const char *name) {
-
+        //player = new entities::classes::Player();
+        //player->setspawned(true);
     }
 
     void startmap(const char *name)
@@ -130,7 +149,7 @@ namespace game
         maptime = 0;
 
         // Find our playerspawn.
-        findplayerspawn(player1);
+        findplayerspawn(player, -1, 0);
     }
 
     bool needminimap() {
@@ -138,7 +157,7 @@ namespace game
     }
 
     float abovegameplayhud(int w, int h) {
-        switch(player1->state)
+        switch(player->state)
         {
             case CS_EDITING:
                 return 1;
@@ -156,7 +175,7 @@ namespace game
     }
 
     void preload() {
-        //entities::preloadentities();
+        entities::preloadentities();
     }
 
     void renderavatar() {
@@ -172,7 +191,7 @@ namespace game
     }
     bool cancrouch() {
         if(!connected) return false;
-        return player1->state!=CS_DEAD;
+        return player->state!=CS_DEAD;
     }
 
     bool allowmove(entities::classes::BaseEntity *d) {
@@ -186,28 +205,11 @@ namespace game
     }
 
     entities::classes::BaseEntity *iterdynents(int i) {
-       /* if (i == 0) {
-            return player1;
-        }
-
-        if (i != -1 || i >= entities::g_ents.length()) {
-            return NULL;
-        } else {
-            return entities::g_ents[i];
-        }*/
-
-        // TODO: Fix this, objects should be the ents array I guess.
-        // Reference is found in fps code.
-//        dynent *iterdynents(int i)
-//        {
-//            if(i<players.length()) return players[i];
-//            i -= players.length();
-//            if(i<monsters.length()) return (dynent *)monsters[i];
-//            i -= monsters.length();
-//            if(i<movables.length()) return (dynent *)movables[i];
-//            return NULL;
-//        }
-        return player1;
+        return player;
+        //if (i < entities::g_ents.length()) return entities::g_ents[i];
+        //if (i < entities::g_lightEnts.length()) return (entities::classes::BaseEntity*)entities::g_lightEnts[i];
+        //    i -= entities::g_lightEnts.length();
+        //return NULL;
     }
     // int numdynents() { return players.length()+monsters.length()+movables.length(); }
     int numdynents() {
@@ -224,7 +226,7 @@ namespace game
     }
 
     int selectcrosshair(vec &color) {
-        if(player1->state==CS_DEAD) return -1;
+        if(player->state==CS_DEAD) return -1;
         return 0;
     }
 
@@ -237,11 +239,11 @@ namespace game
     }
 
     bool detachcamera() {
-        return player1->state==CS_DEAD;
+        return player->state==CS_DEAD;
     }
 
     bool collidecamera() {
-        return player1->state!=CS_EDITING;
+        return player->state!=CS_EDITING;
     }
 
     void lighteffects(entities::classes::BaseEntity *e, vec &color, vec &dir) {
@@ -278,6 +280,7 @@ namespace game
     const char *savedservers() { return "config/servers.cfg"; }
 
     void loadconfigs() {
+        conoutf("CONOUTF BOY HERE");
         execfile("config/auth.cfg", false);
     }
 
@@ -309,8 +312,14 @@ namespace game
 
     void initclient() {
         // Initialize the player class used for this client.
-        player1 = new entities::classes::Player();
-        player1->setspawned(true);
+        player = new entities::classes::Player();
+        player->setspawned(true);
+
+        // Add player 1 to the entities list at index 0.
+        //entities::g_ents.add(player);
+
+        // Setup the map time.
+        //maptime = maprealtime = 0;
     }
 
     const char *gameident() {

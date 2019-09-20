@@ -25,6 +25,10 @@ BaseMapModel::BaseMapModel(const std::string &filename) : BaseEntity() {
     collidetype = COLLIDE_TRI;
 }
 
+BaseMapModel::BaseMapModel() : BaseMapModel("") {
+
+}
+
 BaseMapModel::~BaseMapModel() {
 
 }
@@ -32,6 +36,10 @@ BaseMapModel::~BaseMapModel() {
 void BaseMapModel::onAttributeSet(const std::string &key, const std::string &value) {
     if (key == "model")
         preloadMapModel(value);
+}
+
+void BaseMapModel::onAnimate(int &anim, int &basetime) {
+conoutf("OnAnimate: %i %i", anim, basetime);
 }
 
 void BaseMapModel::preload() {

@@ -2,6 +2,9 @@
 
 #include "engine.h"
 
+// Included especially for base and animated map models.
+#include "../game/entities/basemapmodel.h"
+
 static inline void drawtris(GLsizei numindices, const GLvoid *indices, ushort minvert, ushort maxvert)
 {
     glDrawRangeElements_(GL_TRIANGLES, minvert, maxvert, numindices, GL_UNSIGNED_SHORT, indices);
@@ -506,8 +509,11 @@ VAR(oqmm, 0, 4, 8);
 
 static inline void rendermapmodel(entities::classes::BaseEntity &e)
 {
+    if (e.et_type != ET_MAPMODEL)
+        return;
+
     int anim = ANIM_MAPMODEL|ANIM_LOOP, basetime = 0;
-    if(e.flags&EF_ANIM) entities::animatemapmodel(e, anim, basetime);
+    if(e.flags&EF_ANIM) ((entities::classes::BaseMapModel&)e).onAnimate(anim, basetime);
     rendermapmodel(e.model_idx, anim, e.o, e.attr2, e.attr3, e.attr4, MDL_CULL_VFC | MDL_CULL_DIST, basetime, e.attr5 > 0 ? e.attr5/100.0f : 1.0f);
 }
 

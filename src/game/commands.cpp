@@ -78,4 +78,15 @@ namespace game {
             conoutf("%s", "No valid entity selected to fetch an attribute from.");
         }
     });
+
+    void gotosel()
+    {
+        if(player->state!=CS_EDITING) return;
+        player->o = getselpos();
+        vec dir;
+        vecfromyawpitch(player->yaw, player->pitch, 1, 0, dir);
+        player->o.add(dir.mul(-32));
+        player->resetinterp();
+    }
+    COMMAND(gotosel, "");
 }

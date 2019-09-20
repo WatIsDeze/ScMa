@@ -22,6 +22,7 @@ void Player::preload() {
 }
 
 void Player::think() {
+    //crouchplayer(this, 10, true);
     moveplayer(this, 10, true);
 }
 

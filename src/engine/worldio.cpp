@@ -884,6 +884,11 @@ bool load_world(const char *mname, const char *cname)        // Does not support
 
             // All went well, so lets add our entity to the list.
             ents.add(&e);
+
+            // Remove it again in case the entity was > ET_GAMESPECIFIC
+            //if (e.et_type >= ET_GAMESPECIFIC) {
+            //    entities::deletegameentity(&e);
+            //}
         }
     }
 

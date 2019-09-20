@@ -5,22 +5,22 @@
 
 enum { ETR_SPAWN = ET_GAMESPECIFIC, };
 
-enum                            // static entity types
+enum                              // static entity types
 {
-    NOTUSED = ET_EMPTY,         // entity slot not in use in map
-    LIGHT = ET_LIGHT,           // lightsource, attr1 = radius, attr2 = intensity
-    MAPMODEL = ET_MAPMODEL,     // modelfilename = attr1 index, attr2 = yaw, attr3 = pitch, attr4 = roll, attr5 = scale
-    PLAYERSTART,                // attr1 = angle, attr2 = team
-    ENVMAP = ET_ENVMAP,         // attr1 = radius
+    NOTUSED = ET_EMPTY,           // entity slot not in use in map
+    LIGHT = ET_LIGHT,             // lightsource, attr1 = radius, attr2 = intensity
+    MAPMODEL = ET_MAPMODEL,       // modelfilename = attr1 index, attr2 = yaw, attr3 = pitch, attr4 = roll, attr5 = scale
+    PLAYERSTART = ET_PLAYERSTART, // attr1 = angle, attr2 = team
+    ENVMAP = ET_ENVMAP,           // attr1 = radius
     PARTICLES = ET_PARTICLES,
     MAPSOUND = ET_SOUND,
     SPOTLIGHT = ET_SPOTLIGHT,
     DECAL = ET_DECAL,
-    TELEPORT,                   // attr1 = idx, attr2 = model, attr3 = tag
-    TELEDEST,                   // attr1 = angle, attr2 = idx
-    JUMPPAD,                    // attr1 = zpush, attr2 = ypush, attr3 = xpush
-    FLAG,                       // attr1 = angle, attr2 = team
-    GAMEENTITY,					// classname = game entity class type, attributes list is what it is, and can be accessed in any derived BaseEntity class.
+    TELEPORT,                     // attr1 = idx, attr2 = model, attr3 = tag
+    TELEDEST,                     // attr1 = angle, attr2 = idx
+    JUMPPAD,                      // attr1 = zpush, attr2 = ypush, attr3 = xpush
+    FLAG,                         // attr1 = angle, attr2 = team
+    GAMEENTITY,					  // classname = game entity class type, attributes list is what it is, and can be accessed in any derived BaseEntity class.
     MAXENTTYPES,
 
     I_FIRST = 0,
@@ -49,12 +49,14 @@ namespace entities
 {
     namespace classes {
         class BaseEntity;
+        class BaseMapModel;
+        class DynamicLight;
         class Player;
     }
 
     // Entity arrays.
-    extern vector<entities::classes::BaseEntity *> g_ents;
-    extern vector<entities::classes::BaseEntity *> g_lightEnts;
+    extern vector<classes::BaseEntity *> g_ents;
+    extern vector<classes::BaseEntity *> g_lightEnts;
 
     // Silly functions yup.
     extern void preloadentities();
@@ -63,8 +65,9 @@ namespace entities
 
 namespace game
 {
-    // Player entity.
-    extern entities::classes::Player *player1;
+    // Extern variablesy.
+    extern entities::classes::BaseEntity *player;
+    extern int maptime, maprealtime, maplimit;
 
     // Entities.
     extern void clearworld();

@@ -309,7 +309,7 @@ void freeoctaentities(cube &c)
 void entitiesinoctanodes()
 {
     vector<entities::classes::BaseEntity *> &ents = entities::getents();
-    conoutf("entitiesinoctanodes: %d", ents.length());
+    //conoutf("entitiesinoctanodes: %d", ents.length());
     loopv(ents) modifyoctaent(MODOE_ADD, i, *ents[i]);
 }
 
@@ -1540,6 +1540,7 @@ int findentity_byclass(const char *strclass, int index, int attr1, int attr2)
     else for(int i = index; i<ents.length(); i++)
     {
         entities::classes::BaseEntity *e = ents[i];
+        if (!e) continue;
         std::string stdstr = strclass;
         if(e->classname == stdstr)
             return i;
@@ -1547,6 +1548,7 @@ int findentity_byclass(const char *strclass, int index, int attr1, int attr2)
     loopj(index)
     {
         entities::classes::BaseEntity *e = ents[j];
+        if (!e) continue;
         std::string stdstr = strclass;
         if(e->classname == stdstr)
             return j;

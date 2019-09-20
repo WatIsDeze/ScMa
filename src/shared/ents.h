@@ -219,6 +219,12 @@ namespace entities
             void setspawned() { flags |= EF_SPAWNED; }
             void clearspawned() { flags &= ~EF_SPAWNED; }
         };
+
+        // Predefined.
+        class BaseMapModel;
+        class BaseMonster;
+        class Player;
+        class Door;
     } // classes
 } // entities
 

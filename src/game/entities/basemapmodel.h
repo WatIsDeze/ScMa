@@ -8,6 +8,7 @@ namespace entities {
         // NOTE: Never change its type, it is MAPMODEL for a reason.
         class BaseMapModel : public BaseEntity {
         public:
+            BaseMapModel();
             BaseMapModel(const std::string &filename);
             virtual ~BaseMapModel();
 
@@ -16,6 +17,8 @@ namespace entities {
             virtual void render();
 
             virtual void onAttributeSet(const std::string &key, const std::string &value);
+
+            virtual void onAnimate(int &anim, int &basetime);
 
         private:
             void loadModelAttributes();
