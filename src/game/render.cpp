@@ -9,12 +9,11 @@ namespace game
             entities::classes::BaseEntity *ent = entities::g_ents[i];
 
             if (ent->et_type != ET_PLAYERSTART && ent->et_type != ET_EMPTY && ent->et_type != ET_LIGHT && ent->et_type != ET_SPOTLIGHT && ent->et_type != ET_SOUND)
-
                 ent->render();
         }
 
         // Render our client player.
-        game::player->render();
+        game::player1->render();
     }
 
     VARP(hudgun, 0, 1, 1);

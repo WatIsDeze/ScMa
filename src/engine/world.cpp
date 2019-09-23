@@ -309,7 +309,7 @@ void freeoctaentities(cube &c)
 void entitiesinoctanodes()
 {
     vector<entities::classes::BaseEntity *> &ents = entities::getents();
-    //conoutf("entitiesinoctanodes: %d", ents.length());
+    conoutf("entitiesinoctanodes: %d", ents.length());
     loopv(ents) modifyoctaent(MODOE_ADD, i, *ents[i]);
 }
 
@@ -319,9 +319,14 @@ static inline void findents(octaentities &oe, int low, int high, bool notspawned
     loopv(oe.other)
     {
         int id = oe.other[i];
-        entities::classes::BaseEntity &e = *ents[id];
-        // TODO: Fix this, et_type? and ent_type?
-        if(e.ent_type >= low && e.ent_type <= high && (e.spawned() || notspawned) && vec(e.o).sub(pos).mul(invradius).squaredlen() <= 1) found.add(id);
+
+        if (ents.inrange(id)) {
+            entities::classes::BaseEntity &e = *ents[id];
+            // TODO: Fix this, et_type? and ent_type?
+            if(e.ent_type >= low && e.ent_type <= high && (e.spawned() || notspawned) && vec(e.o).sub(pos).mul(invradius).squaredlen() <= 1) found.add(id);
+        } else {
+            continue;
+        }
     }
 }
 
@@ -1652,6 +1657,7 @@ bool emptymap(int scale, bool force, const char *mname, bool usecfg)    // main 
         return false;
     }
 
+    logoutf("reset map");
     resetmap();
 
     setvar("mapscale", scale<10 ? 10 : (scale>16 ? 16 : scale), true, false);
@@ -1659,13 +1665,16 @@ bool emptymap(int scale, bool force, const char *mname, bool usecfg)    // main 
     setvar("emptymap", 1, true, false);
 
     texmru.shrink(0);
+    logoutf("freeocta worldroot1");
     freeocta(worldroot);
     worldroot = newcubes(F_EMPTY);
     loopi(4) solidfaces(worldroot[i]);
+    logoutf("worldroot = new cubes(F_EMPTY)");
 
     if(worldsize > 0x1000) splitocta(worldroot, worldsize>>1);
 
     clearmainmenu();
+    logoutf("clearmenu");
 
     if(usecfg)
     {
@@ -1675,7 +1684,9 @@ bool emptymap(int scale, bool force, const char *mname, bool usecfg)    // main 
     }
 
     allchanged(true);
+    logoutf("allchanged true");
 
+    logoutf("startmap %s", mname);
     startmap(mname);
 
     return true;

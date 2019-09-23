@@ -11,7 +11,7 @@ enum { ET_EMPTY=0, ET_LIGHT, ET_MAPMODEL, ET_PLAYERSTART, ET_ENVMAP, ET_PARTICLE
 class entity                                   // persistent map entity
 {
 public:
-    entity() : o(0, 0, 0), attr1(0), attr2(0), attr3(0), attr4(0), attr5(0), et_type(0), ent_type(0), game_type(0), reserved(0), model_idx(0) {}
+    entity() : o(0, 0, 0), attr1(0), attr2(0), attr3(0), attr4(0), attr5(0), et_type(0), ent_type(0), game_type(0), reserved(0), model_idx(-1) {}
     virtual ~entity() {}
 
     vec o;                                      // position
@@ -21,8 +21,10 @@ public:
     uchar game_type;                            // the internal game entity type values.
     uchar reserved;
 
-    // Only used for BaseMapModelEntities.
+    // Variables used for classes who inherit from this original entity class.. (Model_idx == -1 by default.)
     int model_idx;
+    int ms_lastaction;
+    int ms_lasttaunt;
 };
 
 enum
@@ -57,9 +59,21 @@ enum { COLLIDE_NONE = 0, COLLIDE_ELLIPSE, COLLIDE_OBB, COLLIDE_TRI };
 #define CROUCHTIME 200
 #define CROUCHHEIGHT 0.75f
 
-// Base Entity type, can be affected by physics
+// Base Physical Entity type, can be affected by physics
 class physent : public entity
 {
+public:
+    physent();
+
+    void resetinterp();
+
+    void reset();
+
+    vec feetpos(float offset) const;
+    vec headpos(float offset) const;
+
+    bool crouched() const;
+
 public:
     //vec o, vel, falling;                          // origin, velocity
     vec vel, falling;                               // origin, velocity
@@ -81,17 +95,6 @@ public:
     uchar collidetype;          // one of COLLIDE_* above
 
     bool blocked;               // used by physics to signal ai
-
-    physent();
-
-    void resetinterp();
-
-    void reset();
-
-    vec feetpos(float offset) const;
-    vec headpos(float offset) const;
-
-    bool crouched() const;
 };
 
 enum
@@ -121,11 +124,11 @@ enum
 
 struct animinfo // description of a character's animation
 {
+    animinfo() : anim(0), frame(0), range(0), basetime(0), speed(100.0f), varseed(0) { }
+
     int anim, frame, range, basetime;
     float speed;
     uint varseed;
-
-    animinfo() : anim(0), frame(0), range(0), basetime(0), speed(100.0f), varseed(0) { }
 
     bool operator==(const animinfo &o) const { return frame==o.frame && range==o.range && (anim&(ANIM_SETTIME|ANIM_DIR))==(o.anim&(ANIM_SETTIME|ANIM_DIR)) && (anim&ANIM_SETTIME || basetime==o.basetime) && speed==o.speed; }
     bool operator!=(const animinfo &o) const { return frame!=o.frame || range!=o.range || (anim&(ANIM_SETTIME|ANIM_DIR))!=(o.anim&(ANIM_SETTIME|ANIM_DIR)) || (!(anim&ANIM_SETTIME) && basetime!=o.basetime) || speed!=o.speed; }
@@ -133,13 +136,13 @@ struct animinfo // description of a character's animation
 
 struct animinterpinfo // used for animation blending of animated characters
 {
-    animinfo prev, cur;
-    int lastswitch;
-    void *lastmodel;
-
     animinterpinfo() : lastswitch(-1), lastmodel(NULL) {}
 
     void reset() { lastswitch = -1; }
+
+    animinfo prev, cur;
+    int lastswitch;
+    void *lastmodel;
 };
 
 #define MAXANIMPARTS 3
@@ -147,25 +150,23 @@ struct animinterpinfo // used for animation blending of animated characters
 struct occludequery;
 struct ragdolldata;
 
-// Animated Characters, or Characters that can receive input
-struct dynent : physent
+// Dynamic entities, these could be NPC's, AI enemies, or even a movable box. etc.
+class dynent : public physent
 {
+public:
+    dynent();
+    ~dynent();
+
+    void stopmoving();
+    void reset();
+    vec abovehead();
+
     bool k_left, k_right, k_up, k_down;         // see input code - I think they meant, determine which key is pressed lolol.
 
     animinterpinfo animinterp[MAXANIMPARTS];
     ragdolldata *ragdoll;
     occludequery *query;
     int lastrendered;
-
-    dynent();
-
-    ~dynent();
-
-    void stopmoving();
-
-    void reset();
-
-    vec abovehead();
 };
 
 
@@ -189,6 +190,9 @@ namespace entities
 
             // Called each frame to render.
             virtual void render();
+
+            // When overriding this function, be sure to call its parent class::respawn() also.
+            virtual void respawn();
 
             //
             // Attribute events.

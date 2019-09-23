@@ -1,4 +1,5 @@
 #include "game.h"
+#include "entities.h"
 
 // Base entities.
 #include "entities/basemonster.h"
@@ -69,28 +70,30 @@ namespace entities
         // Execute preload actions for entities.
         loopv(entities::g_ents)
         {
-            // Let's go at it!
-            entities::classes::BaseEntity *e = entities::g_ents[i];
+            if (g_ents.inrange(i) && g_ents[i] != NULL) {
+                // Let's go at it!
+                entities::classes::BaseEntity *e = entities::g_ents[i];
 
-            // Ensure that they don't get preloaded in preload, should be done in the constructor of ET_MAPMODEL entities.
-            //if (e->et_type != ET_MAPMODEL) {
+                // Ensure that they don't get preloaded in preload, should be done in the constructor of ET_MAPMODEL entities.
+                //if (e->et_type != ET_MAPMODEL) {
                 e->preload();
-            //}
+             }
         }
 
         // Specifically load in the client player model.
 
-        if (game::player != NULL)
-            game::player->preload();
+        if (entities::player1 != NULL)
+            entities::player1->preload();
         else
             conoutf("WTF");
     }
 
     void resetspawns() {
         loopv(entities::g_ents)
-            entities::g_ents[i]->clearspawned();
+            if (entities::g_ents.inrange(i))
+                entities::g_ents[i]->clearspawned();
 
-        game::player->clearspawned();
+        entities::player1->clearspawned();
     }
 
     void setspawn(int i, bool on) { if(entities::g_ents.inrange(i)) entities::g_ents[i]->setspawned(on); }
@@ -150,7 +153,7 @@ namespace entities
             case TELEDEST:
                 e.attr3 = e.attr2;
                 e.attr2 = e.attr1;
-                e.attr1 = (int)entities::player->yaw;
+                e.attr1 = (int)entities::player1->yaw;
                 break;
         }
     }

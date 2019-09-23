@@ -16,7 +16,7 @@ Door::~Door() {
 }
 
 void Door::preload() {
-
+    preloadMapModel("world/door_redeclipse");
 }
 void Door::think() {}
 void Door::render() {}

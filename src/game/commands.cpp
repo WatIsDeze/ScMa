@@ -81,12 +81,12 @@ namespace game {
 
     void gotosel()
     {
-        if(player->state!=CS_EDITING) return;
-        player->o = getselpos();
+        if(player1->state!=CS_EDITING) return;
+        player1->o = getselpos();
         vec dir;
-        vecfromyawpitch(player->yaw, player->pitch, 1, 0, dir);
-        player->o.add(dir.mul(-32));
-        player->resetinterp();
+        vecfromyawpitch(player1->yaw, player1->pitch, 1, 0, dir);
+        player1->o.add(dir.mul(-32));
+        player1->resetinterp();
     }
     COMMAND(gotosel, "");
 }

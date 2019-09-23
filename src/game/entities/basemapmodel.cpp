@@ -39,7 +39,7 @@ void BaseMapModel::onAttributeSet(const std::string &key, const std::string &val
 }
 
 void BaseMapModel::onAnimate(int &anim, int &basetime) {
-conoutf("OnAnimate: %i %i", anim, basetime);
+
 }
 
 void BaseMapModel::preload() {
@@ -47,6 +47,7 @@ void BaseMapModel::preload() {
 }
 
 void BaseMapModel::think() {
+
 }
 
 void BaseMapModel::render() {

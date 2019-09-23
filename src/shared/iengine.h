@@ -292,7 +292,7 @@ extern void dynlightreaching(const vec &target, vec &color, vec &dir, bool hud =
 extern void removetrackeddynlights(entities::classes::BaseEntity *owner = NULL);
 
 // rendergl
-extern entities::classes::BaseEntity *camera1;
+extern physent *camera1;
 extern vec worldpos, camdir, camright, camup;
 extern float curfov, fovy, aspect;
 
@@ -399,7 +399,8 @@ extern void vectoyawpitch(const vec &v, float &yaw, float &pitch);
 extern void updatephysstate(entities::classes::BaseEntity *d);
 extern void cleardynentcache();
 extern void updatedynentcache(entities::classes::BaseEntity *d);
-extern bool entinmap(entities::classes::BaseEntity *d, bool avoidplayers = false);
+extern bool entinmap(dynent *d, bool avoidplayers = false);
+extern bool entinmap(entities::classes::BaseEntity *d, bool avoidplayers = false); // Overloaded for physics.cpp
 extern void findplayerspawn(entities::classes::BaseEntity *d, int forceent = -1, int tag = 0);
 
 // sound

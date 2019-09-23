@@ -67,5 +67,14 @@ bool Player::onTouch(entities::classes::BaseEntity *otherEnt, const vec &dir) {
     return true;
 }
 
+void Player::respawn() {
+    BaseEntity::respawn();
+
+    if(editmode)
+        state = CS_EDITING;
+    else if(state != CS_SPECTATOR)
+        state = CS_ALIVE;
+}
+
 } // classes
 } // entities

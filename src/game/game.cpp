@@ -5,7 +5,10 @@
 namespace game
 {
     // Global player entity pointer.
-    entities::classes::BaseEntity *player = NULL;
+    entities::classes::BaseEntity *player1 = NULL;
+
+    // List of connected players. (For future network usage.)
+    vector<entities::classes::BaseEntity*> players;
 
     // Networking State properties.
     bool connected = false;
@@ -18,7 +21,8 @@ namespace game
         // Update the world time.
         if(!maptime) { maptime = lastmillis; maprealtime = totalmillis; return; }
         // Escape this function if there is no currenttime yet from server to client. (Meaning it is 0.)
-        if(!curtime) return; // { gets2c(); if(player->clientnum>=0) c2sinfo(); return; }
+        if(!curtime) return; //{ gets2c(); if (player1->) c2sinfo(); return; } //c2sinfo(); }///if(player1->clientnum>=0) c2sinfo(); return; }
+        //if(!curtime) return; //{ gets2c(); c2sinfo(); }///if(player1->clientnum>=0) c2sinfo(); return; }
 
         // Update the physics.
         physicsframe();
@@ -36,6 +40,14 @@ namespace game
        // if(player->clientnum >=0) c2sinfo();   // do this last, to reduce the effective frame lag
     }
 
+    void SpawnPlayer()   // place at random spawn
+    {
+        player1 = new entities::classes::Player();
+        player1->respawn();
+        findplayerspawn(player1, 1, 0);
+        player1->setspawned(true);
+    }
+
     void updateentities() {
         // Execute think actions for entities.
         loopv(entities::g_ents)
@@ -43,20 +55,24 @@ namespace game
             // Let's go at it!
             if (entities::g_ents.inrange(i)) {
                 entities::classes::BaseEntity *e = entities::g_ents[i];
-                    if (e != NULL) ;
-                        e->think();
+                if (e != NULL && e->ent_type != ENT_PLAYER)
+                    e->think();
             }
 
         }
 
-        if (game::player)
-            game::player->think();
+        if (game::player1)
+            game::player1->think();
+
+        if (connected) {
+            conoutf("Connected: %i", connected);
+        }
     }
 
     void gameconnect(bool _remote)
     {
         // Store connection state.
-        connected = true;
+        connected = _remote;
 
         // Toggle edit mode if required.
         if(editmode)
@@ -119,37 +135,43 @@ namespace game
         return NULL;
     }
     void resetgamestate() {
-
+    //    clearprojectiles();
+    //    clearbouncers();
     }
     void suicide(entities::classes::BaseEntity *d) {
 
     }
     void newmap(int size) {
         // Copy into mapname and reset maptime.
-        //copycubestr(mapname, name ? name : "");
-        maptime = 0;
+            maptime = 0;
 
         // Reset spawns.
-        //entities::resetspawns();
-        //player = new entities::classes::Player();
-        //player->setspawned(true);
+        entities::resetspawns();
+        // Initialize the player class used for this client.
+        player1 = new entities::classes::Player();
+        player1->respawn();
+        player1->setspawned(true);
 
-//        // Find our playerspawn.
-//        findplayerspawn(player, -1, 0);
+        // Find our playerspawn.
+        findplayerspawn(player1, -1, 0);
     }
     void loadingmap(const char *name) {
         //player = new entities::classes::Player();
         //player->setspawned(true);
     }
 
+    cubestr clientmap = "";
     void startmap(const char *name)
     {
-        // Copy into mapname and reset maptime.
-        copycubestr(mapname, name ? name : "");
-        maptime = 0;
+        // Spawn player.
+        SpawnPlayer();
 
-        // Find our playerspawn.
-        findplayerspawn(player, -1, 0);
+        // Reset all entity spawns.
+        entities::resetspawns();
+
+        // Copy into mapname and reset maptime.
+        copycubestr(clientmap, name ? name : "");
+        maptime = 0;
     }
 
     bool needminimap() {
@@ -157,7 +179,7 @@ namespace game
     }
 
     float abovegameplayhud(int w, int h) {
-        switch(player->state)
+        switch(player1->state)
         {
             case CS_EDITING:
                 return 1;
@@ -186,26 +208,28 @@ namespace game
 
     }
 
-    bool canjump() {
-        return true;
-    }
-    bool cancrouch() {
-        if(!connected) return false;
-        return player->state!=CS_DEAD;
+    bool canjump()
+    {
+        //if(!intermission) respawn();
+        return player1->state!=CS_DEAD;// && !intermission;
     }
 
-    bool allowmove(entities::classes::BaseEntity *d) {
-        return true;
-        //if(d->type!=ENT_PLAYER) return true;
-        //else return false;
-        //if(d->type!=ENT_PLAYER) return true;
-
-        // Checks whether the entity(usually a client/player) has done anything that requires waiting time.
-        //return !((entities::classes::BaseEntity *)d)->lasttaunt || lastmillis-((entities::classes::BaseEntity *)d)->lasttaunt>=1000;
+    bool cancrouch()
+    {
+        return player1->state!=CS_DEAD;// && !intermission;
     }
 
-    entities::classes::BaseEntity *iterdynents(int i) {
-        return player;
+    bool allowmove(entities::classes::BaseEntity *d)
+    {
+        if(d->ent_type!=ENT_PLAYER) return true;
+        return !((entities::classes::BaseEntity *)d)->ms_lastaction || lastmillis-((entities::classes::BaseEntity *)d)->ms_lastaction>=1000;
+    }
+
+    dynent *iterdynents(int i) {
+        if (i = 0)
+            return (dynent*)player1;
+        else
+            return NULL;
         //if (i < entities::g_ents.length()) return entities::g_ents[i];
         //if (i < entities::g_lightEnts.length()) return (entities::classes::BaseEntity*)entities::g_lightEnts[i];
         //    i -= entities::g_lightEnts.length();
@@ -226,7 +250,7 @@ namespace game
     }
 
     int selectcrosshair(vec &color) {
-        if(player->state==CS_DEAD) return -1;
+        if(player1->state==CS_DEAD) return -1;
         return 0;
     }
 
@@ -239,11 +263,11 @@ namespace game
     }
 
     bool detachcamera() {
-        return player->state==CS_DEAD;
+        return player1->state==CS_DEAD;
     }
 
     bool collidecamera() {
-        return player->state!=CS_EDITING;
+        return player1->state!=CS_EDITING;
     }
 
     void lighteffects(entities::classes::BaseEntity *e, vec &color, vec &dir) {
@@ -280,7 +304,6 @@ namespace game
     const char *savedservers() { return "config/servers.cfg"; }
 
     void loadconfigs() {
-        conoutf("CONOUTF BOY HERE");
         execfile("config/auth.cfg", false);
     }
 
@@ -311,15 +334,14 @@ namespace game
     }
 
     void initclient() {
-        // Initialize the player class used for this client.
-        player = new entities::classes::Player();
-        player->setspawned(true);
+        // Spawn our Player.
+        SpawnPlayer();
 
         // Add player 1 to the entities list at index 0.
         //entities::g_ents.add(player);
 
         // Setup the map time.
-        //maptime = maprealtime = 0;
+        maptime = maprealtime = 0;
     }
 
     const char *gameident() {

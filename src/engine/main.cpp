@@ -77,7 +77,7 @@ SDL_GLContext glcontext = NULL;
 
 int curtime = 0, lastmillis = 1, elapsedtime = 0, totalmillis = 1;
 
-entities::classes::BaseEntity *player = NULL;
+dynent *player = NULL;
 
 int initing = NOT_INITING;
 
@@ -1116,8 +1116,11 @@ int main(int argc, char **argv)
     renderbackground("initializing...");
 
     logoutf("init: world");
+    logoutf("1");
     camera1 = player = game::iterdynents(0);
+    logoutf("2");
     emptymap(0, true, NULL, false);
+    logoutf("3");
 
     logoutf("init: sound");
     initsound();
@@ -1199,7 +1202,7 @@ int main(int argc, char **argv)
         menuprocess();
         tryedit();
 
-        if(lastmillis) game::updateworld();
+        //if(lastmillis) game::updateworld();
 
         checksleep(lastmillis);
 
@@ -1209,7 +1212,7 @@ int main(int argc, char **argv)
         frames++;
 
         // miscellaneous general game effects
-        recomputecamera();
+        //recomputecamera();
         updateparticles();
         updatesounds();
 

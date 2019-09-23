@@ -1,0 +1,15 @@
+/home/watisdeze/Dev/Projects/PRs/Mike/ScMa/builds/CMakeFiles/rebuild_cache.dir
+/home/watisdeze/Dev/Projects/PRs/Mike/ScMa/builds/CMakeFiles/SchizoMania_Client.dir
+/home/watisdeze/Dev/Projects/PRs/Mike/ScMa/builds/CMakeFiles/edit_cache.dir
+/home/watisdeze/Dev/Projects/PRs/Mike/ScMa/builds/enet/CMakeFiles/rebuild_cache.dir
+/home/watisdeze/Dev/Projects/PRs/Mike/ScMa/builds/enet/CMakeFiles/enet.dir
+/home/watisdeze/Dev/Projects/PRs/Mike/ScMa/builds/enet/CMakeFiles/edit_cache.dir
+/home/watisdeze/Dev/Projects/PRs/Mike/ScMa/builds/shared/CMakeFiles/rebuild_cache.dir
+/home/watisdeze/Dev/Projects/PRs/Mike/ScMa/builds/shared/CMakeFiles/SchizoMania_Shared_Client.dir
+/home/watisdeze/Dev/Projects/PRs/Mike/ScMa/builds/shared/CMakeFiles/edit_cache.dir
+/home/watisdeze/Dev/Projects/PRs/Mike/ScMa/builds/game/CMakeFiles/rebuild_cache.dir
+/home/watisdeze/Dev/Projects/PRs/Mike/ScMa/builds/game/CMakeFiles/SchizoMania_Game_Client.dir
+/home/watisdeze/Dev/Projects/PRs/Mike/ScMa/builds/game/CMakeFiles/edit_cache.dir
+/home/watisdeze/Dev/Projects/PRs/Mike/ScMa/builds/engine/CMakeFiles/rebuild_cache.dir
+/home/watisdeze/Dev/Projects/PRs/Mike/ScMa/builds/engine/CMakeFiles/SchizoMania_Engine_Client.dir
+/home/watisdeze/Dev/Projects/PRs/Mike/ScMa/builds/engine/CMakeFiles/edit_cache.dir

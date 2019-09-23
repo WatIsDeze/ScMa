@@ -75,7 +75,7 @@ namespace game
     extern bool canjump();
     extern bool cancrouch();
     extern bool allowmove(entities::classes::BaseEntity *d);
-    extern entities::classes::BaseEntity *iterdynents(int i);
+    extern dynent *iterdynents(int i);
     extern int numdynents();
     extern void RenderGameEntities();
     extern void renderavatar();

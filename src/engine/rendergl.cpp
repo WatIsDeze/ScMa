@@ -1374,7 +1374,7 @@ FVAR(thirdpersondistance, 0, 10, 25);
 FVAR(thirdpersonup, -25, 0, 25);
 FVAR(thirdpersonside, -25, 0, 25);
 
-entities::classes::BaseEntity *camera1 = NULL;
+physent *camera1 = NULL;
 bool detachedcamera = false;
 bool isthirdperson() { return player!=camera1 || detachedcamera; }
 
@@ -1429,7 +1429,7 @@ void recomputecamera()
     bool shoulddetach = thirdperson > 1 || game::detachcamera();
     if(!thirdperson && !shoulddetach)
     {
-        camera1 = player;
+        camera1 = (physent*)player;
         detachedcamera = false;
     }
     else
@@ -1456,30 +1456,30 @@ void recomputecamera()
 
         if(game::collidecamera())
         {
-            movecamera(camera1, dir, thirdpersondistance, 1);
-            movecamera(camera1, dir, clamp(thirdpersondistance - camera1->o.dist(player->o), 0.0f, 1.0f), 0.1f);
+            movecamera((entities::classes::BaseEntity*)camera1, dir, thirdpersondistance, 1);
+            movecamera((entities::classes::BaseEntity*)camera1, dir, clamp(thirdpersondistance - camera1->o.dist(player->o), 0.0f, 1.0f), 0.1f);
             if(thirdpersonup)
             {
                 vec pos = camera1->o;
                 float dist = fabs(thirdpersonup);
                 if(thirdpersonup < 0) up.neg();
-                movecamera(camera1, up, dist, 1);
-                movecamera(camera1, up, clamp(dist - camera1->o.dist(pos), 0.0f, 1.0f), 0.1f);
+                movecamera((entities::classes::BaseEntity*)camera1, up, dist, 1);
+                movecamera((entities::classes::BaseEntity*)camera1, up, clamp(dist - camera1->o.dist(pos), 0.0f, 1.0f), 0.1f);
             }
             if(thirdpersonside)
             {
                 vec pos = camera1->o;
                 float dist = fabs(thirdpersonside);
                 if(thirdpersonside < 0) side.neg();
-                movecamera(camera1, side, dist, 1);
-                movecamera(camera1, side, clamp(dist - camera1->o.dist(pos), 0.0f, 1.0f), 0.1f);
+                movecamera((entities::classes::BaseEntity*)camera1, side, dist, 1);
+                movecamera((entities::classes::BaseEntity*)camera1, side, clamp(dist - camera1->o.dist(pos), 0.0f, 1.0f), 0.1f);
             }
         }
         else
         {
-            camera1->o.add(vec(dir).mul(thirdpersondistance));
-            if(thirdpersonup) camera1->o.add(vec(up).mul(thirdpersonup));
-            if(thirdpersonside) camera1->o.add(vec(side).mul(thirdpersonside));
+            ((entities::classes::BaseEntity*)camera1)->o.add(vec(dir).mul(thirdpersondistance));
+            if(thirdpersonup) ((entities::classes::BaseEntity*)camera1)->o.add(vec(up).mul(thirdpersonup));
+            if(thirdpersonside) ((entities::classes::BaseEntity*)camera1)->o.add(vec(side).mul(thirdpersonside));
         }
     }
 
@@ -2085,8 +2085,8 @@ void drawminimap()
     minimapradius.x = minimapradius.y = max(minimapradius.x, minimapradius.y);
     minimapscale = vec((0.5f - 1.0f/size)/minimapradius.x, (0.5f - 1.0f/size)/minimapradius.y, 1.0f);
 
-    entities::classes::BaseEntity *oldcamera = camera1;
-    static entities::classes::BaseEntity cmcamera;
+    physent *oldcamera = camera1;
+    static physent cmcamera;
     cmcamera = *player;
     cmcamera.reset();
     cmcamera.ent_type = ENT_CAMERA;
@@ -2167,8 +2167,8 @@ void drawcubemap(int size, const vec &o, float yaw, float pitch, const cubemapsi
 {
     drawtex = DRAWTEX_ENVMAP;
 
-    entities::classes::BaseEntity *oldcamera = camera1;
-    static entities::classes::BaseEntity cmcamera;
+    physent *oldcamera = camera1;
+    physent cmcamera;
     cmcamera = *player;
     cmcamera.reset();
     cmcamera.ent_type = ENT_CAMERA;
@@ -2270,8 +2270,8 @@ VAR(modelpreviewpitch, -90, -15, 90);
 
 namespace modelpreview
 {
-    entities::classes::BaseEntity *oldcamera;
-    entities::classes::BaseEntity camera;
+    physent *oldcamera;
+    physent camera;
 
     float oldaspect, oldfovy, oldfov, oldldrscale, oldldrscaleb;
     int oldfarplane, oldvieww, oldviewh;

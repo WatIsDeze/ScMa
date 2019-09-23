@@ -1,0 +1,42 @@
+[
+    {
+        "ent_type": 2,
+        "et_type": 3,
+        "game": {
+            "classname": "playerstart"
+        },
+        "game_type": 3,
+        "int_attr1": 184,
+        "int_attr2": 0,
+        "int_attr3": 0,
+        "int_attr4": 0,
+        "int_attr5": 0,
+        "int_reserved": 0,
+        "model_idx": 0,
+        "o": {
+            "x": 506.9663391113281,
+            "y": 564.0,
+            "z": 531.6851196289063
+        }
+    },
+    {
+        "ent_type": 2,
+        "et_type": 2,
+        "game": {
+            "classname": "door"
+        },
+        "game_type": 13,
+        "int_attr1": 0,
+        "int_attr2": 86,
+        "int_attr3": 0,
+        "int_attr4": 0,
+        "int_attr5": 0,
+        "int_reserved": 0,
+        "model_idx": 70,
+        "o": {
+            "x": 506.3487548828125,
+            "y": 480.0,
+            "z": 541.8818359375
+        }
+    }
+]

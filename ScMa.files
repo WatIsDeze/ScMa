@@ -548,3 +548,4 @@ src/shared/dynent.cpp
 src/game/entities/basemapmodel.h
 src/game/entities/basemapmodel.cpp
 dev_docs/mapeditorbindings.txt
+src/game/entities.h
