@@ -1,6 +1,7 @@
 // sound.cpp: basic positional sound using sdl_mixer
 
 #include "engine.h"
+#include "../game/entities/player.h"
 
 #ifdef __APPLE__
   #include "SDL_mixer.h"

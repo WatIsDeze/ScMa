@@ -89,6 +89,8 @@ string
 /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/main.cpp
 engine.h
 /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/engine.h
+../game/entities/player.h
+/home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/game/entities/player.h
 
 /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/model.h
 
@@ -425,6 +427,8 @@ limits
 -
 type_traits
 -
+
+/home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/game/entities/player.h
 
 /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/shared/command.h
 

@@ -19,6 +19,7 @@ game/CMakeFiles/SchizoMania_Game_Client.dir/commands.cpp.o: /home/watisdeze/Dev/
 game/CMakeFiles/SchizoMania_Game_Client.dir/commands.cpp.o: /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/game/../shared/igame.h
 game/CMakeFiles/SchizoMania_Game_Client.dir/commands.cpp.o: /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/game/../shared/tools.h
 game/CMakeFiles/SchizoMania_Game_Client.dir/commands.cpp.o: /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/game/commands.cpp
+game/CMakeFiles/SchizoMania_Game_Client.dir/commands.cpp.o: /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/game/entities/player.h
 game/CMakeFiles/SchizoMania_Game_Client.dir/commands.cpp.o: /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/game/game.h
 game/CMakeFiles/SchizoMania_Game_Client.dir/commands.cpp.o: /usr/include/SDL2/SDL.h
 game/CMakeFiles/SchizoMania_Game_Client.dir/commands.cpp.o: /usr/include/SDL2/SDL_assert.h

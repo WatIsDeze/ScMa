@@ -71,7 +71,7 @@ namespace entities
 namespace game
 {
     // Extern variables.
-    extern entities::classes::BaseEntity *player1;
+    extern entities::classes::Player *player1;
     extern int maptime, maprealtime, maplimit;
 
     // Entities.

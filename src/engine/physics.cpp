@@ -534,7 +534,7 @@ static struct dynentcacheentry
 {
     int x, y;
     uint frame;
-    vector<dynent*> dynents;
+    vector<entities::classes::BaseEntity*> dynents;
 } dynentcache[DYNENTCACHESIZE];
 
 void cleardynentcache()
@@ -548,7 +548,7 @@ VARF(dynentsize, 4, 7, 12, cleardynentcache());
 
 #define DYNENTHASH(x, y) (((((x)^(y))<<5) + (((x)^(y))>>5)) & (DYNENTCACHESIZE - 1))
 
-const vector<dynent*> &checkdynentcache(int x, int y)
+const vector<entities::classes::BaseEntity*> &checkdynentcache(int x, int y)
 {
     dynentcacheentry &dec = dynentcache[DYNENTHASH(x, y)];
     if(dec.x == x && dec.y == y && dec.frame == dynentframe) return dec.dynents;
@@ -559,7 +559,7 @@ const vector<dynent*> &checkdynentcache(int x, int y)
     int numdyns = game::numdynents(), dsize = 1<<dynentsize, dx = x<<dynentsize, dy = y<<dynentsize;
     loopi(numdyns)
     {
-        dynent *d = game::iterdynents(i);
+        entities::classes::BaseEntity *d = game::iterdynents(i);
         if(d->state != CS_ALIVE ||
            d->o.x+d->radius <= dx || d->o.x-d->radius >= dx+dsize ||
            d->o.y+d->radius <= dy || d->o.y-d->radius >= dy+dsize)
@@ -587,10 +587,10 @@ bool overlapsdynent(const vec &o, float radius)
 {
     loopdynentcache(x, y, o, radius)
     {
-        const vector<dynent*> &dynents = checkdynentcache(x, y);
+        const vector<entities::classes::BaseEntity*> &dynents = checkdynentcache(x, y);
         loopv(dynents)
         {
-            dynent *d = dynents[i];
+            entities::classes::BaseEntity *d = dynents[i];
             if(o.dist(d->o)-d->radius < radius) return true;
         }
     }
@@ -634,7 +634,7 @@ bool plcollide(entities::classes::BaseEntity *d, const vec &dir, bool insideplay
     entities::classes::BaseEntity *insideplayer = NULL;
     loopdynentcache(x, y, d->o, d->radius)
     {
-        const vector<dynent*> &dynents = checkdynentcache(x, y);
+        const vector<entities::classes::BaseEntity*> &dynents = checkdynentcache(x, y);
         loopv(dynents)
         {
             entities::classes::BaseEntity *o = (entities::classes::BaseEntity*)dynents[i];
@@ -1159,16 +1159,6 @@ bool collide(entities::classes::BaseEntity *d, const vec &dir, float cutoff, boo
          bs(int(d->o.x+d->radius), int(d->o.y+d->radius), int(d->o.z+d->aboveeye));
     bo.sub(1); bs.add(1);  // guard space for rounding errors
     return octacollide(d, dir, cutoff, bo, bs) || (playercol && plcollide(d, dir, insideplayercol)); // collide with world
-}
-bool collide(dynent *d, const vec &dir, float cutoff, bool playercol, bool insideplayercol)
-{
-    collideinside = 0;
-    collideplayer = NULL;
-    collidewall = vec(0, 0, 0);
-    ivec bo(int(d->o.x-d->radius), int(d->o.y-d->radius), int(d->o.z-d->eyeheight)),
-         bs(int(d->o.x+d->radius), int(d->o.y+d->radius), int(d->o.z+d->aboveeye));
-    bo.sub(1); bs.add(1);  // guard space for rounding errors
-    return octacollide((entities::classes::BaseEntity*)d, dir, cutoff, bo, bs) || (playercol && plcollide((entities::classes::BaseEntity*)d, dir, insideplayercol)); // collide with world
 }
 
 void recalcdir(entities::classes::BaseEntity *d, const vec &oldvel, vec &dir)
@@ -2032,42 +2022,6 @@ dir(right,    strafe, -1, k_right, k_left);
 ICOMMAND(jump,   "D", (int *down), { if(!*down || game::canjump()) player->jumping = *down!=0; });
 ICOMMAND(crouch, "D", (int *down), { if(!*down) player->crouching = abs(player->crouching); else if(game::cancrouch()) player->crouching = -1; });
 
-bool entinmap(dynent *d, bool avoidplayers)        // brute force but effective way to find a free spawn spot in the map
-{
-    d->o.z += d->eyeheight; // pos specified is at feet
-    vec orig = d->o;
-    loopi(100)              // try max 100 times
-    {
-        if(i)
-        {
-            d->o = orig;
-            d->o.x += (rnd(21)-10)*i/5;  // increasing distance
-            d->o.y += (rnd(21)-10)*i/5;
-            d->o.z += (rnd(21)-10)*i/5;
-        }
-
-        if(!collide((entities::classes::BaseEntity*)&d) && !collideinside)
-        {
-            if(collideplayer)
-            {
-                if(!avoidplayers) continue;
-                d->o = orig;
-                d->resetinterp();
-                return false;
-            }
-
-            d->resetinterp();
-            return true;
-        }
-    }
-    // leave ent at original pos, possibly stuck
-    d->o = orig;
-    d->resetinterp();
-    conoutf(CON_WARN, "can't find entity spawn spot! (%.1f, %.1f, %.1f)", d->o.x, d->o.y, d->o.z);
-    return false;
-}
-
-// Overloaded function of the above accepting base entities.
 bool entinmap(entities::classes::BaseEntity *d, bool avoidplayers)        // brute force but effective way to find a free spawn spot in the map
 {
     d->o.z += d->eyeheight; // pos specified is at feet

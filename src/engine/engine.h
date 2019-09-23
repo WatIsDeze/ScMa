@@ -13,8 +13,8 @@
 #include "bih.h"
 #include "model.h"
 
-extern dynent *player;
-extern physent *camera1;                // special ent that acts as camera, same object as player in FPS mode
+extern entities::classes::Player *player;
+extern entities::classes::BaseEntity *camera1;                // special ent that acts as camera, same object as player in FPS mode
 
 extern int worldscale, worldsize;
 extern int mapversion;

@@ -5,7 +5,7 @@
 namespace game
 {
     // Global player entity pointer.
-    entities::classes::BaseEntity *player1 = NULL;
+    entities::classes::Player *player1 = NULL;
 
     // List of connected players. (For future network usage.)
     vector<entities::classes::BaseEntity*> players;
@@ -143,32 +143,25 @@ namespace game
     }
     void newmap(int size) {
         // Copy into mapname and reset maptime.
-            maptime = 0;
+        maptime = 0;
 
         // Reset spawns.
         entities::resetspawns();
+
         // Initialize the player class used for this client.
         player1 = new entities::classes::Player();
-        player1->respawn();
         player1->setspawned(true);
 
         // Find our playerspawn.
         findplayerspawn(player1, -1, 0);
     }
     void loadingmap(const char *name) {
-        //player = new entities::classes::Player();
-        //player->setspawned(true);
+
     }
 
     cubestr clientmap = "";
     void startmap(const char *name)
     {
-        // Spawn player.
-        SpawnPlayer();
-
-        // Reset all entity spawns.
-        entities::resetspawns();
-
         // Copy into mapname and reset maptime.
         copycubestr(clientmap, name ? name : "");
         maptime = 0;
@@ -222,22 +215,22 @@ namespace game
     bool allowmove(entities::classes::BaseEntity *d)
     {
         if(d->ent_type!=ENT_PLAYER) return true;
-        return !((entities::classes::BaseEntity *)d)->ms_lastaction || lastmillis-((entities::classes::BaseEntity *)d)->ms_lastaction>=1000;
+        return !d->ms_lastaction || lastmillis-d->ms_lastaction>=1000;
     }
 
-    dynent *iterdynents(int i) {
-        if (i = 0)
-            return (dynent*)player1;
-        else
-            return NULL;
-        //if (i < entities::g_ents.length()) return entities::g_ents[i];
+    entities::classes::BaseEntity *iterdynents(int i) {
+        if (i == 0) {
+            return player1;
+        } else {
+            if (i < entities::g_ents.length()) return entities::g_ents[i];
+        }
         //if (i < entities::g_lightEnts.length()) return (entities::classes::BaseEntity*)entities::g_lightEnts[i];
         //    i -= entities::g_lightEnts.length();
         //return NULL;
     }
     // int numdynents() { return players.length()+monsters.length()+movables.length(); }
     int numdynents() {
-        return entities::g_ents.length() + 1;
+        return entities::g_ents.length() + 1; // + 1 is for the player.
     }
 
     // This function should be used to render HUD View stuff etc.
@@ -334,12 +327,6 @@ namespace game
     }
 
     void initclient() {
-        // Spawn our Player.
-        SpawnPlayer();
-
-        // Add player 1 to the entities list at index 0.
-        //entities::g_ents.add(player);
-
         // Setup the map time.
         maptime = maprealtime = 0;
     }

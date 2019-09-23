@@ -20,6 +20,7 @@ game/CMakeFiles/SchizoMania_Game_Client.dir/commands.cpp.o
  /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/game/../shared/igame.h
  /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/game/../shared/tools.h
  /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/game/commands.cpp
+ /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/game/entities/player.h
  /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/game/game.h
  /usr/include/SDL2/SDL.h
  /usr/include/SDL2/SDL_assert.h

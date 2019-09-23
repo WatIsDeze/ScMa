@@ -1495,6 +1495,7 @@ engine/CMakeFiles/SchizoMania_Engine_Client.dir/rendergl.cpp.o: /home/watisdeze/
 engine/CMakeFiles/SchizoMania_Engine_Client.dir/rendergl.cpp.o: /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/rendergl.cpp
 engine/CMakeFiles/SchizoMania_Engine_Client.dir/rendergl.cpp.o: /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/texture.h
 engine/CMakeFiles/SchizoMania_Engine_Client.dir/rendergl.cpp.o: /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/world.h
+engine/CMakeFiles/SchizoMania_Engine_Client.dir/rendergl.cpp.o: /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/game/entities/player.h
 engine/CMakeFiles/SchizoMania_Engine_Client.dir/rendergl.cpp.o: /usr/include/SDL2/SDL.h
 engine/CMakeFiles/SchizoMania_Engine_Client.dir/rendergl.cpp.o: /usr/include/SDL2/SDL_assert.h
 engine/CMakeFiles/SchizoMania_Engine_Client.dir/rendergl.cpp.o: /usr/include/SDL2/SDL_atomic.h
@@ -2211,6 +2212,7 @@ engine/CMakeFiles/SchizoMania_Engine_Client.dir/sound.cpp.o: /home/watisdeze/Dev
 engine/CMakeFiles/SchizoMania_Engine_Client.dir/sound.cpp.o: /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/sound.cpp
 engine/CMakeFiles/SchizoMania_Engine_Client.dir/sound.cpp.o: /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/texture.h
 engine/CMakeFiles/SchizoMania_Engine_Client.dir/sound.cpp.o: /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/world.h
+engine/CMakeFiles/SchizoMania_Engine_Client.dir/sound.cpp.o: /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/game/entities/player.h
 engine/CMakeFiles/SchizoMania_Engine_Client.dir/sound.cpp.o: /usr/include/SDL2/SDL.h
 engine/CMakeFiles/SchizoMania_Engine_Client.dir/sound.cpp.o: /usr/include/SDL2/SDL_assert.h
 engine/CMakeFiles/SchizoMania_Engine_Client.dir/sound.cpp.o: /usr/include/SDL2/SDL_atomic.h
@@ -2564,6 +2566,7 @@ engine/CMakeFiles/SchizoMania_Engine_Client.dir/world.cpp.o: /home/watisdeze/Dev
 engine/CMakeFiles/SchizoMania_Engine_Client.dir/world.cpp.o: /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/texture.h
 engine/CMakeFiles/SchizoMania_Engine_Client.dir/world.cpp.o: /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/world.cpp
 engine/CMakeFiles/SchizoMania_Engine_Client.dir/world.cpp.o: /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/world.h
+engine/CMakeFiles/SchizoMania_Engine_Client.dir/world.cpp.o: /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/game/entities/player.h
 engine/CMakeFiles/SchizoMania_Engine_Client.dir/world.cpp.o: /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/game/game.h
 engine/CMakeFiles/SchizoMania_Engine_Client.dir/world.cpp.o: /usr/include/SDL2/SDL.h
 engine/CMakeFiles/SchizoMania_Engine_Client.dir/world.cpp.o: /usr/include/SDL2/SDL_assert.h

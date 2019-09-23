@@ -292,7 +292,7 @@ extern void dynlightreaching(const vec &target, vec &color, vec &dir, bool hud =
 extern void removetrackeddynlights(entities::classes::BaseEntity *owner = NULL);
 
 // rendergl
-extern physent *camera1;
+extern entities::classes::BaseEntity *camera1;
 extern vec worldpos, camdir, camright, camup;
 extern float curfov, fovy, aspect;
 
@@ -399,8 +399,7 @@ extern void vectoyawpitch(const vec &v, float &yaw, float &pitch);
 extern void updatephysstate(entities::classes::BaseEntity *d);
 extern void cleardynentcache();
 extern void updatedynentcache(entities::classes::BaseEntity *d);
-extern bool entinmap(dynent *d, bool avoidplayers = false);
-extern bool entinmap(entities::classes::BaseEntity *d, bool avoidplayers = false); // Overloaded for physics.cpp
+extern bool entinmap(entities::classes::BaseEntity *d, bool avoidplayers = false);
 extern void findplayerspawn(entities::classes::BaseEntity *d, int forceent = -1, int tag = 0);
 
 // sound
@@ -459,7 +458,7 @@ namespace UI
 // ragdoll
 
 extern void moveragdoll(entities::classes::BaseEntity *d);
-extern void cleanragdoll(dynent *d);
+extern void cleanragdoll(entities::classes::BaseEntity *d);
 
 // server
 #define MAXCLIENTS 128                 // DO NOT set this any higher

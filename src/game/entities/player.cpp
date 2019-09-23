@@ -53,22 +53,27 @@ void Player::render() {
 }
 
 bool Player::onTrigger(entities::classes::BaseEntity *otherEnt, const vec &dir) {
-    if (otherEnt != NULL)
+    if (otherEnt != NULL) {
         conoutf("%s %s %s %f %f %f", "Player triggered by entity: ", otherEnt->classname.c_str(),
             "from Vector Direction: ", dir.x, dir.y, dir.z);
-    return true;
+            return true;
+    } else {
+        return false;
+    }
 }
 
 bool Player::onTouch(entities::classes::BaseEntity *otherEnt, const vec &dir) {
-    if (otherEnt != NULL)
+     if (otherEnt != NULL) {
         conoutf("%s %s %s %f %f %f", "Player touched by entity: ", otherEnt->classname.c_str(),
             "from Vector Direction: ", dir.x, dir.y, dir.z);
-
-    return true;
+        return true;
+    } else {
+        return false;
+    }
 }
 
 void Player::respawn() {
-    BaseEntity::respawn();
+    //BaseEntity::respawn();
 
     if(editmode)
         state = CS_EDITING;

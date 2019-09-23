@@ -18,6 +18,7 @@ CMakeFiles/SchizoMania_Client.dir/engine/main.cpp.o: /home/watisdeze/Dev/Project
 CMakeFiles/SchizoMania_Client.dir/engine/main.cpp.o: /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/texture.h
 CMakeFiles/SchizoMania_Client.dir/engine/main.cpp.o: /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/world.h
 CMakeFiles/SchizoMania_Client.dir/engine/main.cpp.o: /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/ext/json-develop/single_include/nlohmann/json.hpp
+CMakeFiles/SchizoMania_Client.dir/engine/main.cpp.o: /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/game/entities/player.h
 CMakeFiles/SchizoMania_Client.dir/engine/main.cpp.o: /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/shared/command.h
 CMakeFiles/SchizoMania_Client.dir/engine/main.cpp.o: /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/shared/cube.h
 CMakeFiles/SchizoMania_Client.dir/engine/main.cpp.o: /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/shared/ents.h

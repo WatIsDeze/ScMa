@@ -637,6 +637,8 @@ engine.h
 /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/rendergl.cpp
 engine.h
 /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/engine.h
+../game/entities/player.h
+/home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/game/entities/player.h
 
 /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/renderlights.cpp
 engine.h
@@ -715,6 +717,8 @@ engine.h
 /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/sound.cpp
 engine.h
 /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/engine.h
+../game/entities/player.h
+/home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/game/entities/player.h
 SDL_mixer.h
 /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/SDL_mixer.h
 SDL2/SDL_mixer.h
@@ -765,6 +769,8 @@ engine.h
 /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/world.cpp
 engine.h
 /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/engine.h
+../game/entities/player.h
+/home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/game/entities/player.h
 ../game/game.h
 /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/game/game.h
 

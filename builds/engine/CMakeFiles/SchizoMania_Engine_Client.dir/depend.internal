@@ -1496,6 +1496,7 @@ engine/CMakeFiles/SchizoMania_Engine_Client.dir/rendergl.cpp.o
  /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/rendergl.cpp
  /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/texture.h
  /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/world.h
+ /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/game/entities/player.h
  /usr/include/SDL2/SDL.h
  /usr/include/SDL2/SDL_assert.h
  /usr/include/SDL2/SDL_atomic.h
@@ -2212,6 +2213,7 @@ engine/CMakeFiles/SchizoMania_Engine_Client.dir/sound.cpp.o
  /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/sound.cpp
  /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/texture.h
  /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/world.h
+ /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/game/entities/player.h
  /usr/include/SDL2/SDL.h
  /usr/include/SDL2/SDL_assert.h
  /usr/include/SDL2/SDL_atomic.h
@@ -2565,6 +2567,7 @@ engine/CMakeFiles/SchizoMania_Engine_Client.dir/world.cpp.o
  /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/texture.h
  /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/world.cpp
  /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/engine/world.h
+ /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/game/entities/player.h
  /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/game/game.h
  /usr/include/SDL2/SDL.h
  /usr/include/SDL2/SDL_assert.h

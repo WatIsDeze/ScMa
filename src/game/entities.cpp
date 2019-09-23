@@ -90,13 +90,13 @@ namespace entities
 
     void resetspawns() {
         loopv(entities::g_ents)
-            if (entities::g_ents.inrange(i))
+            if (entities::g_ents.inrange(i) && entities::g_ents[i] != NULL)
                 entities::g_ents[i]->clearspawned();
 
-        entities::player1->clearspawned();
+        //entities::player1->clearspawned();
     }
 
-    void setspawn(int i, bool on) { if(entities::g_ents.inrange(i)) entities::g_ents[i]->setspawned(on); }
+    void setspawn(int i, bool on) { if(entities::g_ents.inrange(i) && entities::g_ents[i] != NULL) entities::g_ents[i]->setspawned(on); }
 
     // Returns the entity class respectively according to its registered name.
     entities::classes::BaseEntity *newgameentity(char *strclass) {
@@ -199,13 +199,7 @@ namespace entities
     }
     const char *entname(int i)
     {
-        static const char * const entnames[MAXENTTYPES] =
-        {
-            "none?", "light", "mapmodel", "playerstart", "envmap", "particles", "sound", "spotlight", "decal",
-            "teleport", "teledest", "jumppad",
-            "flag", "gameentity"
-        };
-        return i>=0 && size_t(i)<sizeof(entnames)/sizeof(entnames[0]) ? entnames[i] : "";
+        return "Hoi";
     }
 
     void editent(int i, bool local)

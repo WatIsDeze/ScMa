@@ -509,6 +509,8 @@ igame.h
 /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/game/commands.cpp
 game.h
 /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/game/game.h
+entities/player.h
+/home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/game/entities/player.h
 
 /home/watisdeze/Dev/Projects/PRs/Mike/ScMa/src/game/entities.cpp
 game.h

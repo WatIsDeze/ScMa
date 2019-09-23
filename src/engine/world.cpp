@@ -1,6 +1,7 @@
 // world.cpp: core map management stuff
 
 #include "engine.h"
+#include "../game/entities/player.h"
 
 VARR(mapversion, 1, MAPVERSION, 0);
 VARNR(mapscale, worldscale, 1, 0, 0);
@@ -310,7 +311,7 @@ void entitiesinoctanodes()
 {
     vector<entities::classes::BaseEntity *> &ents = entities::getents();
     conoutf("entitiesinoctanodes: %d", ents.length());
-    loopv(ents) modifyoctaent(MODOE_ADD, i, *ents[i]);
+    loopv(ents) if (ents.inrange(i)) { conoutf("entitiesinoctanodes: %d", ents.length()); modifyoctaent(MODOE_ADD, i, *ents[i]); }
 }
 
 static inline void findents(octaentities &oe, int low, int high, bool notspawned, const vec &pos, const vec &invradius, vector<int> &found)
@@ -323,7 +324,7 @@ static inline void findents(octaentities &oe, int low, int high, bool notspawned
         if (ents.inrange(id)) {
             entities::classes::BaseEntity &e = *ents[id];
             // TODO: Fix this, et_type? and ent_type?
-            if(e.ent_type >= low && e.ent_type <= high && (e.spawned() || notspawned) && vec(e.o).sub(pos).mul(invradius).squaredlen() <= 1) found.add(id);
+            if(e.et_type >= low && e.et_type <= high && (e.spawned() || notspawned) && vec(e.o).sub(pos).mul(invradius).squaredlen() <= 1) found.add(id);
         } else {
             continue;
         }
@@ -1589,7 +1590,7 @@ void findplayerspawn(entities::classes::BaseEntity *d, int forceent, int tag) //
         const vector<entities::classes::BaseEntity *> &ents = entities::getents();
         d->pitch = 0;
         d->roll = 0;
-        for(int attempt = pick;;)
+        for(int attempt = pick; attempt < ents.length(); )
         {
             d->o = ents[attempt]->o;
             d->yaw = ents[attempt]->attr1;
