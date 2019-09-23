@@ -1582,7 +1582,7 @@ void findplayerspawn(entities::classes::BaseEntity *d, int forceent, int tag) //
         const vector<entities::classes::BaseEntity *> &ents = entities::getents();
         d->pitch = 0;
         d->roll = 0;
-        for(int attempt = pick;;)
+        for(int attempt = pick; attempt < ents.length(); )
         {
             d->o = ents[attempt]->o;
             d->yaw = ents[attempt]->attr1;
