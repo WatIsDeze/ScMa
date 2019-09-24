@@ -40,39 +40,24 @@ namespace game
        // if(player->clientnum >=0) c2sinfo();   // do this last, to reduce the effective frame lag
     }
 
-    void SpawnPlayer()   // place at random spawn
-    {
-        player1 = new entities::classes::Player();
-        player1->respawn();
-        findplayerspawn(player1, 1, 0);
-        player1->setspawned(true);
-    }
-
     void updateentities() {
         // Execute think actions for entities.
         loopv(entities::g_ents)
         {
             // Let's go at it!
-            if (entities::g_ents.inrange(i)) {
-                entities::classes::BaseEntity *e = entities::g_ents[i];
-                if (e != NULL && e->ent_type != ENT_PLAYER)
-                    e->think();
-            }
-
+            entities::classes::BaseEntity *e = entities::g_ents[i];
+            e->think();
+//          if(e.type == ENT_PLAYER) {}
         }
 
-        if (game::player1)
-            game::player1->think();
-
-        if (connected) {
-            conoutf("Connected: %i", connected);
-        }
+        // Player specific think action.
+        player1->think();
     }
 
     void gameconnect(bool _remote)
     {
         // Store connection state.
-        connected = _remote;
+        connected = true;
 
         // Toggle edit mode if required.
         if(editmode)
@@ -142,29 +127,20 @@ namespace game
 
     }
     void newmap(int size) {
-        // Copy into mapname and reset maptime.
-        maptime = 0;
 
-        // Reset spawns.
-        entities::resetspawns();
-
-        // Initialize the player class used for this client.
-        player1 = new entities::classes::Player();
-        player1->setspawned(true);
-
-        // Find our playerspawn.
-        findplayerspawn(player1, -1, 0);
     }
     void loadingmap(const char *name) {
 
     }
 
-    cubestr clientmap = "";
     void startmap(const char *name)
     {
         // Copy into mapname and reset maptime.
-        copycubestr(clientmap, name ? name : "");
+        copycubestr(mapname, name ? name : "");
         maptime = 0;
+
+        // Find our playerspawn.
+        findplayerspawn(player1);
     }
 
     bool needminimap() {
@@ -214,8 +190,8 @@ namespace game
 
     bool allowmove(entities::classes::BaseEntity *d)
     {
-        if(d->ent_type!=ENT_PLAYER) return true;
-        return !d->ms_lastaction || lastmillis-d->ms_lastaction>=1000;
+        return true;
+        //if(d->ent_type==ENT_PLAYER) return true;
     }
 
     entities::classes::BaseEntity *iterdynents(int i) {
@@ -236,6 +212,7 @@ namespace game
     // This function should be used to render HUD View stuff etc.
     void rendergame(bool mainpass) {
     // This function should be used to render HUD View stuff etc.
+
     }
 
     const char *defaultcrosshair(int index) {
@@ -329,6 +306,10 @@ namespace game
     void initclient() {
         // Setup the map time.
         maptime = maprealtime = 0;
+
+        // Initialize the player class used for this client.
+        player1 = new entities::classes::Player();
+        player1->setspawned(true);
     }
 
     const char *gameident() {

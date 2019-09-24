@@ -1,30 +1,59 @@
 #ifndef ENTS_H
 #define ENTS_H
 
-// this file defines static map entities ("entity") and dynamic entities (players/monsters, "dynent")
-// the gamecode extends these types to add game specific functionality
+// Entity define configurations.
+#define MAXENTS 10000
+
+#define CROUCHTIME 200
+#define CROUCHHEIGHT 0.75f
+
+// this file defines static map entity ("entity") and includes the bassic base entities:
+// (dynamic entities (players/monsters, "dynent"), and physic entities(barrels etc, "physent")
+// the gamecode extends from the BaseEntity class type.
 
 // ET_*: the only static entity types dictated by the engine... rest are gamecode dependent
+// (ent->et_type = ..)
+enum {
+    ET_EMPTY=0,         // Empty entities. Not in use.
+    ET_LIGHT,           // Light entities, can be spotlights or dynamic lights(flickering/moving)(on/off)
+    ET_MAPMODEL,        // MapModel entities, can be benches, boxes, doors, anything alike.
+    ET_PLAYERSTART,     // PlayerStart entities, where players can spawn.
+    ET_ENVMAP,          // Environment Map entities.
+    ET_PARTICLES,       // Particle entities.
+    ET_SOUND,           // Sound entities.
+    ET_SPOTLIGHT,       // Spotlight entity, has to be attached to a ET_LIGHT entity.
+    ET_DECAL,           // Decal entities, speaks for itself.
+    ET_GAMESPECIFIC     // Any game specific entity class.
+};
 
-enum { ET_EMPTY=0, ET_LIGHT, ET_MAPMODEL, ET_PLAYERSTART, ET_ENVMAP, ET_PARTICLES, ET_SOUND, ET_SPOTLIGHT, ET_DECAL, ET_GAMESPECIFIC };
+// Physics entity states. (ent->state, ent->editstate)
+enum { CS_ALIVE = 0, CS_DEAD, CS_SPAWNING, CS_LAGGED, CS_EDITING, CS_SPECTATOR };
 
-class entity                                   // persistent map entity
+// Physics entity states. (ent->physstate)
+enum { PHYS_FLOAT = 0, PHYS_FALL, PHYS_SLIDE, PHYS_SLOPE, PHYS_FLOOR, PHYS_STEP_UP, PHYS_STEP_DOWN, PHYS_BOUNCE };
+
+// Physics entity states. (ent->ent_type)
+enum { ENT_PLAYER = 0, ENT_AI, ENT_INANIMATE, ENT_CAMERA, ENT_BOUNCE };
+
+// Collision types. (ent->collidetype = ..)
+enum { COLLIDE_NONE = 0, COLLIDE_ELLIPSE, COLLIDE_OBB, COLLIDE_TRI };
+
+// Core Entity class.
+class entity
 {
 public:
     entity() : o(0, 0, 0), attr1(0), attr2(0), attr3(0), attr4(0), attr5(0), et_type(0), ent_type(0), game_type(0), reserved(0), model_idx(-1) {}
     virtual ~entity() {}
 
     vec o;                                      // position
-    short attr1, attr2, attr3, attr4, attr5;
+    short attr1, attr2, attr3, attr4, attr5;    // These are still stored here for old code that makes use of these attributes.
     uchar et_type;                              // These are for the ET(Engine Type) values.
     uchar ent_type;                             // These are for ENT_(DynEnt/PhysEnt Type) values.
     uchar game_type;                            // the internal game entity type values.
     uchar reserved;
 
-    // Variables used for classes who inherit from this original entity class.. (Model_idx == -1 by default.)
+    // Replaced attr1 for model entities. Sooner or later attr1, attr2, attr3, attr4, and attr5 won't be required anymore.
     int model_idx;
-    int ms_lastaction;
-    int ms_lasttaunt;
 };
 
 enum
@@ -38,198 +67,11 @@ enum
     EF_RENDER     = 1<<6,
     EF_SOUND      = 1<<7,
     EF_SPAWNED    = 1<<8
-
 };
 
-
-
-
-#define MAXENTS 10000
-
-//extern vector<entities::classes::BaseEntity *> ents;                // map entities
-
-enum { CS_ALIVE = 0, CS_DEAD, CS_SPAWNING, CS_LAGGED, CS_EDITING, CS_SPECTATOR };
-
-enum { PHYS_FLOAT = 0, PHYS_FALL, PHYS_SLIDE, PHYS_SLOPE, PHYS_FLOOR, PHYS_STEP_UP, PHYS_STEP_DOWN, PHYS_BOUNCE };
-
-enum { ENT_PLAYER = 0, ENT_AI, ENT_INANIMATE, ENT_CAMERA, ENT_BOUNCE };
-
-enum { COLLIDE_NONE = 0, COLLIDE_ELLIPSE, COLLIDE_OBB, COLLIDE_TRI };
-
-#define CROUCHTIME 200
-#define CROUCHHEIGHT 0.75f
-
-// Base Physical Entity type, can be affected by physics
-class physent : public entity
-{
-public:
-    physent();
-
-    void resetinterp();
-
-    void reset();
-
-    vec feetpos(float offset) const;
-    vec headpos(float offset) const;
-
-    bool crouched() const;
-
-public:
-    //vec o, vel, falling;                          // origin, velocity
-    vec vel, falling;                               // origin, velocity
-    vec deltapos, newpos;                           // movement interpolation
-    float yaw, pitch, roll;
-    float maxspeed;                                 // cubes per second, 100 for player
-    int timeinair;
-    float radius, eyeheight, maxheight, aboveeye;   // bounding box size
-    float xradius, yradius, zmargin;
-    vec floor;                                      // the normal of floor the dynent is on
-
-    int inwater;
-    bool jumping;
-    char move, strafe, crouching;
-
-    uchar physstate;            // one of PHYS_* above
-    uchar state, editstate;     // one of CS_* above
-    //uchar type;               // one of ENT_* above NOTE: This one is now located in entity structure.
-    uchar collidetype;          // one of COLLIDE_* above
-
-    bool blocked;               // used by physics to signal ai
-};
-
-enum
-{
-    ANIM_MAPMODEL = 0,
-    ANIM_GAMESPECIFIC
-};
-
-#define ANIM_ALL         0x1FF
-#define ANIM_INDEX       0x1FF
-#define ANIM_LOOP        (1<<9)
-#define ANIM_CLAMP       (1<<10)
-#define ANIM_REVERSE     (1<<11)
-#define ANIM_START       (ANIM_LOOP|ANIM_CLAMP)
-#define ANIM_END         (ANIM_LOOP|ANIM_CLAMP|ANIM_REVERSE)
-#define ANIM_DIR         0xE00
-#define ANIM_SECONDARY   12
-#define ANIM_REUSE       0xFFFFFF
-#define ANIM_NOSKIN      (1<<24)
-#define ANIM_SETTIME     (1<<25)
-#define ANIM_FULLBRIGHT  (1<<26)
-#define ANIM_NORENDER    (1<<27)
-#define ANIM_RAGDOLL     (1<<28)
-#define ANIM_SETSPEED    (1<<29)
-#define ANIM_NOPITCH     (1<<30)
-#define ANIM_FLAGS       0xFF000000
-
-struct animinfo // description of a character's animation
-{
-    animinfo() : anim(0), frame(0), range(0), basetime(0), speed(100.0f), varseed(0) { }
-
-    int anim, frame, range, basetime;
-    float speed;
-    uint varseed;
-
-    bool operator==(const animinfo &o) const { return frame==o.frame && range==o.range && (anim&(ANIM_SETTIME|ANIM_DIR))==(o.anim&(ANIM_SETTIME|ANIM_DIR)) && (anim&ANIM_SETTIME || basetime==o.basetime) && speed==o.speed; }
-    bool operator!=(const animinfo &o) const { return frame!=o.frame || range!=o.range || (anim&(ANIM_SETTIME|ANIM_DIR))!=(o.anim&(ANIM_SETTIME|ANIM_DIR)) || (!(anim&ANIM_SETTIME) && basetime!=o.basetime) || speed!=o.speed; }
-};
-
-struct animinterpinfo // used for animation blending of animated characters
-{
-    animinterpinfo() : lastswitch(-1), lastmodel(NULL) {}
-
-    void reset() { lastswitch = -1; }
-
-    animinfo prev, cur;
-    int lastswitch;
-    void *lastmodel;
-};
-
-#define MAXANIMPARTS 3
-
-struct occludequery;
-struct ragdolldata;
-
-// Dynamic entities, these could be NPC's, AI enemies, or even a movable box. etc.
-class dynent : public physent
-{
-public:
-    dynent();
-    ~dynent();
-
-    void stopmoving();
-    void reset();
-    vec abovehead();
-
-    bool k_left, k_right, k_up, k_down;         // see input code - I think they meant, determine which key is pressed lolol.
-
-    animinterpinfo animinterp[MAXANIMPARTS];
-    ragdolldata *ragdoll;
-    occludequery *query;
-    int lastrendered;
-};
-
-
-// Defined here, for several reasons, since it has to replace good ol' extentity.
-namespace entities
-{
-    namespace classes {
-        class BaseEntity : public dynent {
-        public:
-            BaseEntity();
-            virtual ~BaseEntity();
-
-            //
-            // Base functions.
-            //
-            // Called every time a map is being loaded.
-            virtual void preload();
-
-            // Called each frame, to "think", AI logic should go here.
-            virtual void think();
-
-            // Called each frame to render.
-            virtual void render();
-
-            // When overriding this function, be sure to call its parent class::respawn() also.
-            virtual void respawn();
-
-            //
-            // Attribute events.
-            //
-            virtual void onAttributeSet(const std::string &key, const std::string &value);
-
-            //
-            // Trigger and touch commands.
-            //
-            // ent = the entity which has triggered you.
-            virtual bool onTrigger(BaseEntity *otherEnt, const vec &dir);
-            // ent = the entity which has touched you.
-            virtual bool onTouch(BaseEntity *otherEnt, const vec &dir);
-
-        // Taken from what was, gameentity.
-        public:
-            std::string classname;
-
-            // Contains the json attributes.
-            std::map<std::string, std::string> attributes;
-
-        public:
-            int flags;
-            BaseEntity *attached;
-
-            bool spawned() const { return (flags&EF_SPAWNED) != 0; }
-            void setspawned(bool val) { if(val) flags |= EF_SPAWNED; else flags &= ~EF_SPAWNED; }
-            void setspawned() { flags |= EF_SPAWNED; }
-            void clearspawned() { flags &= ~EF_SPAWNED; }
-        };
-
-        // Predefined.
-        class BaseMapModel;
-        class BaseMonster;
-        class Player;
-        class Door;
-    } // classes
-} // entities
+#include "entities/animinfo.h"
+#include "entities/physent.h"
+#include "entities/dynent.h"
+#include "entities/baseentity.h"
 
 #endif // ENTS_H

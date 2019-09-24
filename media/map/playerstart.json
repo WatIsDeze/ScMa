@@ -13,10 +13,10 @@
         "int_attr4": 0,
         "int_attr5": 0,
         "int_reserved": 0,
-        "model_idx": 0,
+        "model_idx": -1,
         "o": {
-            "x": 484.0,
-            "y": 668.0,
+            "x": 308.0,
+            "y": 300.0,
             "z": 580.0
         }
     },
@@ -34,32 +34,11 @@
         "int_attr4": 0,
         "int_attr5": 0,
         "int_reserved": 0,
-        "model_idx": 0,
+        "model_idx": -1,
         "o": {
-            "x": 500.0,
-            "y": 404.0,
-            "z": 540.0
-        }
-    },
-    {
-        "ent_type": 2,
-        "et_type": 3,
-        "game": {
-            "attributes": {},
-            "classname": "playerstart"
-        },
-        "game_type": 3,
-        "int_attr1": 0,
-        "int_attr2": 0,
-        "int_attr3": 0,
-        "int_attr4": 0,
-        "int_attr5": 0,
-        "int_reserved": 0,
-        "model_idx": 0,
-        "o": {
-            "x": 348.0,
-            "y": 532.0,
-            "z": 532.0
+            "x": 260.0,
+            "y": 772.0,
+            "z": 580.0
         }
     }
 ]

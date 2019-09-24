@@ -5,7 +5,6 @@ add_library(SchizoMania_Shared_Client STATIC
     command.h
     crypto.cpp
     cube.h
-    dynent.cpp
     ents.h
     geom.cpp
     geom.h
@@ -15,7 +14,6 @@ add_library(SchizoMania_Shared_Client STATIC
     iengine.h
     igame.h
     pch.cpp
-    physent.cpp
     stream.cpp
     tessfont.c
     tools.cpp
@@ -23,15 +21,23 @@ add_library(SchizoMania_Shared_Client STATIC
     zip.cpp
 )
 
+add_subdirectory(entities)
+
 # add_library(SchizoMania_Server STATIC
 # )
-
-target_include_directories(SchizoMania_Shared_Client PUBLIC
-    ${CMAKE_SOURCE_DIR}
-    ${SDL2_INCLUDE_DIRS}
-    ${FREETYPE_INCLUDE_DIRS}
-    ${ZLIB_INCLUDE_DIRS}
-    ${OPENGL_INCLUDE_DIRS}
+target_include_directories(SchizoMania_Shared_Client 
+	PUBLIC
+		${CMAKE_SOURCE_DIR}
+		${SDL2_INCLUDE_DIRS}
+		${FREETYPE_INCLUDE_DIRS}
+		${ZLIB_INCLUDE_DIRS}
+		${OPENGL_INCLUDE_DIRS}
+    PRIVATE
+    	shared/
+    	../engine/
+        ../game/
+        ../game/entities/
+        entities/
 )
 target_link_libraries(SchizoMania_Shared_Client
     PUBLIC

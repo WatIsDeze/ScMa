@@ -2,6 +2,7 @@
 #define __ENGINE_H__
 
 #include "cube.h"
+#include "ents.h"
 #include "world.h"
 #include "help.h"
 
@@ -13,6 +14,8 @@
 #include "bih.h"
 #include "model.h"
 
+// Done for the extern player variables.
+namespace entities { namespace classes { class Player; } }
 extern entities::classes::Player *player;
 extern entities::classes::BaseEntity *camera1;                // special ent that acts as camera, same object as player in FPS mode
 

@@ -1377,7 +1377,7 @@ FVAR(thirdpersonside, -25, 0, 25);
 
 entities::classes::BaseEntity *camera1 = NULL;
 bool detachedcamera = false;
-bool isthirdperson() { return player!=camera1 || detachedcamera; }
+bool isthirdperson() { return ((entities::classes::BaseEntity*)player)!=camera1 || detachedcamera; }
 
 void fixcamerarange()
 {

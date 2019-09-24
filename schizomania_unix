@@ -2,10 +2,10 @@
 # TESS_DATA should refer to the directory in which Tesseract data files are placed.
 #TESS_DATA=~/tesseract
 #TESS_DATA=/usr/local/tesseract
-TESS_DATA=..
+TESS_DATA=.
 
 # TESS_BIN should refer to the directory in which Tesseract executable files are placed.
-TESS_BIN=./..
+TESS_BIN=src
 
 # TESS_OPTIONS contains any command line options you would like to start Tesseract with.
 #TESS_OPTIONS=""

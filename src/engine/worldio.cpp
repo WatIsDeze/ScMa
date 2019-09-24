@@ -876,19 +876,14 @@ bool load_world(const char *mname, const char *cname)        // Does not support
             e.model_idx = element["model_idx"];
 
             // Fetch a reference to the game attributes json element.
-            const json& attribute_element = element["game"]["attributes"];
+            const json& game_element = element["game"]["attributes"];
 
-            //for (auto& element : json::iterator_wrapper(game_element)) {
-            e.attributes = attribute_element.get<std::map<std::string, std::string>>();
-            //}
+            for (auto& element : json::iterator_wrapper(game_element)) {
+                e.attributes[element.key()] = element.value();
+            }
 
             // All went well, so lets add our entity to the list.
             ents.add(&e);
-
-            // Remove it again in case the entity was > ET_GAMESPECIFIC
-            //if (e.et_type >= ET_GAMESPECIFIC) {
-            //    entities::deletegameentity(&e);
-            //}
         }
     }
 
@@ -1174,4 +1169,3 @@ void writecollideobj(char *name)
 COMMAND(writecollideobj, "s");
 
 #endif
-

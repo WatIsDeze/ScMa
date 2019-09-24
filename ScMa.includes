@@ -69,3 +69,4 @@ src/xcode/Frameworks/SDL2_mixer.framework/Versions/Current/Frameworks/Vorbis.fra
 src/xcode/Frameworks/SDL2_mixer.framework/Versions/Current/Headers
 src/game/entities
 dev_docs
+src/shared/entities

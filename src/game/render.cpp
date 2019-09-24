@@ -7,9 +7,7 @@ namespace game
     {
         loopv(entities::g_ents) {
             entities::classes::BaseEntity *ent = entities::g_ents[i];
-
-            if (ent->et_type != ET_PLAYERSTART && ent->et_type != ET_EMPTY && ent->et_type != ET_LIGHT && ent->et_type != ET_SPOTLIGHT && ent->et_type != ET_SOUND)
-                ent->render();
+            ent->render();
         }
 
         // Render our client player.
