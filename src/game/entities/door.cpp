@@ -7,7 +7,7 @@
 namespace entities {
 namespace classes {
 
-Door::Door() : entities::classes::BaseModel("world/door") {
+Door::Door() : entities::classes::BaseModel("world/door_redeclipse") {
     // Doors animate, makes sense.
     flags |= EF_ANIM;
 }
@@ -17,7 +17,7 @@ Door::~Door() {
 }
 
 void Door::preload() {
-
+    BaseModel::preload();
 }
 void Door::think() {
 

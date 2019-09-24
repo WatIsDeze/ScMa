@@ -525,7 +525,7 @@ void addbatchedmodel(model *m, batchedmodel &bm, int idx)
         if(b->m == m && (b->flags & MDL_MAPMODEL) == (bm.flags & MDL_MAPMODEL))
             goto foundbatch;
     }
-    
+
     m->batch = batches.length();
     b = &batches.add();
     b->m = m;
@@ -843,7 +843,7 @@ void rendertransparentmodelbatches(int stencil)
 
 static occludequery *modelquery = NULL;
 static int modelquerybatches = -1, modelquerymodels = -1, modelqueryattached = -1;
- 
+
 void startmodelquery(occludequery *query)
 {
     modelquery = query;

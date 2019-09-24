@@ -91,6 +91,9 @@ void BaseModel::preloadMapModel(const std::string &filename) {
             // store attributes since all went well.
             attributes["model"] = filename;
             attributes["model_idx"] = std::to_string(model_idx);
+
+            // Models render...
+            model_flags |= EF_RENDER;
         }
     } else {
         std::string filename = attributes["model"];
@@ -106,6 +109,9 @@ void BaseModel::preloadMapModel(const std::string &filename) {
             // store attributes since all went well.
             attributes["model"] = filename;
             attributes["model_idx"] = std::to_string(model_idx);
+
+            // Models render...
+            model_flags |= EF_RENDER;
         }
     }
 }

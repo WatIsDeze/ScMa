@@ -130,7 +130,12 @@ namespace game
 
     }
     void loadingmap(const char *name) {
+        // Copy into mapname and reset maptime.
+        copycubestr(mapname, name ? name : "");
+        maptime = 0;
 
+        // Find our playerspawn.
+        findplayerspawn(player1);
     }
 
     void startmap(const char *name)
@@ -308,9 +313,15 @@ namespace game
         maptime = maprealtime = 0;
 
         // Initialize the player class used for this client.
+    }
+
+    void SpawnPlayer() {
         player1 = new entities::classes::Player();
         player1->setspawned(true);
+
+        entities::g_ents.insert(0, player1);
     }
+
 
     const char *gameident() {
         return "SchizoMania";
