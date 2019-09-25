@@ -35,6 +35,7 @@ BaseModel::BaseModel(const std::string &filename) : BaseModel() {
             conoutf(CON_WARN, "Failed to load model: %s", filename.c_str());
         } else {
             attributes["model"] = filename;
+            attributes["model_idx"] = model_idx;
         }
     }
 }
@@ -73,7 +74,7 @@ void BaseModel::preloadMapModel(const std::string &filename) {
         model_idx = loadmapmodel(filename.c_str(), this);
 
         // We have found a model index, so all loading went well.
-        if (model_idx > -1) {
+        if (model_idx >= 0) {
             // store attributes since all went well.
             attributes["model"] = filename;
             attributes["model_idx"] = std::to_string(model_idx);
@@ -88,7 +89,7 @@ void BaseModel::preloadMapModel(const std::string &filename) {
         model_idx = loadmapmodel(filename.c_str(), this);
 
          // store attributes since all went well.
-        if (model_idx > -1) {
+        if (model_idx >= 0) {
             // store attributes since all went well.
             attributes["model"] = filename;
             attributes["model_idx"] = std::to_string(model_idx);

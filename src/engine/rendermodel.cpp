@@ -373,9 +373,9 @@ void preloadusedmapmodels(bool msg, bool bih)
     {
         entities::classes::BaseEntity &e = *ents[i];
         // TODO: Maybe model_idx has to be attr1 after all?
-        //if(e.et_type==ET_MAPMODEL && e.model_idx >= 0 && used.find(e.model_idx) < 0) used.add(e.model_idx);
-        if (e.et_type == ET_MAPMODEL) {
-            if (e.model_idx >= 0 && used.find(e.model_idx) < 0) used.add(e.model_idx);
+        if(e.et_type==ET_MAPMODEL && e.model_idx >= 0 && used.find(e.model_idx) < 0) { used.add(e.model_idx);
+        //if (e.et_type == ET_MAPMODEL) {
+//            if (e.model_idx >= 0 && used.find(e.model_idx) < 0) used.add(e.model_idx);
                 ((entities::classes::BaseMapModel&)e).preloadMapModel(e.attributes["model"]);
         }
     }
