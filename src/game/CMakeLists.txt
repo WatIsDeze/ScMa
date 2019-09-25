@@ -9,8 +9,8 @@ add_library(SchizoMania_Game_Client STATIC
     server.cpp
     commands.cpp
 
-    entities/basemodel.cpp
-    entities/basemodel.h
+    entities/basemapmodel.cpp
+    entities/basemapmodel.h
     entities/door.cpp
     entities/door.h
     entities/dynamiclight.cpp

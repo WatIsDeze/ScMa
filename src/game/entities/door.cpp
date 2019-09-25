@@ -1,13 +1,13 @@
-#include "../game.h"
 #include "../engine/engine.h"
+#include "../game.h"
 #include "ents.h"
-#include "basemodel.h"
+#include "basemapmodel.h"
 #include "door.h"
 
 namespace entities {
 namespace classes {
 
-Door::Door() : entities::classes::BaseModel("world/door_redeclipse") {
+Door::Door() : entities::classes::BaseMapModel("world/door") {
     // Doors animate, makes sense.
     flags |= EF_ANIM;
 }
@@ -17,14 +17,14 @@ Door::~Door() {
 }
 
 void Door::preload() {
-    BaseModel::preload();
+
 }
 void Door::think() {
 
 }
 void Door::render() {
     // Ensure it renders.
-    BaseModel::render();
+    BaseMapModel::render();
 }
 
 void Door::onAnimate(int &anim, int &basetime) {
@@ -32,7 +32,7 @@ void Door::onAnimate(int &anim, int &basetime) {
 }
 void Door::onAttributeSet(const std::string &key, const std::string &value) {
     // Call parent class onattributeset so it'll take its keys into consideration.
-    BaseModel::onAttributeSet(key, value);
+    BaseMapModel::onAttributeSet(key, value);
 }
 
 bool Door::onTrigger(entities::classes::BaseEntity *otherEnt, const vec &dir) {

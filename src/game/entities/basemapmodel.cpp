@@ -1,12 +1,12 @@
 #include "../game.h"
 #include "../engine/engine.h"
-#include "ents.h"
-#include "basemodel.h"
+#include "basemapmodel.h"
 
 namespace entities {
 namespace classes {
 
-BaseModel::BaseModel() :  entities::classes::BaseEntity() {
+BaseMapModel::BaseMapModel(const std::string &filename) : BaseEntity() {
+    // State (Alive)
     state = CS_ALIVE;
 
     // Internal engine type.
@@ -18,52 +18,42 @@ BaseModel::BaseModel() :  entities::classes::BaseEntity() {
     // And our game entity type.
     game_type = GAMEENTITY;
 
+    // Ensure it has a physstate, think this is the best.
+    physstate = PHYS_FALL;
+
     // Last but not least, set our collide method.
     collidetype = COLLIDE_TRI;
 }
 
-BaseModel::BaseModel(const std::string &filename) : BaseModel() {
-    if (attributes.find("model") != attributes.end()) {
-        // Try to load the model that is saved in the attributes.
-        preloadMapModel(attributes["model"]);
-    } else {
-        // Try to preload the model passed to the constructor.
-        preloadMapModel(filename.c_str());
-
-        // Warn our user in case the model has not been found.
-        if (model_idx == -1) {
-            conoutf(CON_WARN, "Failed to load model: %s", filename.c_str());
-        } else {
-            attributes["model"] = filename;
-        }
-    }
-}
-
-BaseModel::~BaseModel() {
+BaseMapModel::BaseMapModel() : BaseMapModel("") {
 
 }
 
-void BaseModel::preload() {
+BaseMapModel::~BaseMapModel() {
 
 }
 
-void BaseModel::think() {
-}
-
-void BaseModel::render() {
-
-}
-
-void BaseModel::onAttributeSet(const std::string &key, const std::string &value) {
+void BaseMapModel::onAttributeSet(const std::string &key, const std::string &value) {
     if (key == "model")
         preloadMapModel(value);
 }
 
-void BaseModel::onAnimate(int &anim, int &basetime) {
-    conoutf("OnAnimate: %i %i", anim, basetime);
+void BaseMapModel::onAnimate(int &anim, int &basetime) {
+
 }
 
-void BaseModel::preloadMapModel(const std::string &filename) {
+void BaseMapModel::preload() {
+
+}
+
+void BaseMapModel::think() {
+
+}
+
+void BaseMapModel::render() {
+}
+
+void BaseMapModel::preloadMapModel(const std::string &filename) {
     // In case this is the first time, a filename will be supplied for sure.
     if (!filename.empty()) {
         // Let's first preload this model.
@@ -79,7 +69,7 @@ void BaseModel::preloadMapModel(const std::string &filename) {
             attributes["model_idx"] = std::to_string(model_idx);
         }
     } else {
-        std::string filename = attributes["model"];
+        std::string filename = std::string(attributes["model"]);
 
         // Load in our model.
         preloadmodel(filename.c_str());

@@ -16,6 +16,7 @@ namespace game
     // Map Game State properties.
     int maptime = 0, maprealtime = 0, maplimit = -1;
     cubestr mapname = "";
+    cubestr clientmap = "";
 
     void updateworld() {
         // Update the world time.
@@ -40,24 +41,39 @@ namespace game
        // if(player->clientnum >=0) c2sinfo();   // do this last, to reduce the effective frame lag
     }
 
+    void SpawnPlayer()   // place at random spawn
+    {
+        player1 = new entities::classes::Player();
+        player1->respawn();
+        findplayerspawn(player1, 1, 0);
+        player1->setspawned(true);
+    }
+
     void updateentities() {
         // Execute think actions for entities.
         loopv(entities::g_ents)
         {
             // Let's go at it!
-            entities::classes::BaseEntity *e = entities::g_ents[i];
-            e->think();
-//          if(e.type == ENT_PLAYER) {}
+            if (entities::g_ents.inrange(i)) {
+                entities::classes::BaseEntity *e = entities::g_ents[i];
+                if (e != NULL && e->ent_type != ENT_PLAYER)
+                    e->think();
+            }
+
         }
 
-        // Player specific think action.
-        player1->think();
+        if (game::player1)
+            game::player1->think();
+
+        if (connected) {
+            conoutf("Connected: %i", connected);
+        }
     }
 
     void gameconnect(bool _remote)
     {
         // Store connection state.
-        connected = true;
+        connected = _remote;
 
         // Toggle edit mode if required.
         if(editmode)
@@ -127,25 +143,28 @@ namespace game
 
     }
     void newmap(int size) {
-
-    }
-    void loadingmap(const char *name) {
         // Copy into mapname and reset maptime.
-        copycubestr(mapname, name ? name : "");
         maptime = 0;
 
+        // Reset spawns.
+        entities::resetspawns();
+
+        // Initialize the player class used for this client.
+        player1 = new entities::classes::Player();
+        player1->setspawned(true);
+
         // Find our playerspawn.
-        findplayerspawn(player1);
+        findplayerspawn(player1, -1, 0);
+    }
+    void loadingmap(const char *name) {
+
     }
 
     void startmap(const char *name)
     {
         // Copy into mapname and reset maptime.
-        copycubestr(mapname, name ? name : "");
+        copycubestr(clientmap, name ? name : "");
         maptime = 0;
-
-        // Find our playerspawn.
-        findplayerspawn(player1);
     }
 
     bool needminimap() {
@@ -195,8 +214,8 @@ namespace game
 
     bool allowmove(entities::classes::BaseEntity *d)
     {
-        return true;
-        //if(d->ent_type==ENT_PLAYER) return true;
+        if(d->ent_type!=ENT_PLAYER) return true;
+        //return !d->ms_lastaction || lastmillis-d->ms_lastaction>=1000;
     }
 
     entities::classes::BaseEntity *iterdynents(int i) {
@@ -217,7 +236,6 @@ namespace game
     // This function should be used to render HUD View stuff etc.
     void rendergame(bool mainpass) {
     // This function should be used to render HUD View stuff etc.
-
     }
 
     const char *defaultcrosshair(int index) {
@@ -311,17 +329,7 @@ namespace game
     void initclient() {
         // Setup the map time.
         maptime = maprealtime = 0;
-
-        // Initialize the player class used for this client.
     }
-
-    void SpawnPlayer() {
-        player1 = new entities::classes::Player();
-        player1->setspawned(true);
-
-        entities::g_ents.insert(0, player1);
-    }
-
 
     const char *gameident() {
         return "SchizoMania";

@@ -49,7 +49,7 @@ namespace entities
 {
     namespace classes {
         class BaseEntity;
-        class BaseModel;
+        class BaseMapModel;
         class DynamicLight;
         class Player;
     }
@@ -59,18 +59,14 @@ namespace entities
     extern vector<classes::BaseEntity *> g_lightEnts;
 
     // Silly functions yup.
+    extern void preloadentities();
     extern void startmap();
-
-    extern void preloadentities();
-    extern void preloadentities();
-
-    extern void renderentities();
-
-    extern void SpawnPlayer();
-    extern void resetspawns();
     extern void setspawn(int i, bool on);
-}
 
+    extern void preloadentities();
+    extern void renderentities();
+    extern void resetspawns();
+}
 
 namespace game
 {

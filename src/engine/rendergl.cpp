@@ -1377,7 +1377,7 @@ FVAR(thirdpersonside, -25, 0, 25);
 
 entities::classes::BaseEntity *camera1 = NULL;
 bool detachedcamera = false;
-bool isthirdperson() { return player!=(entities::classes::BaseEntity*)camera1 || detachedcamera; }
+bool isthirdperson() { return player!=camera1 || detachedcamera; }
 
 void fixcamerarange()
 {
@@ -1430,7 +1430,7 @@ void recomputecamera()
     bool shoulddetach = thirdperson > 1 || game::detachcamera();
     if(!thirdperson && !shoulddetach)
     {
-        camera1 = (entities::classes::BaseEntity*)player;
+        camera1 = player;
         detachedcamera = false;
     }
     else
@@ -2411,7 +2411,7 @@ void gl_drawview()
     // render avatar after AO to avoid weird contact shadows
     renderavatar();
     GLERROR;
-
+ 
     // render grass after AO to avoid disturbing shimmering patterns
     generategrass();
     rendergrass();

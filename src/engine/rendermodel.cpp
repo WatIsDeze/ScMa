@@ -1,6 +1,4 @@
 #include "engine.h"
-#include "ents.h"
-#include "basemodel.h"
 
 VAR(oqdynent, 0, 1, 1);
 VAR(animationinterpolationtime, 0, 200, 1000);
@@ -310,7 +308,7 @@ COMMAND(rdanimjoints, "i");
 // mapmodels
 
 vector<mapmodelinfo> mapmodels;
-static const char * const mmprefix = "world/";
+static const char * const mmprefix = "mapmodel/";
 static const int mmprefixlen = strlen(mmprefix);
 
 void mapmodel(char *name)
@@ -364,6 +362,9 @@ void flushpreloadedmodels(bool msg)
     loadprogress = 0;
 }
 
+// Place elsewhere.
+#include "../game/entities/basemapmodel.h"
+
 void preloadusedmapmodels(bool msg, bool bih)
 {
     vector<entities::classes::BaseEntity *> &ents = entities::getents();
@@ -374,10 +375,8 @@ void preloadusedmapmodels(bool msg, bool bih)
         // TODO: Maybe model_idx has to be attr1 after all?
         //if(e.et_type==ET_MAPMODEL && e.model_idx >= 0 && used.find(e.model_idx) < 0) used.add(e.model_idx);
         if (e.et_type == ET_MAPMODEL) {
-            if (e.model_idx >= 0 && used.find(e.model_idx) < 0) {
-                used.add(e.model_idx);
-                ((entities::classes::BaseModel&)e).preloadMapModel(e.attributes["model"]);
-            }
+            if (e.model_idx >= 0 && used.find(e.model_idx) < 0) used.add(e.model_idx);
+                ((entities::classes::BaseMapModel&)e).preloadMapModel(e.attributes["model"]);
         }
     }
 
@@ -525,7 +524,7 @@ void addbatchedmodel(model *m, batchedmodel &bm, int idx)
         if(b->m == m && (b->flags & MDL_MAPMODEL) == (bm.flags & MDL_MAPMODEL))
             goto foundbatch;
     }
-
+    
     m->batch = batches.length();
     b = &batches.add();
     b->m = m;
@@ -843,7 +842,7 @@ void rendertransparentmodelbatches(int stencil)
 
 static occludequery *modelquery = NULL;
 static int modelquerybatches = -1, modelquerymodels = -1, modelqueryattached = -1;
-
+ 
 void startmodelquery(occludequery *query)
 {
     modelquery = query;

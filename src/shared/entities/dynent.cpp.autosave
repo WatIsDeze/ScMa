@@ -1,6 +1,5 @@
 #include "cube.h"
 #include "game.h"
-#include "physent.h"
 #include "dynent.h"
 
 // WatIsDeze: TODO: Maybe remove the physent constructor from here.

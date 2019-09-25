@@ -573,3 +573,5 @@ src/shared/entities/physent.h
 src/shared/entities/physent.cpp
 src/game/entities/basemodel.cpp
 src/game/entities/basemodel.h
+src/game/entities/basemapmodel.cpp
+src/game/entities/basemapmodel.h

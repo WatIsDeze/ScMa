@@ -1,61 +1,66 @@
 #ifndef ENTS_H
 #define ENTS_H
 
-// Entity define configurations.
-#define MAXENTS 10000
-
-#define CROUCHTIME 200
-#define CROUCHHEIGHT 0.75f
-
-// this file defines static map entity ("entity") and includes the bassic base entities:
-// (dynamic entities (players/monsters, "dynent"), and physic entities(barrels etc, "physent")
+// This file defines static map entities ("entity") and includes the basic entities:
+// (dynamic entities (players/monsters, "dynent"), and static(No AI, or Input) entities(barrels, etc, "physent")
 // the gamecode extends from the BaseEntity class type.
 
-// ET_*: the only static entity types dictated by the engine... rest are gamecode dependent
+// ET_*: The internal engine entity type.
 // (ent->et_type = ..)
+
 enum {
-    ET_EMPTY=0,         // Empty entities. Not in use.
-    ET_LIGHT,           // Light entities, can be spotlights or dynamic lights(flickering/moving)(on/off)
+    ET_EMPTY=0,         // Empty entities. Not in use. (No functionality, usually removed, or yet to be replaced.)
+    ET_LIGHT,           // Light entities, can be dynamic lights(flickering, moving, on/off)
     ET_MAPMODEL,        // MapModel entities, can be benches, boxes, doors, anything alike.
-    ET_PLAYERSTART,     // PlayerStart entities, where players can spawn.
-    ET_ENVMAP,          // Environment Map entities.
-    ET_PARTICLES,       // Particle entities.
-    ET_SOUND,           // Sound entities.
-    ET_SPOTLIGHT,       // Spotlight entity, has to be attached to a ET_LIGHT entity.
-    ET_DECAL,           // Decal entities, speaks for itself.
-    ET_GAMESPECIFIC     // Any game specific entity class.
+    ET_PLAYERSTART,     // Playerstart entities, where players can spawn.
+    ET_ENVMAP,          // Environment Map entity.
+    ET_PARTICLES,       // Particle Effect entities.
+    ET_SOUND,           // Sound Effect entities.
+    ET_SPOTLIGHT,       // Spotlight entity, has to be attached to an ET_LIGHT entity.
+    ET_DECAL,           // Decal entities, speak for itself.s
+    ET_GAMESPECIFIC
 };
 
-// Physics entity states. (ent->state, ent->editstate)
+#define MAXENTS 10000
+
+//extern vector<entities::classes::BaseEntity *> ents;                // map entities
+
+
+// Client/Server entity states. (ent->state, ent->editstate).
 enum { CS_ALIVE = 0, CS_DEAD, CS_SPAWNING, CS_LAGGED, CS_EDITING, CS_SPECTATOR };
 
 // Physics entity states. (ent->physstate)
 enum { PHYS_FLOAT = 0, PHYS_FALL, PHYS_SLIDE, PHYS_SLOPE, PHYS_FLOOR, PHYS_STEP_UP, PHYS_STEP_DOWN, PHYS_BOUNCE };
 
-// Physics entity states. (ent->ent_type)
+// Game entity type, is it a player, AI, Inanimate, camera, or bounces.. (ent->ent_type)
 enum { ENT_PLAYER = 0, ENT_AI, ENT_INANIMATE, ENT_CAMERA, ENT_BOUNCE };
 
-// Collision types. (ent->collidetype = ..)
+// Physics collision types. (ent->collidetype)
 enum { COLLIDE_NONE = 0, COLLIDE_ELLIPSE, COLLIDE_OBB, COLLIDE_TRI };
 
-// Core Entity class.
+// Crouche Time, and Crouch Height. TODO: Place in Physics or player settings?
+#define CROUCHTIME 200
+#define CROUCHHEIGHT 0.75f
+
+// Core entity class.
 class entity
 {
 public:
-    entity() : o(0, 0, 0), attr1(0), attr2(0), attr3(0), attr4(0), attr5(0), et_type(0), ent_type(0), game_type(0), reserved(0), model_idx(-1) {}
+    entity() : o(0, 0, 0), attr1(0), attr2(0), attr3(0), attr4(0), attr5(0), et_type(0), ent_type(0), game_type(0), reserved(0), model_idx(0) {}
     virtual ~entity() {}
 
     vec o;                                      // position
-    short attr1, attr2, attr3, attr4, attr5;    // These are still stored here for old code that makes use of these attributes.
+    short attr1, attr2, attr3, attr4, attr5;
     uchar et_type;                              // These are for the ET(Engine Type) values.
     uchar ent_type;                             // These are for ENT_(DynEnt/PhysEnt Type) values.
     uchar game_type;                            // the internal game entity type values.
     uchar reserved;
 
-    // Replaced attr1 for model entities. Sooner or later attr1, attr2, attr3, attr4, and attr5 won't be required anymore.
+    // Variables used for classes who inherit from this original entity class.. (Model_idx == -1 by default.)
     int model_idx;
 };
 
+// Core entity flags.
 enum
 {
     EF_NOVIS      = 1<<0,

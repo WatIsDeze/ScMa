@@ -82,10 +82,7 @@ target_include_directories(SchizoMania_Engine_Client
     PUBLIC
         ${CMAKE_SOURCE_DIR}
     PRIVATE
-        ../shared/
-        ../shared/entities/
-        ../game/entities/
-        
+        ../shared
         ${SDL2_MIXER_INCLUDE_DIRS}
         ${SDL2_IMAGE_INCLUDE_DIRS}
         # ${PNG_INCLUDE_DIRS}
@@ -97,7 +94,6 @@ target_include_directories(SchizoMania_Engine_Client
 target_link_libraries(SchizoMania_Engine_Client
     PUBLIC
         SchizoMania_Shared_Client
-        SchizoMania_Shared_Entities
         ${OS_LIBS}
     PRIVATE
         ${SDL2_MIXER_LIBRARIES}

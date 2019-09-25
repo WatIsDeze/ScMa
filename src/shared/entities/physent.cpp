@@ -1,5 +1,7 @@
 #include "cube.h"
-#include "ents.h"
+#include "game.h"
+#include "dynent.h"
+
 
 // ORIGINAL SETTINGS.
 //physent() : deltapos(0, 0, 0), newpos(0, 0, 0), yaw(0), pitch(0), roll(0), maxspeed(20),

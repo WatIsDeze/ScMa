@@ -35,11 +35,6 @@ namespace entities
             // ent = the entity which has touched you.
             virtual bool onTouch(BaseEntity *otherEnt, const vec &dir);
 
-            //
-            // General functions.
-            //
-            virtual void respawn();
-
         // Taken from what was, gameentity.
         public:
             //

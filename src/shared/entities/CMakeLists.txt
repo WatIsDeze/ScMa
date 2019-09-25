@@ -24,9 +24,11 @@ target_include_directories(SchizoMania_Shared_Entities PUBLIC
     ${OPENGL_INCLUDE_DIRS}
 	
     PRIVATE
-    	../../shared/
+    	../
+    	../../engine/
         ../../game/
-        ../../engine/
+        ../../game/entities/
+        entities/
 )
 target_link_libraries(SchizoMania_Shared_Entities
     PUBLIC

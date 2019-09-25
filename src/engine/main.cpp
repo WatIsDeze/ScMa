@@ -324,7 +324,7 @@ void renderprogressview(int w, int h, float bar, const char *text)   // also use
         int tw = text_width(text);
         float tsz = bh*0.6f/FONTH;
         if(tw*tsz > mw) tsz = mw/tw;
-
+    
         pushhudtranslate(bx+sw, by + (bh - FONTH*tsz)/2, tsz);
         draw_text(text, 0, 0);
         pophudmatrix();
@@ -567,7 +567,7 @@ void setupscreen()
         glcompat = glversions[i] <= 30 ? 1 : 0;
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, glversions[i] / 10);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, glversions[i] % 10);
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, glversions[i] >= 32 ? SDL_GL_CONTEXT_PROFILE_CORE : 0);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, glversions[i] >= 32 ? SDL_GL_CONTEXT_PROFILE_CORE : 0); 
         glcontext = SDL_GL_CreateContext(screen);
         if(glcontext) break;
     }
@@ -743,7 +743,7 @@ void checkinput()
 
             case SDL_TEXTINPUT:
                 if(textinputmask && int(event.text.timestamp-textinputtime) >= textinputfilter)
-                {
+                {   
                     uchar buf[SDL_TEXTINPUTEVENT_TEXT_SIZE+1];
                     size_t len = decodeutf8(buf, sizeof(buf)-1, (const uchar *)event.text.text, strlen(event.text.text));
                     if(len > 0) { buf[len] = '\0'; processtextinput((const char *)buf, len); }
@@ -872,7 +872,7 @@ void limitfps(int &millis, int curmillis)
 extern "C"
 {
 #ifdef __GNUC__
-__attribute__((dllexport))
+__attribute__((dllexport))    
 #else
 __declspec(dllexport)
 #endif
@@ -1204,7 +1204,7 @@ int main(int argc, char **argv)
         menuprocess();
         tryedit();
 
-        if(lastmillis) game::updateworld();
+        //if(lastmillis) game::updateworld();
 
         checksleep(lastmillis);
 
@@ -1214,7 +1214,7 @@ int main(int argc, char **argv)
         frames++;
 
         // miscellaneous general game effects
-        recomputecamera();
+        //recomputecamera();
         updateparticles();
         updatesounds();
 

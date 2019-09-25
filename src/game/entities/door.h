@@ -1,9 +1,11 @@
 #ifndef DOOR_H
 #define DOOR_H
 
+#include "basemapmodel.h"
+
 namespace entities {
     namespace classes {
-        class Door : public BaseModel {
+        class Door : public BaseMapModel {
         public:
             Door();
             virtual ~Door();
@@ -15,9 +17,9 @@ namespace entities {
             bool onTrigger(entities::classes::BaseEntity *otherEnt, const vec &dir);
             bool onTouch(entities::classes::BaseEntity *otherEnt, const vec &dir);
 
-            virtual void onAttributeSet(const std::string &key, const std::string &value);
+            void onAttributeSet(const std::string &key, const std::string &value);
+            void onAnimate(int &anim, int &basetime);
 
-            virtual void onAnimate(int &anim, int &basetime);
         private:
 
         };

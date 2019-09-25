@@ -1,6 +1,4 @@
 #include "cube.h"
-#include "ents.h"
-#include "engine.h"
 #include "game.h"
 #include "baseentity.h"
 
@@ -26,10 +24,6 @@ void BaseEntity::onAttributeSet(const std::string &key, const std::string &value
 
 bool BaseEntity::onTrigger(entities::classes::BaseEntity *otherEnt, const vec &dir) {}
 bool BaseEntity::onTouch(entities::classes::BaseEntity *otherEnt, const vec &dir) {}
-
-void BaseEntity::respawn() {
-    dynent::reset();
-}
 
 } // classes
 } // entities
