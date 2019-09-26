@@ -20,6 +20,23 @@ void BaseEntity::preload() {}
 void BaseEntity::think() {}
 void BaseEntity::render() {}
 
+void BaseEntity::setAttribute(const std::string &key, const std::string &value, bool callAttrSet) {
+    // Set the value.
+    attributes[key] = value;
+
+    // Call onAttributeSet?
+    if (callAttrSet == true)
+        onAttributeSet(key, value);
+}
+
+std::string BaseEntity::getAttribute(const std::string &key) {
+    if (attributes.find(key) != attributes.end()) {
+        return attributes[key];
+    } else {
+        return "";
+    }
+}
+
 void BaseEntity::onAttributeSet(const std::string &key, const std::string &value) {}
 
 bool BaseEntity::onTrigger(entities::classes::BaseEntity *otherEnt, const vec &dir) {}

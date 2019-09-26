@@ -1,11 +1,11 @@
+#include "../../engine/engine.h"
 #include "../game.h"
-#include "../engine/engine.h"
 #include "basemapmodel.h"
 
 namespace entities {
 namespace classes {
 
-BaseMapModel::BaseMapModel(const std::string &filename) : BaseEntity() {
+BaseMapModel::BaseMapModel() : BaseEntity() {
     // State (Alive)
     state = CS_ALIVE;
 
@@ -23,24 +23,17 @@ BaseMapModel::BaseMapModel(const std::string &filename) : BaseEntity() {
 
     // Last but not least, set our collide method.
     collidetype = COLLIDE_TRI;
-
-    preloadMapModel("world/door_redeclipse");
 }
 
-BaseMapModel::BaseMapModel() : BaseMapModel() {
-
+BaseMapModel::BaseMapModel(const std::string &filename) : BaseMapModel() {
+    // Load it in here.
+    if (filename.empty())
+        getAttribute("model");
+    else
+        preloadMapModel(filename);
 }
 
 BaseMapModel::~BaseMapModel() {
-
-}
-
-void BaseMapModel::onAttributeSet(const std::string &key, const std::string &value) {
-    if (key == "model")
-        preloadMapModel(value);
-}
-
-void BaseMapModel::onAnimate(int &anim, int &basetime) {
 
 }
 
@@ -49,42 +42,28 @@ void BaseMapModel::preload() {
 }
 
 void BaseMapModel::think() {
-
 }
 
 void BaseMapModel::render() {
+
+}
+
+void BaseMapModel::onAttributeSet(const std::string &key, const std::string &value) {
+
+}
+
+void BaseMapModel::onAnimate(int &anim, int &basetime) {
+    conoutf("OnAnimate: %i %i", anim, basetime);
 }
 
 void BaseMapModel::preloadMapModel(const std::string &filename) {
     // In case this is the first time, a filename will be supplied for sure.
     if (!filename.empty()) {
-        // Let's first preload this model.
-        preloadmodel(filename.c_str());
-
-        // Now store the map model index.
-        model_idx = loadmapmodel(filename.c_str(), this);
-
-        // We have found a model index, so all loading went well.
-        if (model_idx > -1) {
-            // store attributes since all went well.
-            attributes["model"] = filename;
-            attributes["model_idx"] = std::to_string(model_idx);
-        }
+        mmi = loadmodelinfo(filename.c_str(), this);
+        mapmodels.add(mmi);
+        model_idx = mapmodels.length();
     } else {
-        std::string filename = std::string(attributes["model"]);
-
-        // Load in our model.
-        preloadmodel(filename.c_str());
-
-        // Store map model index.
-        model_idx = loadmapmodel(filename.c_str(), this);
-
-         // store attributes since all went well.
-        if (model_idx > -1) {
-            // store attributes since all went well.
-            attributes["model"] = filename;
-            attributes["model_idx"] = std::to_string(model_idx);
-        }
+        preloadMapModel("world/box");
     }
 }
 

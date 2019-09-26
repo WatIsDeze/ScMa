@@ -25,6 +25,8 @@ namespace entities
             //
             // Attribute commands/events.
             //
+            virtual void setAttribute(const std::string &key, const std::string &value, bool callAttrSet);
+            virtual std::string getAttribute(const std::string &key);
             virtual void onAttributeSet(const std::string &key, const std::string &value);
 
             //
@@ -35,20 +37,23 @@ namespace entities
             // ent = the entity which has touched you.
             virtual bool onTouch(BaseEntity *otherEnt, const vec &dir);
 
-        // Taken from what was, gameentity.
+
         public:
             //
             // Core BaseEntity data.
             //
+            // Entity Name. (Used for trigger events.)
             std::string name;
+            // Entity class name. (Used to spawn the proper inheritance class instance.)
             std::string classname;
 
             // Contains the json attributes.
             std::map<std::string, std::string> attributes;
 
+        // Taken from what was called before, gameentity.
         public:
             int flags;
-            BaseEntity *attached;
+            BaseEntity *attached; // (this used to be extentity* attached;
 
             bool spawned() const { return (flags & EF_SPAWNED) != 0; }
             void setspawned(bool val) { if(val) flags |= EF_SPAWNED; else flags &= ~EF_SPAWNED; }

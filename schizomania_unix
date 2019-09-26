@@ -9,6 +9,7 @@ TESS_BIN=src
 
 # TESS_OPTIONS contains any command line options you would like to start Tesseract with.
 #TESS_OPTIONS=""
+#TESS_OPTIONS="-u${HOME}/.schizomania -g debug_log.txt"
 TESS_OPTIONS="-u${HOME}/.schizomania"
 
 # SYSTEM_NAME should be set to the name of your operating system.

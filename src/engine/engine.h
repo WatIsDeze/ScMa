@@ -12,6 +12,7 @@
 #include "texture.h"
 #include "bih.h"
 #include "model.h"
+#include "../shared/ents.h"
 
 namespace entities { namespace classes { class Player; } }
 extern entities::classes::Player *player;
@@ -690,23 +691,40 @@ static inline model *loadmapmodel(int n)
     return NULL;
 }
 
-// WatIsDeze: Added so we can load mapmodels by string filename
-static inline int loadmapmodel(const char *filename, entities::classes::BaseEntity *e)
+static inline model *loadmapmodel(const char *filename, entities::classes::BaseEntity *ent)
 {
+    loopv(mapmodels)
+    {
+        std::string name = mapmodels[i].name;
+        model *m = mapmodels[i].m;
+
+        return m ? m : loadmodel(filename);
+    }
+    return NULL;
+}
+
+
+// WatIsDeze: Added so we can load mapmodels by string filename
+/*static inline int loadmapmodel(const char *filename, entities::classes::BaseEntity *ent)
+{
+    int idx = -1;
+
     // Check if it already exists.
-    if (!e) {
+    if (ent == NULL) {
         return -1;
     }
 
     // WatIsDeze: TODO: Check if this is actually... smart.
-    if (e->model_idx != -1) {
+    if (ent->model_idx != -1) {
         loopv(mapmodels) if(!strcmp(mapmodels[i].name, filename)) {
-            e->model_idx = i;
-            return i;
+            ent->model_idx = i;
         }
     } else {
         //loopv(mapmodels)
-        if (mapmodels.inrange(e->model_idx)) return e->model_idx; else return -1;
+        if (mapmodels.inrange(e->model_idx))
+            return e->model_idx;
+        else
+            return -1;
     }
 
     // MapModelInfo struct.
@@ -715,9 +733,12 @@ static inline int loadmapmodel(const char *filename, entities::classes::BaseEnti
     mmi.collide = NULL;
 
     // Setup the name.
-    if(filename[0]) copycubestr(mmi.name, filename);
-    else mmi.name[0] = '\0';
+    if(filename[0])
+        copycubestr(mmi.name, filename);
+    else
+        mmi.name[0] = '\0';
 
+    // Try and load the model.
     model *mdl = loadmodel(filename);
 
     if (mdl) {
@@ -727,7 +748,7 @@ static inline int loadmapmodel(const char *filename, entities::classes::BaseEnti
         conoutf("%s %s", "Failed to load MapModel: ", filename);
         return -1;
     }
-}
+}*/
 
 static inline mapmodelinfo *getmminfo(int n) { return mapmodels.inrange(n) ? &mapmodels[n] : NULL; }
 

@@ -17,14 +17,16 @@ namespace entities {
             virtual void render();
 
             virtual void onAttributeSet(const std::string &key, const std::string &value);
-
             virtual void onAnimate(int &anim, int &basetime);
+
+        public:
+            void preloadMapModel(const std::string &filename);
 
         private:
             void loadModelAttributes();
 
-        public:
-            void preloadMapModel(const std::string &filename);
+        private:
+            mapmodelinfo mmi;
         };
     } // classes
 } // entities

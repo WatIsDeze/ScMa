@@ -73,8 +73,13 @@ bool Player::onTouch(entities::classes::BaseEntity *otherEnt, const vec &dir) {
 }
 
 void Player::respawn() {
-    //BaseEntity::respawn();
+    // First respawn base entity.
+    dynent::reset();
 
+    // Set spawned state.
+    setspawned(true);
+
+    // Edit mode or in-game?
     if(editmode)
         state = CS_EDITING;
     else if(state != CS_SPECTATOR)

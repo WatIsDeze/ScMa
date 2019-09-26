@@ -4517,6 +4517,7 @@ void workinoq()
 
     if(drawtex) return;
 
+    // Todo:: REMOVE?
     game::RenderGameEntities();
 
     if(shouldworkinoq())

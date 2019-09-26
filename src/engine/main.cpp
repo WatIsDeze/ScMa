@@ -1204,7 +1204,7 @@ int main(int argc, char **argv)
         menuprocess();
         tryedit();
 
-        //if(lastmillis) game::updateworld();
+        if(lastmillis) game::updateworld();
 
         checksleep(lastmillis);
 

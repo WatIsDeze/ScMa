@@ -1,3 +1,4 @@
+#include "../engine/engine.h"
 #include "game.h"
 #include "entities.h"
 
@@ -93,7 +94,7 @@ namespace entities
             if (entities::g_ents.inrange(i) && entities::g_ents[i] != NULL)
                 entities::g_ents[i]->clearspawned();
 
-        //entities::player1->clearspawned();
+        entities::player1->clearspawned();
     }
 
     void setspawn(int i, bool on) { if(entities::g_ents.inrange(i) && entities::g_ents[i] != NULL) entities::g_ents[i]->setspawned(on); }

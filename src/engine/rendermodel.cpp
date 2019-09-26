@@ -306,16 +306,20 @@ void rdanimjoints(int *on)
 COMMAND(rdanimjoints, "i");
 
 // mapmodels
-
-vector<mapmodelinfo> mapmodels;
-static const char * const mmprefix = "mapmodel/";
-static const int mmprefixlen = strlen(mmprefix);
+vector<mapmodelinfo> mapmodels;                     // Vector containing all the mapmodels (by index.)
+static const char * const mmprefix = "world/";      // The base subdirectory in the media/model/ folder to append the name to.
+static const int mmprefixlen = strlen(mmprefix);    // Strlen... C++-ify this.
 
 void mapmodel(char *name)
 {
+    // Returns a reference to the added mapmodel info in the list.
     mapmodelinfo &mmi = mapmodels.add();
+
+    // Setup the name.
     if(name[0]) formatcubestr(mmi.name, "%s%s", mmprefix, name);
     else mmi.name[0] = '\0';
+
+    // Set all to NULL.
     mmi.m = mmi.collide = NULL;
 }
 
@@ -338,6 +342,10 @@ ICOMMAND(nummapmodels, "", (), { intret(mapmodels.length()); });
 hashnameset<model *> models;
 vector<const char *> preloadmodels;
 hashset<char *> failedmodels;
+
+// Place elsewhere.
+#include "../game/entities/basemapmodel.h"
+
 
 void preloadmodel(const char *name)
 {
@@ -362,9 +370,6 @@ void flushpreloadedmodels(bool msg)
     loadprogress = 0;
 }
 
-// Place elsewhere.
-#include "../game/entities/basemapmodel.h"
-
 void preloadusedmapmodels(bool msg, bool bih)
 {
     vector<entities::classes::BaseEntity *> &ents = entities::getents();
@@ -372,12 +377,7 @@ void preloadusedmapmodels(bool msg, bool bih)
     loopv(ents)
     {
         entities::classes::BaseEntity &e = *ents[i];
-        // TODO: Maybe model_idx has to be attr1 after all?
-        if(e.et_type==ET_MAPMODEL && e.model_idx >= 0 && used.find(e.model_idx) < 0) { used.add(e.model_idx);
-        //if (e.et_type == ET_MAPMODEL) {
-//            if (e.model_idx >= 0 && used.find(e.model_idx) < 0) used.add(e.model_idx);
-                ((entities::classes::BaseMapModel&)e).preloadMapModel(e.attributes["model"]);
-        }
+        if(e.et_type==ET_MAPMODEL && e.et_type >= 0 && used.find(e.et_type) < 0) used.add(e.et_type);
     }
 
     vector<const char *> col;
@@ -449,6 +449,22 @@ model *loadmodel(const char *name, int i, bool msg)
     }
     if(mapmodels.inrange(i) && !mapmodels[i].m) mapmodels[i].m = m;
     return m;
+}
+
+mapmodelinfo loadmodelinfo(const char *name, entities::classes::BaseMapModel *ent) {
+    mapmodelinfo mmi;
+
+    // Preload first.
+    preloadmodel(name);
+
+    // Load in the model.
+    mmi.m = loadmodel(name, -1, true);
+    if (mmi.m != NULL) {
+        copycubestr(mmi.name, name, strlen(name));
+        ent->setAttribute("model", std::string(mmi.name), false);
+    }
+
+    return mmi;
 }
 
 void clear_models()
@@ -1135,4 +1151,3 @@ void setbbfrommodel(entities::classes::BaseEntity *d, const char *mdl)
     d->eyeheight = (center.z-radius.z) + radius.z*2*m->eyeheight;
     d->aboveeye  = radius.z*2*(1.0f-m->eyeheight);
 }
-

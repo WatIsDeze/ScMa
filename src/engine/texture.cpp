@@ -2048,7 +2048,9 @@ void packvslot(vector<uchar> &buf, const VSlot &src)
     if(src.changed & (1<<VSLOT_ROTATION))
     {
         buf.put(VSLOT_ROTATION);
-        putfloat(buf, src.rotation);
+        // WatIsDeze: Todo: Fetched from svn rev 2199/rev 2200 from Tesseract svn.
+        //putfloat(buf, src.rotation);
+        putint(buf, src.rotation);
     }
     if(src.changed & (1<<VSLOT_OFFSET))
     {

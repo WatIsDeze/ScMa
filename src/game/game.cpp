@@ -45,8 +45,7 @@ namespace game
     {
         player1 = new entities::classes::Player();
         player1->respawn();
-        findplayerspawn(player1, 1, 0);
-        player1->setspawned(true);
+        findplayerspawn(player1, -1, 0);
     }
 
     void updateentities() {
@@ -146,15 +145,11 @@ namespace game
         // Copy into mapname and reset maptime.
         maptime = 0;
 
-        // Reset spawns.
-        entities::resetspawns();
-
-        // Initialize the player class used for this client.
-        player1 = new entities::classes::Player();
-        player1->setspawned(true);
+        // SpawnPlayer.
+        SpawnPlayer();
 
         // Find our playerspawn.
-        findplayerspawn(player1, -1, 0);
+        findplayerspawn(player1);
     }
     void loadingmap(const char *name) {
 
@@ -164,7 +159,10 @@ namespace game
     {
         // Copy into mapname and reset maptime.
         copycubestr(clientmap, name ? name : "");
+        copycubestr(mapname, name ? name : "");
         maptime = 0;
+
+        SpawnPlayer();
     }
 
     bool needminimap() {
@@ -235,7 +233,8 @@ namespace game
 
     // This function should be used to render HUD View stuff etc.
     void rendergame(bool mainpass) {
-    // This function should be used to render HUD View stuff etc.
+        // This function should be used to render HUD View stuff etc.
+//        game::RenderGameEntities();
     }
 
     const char *defaultcrosshair(int index) {
