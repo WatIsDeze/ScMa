@@ -126,9 +126,11 @@ static inline bool raycubeintersect(const clipplanes &p, const cube &c, const ve
     return true;
 }
 
-extern void entselectionbox(const entity &e, vec &eo, vec &es);
 float hitentdist;
 int hitent, hitorient;
+
+
+extern void entselectionbox(const entities::classes::BaseEntity &e, vec &eo, vec &es);
 
 static float disttoent(octaentities *oc, const vec &o, const vec &ray, float radius, int mode, entities::classes::BaseEntity *t)
 {
@@ -1681,7 +1683,7 @@ bool droptofloor(vec &o, float radius, float height)
     return false;
 }
 
-float dropheight(entity &e)
+float dropheight(entities::classes::BaseEntity &e)
 {
     switch(e.et_type)
     {
@@ -1693,7 +1695,7 @@ float dropheight(entity &e)
     }
 }
 
-void dropenttofloor(entity *e)
+void dropenttofloor(entities::classes::BaseEntity *e)
 {
     droptofloor(e->o, 1.0f, dropheight(*e));
 }

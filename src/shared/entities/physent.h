@@ -4,6 +4,23 @@
 class physent : public entity
 {
 public:
+    //
+    // Core physent functions.
+    //
+    physent();
+    virtual ~physent();
+
+    void resetinterp();
+    void reset();
+
+    vec feetpos(float offset) const;
+    vec headpos(float offset) const;
+
+    bool crouched() const;
+
+    //
+    // Physics variables.
+    //
     //vec o, vel, falling;                          // origin, velocity
     vec vel, falling;                               // origin, velocity
     vec deltapos, newpos;                           // movement interpolation
@@ -14,6 +31,9 @@ public:
     float xradius, yradius, zmargin;
     vec floor;                                      // the normal of floor the dynent is on
 
+    //
+    // Physical state values.
+    //
     int inwater;
     bool jumping;
     char move, strafe, crouching;
@@ -24,17 +44,6 @@ public:
     uchar collidetype;          // one of COLLIDE_* above
 
     bool blocked;               // used by physics to signal ai
-
-    physent();
-
-    void resetinterp();
-
-    void reset();
-
-    vec feetpos(float offset) const;
-    vec headpos(float offset) const;
-
-    bool crouched() const;
 };
 
 #endif // PHYSENT_H

@@ -1,6 +1,7 @@
 // rendergl.cpp: core opengl rendering stuff
 
 #include "engine.h"
+#include "../shared/ents.h"
 #include "../game/entities/player.h"
 
 bool hasVAO = false, hasTR = false, hasTSW = false, hasPBO = false, hasFBO = false, hasAFBO = false, hasDS = false, hasTF = false, hasCBF = false, hasS3TC = false, hasFXT1 = false, hasLATC = false, hasRGTC = false, hasAF = false, hasFBB = false, hasFBMS = false, hasTMS = false, hasMSS = false, hasFBMSBS = false, hasUBO = false, hasMBR = false, hasDB2 = false, hasDBB = false, hasTG = false, hasTQ = false, hasPF = false, hasTRG = false, hasTI = false, hasHFV = false, hasHFP = false, hasDBT = false, hasDC = false, hasDBGO = false, hasEGPU4 = false, hasGPU4 = false, hasGPU5 = false, hasBFE = false, hasEAL = false, hasCR = false, hasOQ2 = false, hasES3 = false, hasCB = false, hasCI = false;
@@ -1422,6 +1423,8 @@ void mousemove(int dx, int dy)
     modifyorient(dx*cursens, dy*cursens*(invmouse ? 1 : -1));
 }
 
+#include <memory>
+
 void recomputecamera()
 {
     game::setupcamera();
@@ -1435,12 +1438,13 @@ void recomputecamera()
     }
     else
     {
-        static entities::classes::BaseEntity tempcamera;
-        camera1 = (&tempcamera);
+        //static entities::classes::BaseEntity tempcamera;
+        std::unique_ptr<entities::classes::BaseEntity*> tempcamera(new entities::classes::BaseEntity());
+        camera1 = tempcamera.get();
         if(detachedcamera && shoulddetach) camera1->o = player->o;
         else
         {
-            *camera1 = (entities::classes::BaseEntity)*player;
+            camera1 = ((entities::classes::BaseEntity*)*player);
             detachedcamera = shoulddetach;
         }
         camera1->reset();
@@ -2087,8 +2091,8 @@ void drawminimap()
     minimapscale = vec((0.5f - 1.0f/size)/minimapradius.x, (0.5f - 1.0f/size)/minimapradius.y, 1.0f);
 
     entities::classes::BaseEntity *oldcamera = camera1;
-    static entities::classes::BaseEntity cmcamera;
-    cmcamera = *player;
+    std::unique_ptr<entities::classes::BaseEntity> cmcamera;
+    cmcamera = ((entities::classes::BaseEntity)*player);
     cmcamera.reset();
     cmcamera.ent_type = ENT_CAMERA;
     cmcamera.o = vec(minimapcenter.x, minimapcenter.y, minimapheight > 0 ? minimapheight : minimapcenter.z + minimapradius.z + 1);

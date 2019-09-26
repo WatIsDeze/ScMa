@@ -374,7 +374,7 @@ extern bool save_world(const char *mname, bool nolms = false);
 extern void fixmapname(char *name);
 extern uint getmapcrc();
 extern void clearmapcrc();
-extern bool loadents(const char *fname, vector<entity> &ents, uint *crc = NULL);
+extern bool loadents(const char *fname, vector<entities::classes::BaseEntity> &ents, uint *crc = NULL);
 
 // physics
 extern vec collidewall;
@@ -391,7 +391,7 @@ extern void avoidcollision(entities::classes::BaseEntity *d, const vec &dir, ent
 extern bool overlapsdynent(const vec &o, float radius);
 extern bool movecamera(entities::classes::BaseEntity *pl, const vec &dir, float dist, float stepdist);
 extern void physicsframe();
-extern void dropenttofloor(entity *e);
+extern void dropenttofloor(entities::classes::BaseEntity *e);
 extern bool droptofloor(vec &o, float radius, float height);
 
 extern void vecfromyawpitch(float yaw, float pitch, int move, int strafe, vec &m);

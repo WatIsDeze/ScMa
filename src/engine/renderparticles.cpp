@@ -1260,7 +1260,7 @@ void regular_particle_flame(int type, const vec &p, float radius, float height, 
     regularflame(type, p, radius, height, color, density, scale, speed, fade, gravity);
 }
 
-static void makeparticles(entity &e)
+static void makeparticles(entities::classes::BaseEntity &e)
 {
     switch(e.attr1)
     {
@@ -1428,12 +1428,12 @@ void updateparticles()
         // note: order matters in this case as particles of the same type are drawn in the reverse order that they are added
         loopv(entgroup)
         {
-            entity &e = *ents[entgroup[i]];
+            entities::classes::BaseEntity &e = *ents[entgroup[i]];
             particle_textcopy(e.o, entname(e), PART_TEXT, 1, 0xFF4B19, 2.0f);
         }
         loopv(ents)
         {
-            entity &e = *ents[i];
+            entities::classes::BaseEntity &e = *ents[i];
             if(e.et_type==ET_EMPTY) continue;
             particle_textcopy(e.o, entname(e), PART_TEXT, 1, 0x1EC850, 2.0f);
             regular_particle_splash(PART_EDIT, 2, 40, e.o, 0x3232FF, 0.32f*particlesize/100.0f);

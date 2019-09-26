@@ -23,10 +23,13 @@ namespace entities
             virtual void render();
 
             //
-            // Attribute commands/events.
+            // Attribute set and get, and event.
             //
-            virtual void setAttribute(const std::string &key, const std::string &value, bool callAttrSet);
-            virtual std::string getAttribute(const std::string &key);
+            // Sets the key its value in the attributes list.
+            void setAttribute(const std::string &key, const std::string &value, bool callAttrSet);
+            // Returns the value of the key.
+            std::string getAttribute(const std::string &key);
+            // Can be overloaded to execute certain actions based on the key/value.
             virtual void onAttributeSet(const std::string &key, const std::string &value);
 
             //
@@ -36,19 +39,6 @@ namespace entities
             virtual bool onTrigger(BaseEntity *otherEnt, const vec &dir);
             // ent = the entity which has touched you.
             virtual bool onTouch(BaseEntity *otherEnt, const vec &dir);
-
-
-        public:
-            //
-            // Core BaseEntity data.
-            //
-            // Entity Name. (Used for trigger events.)
-            std::string name;
-            // Entity class name. (Used to spawn the proper inheritance class instance.)
-            std::string classname;
-
-            // Contains the json attributes.
-            std::map<std::string, std::string> attributes;
 
         // Taken from what was called before, gameentity.
         public:

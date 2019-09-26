@@ -28,7 +28,7 @@ BaseMapModel::BaseMapModel() : BaseEntity() {
 BaseMapModel::BaseMapModel(const std::string &filename) : BaseMapModel() {
     // Load it in here.
     if (filename.empty())
-        getAttribute("model");
+        preloadMapModel(getAttribute("model"));
     else
         preloadMapModel(filename);
 }

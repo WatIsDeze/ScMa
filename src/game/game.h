@@ -58,21 +58,28 @@ namespace entities
     extern vector<classes::BaseEntity *> g_ents;
     extern vector<classes::BaseEntity *> g_lightEnts;
 
-    // Silly functions yup.
+    //
+    // Entity core functions.
+    //
+    // Preloads the entities.
     extern void preloadentities();
-    extern void startmap();
+
+    // Renders all the entities.
+    extern void renderentities();
+
+    // Sets the spawn state on a given entity index.
     extern void setspawn(int i, bool on);
 
-    extern void preloadentities();
-    extern void renderentities();
+    // Resets all the spawns.
     extern void resetspawns();
 }
 
 namespace game
 {
     // Extern variables.
-    extern entities::classes::Player *player1;
-    extern int maptime, maprealtime, maplimit;
+    extern entities::classes::Player *player1;  // Main player entity in the game code.
+    extern int maptime, maprealtime;            // Times.
+    extern cubestr clientmap;                   // The map the client is currently running or loading.
 
     // Entities.
     extern void clearworld();

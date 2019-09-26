@@ -8,19 +8,24 @@ namespace game
     entities::classes::Player *player1 = NULL;
 
     // List of connected players. (For future network usage.)
-    vector<entities::classes::BaseEntity*> players;
+    vector<entities::classes::Player*> players;
 
     // Networking State properties.
     bool connected = false;
 
     // Map Game State properties.
-    int maptime = 0, maprealtime = 0, maplimit = -1;
-    cubestr mapname = "";
-    cubestr clientmap = "";
+    cubestr clientmap = "";     // Current map filename.
+    int maptime = 0;            // Frame time.
+    int maprealtime = 0;        // Total time.
 
     void updateworld() {
-        // Update the world time.
-        if(!maptime) { maptime = lastmillis; maprealtime = totalmillis; return; }
+        // Update the map time. (First frame since maptime = 0.
+        if(!maptime) {
+            maptime = lastmillis;
+            maprealtime = totalmillis;
+            return;
+        }
+
         // Escape this function if there is no currenttime yet from server to client. (Meaning it is 0.)
         if(!curtime) return; //{ gets2c(); if (player1->) c2sinfo(); return; } //c2sinfo(); }///if(player1->clientnum>=0) c2sinfo(); return; }
         //if(!curtime) return; //{ gets2c(); c2sinfo(); }///if(player1->clientnum>=0) c2sinfo(); return; }
@@ -45,7 +50,7 @@ namespace game
     {
         player1 = new entities::classes::Player();
         player1->respawn();
-        findplayerspawn(player1, -1, 0);
+        findplayerspawn(player1, 0, 0);
     }
 
     void updateentities() {
@@ -129,14 +134,14 @@ namespace game
 
     // These speak for themselves.
     const char *getclientmap() {
-        return mapname;
+        return clientmap;
     }
     const char *getmapinfo() {
         return NULL;
     }
     void resetgamestate() {
-    //    clearprojectiles();
-    //    clearbouncers();
+        //clearprojectiles();
+        //clearbouncers();
     }
     void suicide(entities::classes::BaseEntity *d) {
 
@@ -157,12 +162,10 @@ namespace game
 
     void startmap(const char *name)
     {
-        // Copy into mapname and reset maptime.
-        copycubestr(clientmap, name ? name : "");
-        copycubestr(mapname, name ? name : "");
-        maptime = 0;
-
         SpawnPlayer();
+        findplayerspawn(player1, -1, 0);
+        entities::resetspawns();
+        copycubestr(clientmap, name ? name : "");
     }
 
     bool needminimap() {
@@ -188,6 +191,7 @@ namespace game
     }
 
     void preload() {
+
         entities::preloadentities();
     }
 

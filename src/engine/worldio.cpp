@@ -27,7 +27,7 @@ void fixmapname(char *name)
     validmapname(name, name, NULL, "");
 }
 
-static void fixent(entity &e, int version)
+static void fixent(entities::classes::BaseEntity &e, int version)
 {
     if(version <= 0)
     {
@@ -68,7 +68,7 @@ static bool loadmapheader(stream *f, const char *ogzname, mapheader &hdr, octahe
     return true;
 }
 
-bool loadents(const char *fname, vector<entity> &ents, uint *crc)
+bool loadents(const char *fname, vector<entities::classes::BaseEntity> &ents, uint *crc)
 {
 /*    cubestr name;
     validmapname(name, fname);
@@ -138,6 +138,7 @@ bool loadents(const char *fname, vector<entity> &ents, uint *crc)
     delete f;
 
     return true;*/
+    return false;
 }
 
 #ifndef STANDALONE
@@ -896,7 +897,7 @@ bool load_world(const char *mname, const char *cname)        // Does not support
     {
         conoutf(CON_WARN, "warning: map has %d entities", hdr.numents);
         // TODO: What to do here?
-        //f->seek((hdr.numents-MAXENTS)*(samegame ? sizeof(entity) + einfosize : eif), SEEK_CUR);
+        //f->seek((hdr.numents-MAXENTS)*(samegame ? sizeof(entities::classes::BaseEntity) + einfosize : eif), SEEK_CUR);
     }
 
     renderprogress(0, "loading slots...");

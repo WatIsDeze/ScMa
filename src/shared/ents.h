@@ -49,6 +49,9 @@ public:
     entity() : o(0, 0, 0), attr1(0), attr2(0), attr3(0), attr4(0), attr5(0), et_type(0), ent_type(0), game_type(0), reserved(0), model_idx(0) {}
     virtual ~entity() {}
 
+    //
+    // Legacy Entity data.
+    //
     vec o;                                      // position
     short attr1, attr2, attr3, attr4, attr5;
     uchar et_type;                              // These are for the ET(Engine Type) values.
@@ -56,6 +59,19 @@ public:
     uchar game_type;                            // the internal game entity type values.
     uchar reserved;
 
+public:
+    //
+    // Core BaseEntity data.
+    //
+    // Entity Name. (Used for trigger events.)
+    std::string name;
+    // Entity class name. (Used to spawn the proper inheritance class instance.)
+    std::string classname;
+
+    // Contains the json attributes.
+    std::map<std::string, std::string> attributes;
+
+public:
     // Variables used for classes who inherit from this original entity class.. (Model_idx == -1 by default.)
     int model_idx;
 };

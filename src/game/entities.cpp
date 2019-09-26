@@ -17,13 +17,13 @@ namespace entities
     using namespace game;
 
 #ifndef STANDALONE
-    vector<classes::BaseEntity *> g_ents;
-    vector<classes::BaseEntity *> g_lightEnts;
+    vector<entities::classes::BaseEntity *> g_ents;
+    vector<entities::classes::BaseEntity *> g_lightEnts;
 
-    vector<classes::BaseEntity *> &getents() { return g_ents; }
+    vector<entities::classes::BaseEntity *> &getents() { return g_ents; }
 
-    bool mayattach(classes::BaseEntity &e) { return false; }
-    bool attachent(classes::BaseEntity &e, classes::BaseEntity &a) { return false; }
+    bool mayattach(entities::classes::BaseEntity &e) { return false; }
+    bool attachent(entities::classes::BaseEntity &e, entities::classes::BaseEntity &a) { return false; }
 
     const char *itemname(int i)
     {
@@ -56,7 +56,7 @@ namespace entities
         return entmdlnames[type];
     }
 
-    const char *entmodel(const entity &e)
+    const char *entmodel(const entities::classes::BaseEntity &e)
     {
         if(e.game_type == TELEPORT)
         {
@@ -76,17 +76,14 @@ namespace entities
                 entities::classes::BaseEntity *e = entities::g_ents[i];
 
                 // Ensure that they don't get preloaded in preload, should be done in the constructor of ET_MAPMODEL entities.
-                //if (e->et_type != ET_MAPMODEL) {
-                e->preload();
+                if (e->et_type != ET_MAPMODEL)
+                    e->preload();
              }
         }
 
         // Specifically load in the client player model.
-
-        if (entities::player1 != NULL)
-            entities::player1->preload();
-        else
-            conoutf("WTF");
+        if (game::player1 != NULL)
+            game::player1->preload();
     }
 
     void resetspawns() {
@@ -94,7 +91,7 @@ namespace entities
             if (entities::g_ents.inrange(i) && entities::g_ents[i] != NULL)
                 entities::g_ents[i]->clearspawned();
 
-        entities::player1->clearspawned();
+        game::player1->clearspawned();
     }
 
     void setspawn(int i, bool on) { if(entities::g_ents.inrange(i) && entities::g_ents[i] != NULL) entities::g_ents[i]->setspawned(on); }
@@ -154,7 +151,7 @@ namespace entities
             case TELEDEST:
                 e.attr3 = e.attr2;
                 e.attr2 = e.attr1;
-                e.attr1 = (int)entities::player1->yaw;
+                e.attr1 = (int)game::player1->yaw;
                 break;
         }
     }
@@ -191,10 +188,9 @@ namespace entities
         return false;
     }
 
-    const char *entnameinfo(entity &e) {
-        entities::classes::BaseEntity  *ptr_e = (entities::classes::BaseEntity *)&e;
+    const char *entnameinfo(entities::classes::BaseEntity &e) {
         std::string str;
-        str = ptr_e->classname;
+        str = e.classname + ":" + e.name;
         // TODO: List attributes here? Maybe...
         return str.c_str();
     }
@@ -214,7 +210,7 @@ namespace entities
         //if(local) addmsg(N_EDITENT, "rii3ii5", i, (int)(e.o.x*DMF), (int)(e.o.y*DMF), (int)(e.o.z*DMF), e.type, e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
     }
 
-    float dropheight(entity &e)
+    float dropheight(entities::classes::BaseEntity &e)
     {
         if(e.game_type==FLAG) return 0.0f;
         return 4.0f;

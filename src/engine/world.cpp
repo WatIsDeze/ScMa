@@ -12,25 +12,25 @@ VARNR(emptymap, _emptymap, 1, 0, 0);
 VAR(octaentsize, 0, 64, 1024);
 VAR(entselradius, 0, 2, 10);
 
-static inline void transformbb(const entity &e, vec &center, vec &radius)
+static inline void transformbb(const entities::classes::BaseEntity &e, vec &center, vec &radius)
 {
     if(e.attr5 > 0) { float scale = e.attr5/100.0f; center.mul(scale); radius.mul(scale); }
     rotatebb(center, radius, e.attr2, e.attr3, e.attr4);
 }
 
-static inline void mmboundbox(const entity &e, model *m, vec &center, vec &radius)
+static inline void mmboundbox(const entities::classes::BaseEntity &e, model *m, vec &center, vec &radius)
 {
     m->boundbox(center, radius);
     transformbb(e, center, radius);
 }
 
-static inline void mmcollisionbox(const entity &e, model *m, vec &center, vec &radius)
+static inline void mmcollisionbox(const entities::classes::BaseEntity &e, model *m, vec &center, vec &radius)
 {
     m->collisionbox(center, radius);
     transformbb(e, center, radius);
 }
 
-static inline void decalboundbox(const entity &e, DecalSlot &s, vec &center, vec &radius)
+static inline void decalboundbox(const entities::classes::BaseEntity &e, DecalSlot &s, vec &center, vec &radius)
 {
     float size = max(float(e.attr5), 1.0f);
     center = vec(0, s.depth * size/2, 0);
@@ -311,7 +311,12 @@ void entitiesinoctanodes()
 {
     vector<entities::classes::BaseEntity *> &ents = entities::getents();
     conoutf("entitiesinoctanodes: %d", ents.length());
-    loopv(ents) if (ents.inrange(i)) { conoutf("entitiesinoctanodes: %d", ents.length()); modifyoctaent(MODOE_ADD, i, *ents[i]); }
+    loopv(ents) {
+        if (ents.inrange(i)) {
+            if (ents[i] != NULL)
+                modifyoctaent(MODOE_ADD, i, *ents[i]);
+        }
+    }
 }
 
 static inline void findents(octaentities &oe, int low, int high, bool notspawned, const vec &pos, const vec &invradius, vector<int> &found)
@@ -325,8 +330,6 @@ static inline void findents(octaentities &oe, int low, int high, bool notspawned
             entities::classes::BaseEntity &e = *ents[id];
             // TODO: Fix this, et_type? and ent_type?
             if(e.et_type >= low && e.et_type <= high && (e.spawned() || notspawned) && vec(e.o).sub(pos).mul(invradius).squaredlen() <= 1) found.add(id);
-        } else {
-            continue;
         }
     }
 }
@@ -368,17 +371,16 @@ void findents(int low, int high, bool notspawned, const vec &pos, const vec &rad
     if(c->children && 1<<scale >= octaentsize) findents(c->children, ivec(bo).mask(~((2<<scale)-1)), 1<<scale, bo, br, low, high, notspawned, pos, invradius, found);
 }
 
-char *entname(entity &e)
+char *entname(entities::classes::BaseEntity &e)
 {
-    static cubestr fullentname;
-    copycubestr(fullentname, entities::entname(e.game_type));
-    const char *einfo = entities::entnameinfo(e);
-    if(*einfo)
+    static std::string fullentname;
+    std::string classname = e.classname;
+    std::string name = e.name;
+    if(!name.empty())
     {
-        concatcubestr(fullentname, ": ");
-        concatcubestr(fullentname, einfo);
+        fullentname = classname + ":" + name;
     }
-    return fullentname;
+    return (char*)fullentname.c_str();
 }
 
 extern selinfo sel;
@@ -553,13 +555,13 @@ undoblock *copyundoents(undoblock *u)
     return c;
 }
 
-void pasteundoent(int idx, const entity &ue)
+void pasteundoent(int idx, const entities::classes::BaseEntity &ue)
 {
     if(idx < 0 || idx >= MAXENTS) return;
     vector<entities::classes::BaseEntity *> &ents = entities::getents();
     while(ents.length() < idx) ents.add(entities::newgameentity())->et_type = ET_EMPTY;
     int efocus = -1;
-    entedit(idx, (entity &)e = ue);
+    entedit(idx, (entities::classes::BaseEntity &)e = ue);
 }
 
 void pasteundoents(undoblock *u)
@@ -591,7 +593,7 @@ void entrotate(int *cw)
     );
 }
 
-void entselectionbox(const entity &e, vec &eo, vec &es)
+void entselectionbox(const entities::classes::BaseEntity &e, vec &eo, vec &es)
 {
     model *m = NULL;
     const char *mname = entities::entmodel(e);
@@ -1042,7 +1044,7 @@ int findtype(char *what)
 
 VAR(entdrop, 0, 2, 3);
 
-bool dropentity(entity &e, int drop = -1)
+bool dropentity(entities::classes::BaseEntity &e, int drop = -1)
 {
     vec radius(4.0f, 4.0f, 4.0f);
     if(drop<0) drop = entdrop;
@@ -1298,7 +1300,7 @@ COMMAND(newgent, "sssssssss");
 // WatIs: End of new game entity.
 
 int entcopygrid;
-vector<entity> entcopybuf;
+vector<entities::classes::BaseEntity> entcopybuf;
 
 void entcopy()
 {
@@ -1317,7 +1319,7 @@ void entpaste()
     float m = float(sel.grid)/float(entcopygrid);
     loopv(entcopybuf)
     {
-        const entity &c = entcopybuf[i];
+        const entities::classes::BaseEntity &c = entcopybuf[i];
         vec o = vec(c.o).mul(m).add(vec(sel.o));
         int idx;
         entities::classes::BaseEntity *e = newentity(true, o, ET_EMPTY, c.attr1, c.attr2, c.attr3, c.attr4, c.attr5, idx);
@@ -1333,7 +1335,7 @@ void entpaste()
 void entreplace()
 {
     if(noentedit() || entcopybuf.empty()) return;
-    const entity &c = entcopybuf[0];
+    const entities::classes::BaseEntity &c = entcopybuf[0];
     if(entgroup.length() || enthover >= 0)
     {
         groupedit({
@@ -1539,26 +1541,20 @@ int spawncycle = -1;
 //        entinmap(d);
 //    }
 //}
-int findentity_byclass(const char *strclass, int index, int attr1, int attr2)
+int findentity_byclass(const std::string &classname, int index, int attr1, int attr2)
 {
     const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     if(index > ents.length()) index = ents.length();
-    else for(int i = index; i<ents.length(); i++)
-    {
-        entities::classes::BaseEntity *e = ents[i];
-        if (!e) continue;
-        std::string stdstr = strclass;
-        if(e->classname == stdstr)
-            return i;
+    else {
+        for(int i = index; i<ents.length(); i++)
+        {
+            entities::classes::BaseEntity *e = ents[i];
+            if (!e) continue;
+            if(e->classname == classname)
+                return i;
+        }
     }
-    loopj(index)
-    {
-        entities::classes::BaseEntity *e = ents[j];
-        if (!e) continue;
-        std::string stdstr = strclass;
-        if(e->classname == stdstr)
-            return j;
-    }
+
     return -1;
 }
 

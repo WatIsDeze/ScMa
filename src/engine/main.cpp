@@ -1024,7 +1024,8 @@ int main(int argc, char **argv)
     #endif
     #endif
 
-    setlogfile(NULL);
+    // WatIsDeze: Debug log.
+    setlogfile("log.txt");
 
     int dedicated = 0;
     char *load = NULL, *initscript = NULL;

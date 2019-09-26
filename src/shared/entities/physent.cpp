@@ -12,13 +12,17 @@
 //           radius(3.15), eyeheight(7), maxheight(8), aboveeye(2), xradius(1.6768999999999998), yradius(1.6768999999999998), zmargin(0),
 
 // FINAL ATTEMPT FOR NOW.
-physent::physent() : deltapos(0, 0, 0), newpos(0, 0, 0), yaw(0), pitch(0), roll(0), maxspeed(25),
+physent::physent() : entity(), deltapos(0, 0, 0), newpos(0, 0, 0), yaw(0), pitch(0), roll(0), maxspeed(25),
            radius(2.4), eyeheight(7), maxheight(8), aboveeye(2), xradius(1.67), yradius(1.67), zmargin(0),
            state(CS_ALIVE), editstate(CS_ALIVE),
            collidetype(COLLIDE_ELLIPSE),
            blocked(false)
 {
     ent_type = ENT_PLAYER; reset();
+}
+
+physent::~physent() {
+
 }
 
 void physent::resetinterp() {
