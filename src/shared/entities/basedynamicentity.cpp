@@ -6,7 +6,7 @@
 // WatIsDeze: TODO: Maybe remove the physent constructor from here.
 BaseDynamicEntity::BaseDynamicEntity() : BasePhysicalEntity(), ragdoll(NULL), query(NULL), lastrendered(0)
 {
-    BasePhysicalEntity::reset();;
+    BasePhysicalEntity::reset();
 }
 
 BaseDynamicEntity::~BaseDynamicEntity()

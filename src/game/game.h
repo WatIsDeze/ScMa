@@ -95,7 +95,7 @@ namespace game
     extern float clipconsole(float w, float h);
 
     // Physics.
-    extern void physicstrigger(entities::classes::BaseEntity *d, bool local, int floorlevel, int waterlevel, int material);
+    extern void physicstrigger(entities::classes::BasePhysicalEntity *d, bool local, int floorlevel, int waterlevel, int material);
 
     // Renderer.
     #define MAXTEAMS 2

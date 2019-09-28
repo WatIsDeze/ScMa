@@ -539,6 +539,10 @@ static inline bool htcmp(const char *x, const char *y)
 {
     return !strcmp(x, y);
 }
+static inline bool htcmp(const std::string &x, const std::string &y)
+{
+    return !x.compare(y);
+}
 
 struct cubestrslice
 {
@@ -579,6 +583,11 @@ static inline uint hthash(const cubestrslice &s) { return memhash(s.str, s.len);
 static inline bool htcmp(const cubestrslice &x, const char *y)
 {
     return x.len == (int)strlen(y) && !memcmp(x.str, y, x.len);
+}
+
+static inline bool htcmp(const cubestrslice &x, const std::string &y)
+{
+    return x.len == (int)y.length() && !memcmp(x.str, y.c_str(), x.len);
 }
 
 static inline uint hthash(int key)

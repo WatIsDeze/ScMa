@@ -74,7 +74,7 @@ namespace game
     extern void gameplayhud(int w, int h);
     extern bool canjump();
     extern bool cancrouch();
-    extern bool allowmove(entities::classes::BaseEntity *d);
+    extern bool allowmove(entities::classes::BasePhysicalEntity *d);
     extern entities::classes::BaseEntity *iterdynents(int i);
     extern int numdynents();
     extern void RenderGameEntities();

@@ -1376,7 +1376,7 @@ FVAR(thirdpersondistance, 0, 10, 25);
 FVAR(thirdpersonup, -25, 0, 25);
 FVAR(thirdpersonside, -25, 0, 25);
 
-entities::classes::BaseEntity *camera1 = NULL;
+entities::classes::BasePhysicalEntity *camera1 = NULL;
 bool detachedcamera = false;
 bool isthirdperson() { return player!=camera1 || detachedcamera; }
 
@@ -1397,7 +1397,7 @@ void modifyorient(float yaw, float pitch)
     camera1->yaw += yaw;
     camera1->pitch += pitch;
     fixcamerarange();
-    if(camera1!=((entities::classes::BaseEntity*)player) && !detachedcamera)
+    if(camera1!=((entities::classes::BasePhysicalEntity*)player) && !detachedcamera)
     {
         player->yaw = camera1->yaw;
         player->pitch = camera1->pitch;
@@ -1441,7 +1441,7 @@ void recomputecamera()
     }
     else
     {
-        static entities::classes::BaseEntity &tempcamera;
+        static entities::classes::BasePhysicalEntity tempcamera;
         camera1 = &tempcamera;
         if(detachedcamera && shoulddetach) camera1->o = player->o;
         else
@@ -2095,8 +2095,8 @@ void drawminimap()
     minimapradius.x = minimapradius.y = max(minimapradius.x, minimapradius.y);
     minimapscale = vec((0.5f - 1.0f/size)/minimapradius.x, (0.5f - 1.0f/size)/minimapradius.y, 1.0f);
 
-//    entities::classes::BaseEntity *oldcamera = camera1;
-    std::unique_ptr<entities::classes::BaseEntity> cmcamera;
+    entities::classes::BasePhysicalEntity *oldcamera = camera1;
+    std::unique_ptr<entities::classes::BasePhysicalEntity> cmcamera;
     cmcamera.release();
     cmcamera->reset();
     cmcamera->ent_type = ENT_CAMERA;
@@ -2151,7 +2151,7 @@ void drawminimap()
     ldrscale = oldldrscale;
     ldrscaleb = oldldrscaleb;
 
-    camera1 = ((entities::classes::BaseEntity*)cmcamera.release());
+    camera1 = ((entities::classes::BasePhysicalEntity*)cmcamera.release());
     drawtex = 0;
 
     createtexture(minimaptex, size, size, NULL, 3, 1, GL_RGB5, GL_TEXTURE_2D);
@@ -2176,15 +2176,15 @@ void drawcubemap(int size, const vec &o, float yaw, float pitch, const cubemapsi
 {
     drawtex = DRAWTEX_ENVMAP;
 
-    entities::classes::BaseEntity *oldcamera = camera1;
-    std::unique_ptr<entities::classes::BaseEntity> cmcamera(player);
+    entities::classes::BasePhysicalEntity *oldcamera = camera1;
+    std::unique_ptr<entities::classes::BasePhysicalEntity> cmcamera(player);
     //cmcamera.release();
     cmcamera->ent_type = ENT_CAMERA;
     cmcamera->o = o;
     cmcamera->yaw = yaw;
     cmcamera->pitch = pitch;
     cmcamera->roll = 0;
-    camera1 = (entities::classes::BaseEntity*)cmcamera.get();
+    camera1 = (entities::classes::BasePhysicalEntity*)cmcamera.get();
 
     setviewcell(camera1->o);
 
@@ -2270,7 +2270,7 @@ void drawcubemap(int size, const vec &o, float yaw, float pitch, const cubemapsi
     ldrscale = oldldrscale;
     ldrscaleb = oldldrscaleb;
 
-    camera1 = ((entities::classes::BaseEntity*)cmcamera.release());
+    camera1 = ((entities::classes::BasePhysicalEntity*)cmcamera.release());
     drawtex = 0;
 }
 
@@ -2279,8 +2279,8 @@ VAR(modelpreviewpitch, -90, -15, 90);
 
 namespace modelpreview
 {
-    entities::classes::BaseEntity *oldcamera;
-    std::unique_ptr<entities::classes::BaseEntity> camera(camera1);
+    entities::classes::BasePhysicalEntity *oldcamera;
+    std::unique_ptr<entities::classes::BasePhysicalEntity> camera(camera1);
 
     float oldaspect, oldfovy, oldfov, oldldrscale, oldldrscaleb;
     int oldfarplane, oldvieww, oldviewh;
@@ -2304,14 +2304,14 @@ namespace modelpreview
         drawtex = DRAWTEX_MODELPREVIEW;
 
         oldcamera = camera1;
-        *camera = (entities::classes::BaseEntity)*camera1;
+        *camera = (entities::classes::BasePhysicalEntity)*camera1;
         camera->reset();
         camera->ent_type = ENT_CAMERA;
         camera->o = vec(0, 0, 0);
         camera->yaw = 0;
         camera->pitch = modelpreviewpitch;
         camera->roll = 0;
-        camera1 = (entities::classes::BaseEntity*)camera.release();
+        camera1 = (entities::classes::BasePhysicalEntity*)camera.release();
 
         oldaspect = aspect;
         oldfovy = fovy;

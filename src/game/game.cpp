@@ -214,7 +214,7 @@ namespace game
         return player1->state!=CS_DEAD;// && !intermission;
     }
 
-    bool allowmove(entities::classes::BaseEntity *d)
+    bool allowmove(entities::classes::BasePhysicalEntity *d)
     {
         if(d->ent_type!=ENT_PLAYER) return true;
         //return !d->ms_lastaction || lastmillis-d->ms_lastaction>=1000;
@@ -320,7 +320,7 @@ namespace game
 
     //---------------------------------------------------------------
 
-    void physicstrigger(entities::classes::BaseEntity *d, bool local, int floorlevel, int waterlevel, int material)
+    void physicstrigger(entities::classes::BasePhysicalEntity *d, bool local, int floorlevel, int waterlevel, int material)
     {
         // This function seems to be used for playing material audio. No worries about that atm.
 /*        if     (waterlevel>0) { if(material!=MAT_LAVA) playsound(S_SPLASHOUT, d==player1 ? NULL : &d->o); }

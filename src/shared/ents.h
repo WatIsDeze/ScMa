@@ -86,6 +86,11 @@ namespace entities
             int flags;
             CoreEntity *attached;
 
+            //
+            // Legacy of ours, but it made more sense than short attr1 ... etc.
+            //
+            short model_idx;
+
         public:
             //
             // Core BaseEntity data.
@@ -103,6 +108,14 @@ namespace entities
 
         };
     }
+}
+
+// Do some predefines for animinfo.h
+namespace entities {
+namespace classes {
+    class BasePhysicalEntity;
+    class BaseDynamicEntity;
+}
 }
 
 // Include our base entity types.
