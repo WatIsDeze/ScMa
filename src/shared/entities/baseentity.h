@@ -5,50 +5,48 @@
 namespace entities
 {
     namespace classes {
-        class BaseEntity : public dynent {
-        public:
-            BaseEntity();
-            virtual ~BaseEntity();
+        // Predefined.
+        class CoreEntity;
+        class BasePhysicalEntity;
+        class BaseDynamicEntity;
 
+        class BaseEntity : public CoreEntity {
+        public:
             //
             // Base functions.
             //
+            BaseEntity();
+            BaseEntity(const BaseEntity& e) = default;
+            virtual ~BaseEntity();
+
             // Called every time a map is being loaded.
             virtual void preload();
-
             // Called each frame, to "think", AI logic should go here.
             virtual void think();
-
             // Called each frame to render.
             virtual void render();
+            // Reset the entity to its basic states.
+            void reset();
+
 
             //
             // Attribute set and get, and event.
             //
-            // Sets the key its value in the attributes list.
-            void setAttribute(const std::string &key, const std::string &value, bool callAttrSet);
-            // Returns the value of the key.
-            std::string getAttribute(const std::string &key);
-            // Can be overloaded to execute certain actions based on the key/value.
-            virtual void onAttributeSet(const std::string &key, const std::string &value);
+            // Sets the key its value in the attributes list, also determines whether to automatically call onAttributeSet.
+            void setAttribute(const std::string &key, const std::string &value, bool callOnAttrSet);
+            // Returns the value of the attribute key.
+            const std::string getAttribute(const std::string &key);
+
 
             //
-            // Trigger and touch commands.
+            // OnEvent callbacks.
             //
-            // ent = the entity which has triggered you.
+            // otherEnt = the entity which has triggered you.
             virtual bool onTrigger(BaseEntity *otherEnt, const vec &dir);
-            // ent = the entity which has touched you.
+            // otherEnt = the entity which has touched you.
             virtual bool onTouch(BaseEntity *otherEnt, const vec &dir);
-
-        // Taken from what was called before, gameentity.
-        public:
-            int flags;
-            BaseEntity *attached; // (this used to be extentity* attached;
-
-            bool spawned() const { return (flags & EF_SPAWNED) != 0; }
-            void setspawned(bool val) { if(val) flags |= EF_SPAWNED; else flags &= ~EF_SPAWNED; }
-            void setspawned() { flags |= EF_SPAWNED; }
-            void clearspawned() { flags &= ~EF_SPAWNED; }
+            // Can be overloaded to execute certain actions when the key/value of an attribute is changed.
+            virtual void onAttributeSet(const std::string &key, const std::string &value);
         };
     } // classes
 } // entities

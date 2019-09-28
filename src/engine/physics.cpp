@@ -143,7 +143,7 @@ static float disttoent(octaentities *oc, const vec &o, const vec &ray, float rad
         loopv(oc->type) \
         { \
             entities::classes::BaseEntity &e = *ents[oc->type[i]]; \
-            if(!(e.flags&EF_OCTA) || &e==t) continue; \
+            if(!(e.flags&entities::EntityFlags::EF_OCTA) || &e==t) continue; \
             func; \
             if(f<dist && f>0 && vec(ray).mul(f).add(o).insidebb(oc->o, oc->size)) \
             { \
@@ -156,7 +156,7 @@ static float disttoent(octaentities *oc, const vec &o, const vec &ray, float rad
 
     if((mode&RAY_POLY) == RAY_POLY) entintersect(mapmodels,
     {
-        if(!mmintersect(e, o, ray, radius, mode, f)) continue;
+        if(!BIH::mmintersect(e, o, ray, radius, mode, f)) continue;
     });
 
     #define entselintersect(type) entintersect(type, { \
@@ -183,7 +183,7 @@ static float disttooutsideent(const vec &o, const vec &ray, float radius, int mo
     loopv(outsideents)
     {
         entities::classes::BaseEntity &e = *ents[outsideents[i]];
-        if(!(e.flags&EF_OCTA) || &e == t) continue;
+        if(!(e.flags&entities::EntityFlags::EF_OCTA) || &e == t) continue;
         entselectionbox(e, eo, es);
         if(!rayboxintersect(eo, es, o, ray, f, orient)) continue;
         if(f<dist && f>0)
@@ -204,7 +204,7 @@ static float shadowent(octaentities *oc, const vec &o, const vec &ray, float rad
     loopv(oc->mapmodels)
     {
         entities::classes::BaseEntity &e = *ents[oc->mapmodels[i]];
-        if(!(e.flags&EF_OCTA) || &e==t) continue;
+        if(!(e.flags&entities::EntityFlags::EF_OCTA) || &e==t) continue;
         if(!mmintersect(e, o, ray, radius, mode, f)) continue;
         if(f>0 && f<dist) dist = f;
     }
@@ -817,7 +817,7 @@ bool mmcollide(entities::classes::BaseEntity *d, const vec &dir, float cutoff, o
     loopv(oc.mapmodels)
     {
         entities::classes::BaseEntity &e = *ents[oc.mapmodels[i]];
-        if(e.flags&EF_NOCOLLIDE || !mapmodels.inrange(e.model_idx)) continue;
+        if(e.flags&entities::EntityFlags::EF_NOCOLLIDE || !mapmodels.inrange(e.model_idx)) continue;
         mapmodelinfo &mmi = mapmodels[e.model_idx];
         model *m = mmi.collide;
         if(!m)

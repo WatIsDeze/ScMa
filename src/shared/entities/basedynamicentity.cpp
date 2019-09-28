@@ -1,36 +1,30 @@
 #include "cube.h"
 #include "game.h"
-#include "physent.h"
-#include "dynent.h"
+#include "basephysicalentity.h"
+#include "basedynamicentity.h"
 
 // WatIsDeze: TODO: Maybe remove the physent constructor from here.
-dynent::dynent() : physent(), ragdoll(NULL), query(NULL), lastrendered(0)
+BaseDynamicEntity::BaseDynamicEntity() : BasePhysicalEntity(), ragdoll(NULL), query(NULL), lastrendered(0)
 {
-    reset();
+    BasePhysicalEntity::reset();;
 }
 
-dynent::~dynent()
+BaseDynamicEntity::~BaseDynamicEntity()
 {
     #ifndef STANDALONE
-        extern void cleanragdoll(dynent *d);
+        extern void cleanragdoll(BaseDynamicEntity *d);
         if(ragdoll) cleanragdoll(this);
     #endif
 }
 
-void dynent::stopmoving()
+void BaseDynamicEntity::stopmoving()
 {
     k_left = k_right = k_up = k_down = jumping = false;
     move = strafe = crouching = 0;
 }
 
-void dynent::reset()
-{
-    physent::reset();
-    stopmoving();
-    loopi(MAXANIMPARTS) animinterp[i].reset();
-}
 
-vec dynent::abovehead() {
+vec BaseDynamicEntity::abovehead() {
     // WatIsDeze: Seems to determine to which lengths the camera and the character are allowed to go when jumping or crouching through a tunnel etc.
     return vec(o).addz(aboveeye+4);
 }

@@ -3,12 +3,12 @@ project(SchizoMania_Shared)
 
 add_library(SchizoMania_Shared_Entities STATIC
 	animinfo.h
-	dynent.h
-	dynent.cpp
-	physent.h
-	physent.cpp
 	baseentity.h
 	baseentity.cpp
+	basedynamicentity.cpp
+	basedynamicentity.h
+	basephysicalentity.cpp
+	basephysicalentity.h
 	attributes.h
 	attributes.cpp
 )

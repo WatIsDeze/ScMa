@@ -1,4 +1,5 @@
 #include "engine.h"
+#include "ents.h"
 
 VAR(oqdynent, 0, 1, 1);
 VAR(animationinterpolationtime, 0, 200, 1000);
@@ -340,16 +341,12 @@ ICOMMAND(nummapmodels, "", (), { intret(mapmodels.length()); });
 // model registry
 
 hashnameset<model *> models;
-vector<const char *> preloadmodels;
-hashset<char *> failedmodels;
+vector<std::string> preloadmodels;
+hashset<char*> failedmodels;
 
-// Place elsewhere.
-#include "../game/entities/basemapmodel.h"
-
-
-void preloadmodel(const char *name)
+void preloadmodel(const std::string &name)
 {
-    if(!name || !name[0] || models.access(name) || preloadmodels.htfind(name) >= 0) return;
+    if(name.empty() || models.access(name) || preloadmodels.htfind(name) >= 0) return;
     preloadmodels.add(newcubestr(name));
 }
 
@@ -451,7 +448,7 @@ model *loadmodel(const char *name, int i, bool msg)
     return m;
 }
 
-mapmodelinfo loadmodelinfo(const char *name, entities::classes::BaseMapModel *ent) {
+mapmodelinfo loadmodelinfo(const std::string &name, entities::classes::BaseEntity *ent) {
     mapmodelinfo mmi;
 
     // Preload first.
@@ -965,7 +962,7 @@ void rendermapmodel(int idx, int anim, const vec &o, float yaw, float pitch, flo
     addbatchedmodel(m, b, batchedmodels.length()-1);
 }
 
-void rendermodel(const char *mdl, int anim, const vec &o, float yaw, float pitch, float roll, int flags, entities::classes::BaseEntity *d, modelattach *a, int basetime, int basetime2, float size, const vec4 &color)
+void rendermodel(const std::string &mdl, int anim, const vec &o, float yaw, float pitch, float roll, int flags, entities::classes::BaseEntity *d, modelattach *a, int basetime, int basetime2, float size, const vec4 &color)
 {
     model *m = loadmodel(mdl);
     if(!m) return;
@@ -1056,7 +1053,7 @@ hasboundbox:
     addbatchedmodel(m, b, batchedmodels.length()-1);
 }
 
-int intersectmodel(const char *mdl, int anim, const vec &pos, float yaw, float pitch, float roll, const vec &o, const vec &ray, float &dist, int mode, entities::classes::BaseEntity *d, modelattach *a, int basetime, int basetime2, float size)
+int intersectmodel(const std::string &mdl, int anim, const vec &pos, float yaw, float pitch, float roll, const vec &o, const vec &ray, float &dist, int mode, entities::classes::BaseEntity *d, modelattach *a, int basetime, int basetime2, float size)
 {
     model *m = loadmodel(mdl);
     if(!m) return -1;
@@ -1068,18 +1065,18 @@ int intersectmodel(const char *mdl, int anim, const vec &pos, float yaw, float p
     return m->intersect(anim, basetime, basetime2, pos, yaw, pitch, roll, d, a, size, o, ray, dist, mode);
 }
 
-void abovemodel(vec &o, const char *mdl)
+void abovemodel(vec &o, const std::string &mdl)
 {
     model *m = loadmodel(mdl);
     if(!m) return;
     o.z += m->above();
 }
 
-bool matchanim(const char *name, const char *pattern)
+bool matchanim(const std::string &name, const char *pattern)
 {
     for(;; pattern++)
     {
-        const char *s = name;
+        const char *s = name.c_str();
         char c;
         for(;; pattern++)
         {
@@ -1138,7 +1135,7 @@ void loadskin(const char *dir, const char *altdir, Texture *&skin, Texture *&mas
     tryload(masks, NULL, NULL, "masks");
 }
 
-void setbbfrommodel(entities::classes::BaseEntity *d, const char *mdl)
+void setbbfrommodel(entities::classes::BaseEntity *d, const std::string &mdl)
 {
     model *m = loadmodel(mdl);
     if(!m) return;

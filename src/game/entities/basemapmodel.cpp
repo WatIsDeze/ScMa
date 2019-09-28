@@ -5,7 +5,7 @@
 namespace entities {
 namespace classes {
 
-BaseMapModel::BaseMapModel() : BaseEntity() {
+BaseMapModel::BaseMapModel() : BaseDynamicEntity() {
     // State (Alive)
     state = CS_ALIVE;
 

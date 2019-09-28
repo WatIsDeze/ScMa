@@ -42,57 +42,73 @@ enum { COLLIDE_NONE = 0, COLLIDE_ELLIPSE, COLLIDE_OBB, COLLIDE_TRI };
 #define CROUCHTIME 200
 #define CROUCHHEIGHT 0.75f
 
-// Core entity class.
-class entity
+namespace entities
 {
-public:
-    entity() : o(0, 0, 0), attr1(0), attr2(0), attr3(0), attr4(0), attr5(0), et_type(0), ent_type(0), game_type(0), reserved(0), model_idx(0) {}
-    virtual ~entity() {}
+    enum EntityFlags : int {
+        EF_NOFLAG     = 0,
+        EF_NOVIS      = 1<<0,
+        EF_NOSHADOW   = 1<<1,
+        EF_NOCOLLIDE  = 1<<2,
+        EF_ANIM       = 1<<3,
+        EF_SHADOWMESH = 1<<4,
+        EF_OCTA       = 1<<5,
+        EF_RENDER     = 1<<6,
+        EF_SOUND      = 1<<7,
+        EF_SPAWNED    = 1<<8
+    };
 
-    //
-    // Legacy Entity data.
-    //
-    vec o;                                      // position
-    short attr1, attr2, attr3, attr4, attr5;
-    uchar et_type;                              // These are for the ET(Engine Type) values.
-    uchar ent_type;                             // These are for ENT_(DynEnt/PhysEnt Type) values.
-    uchar game_type;                            // the internal game entity type values.
-    uchar reserved;
+    // Classes.
+    namespace classes {
+        // Core legacy entity class.
+        class CoreEntity
+        {
+        public:
+            // Constructors.
+            CoreEntity() : o(0, 0, 0), attr1(0), attr2(0), attr3(0), attr4(0), attr5(0),
+                et_type(0), ent_type(0), game_type(0), reserved(0), flags(EntityFlags::EF_NOFLAG),
+                attached(nullptr) {}
+            CoreEntity(const CoreEntity&) = default;
+            virtual ~CoreEntity() {}
 
-public:
-    //
-    // Core BaseEntity data.
-    //
-    // Entity Name. (Used for trigger events.)
-    std::string name;
-    // Entity class name. (Used to spawn the proper inheritance class instance.)
-    std::string classname;
+            //
+            // Legacy Core Entity data.
+            //
+            vec o;                                      // position
+            short attr1, attr2, attr3, attr4, attr5;    // Old integer attributes, still used for storing/loading ET_TYPES.
+            uchar et_type;                              // These are for the ET(Engine Type) values.
+            uchar ent_type;                             // These are for ENT_(DynEnt/PhysEnt Type) values.
+            uchar game_type;                            // the internal game entity type values.
+            uchar reserved;
 
-    // Contains the json attributes.
-    std::map<std::string, std::string> attributes;
+            //
+            // Legacy Core ExtEntity data.
+            //
+            int flags;
+            CoreEntity *attached;
 
-public:
-    // Variables used for classes who inherit from this original entity class.. (Model_idx == -1 by default.)
-    int model_idx;
-};
+        public:
+            //
+            // Core BaseEntity data.
+            //
+            // Entity Name. (Used for trigger events.)
+            std::string name;
+            // Entity class name. (Used to spawn the proper inheritance class instance.)
+            std::string classname;
+            // Contains the json attributes.
+            std::map<std::string, std::string> attributes;
 
-// Core entity flags.
-enum
-{
-    EF_NOVIS      = 1<<0,
-    EF_NOSHADOW   = 1<<1,
-    EF_NOCOLLIDE  = 1<<2,
-    EF_ANIM       = 1<<3,
-    EF_SHADOWMESH = 1<<4,
-    EF_OCTA       = 1<<5,
-    EF_RENDER     = 1<<6,
-    EF_SOUND      = 1<<7,
-    EF_SPAWNED    = 1<<8
-};
+            //
+            //
+            //
 
-#include "entities/animinfo.h"
-#include "entities/physent.h"
-#include "entities/dynent.h"
-#include "entities/baseentity.h"
+        };
+    }
+}
+
+// Include our base entity types.
+#include "entities/animinfo.h"              // Include the basic animation info for our entities.
+#include "entities/baseentity.h"            // Include the basic entity to base all others on.
+#include "entities/basephysicalentity.h"    // Include the physical entity, for objects such as crates etc.
+#include "entities/basedynamicentity.h"     // Include the dynamical entity, for objects that can move as if it were players.
 
 #endif // ENTS_H

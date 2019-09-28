@@ -3,7 +3,7 @@
 
 namespace entities {
     namespace classes {
-        class Player : public BaseEntity {
+        class Player : public BaseDynamicEntity {
         public:
             Player();
             virtual ~Player();

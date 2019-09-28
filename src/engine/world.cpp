@@ -310,11 +310,14 @@ void freeoctaentities(cube &c)
 void entitiesinoctanodes()
 {
     vector<entities::classes::BaseEntity *> &ents = entities::getents();
-    conoutf("entitiesinoctanodes: %d", ents.length());
+
     loopv(ents) {
         if (ents.inrange(i)) {
             if (ents[i] != NULL)
+            {
                 modifyoctaent(MODOE_ADD, i, *ents[i]);
+                conoutf("entitiesinoctanodes: %d", ents.length());
+            }
         }
     }
 }

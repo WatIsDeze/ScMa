@@ -6,7 +6,7 @@ namespace entities {
 
         // The base entity class for any model. (This could be a tree, or even doors and other interactive items.)
         // NOTE: Never change its type, it is MAPMODEL for a reason.
-        class BaseMapModel : public BaseEntity {
+        class BaseMapModel : public BaseDynamicEntity {
         public:
             BaseMapModel();
             BaseMapModel(const std::string &filename);

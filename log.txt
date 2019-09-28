@@ -1,0 +1,61 @@
+Using home directory: /home/watisdeze/.schizomania/
+init: sdl
+init: net
+init: game
+unknown command: serverbotlimit
+unknown command: publicserver
+unknown command: serverdesc
+unknown command: maprotationreset
+unknown alias lookup: defdmmaps
+unknown command: maprotation
+unknown alias lookup: defdmmaps
+unknown alias lookup: defctfmaps
+unknown command: maprotation
+unknown alias lookup: defctfmaps
+unknown command: maprotation
+unknown command: teamkillkickreset
+unknown command: teamkillkick
+init: video
+init: gl
+Renderer: AMD Radeon HD 5450  (ATI Technologies Inc.)
+Driver: 4.0.13399 Core Profile Context 15.201.1151
+GLSL: 4.40
+init: console
+cannot redefine defdmmaps as a variable
+cannot redefine defctfmaps as a variable
+init: world
+1
+2
+reset map
+freeocta worldroot1
+worldroot = new cubes(F_EMPTY)
+clearmenu
+allchanged true
+startmap (null)
+3
+init: sound
+init: cfg
+unknown alias lookup: defdmmaps
+  1) genusermaps
+unknown alias lookup: defdmmaps
+  1) genusermaps
+unknown alias lookup: defdmmaps
+  1) genusermaps
+config/ui/menus/main.cfg:1: unexpected "]"
+config/ui/menus/main.cfg:1: unexpected "]"
+config/ui/menus/main.cfg:1: unexpected "]"
+unknown command: 
+			uivlist 0 [
+				uifill 0.2
+				if (isspectator $getclientnum) [
+					local canplay
+					canplay = (|| [isconnected 0 0] [< $getmastermode 2] [ismaster $getclientnum])
+					UIbutton "hold2" [
+						uitext (concatword (? $canplay "" "^f4") "Join Game") 0.6
+					] 0 0.04 [ if $canplay [ hideui $uiname ; spectator 0 ] ]
+				] [ UIbutton "hold2" [ uitext "Spectate"     0.6 ] 0 0.04 [ hideui $uiname ; spectator 1 ] ]
+				case $getteam 0 [ uifill 0 0.04 ] 1 [
+					UIbutton "hold2" [ uitext "J
+init: render
+init: mainloop
+Returned entities::class::BaseEntity*

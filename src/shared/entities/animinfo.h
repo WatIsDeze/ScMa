@@ -30,8 +30,10 @@ enum
 #define ANIM_NOPITCH     (1<<30)
 #define ANIM_FLAGS       0xFF000000
 
-struct animinfo // description of a character's animation
+// Description of a characters animation.
+class animinfo
 {
+public:
     int anim, frame, range, basetime;
     float speed;
     uint varseed;
@@ -43,8 +45,9 @@ struct animinfo // description of a character's animation
 };
 
 // Used for animation blending of animated characters
-struct animinterpinfo
+class animinterpinfo
 {
+public:
     animinfo prev, cur;
     int lastswitch;
     void *lastmodel;

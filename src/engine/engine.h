@@ -12,11 +12,11 @@
 #include "texture.h"
 #include "bih.h"
 #include "model.h"
-#include "../shared/ents.h"
+#include "ents.h"
 
 namespace entities { namespace classes { class Player; } }
 extern entities::classes::Player *player;
-extern entities::classes::BaseEntity *camera1;                // special ent that acts as camera, same object as player in FPS mode
+extern entities::classes::BasePhysicalEntity *camera1;                // special ent that acts as camera, same object as player in FPS mode
 
 extern int worldscale, worldsize;
 extern int mapversion;
@@ -691,13 +691,17 @@ static inline model *loadmapmodel(int n)
     return NULL;
 }
 
-static inline model *loadmapmodel(const char *filename, entities::classes::BaseEntity *ent)
+static inline model *loadmapmodel(const std::string &filename)
 {
     loopv(mapmodels)
     {
+        // Fetch the name.
         std::string name = mapmodels[i].name;
+
+        // Compare if the mapmodel's values equal each other.
         model *m = mapmodels[i].m;
 
+        // If they equal each other, it means we don't have to load it in again. Just return the pointer.
         return m ? m : loadmodel(filename);
     }
     return NULL;

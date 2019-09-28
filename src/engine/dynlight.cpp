@@ -1,4 +1,5 @@
 #include "engine.h"
+#include "ents.h"
 
 VARNP(dynlights, usedynlights, 0, 1, 1);
 VARP(dynlightdist, 0, 1024, 10000);
@@ -106,7 +107,7 @@ int finddynlights()
 {
     closedynlights.setsize(0);
     if(!usedynlights) return 0;
-    entities::classes::BaseEntity e;
+    entities::classes::BasePhysicalEntity e;
     e.ent_type = ENT_CAMERA;
     loopvj(dynlights)
     {

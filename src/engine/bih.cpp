@@ -1,4 +1,5 @@
 #include "engine.h"
+#include "ents.h"
 
 extern vec hitsurface;
 
@@ -308,15 +309,16 @@ BIH::~BIH()
     delete[] tribbs;
 }
 
-bool mmintersect(const entities::classes::BaseEntity &e, const vec &o, const vec &ray, float maxdist, int mode, float &dist)
+bool BIH::mmintersect(entities::classes::BasePhysicalEntity &e, const vec &o, const vec &ray, float maxdist, int mode, float &dist)
 {
-    model *m = loadmapmodel(e.model_idx);
+    const std::string mdlname = e.getAttribute("model");
+    model *m = loadmapmodel(mdlname);
     if(!m) return false;
     if(mode&RAY_SHADOW)
     {
-        if(!m->shadow || e.flags&EF_NOSHADOW) return false;
+        if(!m->shadow || e.flags & entities::EntityFlags::EF_NOSHADOW) return false;
     }
-    else if((mode&RAY_ENTS)!=RAY_ENTS && (!m->collide || e.flags&EF_NOCOLLIDE)) return false;
+    else if((mode&RAY_ENTS)!=RAY_ENTS && (!m->collide || (e.flags & entities::EntityFlags::EF_NOCOLLIDE))) return false;
     if(!m->bih && !m->setBIH()) return false;
     float scale = e.attr5 ? 100.0f/e.attr5 : 1.0f;
     vec mo = vec(o).sub(e.o).mul(scale), mray(ray);
@@ -490,9 +492,9 @@ static inline bool triboxoverlap(const vec &radius, const vec &a, const vec &b, 
 }
 
 template<>
-inline void BIH::tricollide<COLLIDE_ELLIPSE>(const mesh &m, int tidx, entities::classes::BaseEntity *d, const vec &dir, float cutoff, const vec &center, const vec &radius, const matrix4x3 &orient, float &dist, const ivec &bo, const ivec &br)
+inline void BIH::tricollide<COLLIDE_ELLIPSE>(const mesh &m, int tidx, entities::classes::BasePhysicalEntity *d, const vec &dir, float cutoff, const vec &center, const vec &radius, const matrix4x3 &orient, float &dist, const ivec &bo, const ivec &br)
 {
-    if(m.tribbs[tidx].outside(bo, br)) return; 
+    if(m.tribbs[tidx].outside(bo, br)) return;
 
     const tri &t = m.tris[tidx];
     vec a = m.getpos(t.vert[0]), b = m.getpos(t.vert[1]), c = m.getpos(t.vert[2]),
@@ -523,7 +525,7 @@ inline void BIH::tricollide<COLLIDE_ELLIPSE>(const mesh &m, int tidx, entities::
 }
 
 template<>
-inline void BIH::tricollide<COLLIDE_OBB>(const mesh &m, int tidx, entities::classes::BaseEntity *d, const vec &dir, float cutoff, const vec &center, const vec &radius, const matrix4x3 &orient, float &dist, const ivec &bo, const ivec &br)
+inline void BIH::tricollide<COLLIDE_OBB>(const mesh &m, int tidx, entities::classes::BasePhysicalEntity *d, const vec &dir, float cutoff, const vec &center, const vec &radius, const matrix4x3 &orient, float &dist, const ivec &bo, const ivec &br)
 {
     if(m.tribbs[tidx].outside(bo, br)) return;
 
@@ -556,7 +558,7 @@ inline void BIH::tricollide<COLLIDE_OBB>(const mesh &m, int tidx, entities::clas
 }
 
 template<int C>
-inline void BIH::collide(const mesh &m, entities::classes::BaseEntity *d, const vec &dir, float cutoff, const vec &center, const vec &radius, const matrix4x3 &orient, float &dist, node *curnode, const ivec &bo, const ivec &br)
+inline void BIH::collide(const mesh &m, entities::classes::BasePhysicalEntity *d, const vec &dir, float cutoff, const vec &center, const vec &radius, const matrix4x3 &orient, float &dist, node *curnode, const ivec &bo, const ivec &br)
 {
     node *stack[128];
     int stacksize = 0;
@@ -621,7 +623,7 @@ inline void BIH::collide(const mesh &m, entities::classes::BaseEntity *d, const 
 }
 
 
-bool BIH::ellipsecollide(entities::classes::BaseEntity *d, const vec &dir, float cutoff, const vec &o, int yaw, int pitch, int roll, float scale)
+bool BIH::ellipsecollide(entities::classes::BasePhysicalEntity *d, const vec &dir, float cutoff, const vec &o, int yaw, int pitch, int roll, float scale)
 {
     if(!numnodes) return false;
 
@@ -657,7 +659,7 @@ bool BIH::ellipsecollide(entities::classes::BaseEntity *d, const vec &dir, float
     return dist > -1e9f;
 }
 
-bool BIH::boxcollide(entities::classes::BaseEntity *d, const vec &dir, float cutoff, const vec &o, int yaw, int pitch, int roll, float scale)
+bool BIH::boxcollide(entities::classes::BasePhysicalEntity *d, const vec &dir, float cutoff, const vec &o, int yaw, int pitch, int roll, float scale)
 {
     if(!numnodes) return false;
 

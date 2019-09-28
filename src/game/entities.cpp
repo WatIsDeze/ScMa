@@ -91,7 +91,8 @@ namespace entities
             if (entities::g_ents.inrange(i) && entities::g_ents[i] != NULL)
                 entities::g_ents[i]->clearspawned();
 
-        game::player1->clearspawned();
+        if (game::player1 != NULL)
+            game::player1->clearspawned();
     }
 
     void setspawn(int i, bool on) { if(entities::g_ents.inrange(i) && entities::g_ents[i] != NULL) entities::g_ents[i]->setspawned(on); }

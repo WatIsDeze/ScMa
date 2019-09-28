@@ -567,10 +567,10 @@ src/shared/entities/attributes.cpp
 src/shared/entities/attributes.h
 src/shared/entities/baseentity.cpp
 src/shared/entities/baseentity.h
-src/shared/entities/dynent.cpp
-src/shared/entities/dynent.h
-src/shared/entities/physent.h
-src/shared/entities/physent.cpp
+src/shared/entities/basedynamicentity.cpp
+src/shared/entities/basedynamicentity.h
+src/shared/entities/basephysicalentity.h
+src/shared/entities/basephysicalentity.cpp
 src/game/entities/basemodel.cpp
 src/game/entities/basemodel.h
 src/game/entities/basemapmodel.cpp

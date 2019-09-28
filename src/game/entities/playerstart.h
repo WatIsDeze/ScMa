@@ -6,6 +6,7 @@ namespace entities {
         class PlayerStart : public BaseEntity {
         public:
             PlayerStart();
+            PlayerStart(const PlayerStart &) = default;
             virtual ~PlayerStart();
 
             void preload();

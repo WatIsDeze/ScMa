@@ -292,7 +292,7 @@ extern void dynlightreaching(const vec &target, vec &color, vec &dir, bool hud =
 extern void removetrackeddynlights(entities::classes::BaseEntity *owner = NULL);
 
 // rendergl
-extern entities::classes::BaseEntity *camera1;
+extern entities::classes::BasePhysicalEntity *camera1;
 extern vec worldpos, camdir, camright, camup;
 extern float curfov, fovy, aspect;
 
@@ -421,7 +421,7 @@ enum { MDL_CULL_VFC = 1<<0, MDL_CULL_DIST = 1<<1, MDL_CULL_OCCLUDED = 1<<2, MDL_
 
 struct model;
 struct mapmodelinfo;
-namespace entities { namespace classes { class BaseMapModel; } }
+namespace entities { namespace classes { class BaseEntity; } }
 struct modelattach
 {
     const char *tag, *name;
@@ -434,18 +434,18 @@ struct modelattach
     modelattach(const char *tag, vec *pos) : tag(tag), name(NULL), anim(-1), basetime(0), pos(pos), m(NULL) {}
 };
 
-extern void rendermodel(const char *mdl, int anim, const vec &o, float yaw = 0, float pitch = 0, float roll = 0, int cull = MDL_CULL_VFC | MDL_CULL_DIST | MDL_CULL_OCCLUDED, entities::classes::BaseEntity *d = NULL, modelattach *a = NULL, int basetime = 0, int basetime2 = 0, float size = 1, const vec4 &color = vec4(1, 1, 1, 1));
-extern int intersectmodel(const char *mdl, int anim, const vec &pos, float yaw, float pitch, float roll, const vec &o, const vec &ray, float &dist, int mode = 0, entities::classes::BaseEntity *d = NULL, modelattach *a = NULL, int basetime = 0, int basetime2 = 0, float size = 1);
-extern void abovemodel(vec &o, const char *mdl);
-extern void renderclient(entities::classes::BaseEntity *d, const char *mdlname, modelattach *attachments, int hold, int attack, int attackdelay, int lastaction, int lastpain, float scale = 1, bool ragdoll = false, float trans = 1);
+extern void rendermodel(const std::string &mdl, int anim, const vec &o, float yaw = 0, float pitch = 0, float roll = 0, int cull = MDL_CULL_VFC | MDL_CULL_DIST | MDL_CULL_OCCLUDED, entities::classes::BaseEntity *d = NULL, modelattach *a = NULL, int basetime = 0, int basetime2 = 0, float size = 1, const vec4 &color = vec4(1, 1, 1, 1));
+extern int intersectmodel(const std::string &mdl, int anim, const vec &pos, float yaw, float pitch, float roll, const vec &o, const vec &ray, float &dist, int mode = 0, entities::classes::BaseEntity *d = NULL, modelattach *a = NULL, int basetime = 0, int basetime2 = 0, float size = 1);
+extern void abovemodel(vec &o, const std::string &mdl);
+extern void renderclient(entities::classes::BaseEntity *d, const std::string &mdlname, modelattach *attachments, int hold, int attack, int attackdelay, int lastaction, int lastpain, float scale = 1, bool ragdoll = false, float trans = 1);
 extern void interpolateorientation(entities::classes::BaseEntity *d, float &interpyaw, float &interppitch);
-extern void setbbfrommodel(entities::classes::BaseEntity *d, const char *mdl);
+extern void setbbfrommodel(entities::classes::BaseEntity *d, const std::string &mdl);
 extern const char *mapmodelname(int i);
-extern model *loadmodel(const char *name, int i = -1, bool msg = false);
-extern void preloadmodel(const char *name);
-extern mapmodelinfo loadmodelinfo(const char *name, entities::classes::BaseMapModel *ent);
+extern model *loadmodel(const std::string &name, int i = -1, bool msg = false);
+extern void preloadmodel(const std::string &name);
+extern mapmodelinfo loadmodelinfo(const std::string &name, entities::classes::BaseEntity *ent);
 extern void flushpreloadedmodels(bool msg = true);
-extern bool matchanim(const char *name, const char *pattern);
+extern bool matchanim(const std::string &name, const char *pattern);
 
 // UI
 

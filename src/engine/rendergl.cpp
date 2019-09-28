@@ -1391,6 +1391,9 @@ void fixcamerarange()
 
 void modifyorient(float yaw, float pitch)
 {
+    // WatIsDeze: Dunno why nobody ever checked.
+    if (!camera1 || !player) return;
+
     camera1->yaw += yaw;
     camera1->pitch += pitch;
     fixcamerarange();
@@ -1433,18 +1436,20 @@ void recomputecamera()
     bool shoulddetach = thirdperson > 1 || game::detachcamera();
     if(!thirdperson && !shoulddetach)
     {
-        camera1 = player;
+        *camera1 = *player;
         detachedcamera = false;
     }
     else
     {
-        //static entities::classes::BaseEntity tempcamera;
-        std::unique_ptr<entities::classes::BaseEntity*> tempcamera(new entities::classes::BaseEntity());
-        camera1 = tempcamera.get();
+        static entities::classes::BaseEntity &tempcamera;
+        camera1 = &tempcamera;
         if(detachedcamera && shoulddetach) camera1->o = player->o;
         else
         {
-            camera1 = ((entities::classes::BaseEntity*)*player);
+            // Assign camera 1 to the player pointer.
+            *camera1 = (*(entities::classes::Player*)player);
+
+            // Detach.
             detachedcamera = shoulddetach;
         }
         camera1->reset();
@@ -2090,16 +2095,15 @@ void drawminimap()
     minimapradius.x = minimapradius.y = max(minimapradius.x, minimapradius.y);
     minimapscale = vec((0.5f - 1.0f/size)/minimapradius.x, (0.5f - 1.0f/size)/minimapradius.y, 1.0f);
 
-    entities::classes::BaseEntity *oldcamera = camera1;
+//    entities::classes::BaseEntity *oldcamera = camera1;
     std::unique_ptr<entities::classes::BaseEntity> cmcamera;
-    cmcamera = ((entities::classes::BaseEntity)*player);
-    cmcamera.reset();
-    cmcamera.ent_type = ENT_CAMERA;
-    cmcamera.o = vec(minimapcenter.x, minimapcenter.y, minimapheight > 0 ? minimapheight : minimapcenter.z + minimapradius.z + 1);
-    cmcamera.yaw = 0;
-    cmcamera.pitch = -90;
-    cmcamera.roll = 0;
-    camera1 = &cmcamera;
+    cmcamera.release();
+    cmcamera->reset();
+    cmcamera->ent_type = ENT_CAMERA;
+    cmcamera->o = vec(minimapcenter.x, minimapcenter.y, minimapheight > 0 ? minimapheight : minimapcenter.z + minimapradius.z + 1);
+    cmcamera->yaw = 0;
+    cmcamera->pitch = -90;
+    cmcamera->roll = 0;
     setviewcell(vec(-1, -1, -1));
 
     float oldldrscale = ldrscale, oldldrscaleb = ldrscaleb;
@@ -2147,7 +2151,7 @@ void drawminimap()
     ldrscale = oldldrscale;
     ldrscaleb = oldldrscaleb;
 
-    camera1 = oldcamera;
+    camera1 = ((entities::classes::BaseEntity*)cmcamera.release());
     drawtex = 0;
 
     createtexture(minimaptex, size, size, NULL, 3, 1, GL_RGB5, GL_TEXTURE_2D);
@@ -2173,15 +2177,15 @@ void drawcubemap(int size, const vec &o, float yaw, float pitch, const cubemapsi
     drawtex = DRAWTEX_ENVMAP;
 
     entities::classes::BaseEntity *oldcamera = camera1;
-    entities::classes::BaseEntity cmcamera;
-    cmcamera = ((entities::classes::BaseEntity&)*player);
-    cmcamera.reset();
-    cmcamera.ent_type = ENT_CAMERA;
-    cmcamera.o = o;
-    cmcamera.yaw = yaw;
-    cmcamera.pitch = pitch;
-    cmcamera.roll = 0;
-    camera1 = &cmcamera;
+    std::unique_ptr<entities::classes::BaseEntity> cmcamera(player);
+    //cmcamera.release();
+    cmcamera->ent_type = ENT_CAMERA;
+    cmcamera->o = o;
+    cmcamera->yaw = yaw;
+    cmcamera->pitch = pitch;
+    cmcamera->roll = 0;
+    camera1 = (entities::classes::BaseEntity*)cmcamera.get();
+
     setviewcell(camera1->o);
 
     float fogmargin = 1 + WATER_AMPLITUDE + nearplane;
@@ -2266,7 +2270,7 @@ void drawcubemap(int size, const vec &o, float yaw, float pitch, const cubemapsi
     ldrscale = oldldrscale;
     ldrscaleb = oldldrscaleb;
 
-    camera1 = oldcamera;
+    camera1 = ((entities::classes::BaseEntity*)cmcamera.release());
     drawtex = 0;
 }
 
@@ -2276,7 +2280,7 @@ VAR(modelpreviewpitch, -90, -15, 90);
 namespace modelpreview
 {
     entities::classes::BaseEntity *oldcamera;
-    entities::classes::BaseEntity camera;
+    std::unique_ptr<entities::classes::BaseEntity> camera(camera1);
 
     float oldaspect, oldfovy, oldfov, oldldrscale, oldldrscaleb;
     int oldfarplane, oldvieww, oldviewh;
@@ -2300,14 +2304,14 @@ namespace modelpreview
         drawtex = DRAWTEX_MODELPREVIEW;
 
         oldcamera = camera1;
-        camera = *camera1;
-        camera.reset();
-        camera.ent_type = ENT_CAMERA;
-        camera.o = vec(0, 0, 0);
-        camera.yaw = 0;
-        camera.pitch = modelpreviewpitch;
-        camera.roll = 0;
-        camera1 = &camera;
+        *camera = (entities::classes::BaseEntity)*camera1;
+        camera->reset();
+        camera->ent_type = ENT_CAMERA;
+        camera->o = vec(0, 0, 0);
+        camera->yaw = 0;
+        camera->pitch = modelpreviewpitch;
+        camera->roll = 0;
+        camera1 = (entities::classes::BaseEntity*)camera.release();
 
         oldaspect = aspect;
         oldfovy = fovy;

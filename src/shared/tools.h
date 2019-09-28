@@ -44,14 +44,16 @@ inline void operator delete[](void *, void *) {}
 
 #ifdef swap
 #undef swap
+#else
+#define swap std::swap
 #endif
-template<class T>
+/*template<class T>
 static inline void swap(T &a, T &b)
 {
     T t = a;
     a = b;
     b = t;
-}
+}*/
 #ifdef max
 #undef max
 #endif

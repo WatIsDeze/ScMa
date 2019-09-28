@@ -4,7 +4,7 @@
 namespace entities {
 namespace classes {
 
-Player::Player() : BaseEntity() {
+Player::Player() : BaseDynamicEntity() {
     state = CS_ALIVE;
     et_type = ET_GAMESPECIFIC;
     ent_type = ENT_PLAYER;
@@ -74,7 +74,7 @@ bool Player::onTouch(entities::classes::BaseEntity *otherEnt, const vec &dir) {
 
 void Player::respawn() {
     // First respawn base entity.
-    dynent::reset();
+    BaseDynamicEntity::reset();
 
     // Set spawned state.
     setspawned(true);

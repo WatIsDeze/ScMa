@@ -163,9 +163,10 @@ namespace game
     void startmap(const char *name)
     {
         SpawnPlayer();
-        findplayerspawn(player1, -1, 0);
+        findplayerspawn(player1);
         entities::resetspawns();
         copycubestr(clientmap, name ? name : "");
+        execident("mapstart");
     }
 
     bool needminimap() {
@@ -191,7 +192,6 @@ namespace game
     }
 
     void preload() {
-
         entities::preloadentities();
     }
 

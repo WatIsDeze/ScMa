@@ -403,7 +403,7 @@ void inputgrab(bool on)
 {
     if(on)
     {
-        SDL_ShowCursor(SDL_FALSE);
+        SDL_ShowCursor(SDL_TRUE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
         if(canrelativemouse && userelativemouse)
         {
             if(SDL_SetRelativeMouseMode(SDL_TRUE) >= 0)
@@ -1098,7 +1098,7 @@ int main(int argc, char **argv)
     SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
     #endif
     setupscreen();
-    SDL_ShowCursor(SDL_FALSE);
+    SDL_ShowCursor(SDL_TRUE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
     SDL_StopTextInput(); // workaround for spurious text-input events getting sent on first text input toggle?
 
     logoutf("init: gl");
@@ -1120,7 +1120,7 @@ int main(int argc, char **argv)
     logoutf("init: world");
     logoutf("1");
     player = ((entities::classes::Player*)game::iterdynents(0));
-    camera1 = (entities::classes::BaseEntity*)player;
+    camera1 = ((entities::classes::BaseEntity*)player);
     logoutf("2");
     emptymap(0, true, NULL, false);
     logoutf("3");
@@ -1215,7 +1215,7 @@ int main(int argc, char **argv)
         frames++;
 
         // miscellaneous general game effects
-        //recomputecamera();
+        recomputecamera();
         updateparticles();
         updatesounds();
 

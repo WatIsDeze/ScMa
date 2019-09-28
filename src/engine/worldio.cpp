@@ -878,10 +878,7 @@ bool load_world(const char *mname, const char *cname)        // Does not support
 
             // Fetch a reference to the game attributes json element.
             const json& attribute_element = element["game"]["attributes"];
-
-            //for (auto& element : json::iterator_wrapper(game_element)) {
             e.attributes = attribute_element.get<std::map<std::string, std::string>>();
-            //}
 
             // All went well, so lets add our entity to the list.
             ents.add(&e);

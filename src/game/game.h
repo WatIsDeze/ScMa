@@ -47,12 +47,12 @@ enum
 
 namespace entities
 {
-    namespace classes {
+    /*namespace classes {
         class BaseEntity;
         class BaseMapModel;
         class DynamicLight;
         class Player;
-    }
+    }*/
 
     // Entity arrays.
     extern vector<classes::BaseEntity *> g_ents;

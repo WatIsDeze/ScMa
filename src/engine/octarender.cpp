@@ -1,6 +1,10 @@
 // octarender.cpp: fill vertex arrays with different cube surfaces.
 
 #include "engine.h"
+#include "ents.h"
+
+using namespace entities;
+using namespace classes;
 
 struct vboinfo
 {
@@ -421,8 +425,8 @@ struct vacollect : verthash
             loopvj(oe->decals)
             {
                 entities::classes::BaseEntity &e = *ents[oe->decals[j]];
-                if(e.flags&EF_RENDER) continue;
-                e.flags |= EF_RENDER;
+                if(e.flags & entities::EntityFlags::EF_RENDER) continue;
+                e.flags |= (int)entities::EntityFlags::EF_RENDER;
                 DecalSlot &s = lookupdecalslot(e.attr1, true);
                 if(!s.shader) continue;
                 ushort envmap = s.shader->type&SHADER_ENVMAP ? (s.texmask&(1<<TEX_ENVMAP) ? EMID_CUSTOM : closestenvmap(e.o)) : EMID_NONE;
@@ -436,7 +440,7 @@ struct vacollect : verthash
             loopvj(oe->decals)
             {
                 entities::classes::BaseEntity &e = *ents[oe->decals[j]];
-                if(e.flags&EF_RENDER) e.flags &= ~EF_RENDER;
+                if(e.flags& entities::EntityFlags::EF_RENDER) e.flags &= (int)~entities::EntityFlags::EF_RENDER;
             }
         }
         enumeratekt(decalindices, decalkey, k, sortval, t,
