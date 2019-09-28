@@ -442,8 +442,8 @@ extern void interpolateorientation(entities::classes::BaseEntity *d, float &inte
 extern void setbbfrommodel(entities::classes::BasePhysicalEntity *d, const std::string &mdl);
 extern const char *mapmodelname(int i);
 extern model *loadmodel(const std::string &name, int i = -1, bool msg = false);
-extern void preloadmodel(const std::string &name);
-extern mapmodelinfo loadmodelinfo(const std::string &name, entities::classes::BaseEntity *ent);
+extern void preloadmodel(const char *name);
+extern mapmodelinfo loadmodelinfo(const char *name, entities::classes::BaseEntity *ent);
 extern void flushpreloadedmodels(bool msg = true);
 extern bool matchanim(const std::string &name, const char *pattern);
 

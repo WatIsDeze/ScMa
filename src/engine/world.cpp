@@ -243,7 +243,7 @@ int spotlights = 0, volumetriclights = 0, nospeclights = 0;
 
 static bool modifyoctaent(int flags, int id, entities::classes::BaseEntity &e)
 {
-    if(flags&MODOE_ADD ? e.flags&EF_OCTA : !(e.flags&EF_OCTA)) return false;
+    if(flags&MODOE_ADD ? e.flags&entities::EntityFlags::EF_OCTA : !(e.flags&entities::EntityFlags::EF_OCTA)) return false;
 
     ivec o, r;
     if(!getentboundingbox(e, o, r)) return false;
@@ -265,7 +265,7 @@ static bool modifyoctaent(int flags, int id, entities::classes::BaseEntity &e)
         if(diff && (limit > octaentsize/2 || diff < leafsize*2)) leafsize *= 2;
         modifyoctaentity(flags, id, e, worldroot, ivec(0, 0, 0), worldsize>>1, o, r, leafsize);
     }
-    e.flags ^= EF_OCTA;
+    e.flags ^= entities::EntityFlags::EF_OCTA;
     switch(e.et_type)
     {
         case ET_LIGHT:
@@ -521,11 +521,13 @@ void attachentities()
 { \
     entfocusv(i, \
     { \
-        int oldtype = e.et_type; \
+        int old_et_type = e.et_type; \
+        int old_ent_type = e.ent_type; \
+        int old_game_type = e.game_type; \
         removeentityedit(n);  \
         f; \
-        if(oldtype!=e.et_type) detachentity(e); \
-        if(e.et_type!=ET_EMPTY) { addentityedit(n); if(oldtype!=e.et_type) attachentity(e); } \
+        if(old_et_type!=e.et_type) detachentity(e); \
+        if(e.et_type!=ET_EMPTY) { addentityedit(n); if(old_et_type!=e.et_type) attachentity(e); } \
         entities::editent(n, true); \
         clearshadowcache(); \
     }, v); \
@@ -1047,7 +1049,7 @@ int findtype(char *what)
 
 VAR(entdrop, 0, 2, 3);
 
-bool dropentity(entities::classes::BaseEntity &e, int drop = -1)
+bool dropentity(entities::classes::BasePhysicalEntity &e, int drop = -1)
 {
     vec radius(4.0f, 4.0f, 4.0f);
     if(drop<0) drop = entdrop;

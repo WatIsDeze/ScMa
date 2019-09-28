@@ -12,7 +12,7 @@
 //           radius(3.15), eyeheight(7), maxheight(8), aboveeye(2), xradius(1.6768999999999998), yradius(1.6768999999999998), zmargin(0),
 
 // FINAL ATTEMPT FOR NOW.
-BasePhysicalEntity::BasePhysicalEntity() : BaseEntity(), deltapos(0, 0, 0), newpos(0, 0, 0), yaw(0), pitch(0), roll(0), maxspeed(25),
+BasePhysicalEntity::BasePhysicalEntity() : CoreEntity(), BaseEntity(), deltapos(0, 0, 0), newpos(0, 0, 0), yaw(0), pitch(0), roll(0), maxspeed(25),
            radius(2.4), eyeheight(7), maxheight(8), aboveeye(2), xradius(1.67), yradius(1.67), zmargin(0),
            state(CS_ALIVE), editstate(CS_ALIVE),
            collidetype(COLLIDE_ELLIPSE),
@@ -22,9 +22,9 @@ BasePhysicalEntity::BasePhysicalEntity() : BaseEntity(), deltapos(0, 0, 0), newp
     reset();
 }
 
-BasePhysicalEntity::BasePhysicalEntity(const entities::classes::BaseEntity e&) {
+//BasePhysicalEntity::BasePhysicalEntity(const entities::classes::BaseEntity &e) {
 
-}
+//}
 
 BasePhysicalEntity::~BasePhysicalEntity() {
 

@@ -15,7 +15,9 @@ namespace entities
             // Core physent functions.
             //
             BasePhysicalEntity();
-            BasePhysicalEntity(const BaseEntity&);
+            BasePhysicalEntity(const BasePhysicalEntity &) = default;
+            BasePhysicalEntity(const BaseEntity&e);
+
             virtual ~BasePhysicalEntity();
 
             void resetinterp();

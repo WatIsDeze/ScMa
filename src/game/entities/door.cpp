@@ -9,7 +9,7 @@ namespace classes {
 
 Door::Door() : entities::classes::BaseMapModel("world/door") {
     // Doors animate, makes sense.
-    flags |= EF_ANIM;
+    flags |= entities::EntityFlags::EF_ANIM;
 }
 
 Door::~Door() {

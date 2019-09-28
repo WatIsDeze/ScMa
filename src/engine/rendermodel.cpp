@@ -27,7 +27,6 @@ static model *__loadmodel__##modelclass(const char *filename) \
 } \
 UNUSED static int __dummy__##modelclass = addmodeltype((modeltype), __loadmodel__##modelclass);
 
-
 #include "md2.h"
 #include "md3.h"
 #include "md5.h"
@@ -341,13 +340,14 @@ ICOMMAND(nummapmodels, "", (), { intret(mapmodels.length()); });
 // model registry
 
 hashnameset<model *> models;
-vector<std::string> preloadmodels;
+vector<const char*> preloadmodels;
 hashset<char*> failedmodels;
 
-void preloadmodel(const std::string &name)
+void preloadmodel(const char *name)
 {
-    if(name.empty() || models.access(name) || preloadmodels.htfind(name) >= 0) return;
+    if(!name || !name[0] || models.access(name) || preloadmodels.htfind(name) >= 0) return;
     preloadmodels.add(newcubestr(name));
+
 }
 
 void flushpreloadedmodels(bool msg)
@@ -448,7 +448,7 @@ model *loadmodel(const char *name, int i, bool msg)
     return m;
 }
 
-mapmodelinfo loadmodelinfo(const std::string &name, entities::classes::BaseEntity *ent) {
+mapmodelinfo loadmodelinfo(const char *name, entities::classes::BaseEntity *ent) {
     mapmodelinfo mmi;
 
     // Preload first.
@@ -509,7 +509,7 @@ struct batchedmodel
         int visible;
         int culled;
     };
-    entities::classes::BaseEntity *d;
+    entities::classes::BaseDynamicEntity *d;
     int next;
 };
 struct modelbatch
@@ -565,7 +565,7 @@ static inline void renderbatchedmodel(model *m, const batchedmodel &b)
         if(b.flags&MDL_FULLBRIGHT) anim |= ANIM_FULLBRIGHT;
     }
 
-    m->render(anim, b.basetime, b.basetime2, b.pos, b.yaw, b.pitch, b.roll, b.d, a, b.sizescale, b.colorscale);
+    m->render(anim, b.basetime, b.basetime2, b.pos, b.yaw, b.pitch, b.roll, (entities::classes::BaseDynamicEntity*)b.d, a, b.sizescale, b.colorscale);
 }
 
 VAR(maxmodelradiusdistance, 10, 200, 1000);
@@ -575,7 +575,7 @@ static inline void enablecullmodelquery()
     startbb();
 }
 
-static inline void rendercullmodelquery(model *m, entities::classes::BaseEntity *d, const vec &center, float radius)
+static inline void rendercullmodelquery(model *m, entities::classes::BaseDynamicEntity *d, const vec &center, float radius)
 {
     if(fabs(camera1->o.x-center.x) < radius+1 &&
        fabs(camera1->o.y-center.y) < radius+1 &&
@@ -597,7 +597,7 @@ static inline void disablecullmodelquery()
     endbb();
 }
 
-static inline int cullmodel(model *m, const vec &center, float radius, int flags, entities::classes::BaseEntity *d = NULL)
+static inline int cullmodel(model *m, const vec &center, float radius, int flags, entities::classes::BaseDynamicEntity *d = NULL)
 {
     if(flags&MDL_CULL_DIST && center.dist(camera1->o)/radius>maxmodelradiusdistance) return MDL_CULL_DIST;
     if(flags&MDL_CULL_VFC && isfoggedsphere(radius, center)) return MDL_CULL_VFC;
@@ -962,7 +962,7 @@ void rendermapmodel(int idx, int anim, const vec &o, float yaw, float pitch, flo
     addbatchedmodel(m, b, batchedmodels.length()-1);
 }
 
-void rendermodel(const std::string &mdl, int anim, const vec &o, float yaw, float pitch, float roll, int flags, entities::classes::BaseDynamicEtity *d, modelattach *a, int basetime, int basetime2, float size, const vec4 &color)
+void rendermodel(const std::string &mdl, int anim, const vec &o, float yaw, float pitch, float roll, int flags, entities::classes::BaseDynamicEntity *d, modelattach *a, int basetime, int basetime2, float size, const vec4 &color)
 {
     model *m = loadmodel(mdl);
     if(!m) return;
@@ -1053,7 +1053,7 @@ hasboundbox:
     addbatchedmodel(m, b, batchedmodels.length()-1);
 }
 
-int intersectmodel(const std::string &mdl, int anim, const vec &pos, float yaw, float pitch, float roll, const vec &o, const vec &ray, float &dist, int mode, entities::classes::BaseEntity *d, modelattach *a, int basetime, int basetime2, float size)
+int intersectmodel(const std::string &mdl, int anim, const vec &pos, float yaw, float pitch, float roll, const vec &o, const vec &ray, float &dist, int mode, entities::classes::BaseDynamicEntity *d, modelattach *a, int basetime, int basetime2, float size)
 {
     model *m = loadmodel(mdl);
     if(!m) return -1;

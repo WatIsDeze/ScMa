@@ -3,7 +3,7 @@
 
 namespace entities {
     namespace classes {
-        class PlayerStart : public BaseEntity {
+        class PlayerStart : public BasePhysicalEntity {
         public:
             PlayerStart();
             PlayerStart(const PlayerStart &) = default;

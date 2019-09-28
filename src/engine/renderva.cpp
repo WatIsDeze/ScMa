@@ -483,8 +483,8 @@ void findvisiblemms(const vector<entities::classes::BaseEntity *> &ents, bool do
             loopv(oe->mapmodels)
             {
                 entities::classes::BaseEntity &e = *ents[oe->mapmodels[i]];
-                if(e.flags&EF_NOVIS) continue;
-                e.flags |= EF_RENDER;
+                if(e.flags&entities::EntityFlags::EF_NOVIS) continue;
+                e.flags |= entities::EntityFlags::EF_RENDER;
                 ++visible;
             }
             if(!visible) continue;
@@ -513,7 +513,7 @@ static inline void rendermapmodel(entities::classes::BaseEntity &e)
         return;
 
     int anim = ANIM_MAPMODEL|ANIM_LOOP, basetime = 0;
-    if(e.flags&EF_ANIM) ((entities::classes::BaseMapModel&)e).onAnimate(anim, basetime);
+    if(e.flags&entities::EntityFlags::EF_ANIM) ((entities::classes::BaseMapModel&)e).onAnimate(anim, basetime);
     rendermapmodel(e.model_idx, anim, e.o, e.attr2, e.attr3, e.attr4, MDL_CULL_VFC | MDL_CULL_DIST, basetime, e.attr5 > 0 ? e.attr5/100.0f : 1.0f);
 }
 
@@ -531,7 +531,7 @@ void rendermapmodels()
         {
             entities::classes::BaseEntity &e = *ents[oe->mapmodels[i]];
             //conoutf("oe mapmodel: %d (%s)", oe->mapmodels[i], e.flags&EF_RENDER ? "render" : "no render");
-            if(!(e.flags&EF_RENDER)) continue;
+            if(!(e.flags&entities::EntityFlags::EF_RENDER)) continue;
             if(!rendered)
             {
                 rendered = true;
@@ -539,7 +539,7 @@ void rendermapmodels()
                 if(oe->query) startmodelquery(oe->query);
             }
             rendermapmodel(e);
-            e.flags &= ~EF_RENDER;
+            e.flags &= ~entities::EntityFlags::EF_RENDER;
         }
         if(rendered && oe->query) endmodelquery();
     }
@@ -1092,21 +1092,21 @@ void findshadowmms()
 void batchshadowmapmodels(bool skipmesh)
 {
     if(!shadowmms) return;
-    int nflags = EF_NOVIS|EF_NOSHADOW;
-    if(skipmesh) nflags |= EF_SHADOWMESH;
+    int nflags = entities::EntityFlags::EF_NOVIS|entities::EntityFlags::EF_NOSHADOW;
+    if(skipmesh) nflags |= entities::EntityFlags::EF_SHADOWMESH;
     const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     for(octaentities *oe = shadowmms; oe; oe = oe->rnext) loopvk(oe->mapmodels)
     {
         entities::classes::BaseEntity &e = *ents[oe->mapmodels[k]];
         if(e.flags&nflags) continue;
-        e.flags |= EF_RENDER;
+        e.flags |= entities::EntityFlags::EF_RENDER;
     }
     for(octaentities *oe = shadowmms; oe; oe = oe->rnext) loopvj(oe->mapmodels)
     {
         entities::classes::BaseEntity &e = *ents[oe->mapmodels[j]];
-        if(!(e.flags&EF_RENDER)) continue;
+        if(!(e.flags&entities::EntityFlags::EF_RENDER)) continue;
         rendermapmodel(e);
-        e.flags &= ~EF_RENDER;
+        e.flags &= ~entities::EntityFlags::EF_RENDER;
     }
 }
 
@@ -2602,15 +2602,15 @@ static void genshadowmeshmapmodels(shadowmesh &m, int sides, shadowdrawinfo draw
     for(octaentities *oe = shadowmms; oe; oe = oe->rnext) loopvk(oe->mapmodels)
     {
         entities::classes::BaseEntity &e = *ents[oe->mapmodels[k]];
-        if(e.flags&(EF_NOVIS|EF_NOSHADOW)) continue;
-        e.flags |= EF_RENDER;
+        if(e.flags&(entities::EntityFlags::EF_NOVIS|entities::EntityFlags::EF_NOSHADOW)) continue;
+        e.flags |= entities::EntityFlags::EF_RENDER;
     }
     vector<triangle> tris;
     for(octaentities *oe = shadowmms; oe; oe = oe->rnext) loopvj(oe->mapmodels)
     {
         entities::classes::BaseEntity &e = *ents[oe->mapmodels[j]];
-        if(!(e.flags&EF_RENDER)) continue;
-        e.flags &= ~EF_RENDER;
+        if(!(e.flags&entities::EntityFlags::EF_RENDER)) continue;
+        e.flags &= ~entities::EntityFlags::EF_RENDER;
 
 
         model *mm = loadmapmodel(e.model_idx);
@@ -2632,7 +2632,7 @@ static void genshadowmeshmapmodels(shadowmesh &m, int sides, shadowdrawinfo draw
             addshadowmeshtri(m, sides, draws, t.a, t.b, t.c);
         }
 
-        e.flags |= EF_SHADOWMESH;
+        e.flags |= entities::EntityFlags::EF_SHADOWMESH;
     }
 }
 
@@ -2676,7 +2676,7 @@ void clearshadowmeshes()
         loopv(ents)
         {
             entities::classes::BaseEntity &e = *ents[i];
-            if(e.flags&EF_SHADOWMESH) e.flags &= ~EF_SHADOWMESH;
+            if(e.flags&entities::EntityFlags::EF_SHADOWMESH) e.flags &= ~entities::EntityFlags::EF_SHADOWMESH;
         }
     }
     shadowmeshes.clear();

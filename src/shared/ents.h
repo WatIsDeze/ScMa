@@ -59,6 +59,8 @@ namespace entities
 
     // Classes.
     namespace classes {
+        class BaseEntity;
+
         // Core legacy entity class.
         class CoreEntity
         {
@@ -81,10 +83,15 @@ namespace entities
             uchar reserved;
 
             //
-            // Legacy Core ExtEntity data.
+            // Legacy Core ExtEntity data and functions.
             //
             int flags;
-            CoreEntity *attached;
+            BaseEntity *attached;
+
+            bool spawned() const { return (flags&entities::EntityFlags::EF_SPAWNED) != 0; }
+            void setspawned(bool val) { if(val) flags |= entities::EntityFlags::EF_SPAWNED; else flags &= ~entities::EntityFlags::EF_SPAWNED; }
+            void setspawned() { flags |= entities::EntityFlags::EF_SPAWNED; }
+            void clearspawned() { flags &= ~entities::EntityFlags::EF_SPAWNED; }
 
             //
             // Legacy of ours, but it made more sense than short attr1 ... etc.

@@ -823,8 +823,8 @@ bool mmcollide(entities::classes::BasePhysicalEntity *d, const vec &dir, float c
         model *m = mmi.collide;
         if(!m)
         {
-            if(!mmi.m && !loadmodel("", e.model_idx)) continue;
-            if(!mmi.m->collidemodel.empty()) m = loadmodel(mmi.m->collidemodel);
+            if(!mmi.m && !loadmodel(NULL, e.model_idx)) continue;
+            if(mmi.m->collidemodel) m = loadmodel(mmi.m->collidemodel);
             if(!m) m = mmi.m;
             mmi.collide = m;
         }
@@ -1684,7 +1684,7 @@ bool droptofloor(vec &o, float radius, float height)
     return false;
 }
 
-float dropheight(entities::classes::BasePhysicalEntity &e)
+float dropheight(entities::classes::BaseEntity &e)
 {
     switch(e.et_type)
     {
