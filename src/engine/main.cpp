@@ -1120,7 +1120,7 @@ int main(int argc, char **argv)
     logoutf("init: world");
     logoutf("1");
     player = ((entities::classes::Player*)game::iterdynents(0));
-    camera1 = ((entities::classes::BaseEntity*)player);
+    camera1 = ((entities::classes::BasePhysicalEntity*)player);
     logoutf("2");
     emptymap(0, true, NULL, false);
     logoutf("3");

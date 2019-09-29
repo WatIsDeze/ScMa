@@ -9,6 +9,7 @@ namespace entities
     namespace classes {
         // Predefined.
         class BasePhysicalEntity;
+
         // Animated Characters, which can possibly receive input
         class BaseDynamicEntity : public BasePhysicalEntity
         {

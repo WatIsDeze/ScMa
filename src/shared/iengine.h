@@ -400,7 +400,7 @@ extern void updatephysstate(entities::classes::BasePhysicalEntity *d);
 extern void cleardynentcache();
 extern void updatedynentcache(entities::classes::BaseEntity *d);
 extern bool entinmap(entities::classes::BaseEntity *d, bool avoidplayers = false);
-extern void findplayerspawn(entities::classes::BaseEntity *d, int forceent = -1, int tag = 0);
+extern void findplayerspawn(entities::classes::BaseDynamicEntity *d, int forceent = -1, int tag = 0);
 
 // sound
 enum

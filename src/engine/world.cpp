@@ -462,19 +462,19 @@ void detachentity(entities::classes::BaseEntity &e)
 
 VAR(attachradius, 1, 100, 1000);
 
-void attachentity(entities::classes::BaseEntity &e)
+void attachentity(entities::classes::BaseEntity *e)
 {
-    switch(e.et_type)
+    switch(e->et_type)
     {
         case ET_SPOTLIGHT:
             break;
 
         default:
-            if(e.et_type<ET_GAMESPECIFIC || !entities::mayattach(e)) return;
+            if(e->et_type<ET_GAMESPECIFIC || !entities::mayattach(*e)) return;
             break;
     }
 
-    detachentity(e);
+    detachentity(*e);
 
     vector<entities::classes::BaseEntity *> &ents = entities::getents();
     int closest = -1;
@@ -483,17 +483,17 @@ void attachentity(entities::classes::BaseEntity &e)
     {
         entities::classes::BaseEntity *a = ents[i];
         if(a->attached) continue;
-        switch(e.et_type)
+        switch(e->et_type)
         {
             case ET_SPOTLIGHT:
                 if(a->et_type!=ET_LIGHT) continue;
                 break;
 
             default:
-                if(e.et_type<ET_GAMESPECIFIC || !entities::attachent(e, *a)) continue;
+                if(e->et_type<ET_GAMESPECIFIC || !entities::attachent(*e, *a)) continue;
                 break;
         }
-        float dist = e.o.dist(a->o);
+        float dist = e->o.dist(a->o);
         if(dist < closedist)
         {
             closest = i;
@@ -501,14 +501,14 @@ void attachentity(entities::classes::BaseEntity &e)
         }
     }
     if(closedist>attachradius) return;
-    e.attached = ents[closest];
-    ents[closest]->attached = &e;
+    e->attached = ents[closest];
+    ents[closest]->attached = e;
 }
 
 void attachentities()
 {
     vector<entities::classes::BaseEntity *> &ents = entities::getents();
-    loopv(ents) attachentity(*ents[i]);
+    loopv(ents) attachentity(ents[i]);
 }
 
 // convenience macros implicitly define:
@@ -527,7 +527,7 @@ void attachentities()
         removeentityedit(n);  \
         f; \
         if(old_et_type!=e.et_type) detachentity(e); \
-        if(e.et_type!=ET_EMPTY) { addentityedit(n); if(old_et_type!=e.et_type) attachentity(e); } \
+        if(e.et_type!=ET_EMPTY) { addentityedit(n); if(old_et_type!=e.et_type) attachentity(&e); } \
         entities::editent(n, true); \
         clearshadowcache(); \
     }, v); \
@@ -1049,17 +1049,22 @@ int findtype(char *what)
 
 VAR(entdrop, 0, 2, 3);
 
-bool dropentity(entities::classes::BasePhysicalEntity &e, int drop = -1)
+bool dropentity(entities::classes::BaseEntity *e, int drop = -1)
 {
+    if (!e) {
+        return false;
+    }
+
     vec radius(4.0f, 4.0f, 4.0f);
     if(drop<0) drop = entdrop;
-    if(e.et_type == ET_MAPMODEL)
+    if(e->et_type == ET_MAPMODEL)
     {
-        model *m = loadmapmodel(e.model_idx);
+        entities::classes::BaseDynamicEntity *de = (entities::classes::BaseDynamicEntity*)e;
+        model *m = loadmapmodel(de->model_idx);
         if(m)
         {
             vec center;
-            mmboundbox(e, m, center, radius);
+            mmboundbox(*de, m, center, radius);
             radius.x += fabs(center.x);
             radius.y += fabs(center.y);
         }
@@ -1068,8 +1073,8 @@ bool dropentity(entities::classes::BasePhysicalEntity &e, int drop = -1)
     switch(drop)
     {
     case 1:
-        if(e.et_type != ET_LIGHT && e.et_type != ET_SPOTLIGHT)
-            dropenttofloor(&e);
+        if(e->et_type != ET_LIGHT && e->et_type != ET_SPOTLIGHT)
+           dropenttofloor(((entities::classes::BasePhysicalEntity*)e));
         break;
     case 2:
     case 3:
@@ -1079,17 +1084,17 @@ bool dropentity(entities::classes::BasePhysicalEntity &e, int drop = -1)
             cx = (sel.cx ? 1 : -1) * sel.grid / 2;
             cy = (sel.cy ? 1 : -1) * sel.grid / 2;
         }
-        e.o = vec(sel.o);
+        e->o = vec(sel.o);
         int d = dimension(sel.orient), dc = dimcoord(sel.orient);
-        e.o[R[d]] += sel.grid / 2 + cx;
-        e.o[C[d]] += sel.grid / 2 + cy;
+        e->o[R[d]] += sel.grid / 2 + cx;
+        e->o[C[d]] += sel.grid / 2 + cy;
         if(!dc)
-            e.o[D[d]] -= radius[D[d]];
+            e->o[D[d]] -= radius[D[d]];
         else
-            e.o[D[d]] += sel.grid + radius[D[d]];
+            e->o[D[d]] += sel.grid + radius[D[d]];
 
-        if(drop == 3)
-            dropenttofloor(&e);
+        if(e->et_type != ET_LIGHT && e->et_type != ET_SPOTLIGHT)
+            dropenttofloor(((entities::classes::BasePhysicalEntity*)e));
         break;
     }
     return true;
@@ -1098,13 +1103,13 @@ bool dropentity(entities::classes::BasePhysicalEntity &e, int drop = -1)
 void dropent()
 {
     if(noentedit()) return;
-    groupedit(dropentity(e));
+    //groupedit(dropentity(&e));
 }
 
 void attachent()
 {
     if(noentedit()) return;
-    groupedit(attachentity(e));
+    //groupedit(attachentity((entities::classes::BaseEntity*)e));
 }
 
 COMMAND(attachent, "");
@@ -1173,7 +1178,7 @@ void newentity(int type, int a1, int a2, int a3, int a4, int a5, bool fix = true
     int idx;
     entities::classes::BaseEntity *t = newentity(true, player->o, type, a1, a2, a3, a4, a5, idx, fix);
     if(!t) return;
-    dropentity(*t);
+    dropentity(t);
     t->et_type = ET_EMPTY;
     enttoggle(idx);
     makeundoent();
@@ -1261,7 +1266,7 @@ void new_game_entity(char *strclass, char *a1, char *a2, char *a3, char *a4, cha
     int idx;
     entities::classes::BaseEntity *t = new_game_entity(true, player->o, idx, fix, strclass);
     if(!t) return;
-    dropentity(*t);
+    dropentity(t);
     //t->et_type = ET_EMPTY; // Why would we want this here if we set e.type later
     int new_et_type = t->et_type;
     int new_ent_type = t->ent_type;
@@ -1563,7 +1568,7 @@ int findentity_byclass(const std::string &classname, int index, int attr1, int a
     return -1;
 }
 
-void findplayerspawn(entities::classes::BaseEntity *d, int forceent, int tag) // place at random spawn
+void findplayerspawn(entities::classes::BaseDynamicEntity *d, int forceent, int tag) // place at random spawn
 {
     int pick = forceent;
     if(pick<0)
@@ -1785,7 +1790,7 @@ void mpeditent(int i, const vec &o, int type, int attr1, int attr2, int attr3, i
         entities::classes::BaseEntity *e = newentity(local, o, type, attr1, attr2, attr3, attr4, attr5, i);
         if(!e) return;
         addentityedit(i);
-        attachentity(*e);
+        attachentity(e);
     }
     else
     {
@@ -1802,7 +1807,7 @@ void mpeditent(int i, const vec &o, int type, int attr1, int attr2, int attr3, i
             e.model_idx = -1;
 
         addentityedit(i);
-        if(oldtype!=type) attachentity(e);
+        if(oldtype!=type) attachentity(&e);
     }
     entities::editent(i, local);
     clearshadowcache();

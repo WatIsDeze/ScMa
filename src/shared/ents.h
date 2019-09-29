@@ -61,14 +61,27 @@ namespace entities
     namespace classes {
         class BaseEntity;
 
+//        // Entity
+//        o(0, 0, 0), attr1(0), attr2(0), attr3(0), attr4(0), attr5(0), et_type(ET_EMPTY), ent_type(ENT_INANIMATE), game_type(GAMEENTITY), reserved(0), model_idx(0),
+
+//        // Dynent.
+//        blocked(false), ragdoll(NULL), query(NULL), lastrendered(0),
+
+//        // Physent.
+//        deltapos(0, 0, 0), newpos(0, 0, 0), yaw(0), pitch(0), roll(0), maxspeed(25),
+//                   radius(2.4), eyeheight(7), maxheight(8), aboveeye(2), xradius(1.67), yradius(1.67), zmargin(0),
+//                   state(CS_ALIVE), editstate(CS_ALIVE),
+//                   collidetype(COLLIDE_ELLIPSE)
+
         // Core legacy entity class.
         class CoreEntity
         {
         public:
             // Constructors.
             CoreEntity() : o(0, 0, 0), attr1(0), attr2(0), attr3(0), attr4(0), attr5(0),
-                et_type(0), ent_type(0), game_type(0), reserved(0), flags(EntityFlags::EF_NOFLAG),
-                attached(nullptr) {}
+                et_type(0), ent_type(0), game_type(0), reserved(0), model_idx(0), flags(EntityFlags::EF_NOFLAG),
+                attached(nullptr), name("unnamed"), classname("gameentity") {}
+
             CoreEntity(const CoreEntity&) = default;
             virtual ~CoreEntity() {}
 
@@ -119,11 +132,11 @@ namespace entities
 
 // Do some predefines for animinfo.h
 namespace entities {
-namespace classes {
-    class BasePhysicalEntity;
-    class BaseDynamicEntity;
-}
-}
+    namespace classes {
+        class BasePhysicalEntity;
+        class BaseDynamicEntity;
+    } // classes
+} // entities
 
 // Include our base entity types.
 #include "entities/animinfo.h"              // Include the basic animation info for our entities.

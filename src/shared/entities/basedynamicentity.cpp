@@ -3,6 +3,10 @@
 #include "basephysicalentity.h"
 #include "basedynamicentity.h"
 
+namespace entities {
+namespace classes {
+
+
 // WatIsDeze: TODO: Maybe remove the physent constructor from here.
 BaseDynamicEntity::BaseDynamicEntity() : BasePhysicalEntity(), ragdoll(NULL), query(NULL), lastrendered(0)
 {
@@ -28,3 +32,6 @@ vec BaseDynamicEntity::abovehead() {
     // WatIsDeze: Seems to determine to which lengths the camera and the character are allowed to go when jumping or crouching through a tunnel etc.
     return vec(o).addz(aboveeye+4);
 }
+
+} // classes
+} // entities

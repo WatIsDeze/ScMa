@@ -54,7 +54,7 @@ void Player::render() {
 
 bool Player::onTrigger(entities::classes::BaseEntity *otherEnt, const vec &dir) {
     if (otherEnt != NULL) {
-        conoutf("%s %s %s %f %f %f", "Player triggered by entity: ", otherEnt->classname.c_str(),
+        conoutf("%s '%s' %s %s %f %f %f", "Player: ", name.c_str(), " triggered by entity: ", otherEnt->classname.c_str(),
             "from Vector Direction: ", dir.x, dir.y, dir.z);
             return true;
     } else {

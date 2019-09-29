@@ -17,6 +17,8 @@ namespace entities
             //
             BaseEntity();
             BaseEntity(const BaseEntity& e) = default;
+            BaseEntity(const BasePhysicalEntity &e);
+            BaseEntity(const BaseDynamicEntity &e);
             virtual ~BaseEntity();
 
             // Called every time a map is being loaded.
@@ -35,7 +37,7 @@ namespace entities
             // Sets the key its value in the attributes list, also determines whether to automatically call onAttributeSet.
             void setAttribute(const std::string &key, const std::string &value, bool callOnAttrSet);
             // Returns the value of the attribute key.
-            const std::string getAttribute(const std::string &key);
+            std::string getAttribute(const std::string &key);
 
 
             //

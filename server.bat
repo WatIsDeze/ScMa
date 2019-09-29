@@ -1,6 +1,6 @@
 @ECHO OFF
 
-set TESS_BIN=bin
+set SCMA_BIN=src
 
 IF /I "%PROCESSOR_ARCHITECTURE%" == "amd64" (
     set TESS_BIN=bin64
@@ -9,4 +9,4 @@ IF /I "%PROCESSOR_ARCHITEW6432%" == "amd64" (
     set TESS_BIN=bin64
 )
 
-start %TESS_BIN%\tesseract.exe "-u$HOME\My Games\Tesseract" -gserver-log.txt -d %*
+start %SCMA_BIN%\tesseract.exe "-u$HOME\My Games\SchizoMania" -gserver-log.txt -d %*

@@ -52,4 +52,4 @@ then
 fi
 
 cd ${SCMA_DATA}
-exec ${SCMA_BIN}/SchizoMania_Client ${SCMA_OPTIONS} "$@"
+exec gdb -q --args ${SCMA_BIN}/SchizoMania_Client ${SCMA_OPTIONS} "$@"
