@@ -564,7 +564,7 @@ const vector<entities::classes::BasePhysicalEntity*> &checkdynentcache(int x, in
     loopi(numdyns)
     {
         entities::classes::BaseDynamicEntity *d = ((entities::classes::BaseDynamicEntity*)game::iterdynents(i));
-        if(d->state != CS_ALIVE ||
+        if(!d || d->state != CS_ALIVE ||
            d->o.x+d->radius <= dx || d->o.x-d->radius >= dx+dsize ||
            d->o.y+d->radius <= dy || d->o.y-d->radius >= dy+dsize)
             continue;

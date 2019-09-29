@@ -227,12 +227,12 @@ namespace game
             if (i < entities::g_ents.length()) {
                 return entities::g_ents[i];
             } else {
-                return NULL;
+                return nullptr;
             }
         }
         //if (i < entities::g_lightEnts.length()) return (entities::classes::BaseEntity*)entities::g_lightEnts[i];
         //    i -= entities::g_lightEnts.length();
-        //return NULL;
+        //return nullptr;
     }
     // int numdynents() { return players.length()+monsters.length()+movables.length(); }
     int numdynents() {
