@@ -23,7 +23,7 @@ void validmapname(char *dst, const char *src, const char *prefix = NULL, const c
 }
 
 /* Make the name of the map great again (tm) */
-__attribute__((annotate("script_export"))) void fixmapname(char *name)
+SCRIPTEXPORT_AS(bla) void fixmapname(char *name)
 {
     validmapname(name, name, NULL, "");
 }
@@ -171,7 +171,7 @@ void setmapfilenames(const char *fname, const char *cname = NULL)
     path(picname);
 }
 
-void mapcfgname()
+SCRIPTEXPORT void mapcfgname()
 {
     const char *mname = game::getclientmap();
     cubestr name;
@@ -181,7 +181,7 @@ void mapcfgname()
     result(cfgname);
 }
 
-COMMAND(mapcfgname, "");
+//COMMAND(mapcfgname, "");
 
 void backup(const char *name, const char *backupname)
 {
@@ -961,13 +961,13 @@ bool load_world(const char *mname, const char *cname)        // still supports a
     return true;
 }
 
-void savecurrentmap() { save_world(game::getclientmap()); }
-__attribute__((annotate("script_export"))) void savemap(char *mname) { save_world(mname); }
+SCRIPTEXPORT void savecurrentmap() { save_world(game::getclientmap()); }
+SCRIPTEXPORT void savemap(char *mname) { save_world(mname); }
 
-COMMAND(savemap, "s");
-COMMAND(savecurrentmap, "");
+// COMMAND(savemap, "s");
+// COMMAND(savecurrentmap, "");
 
-void writeobj(char *name)
+SCRIPTEXPORT void writeobj(char *name)
 {
     defformatcubestr(fname, "%s.obj", name);
     stream *f = openfile(path(fname), "w");
@@ -1061,9 +1061,9 @@ void writeobj(char *name)
     conoutf("generated model %s", fname);
 }
 
-COMMAND(writeobj, "s");
+// COMMAND(writeobj, "s");
 
-void writecollideobj(char *name)
+SCRIPTEXPORT void writecollideobj(char *name)
 {
     extern bool havesel;
     extern selinfo sel;
@@ -1172,7 +1172,7 @@ void writecollideobj(char *name)
     conoutf("generated collide model %s", fname);
 }
 
-COMMAND(writecollideobj, "s");
+// COMMAND(writecollideobj, "s");
 
 #endif
 

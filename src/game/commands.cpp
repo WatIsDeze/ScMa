@@ -1,4 +1,6 @@
 #include "game.h"
+#include "engine/scriptexport.h"
+
 
 // This file its soul purpose is to have all CubeScript COMMAND definitions located in a single file.
 //---------------------------------------------------------------------------------------------//
@@ -11,17 +13,11 @@ namespace entities {
 
 namespace game {
     //---------------------------------------------------------------------------------------------//
-    // GENERAL GAME COMMANDS.                                                                      //
-    //---------------------------------------------------------------------------------------------//
-    // Changes the map, of course.
-    ICOMMAND(map, "s", (char *s), changemap(s));
-
-    //---------------------------------------------------------------------------------------------//
     // ENTITY COMMANDS.                                                                            //
     //---------------------------------------------------------------------------------------------//
     // ent_set_attr - Sets the value of the designated key property.
     // args: (str)key (str)value.
-    ICOMMAND(ent_set_attr, "ss", (char *s1, char *s2),
+    SCRIPTEXPORT void ent_set_attr(char *s1, char *s2)
     {
         // TODO: Fix the namespace variable issues.
         //extern vector<entities::classes::BaseEntity *> entities::ents;
@@ -41,11 +37,12 @@ namespace game {
         } else {
             conoutf("%s", "No valid in range entity selected.");
         }
-    });
+    };
 
     // ent_get_attr - Retreives the value of the designated key property.
     // args: (str)key
-    ICOMMAND(ent_get_attr, "s", (char *s1), {
+    SCRIPTEXPORT void ent_get_attr(char *s1)
+    {
         // TODO: Fix the namespace variable issues.
         //extern vector<entities::classes::BaseEntity *> entities::ents;
 
@@ -58,10 +55,11 @@ namespace game {
         } else {
             conoutf("%s", "No valid entity selected to fetch an attribute from.");
         }
-    });
+    };
 
     // ent_list_attr - Lists all the properties of the given entity.
-    ICOMMAND(ent_list_attr, "", (), {
+    SCRIPTEXPORT ent_list_attr()
+    {
         // TODO: Fix the namespace variable issues.
         //extern vector<entities::classes::BaseEntity *> entities::ents;
 
@@ -74,5 +72,5 @@ namespace game {
         } else {
             conoutf("%s", "No valid entity selected to fetch an attribute from.");
         }
-    });
+    };
 }

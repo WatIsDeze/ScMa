@@ -1,4 +1,5 @@
 #include "cube.h"
+#include "engine/scriptexport.h"
 
 enum
 {
@@ -582,7 +583,14 @@ int listzipfiles(const char *dir, const char *ext, vector<char *> &files)
 }
 
 #ifndef STANDALONE
-ICOMMAND(addzip, "sss", (const char *name, const char *mount, const char *strip), addzip(name, mount[0] ? mount : NULL, strip[0] ? strip : NULL));
-ICOMMAND(removezip, "s", (const char *name), removezip(name));
+SCRIPTEXPORT void addzip(const char *name, const char *mount, const char *strip)
+{
+    addzip(name, mount[0] ? mount : NULL, strip[0] ? strip : NULL);
+}
+
+SCRIPTEXPORT void removezip(const char *name)
+{
+    removezip(name);
+}
 #endif
 

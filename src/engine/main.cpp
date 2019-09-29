@@ -27,7 +27,7 @@ void cleanup()
 
 extern void writeinitcfg();
 
-void quit()                     // normal exit
+SCRIPTEXPORT void quit()                     // normal exit
 {
     writeinitcfg();
     writeservercfg();
@@ -117,7 +117,6 @@ void writeinitcfg()
     delete f;
 }
 
-COMMAND(quit, "");
 
 static void getbackgroundres(int &w, int &h)
 {
@@ -456,7 +455,7 @@ VARF(fullscreen, 0, 0, 1, setfullscreen(fullscreen!=0));
 VARF(fullscreen, 0, 1, 1, setfullscreen(fullscreen!=0));
 #endif
 
-void screenres(int w, int h)
+SCRIPTEXPORT void screenres(int w, int h)
 {
     scr_w = clamp(w, SCR_MINW, SCR_MAXW);
     scr_h = clamp(h, SCR_MINH, SCR_MAXH);
@@ -473,7 +472,7 @@ void screenres(int w, int h)
     }
 }
 
-ICOMMAND(screenres, "ii", (int *w, int *h), screenres(*w, *h));
+// ICOMMAND(screenres, "ii", (int *w, int *h), screenres(*w, *h));
 
 static void setgamma(int val)
 {
@@ -579,7 +578,7 @@ void setupscreen()
     hudh = screenh;
 }
 
-void resetgl()
+SCRIPTEXPORT void resetgl()
 {
     clearchanges(CHANGE_GFX|CHANGE_SHADERS);
 
@@ -624,8 +623,6 @@ void resetgl()
     reloadtextures();
     allchanged(true);
 }
-
-COMMAND(resetgl, "");
 
 vector<SDL_Event> events;
 
@@ -976,7 +973,7 @@ void getfps(int &fps, int &bestdiff, int &worstdiff)
     worstdiff = fps-1000/worst;
 }
 
-void getfps_(int *raw)
+SCRIPTEXPORT void getfps(int *raw)
 {
     if(*raw) floatret(1000.0f/fpshistory[(fpspos+MAXFPSHISTORY-1)%MAXFPSHISTORY]);
     else
@@ -986,8 +983,6 @@ void getfps_(int *raw)
         intret(fps);
     }
 }
-
-COMMANDN(getfps, getfps_, "i");
 
 bool inbetweenframes = false, renderedframe = true;
 

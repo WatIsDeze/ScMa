@@ -609,7 +609,10 @@ void mpcalclight(bool local)
     calclight();
 }
 
-ICOMMAND(calclight, "", (), mpcalclight(true));
+SCRIPTEXPORT void calclight()
+{
+    mpcalclight(true);
+}
 
 VAR(fullbright, 0, 0, 1);
 VAR(fullbrightlevel, 0, 160, 255);

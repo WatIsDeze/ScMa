@@ -132,7 +132,7 @@ extern ident *getident(const char *name);
 extern ident *newident(const char *name, int flags = 0);
 extern ident *readident(const char *name);
 extern ident *writeident(const char *name, int flags = 0);
-extern bool addcommand(const char *name, identfun fun, const char *narg, int type = ID_COMMAND);
+extern bool addcommand(const char *name, identfun fun, const char *narg, int type = ID_COMMAND, const char* doc = "");
 extern uint *compilecode(const char *p);
 extern void keepcode(uint *p);
 extern void freecode(uint *p);

@@ -5,6 +5,12 @@
 		},
 		{
 			"path": "../../cmake"
+		},
+		{
+			"path": "../../media"
+		},
+		{
+			"path": "../../config"
 		}
 	],
 	"settings": {}

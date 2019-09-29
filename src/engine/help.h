@@ -17,7 +17,7 @@ struct Help
     static std::string SectionToString(HelpSection section);
     static std::map<HelpSection, std::vector<std::string> >& SectionLines();
 
-    static void Register(HelpSection section, const std::vector<std::string>& data);
+    static void Register(HelpSection section, const std::vector<std::string>& data, const std::string& doc = "");
     static void Print(const char* arg);
 };
 

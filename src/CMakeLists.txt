@@ -70,6 +70,7 @@ add_subdirectory(enet)
 add_subdirectory(shared)
 add_subdirectory(game)
 add_subdirectory(engine)
+add_subdirectory(binding)
 
 #Everything ready, now define the executables
 if (APPLE)
@@ -104,6 +105,7 @@ if (APPLE)
         SchizoMania_Shared_Client
         SchizoMania_Game_Client
         SchizoMania_Engine_Client
+        SchizoMania_Binding
         # ${MODPLUG_LIBRARIES}
 
         ${COCOA}
@@ -120,6 +122,7 @@ else()
         SchizoMania_Shared_Client
         SchizoMania_Engine_Client
         SchizoMania_Game_Client
+        SchizoMania_Binding
     )
 endif()
 

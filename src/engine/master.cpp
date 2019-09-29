@@ -33,31 +33,28 @@ struct userinfo
 };
 hashnameset<userinfo> users;
 
-void adduser(char *name, char *pubkey)
+SCRIPTEXPORT void adduser(char *name, char *pubkey)
 {
     name = newcubestr(name);
     userinfo &u = users[name];
     u.name = name;
     u.pubkey = parsepubkey(pubkey);
 }
-COMMAND(adduser, "ss");
 
-void clearusers()
+SCRIPTEXPORT void clearusers()
 {
     enumerate(users, userinfo, u, { delete[] u.name; freepubkey(u.pubkey); });
     users.clear();
 }
-COMMAND(clearusers, "");
 
 vector<ipmask> bans, servbans, gbans;
 
-void clearbans()
+SCRIPTEXPORT void clearbans()
 {
     bans.shrink(0);
     servbans.shrink(0);
     gbans.shrink(0);
 }
-COMMAND(clearbans, "");
 
 void addban(vector<ipmask> &bans, const char *name)
 {
@@ -65,9 +62,21 @@ void addban(vector<ipmask> &bans, const char *name)
     ban.parse(name);
     bans.add(ban); 
 }
-ICOMMAND(ban, "s", (char *name), addban(bans, name));
-ICOMMAND(servban, "s", (char *name), addban(servbans, name));
-ICOMMAND(gban, "s", (char *name), addban(gbans, name));
+
+SCRIPTEXPORT void ban(char *name)
+{
+    addban(bans, name);
+}
+
+SCRIPTEXPORT void servban(char *name)
+{
+    addban(servbans, name);
+}
+
+SCRIPTEXPORT void gban(char *name)
+{
+    addban(gbans, name);
+}
 
 bool checkban(vector<ipmask> &bans, enet_uint32 host)
 {

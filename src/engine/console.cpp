@@ -50,17 +50,30 @@ void conoutf(int type, const char *fmt, ...)
     va_end(args);
 }
 
-ICOMMAND(fullconsole, "iN$", (int *val, int *numargs, ident *id),
+SCRIPTEXPORT void fullconsole(int *val, CommandTypes::ArgLen numargs, ident *id)
 {
-    if(*numargs > 0) UI::holdui("fullconsole", *val!=0);
+    if(*numargs > 0)
+    {
+        UI::holdui("fullconsole", *val!=0);
+    }
     else
     {
         int vis = UI::uivisible("fullconsole") ? 1 : 0;
-        if(*numargs < 0) intret(vis);
-        else printvar(id, vis);
+        if(*numargs < 0)
+        {
+            intret(vis);
+        }
+        else
+        {
+            printvar(id, vis);
+        }
     }
-});
-ICOMMAND(toggleconsole, "", (), UI::toggleui("fullconsole"));
+}
+
+SCRIPTEXPORT void toggleconsole()
+{
+    UI::toggleui("fullconsole");
+}
 
 float rendercommand(float x, float y, float w)
 {
@@ -105,10 +118,21 @@ void setconskip(int &skip, int filter, int n)
     }
 }
 
-ICOMMAND(conskip, "i", (int *n), setconskip(conskip, UI::uivisible("fullconsole") ? fullconfilter : confilter, *n));
-ICOMMAND(miniconskip, "i", (int *n), setconskip(miniconskip, miniconfilter, *n));
+SCRIPTEXPORT_AS(conskip) void conskip_impl(int *n)
+{
+    setconskip(conskip, UI::uivisible("fullconsole") ? fullconfilter : confilter, *n);
+}
 
-ICOMMAND(clearconsole, "", (), { while(conlines.length()) delete[] conlines.pop().line; });
+SCRIPTEXPORT_AS(miniconskip) void miniconskip_impl(int *n)
+{
+    setconskip(miniconskip, miniconfilter, *n);
+}
+
+SCRIPTEXPORT void clearconsole()
+{
+    while(conlines.length())
+        delete[] conlines.pop().line;
+}
 
 float drawconlines(int conskip, int confade, float conwidth, float conheight, float conoff, int filter, float y = 0, int dir = 1)
 {
@@ -197,7 +221,7 @@ struct keym
 
 hashtable<int, keym> keyms(128);
 
-void keymap(int *code, char *key)
+SCRIPTEXPORT void keymap(int *code, char *key)
 {
     if(identflags&IDF_OVERRIDDEN) { conoutf(CON_ERROR, "cannot override keymap %d", *code); return; }
     keym &km = keyms[*code];
@@ -205,8 +229,6 @@ void keymap(int *code, char *key)
     DELETEA(km.name);
     km.name = newcubestr(key);
 }
-
-COMMAND(keymap, "is");
 
 keym *keypressed = NULL;
 char *keyaction = NULL;
@@ -261,15 +283,50 @@ void bindkey(char *key, char *action, int state, const char *cmd)
     binding = newcubestr(action, len);
 }
 
-ICOMMAND(bind,     "ss", (char *key, char *action), bindkey(key, action, keym::ACTION_DEFAULT, "bind"));
-ICOMMAND(specbind, "ss", (char *key, char *action), bindkey(key, action, keym::ACTION_SPECTATOR, "specbind"));
-ICOMMAND(editbind, "ss", (char *key, char *action), bindkey(key, action, keym::ACTION_EDITING, "editbind"));
-ICOMMAND(getbind,     "s", (char *key), getbind(key, keym::ACTION_DEFAULT));
-ICOMMAND(getspecbind, "s", (char *key), getbind(key, keym::ACTION_SPECTATOR));
-ICOMMAND(geteditbind, "s", (char *key), getbind(key, keym::ACTION_EDITING));
-ICOMMAND(searchbinds,     "s", (char *action), searchbinds(action, keym::ACTION_DEFAULT));
-ICOMMAND(searchspecbinds, "s", (char *action), searchbinds(action, keym::ACTION_SPECTATOR));
-ICOMMAND(searcheditbinds, "s", (char *action), searchbinds(action, keym::ACTION_EDITING));
+SCRIPTEXPORT void bind(char *key, char *action)
+{
+    bindkey(key, action, keym::ACTION_DEFAULT, "bind");
+}
+
+SCRIPTEXPORT void specbind(char *key, char *action)
+{
+    bindkey(key, action, keym::ACTION_SPECTATOR, "specbind");
+}
+
+SCRIPTEXPORT void editbind(char *key, char *action)
+{
+    bindkey(key, action, keym::ACTION_EDITING, "editbind");
+}
+
+SCRIPTEXPORT void getbind(char *key)
+{
+    getbind(key, keym::ACTION_DEFAULT);
+}
+
+SCRIPTEXPORT void getspecbind(char *key)
+{
+    getbind(key, keym::ACTION_SPECTATOR);
+}
+
+SCRIPTEXPORT void geteditbind(char *key)
+{
+    getbind(key, keym::ACTION_EDITING);
+}
+
+SCRIPTEXPORT void searchbinds(char *action)
+{
+    searchbinds(action, keym::ACTION_DEFAULT);
+}
+
+SCRIPTEXPORT void searchspecbinds(char *action)
+{
+    searchbinds(action, keym::ACTION_SPECTATOR);
+}
+
+SCRIPTEXPORT void searcheditbinds(char *action)
+{
+    searchbinds(action, keym::ACTION_EDITING);
+}
 
 void keym::clear(int type)
 {
@@ -281,12 +338,28 @@ void keym::clear(int type)
     }
 }
 
-ICOMMAND(clearbinds, "", (), enumerate(keyms, keym, km, km.clear(keym::ACTION_DEFAULT)));
-ICOMMAND(clearspecbinds, "", (), enumerate(keyms, keym, km, km.clear(keym::ACTION_SPECTATOR)));
-ICOMMAND(cleareditbinds, "", (), enumerate(keyms, keym, km, km.clear(keym::ACTION_EDITING)));
-ICOMMAND(clearallbinds, "", (), enumerate(keyms, keym, km, km.clear()));
+SCRIPTEXPORT void clearbinds()
+{
+    enumerate(keyms, keym, km, km.clear(keym::ACTION_DEFAULT));
+}
 
-void inputcommand(char *init, char *action = NULL, char *prompt = NULL, char *flags = NULL) // turns input to the command line on or off
+SCRIPTEXPORT void clearspecbinds()
+{
+    enumerate(keyms, keym, km, km.clear(keym::ACTION_SPECTATOR));
+}
+
+SCRIPTEXPORT void cleareditbinds()
+{
+    enumerate(keyms, keym, km, km.clear(keym::ACTION_EDITING));
+}
+
+SCRIPTEXPORT void clearallbinds()
+{
+    enumerate(keyms, keym, km, km.clear());
+}
+
+
+SCRIPTEXPORT void inputcommand(char *init, char *action = NULL, char *prompt = NULL, char *flags = NULL) // turns input to the command line on or off
 {
     commandmillis = init ? totalmillis : -1;
     textinput(commandmillis >= 0, TI_CONSOLE);
@@ -307,8 +380,10 @@ void inputcommand(char *init, char *action = NULL, char *prompt = NULL, char *fl
     else if(init) commandflags |= CF_COMPLETE|CF_EXECUTE;
 }
 
-ICOMMAND(saycommand, "C", (char *init), inputcommand(init));
-COMMAND(inputcommand, "ssss");
+SCRIPTEXPORT void saycommand(char *init)
+{
+    inputcommand(init);
+}
 
 void pasteconsole()
 {
@@ -378,7 +453,7 @@ int histpos = 0;
 
 VARP(maxhistory, 0, 1000, 10000);
 
-void history_(int *n)
+SCRIPTEXPORT_AS(history) void history_(int *n)
 {
     static bool inhistory = false;
     if(!inhistory && history.inrange(*n))
@@ -388,8 +463,6 @@ void history_(int *n)
         inhistory = false;
     }
 }
-
-COMMANDN(history, history_, "i");
 
 struct releaseaction
 {
@@ -424,12 +497,10 @@ tagval *addreleaseaction(ident *id, int numargs)
     return ra.args;
 }
 
-void onrelease(const char *s)
+SCRIPTEXPORT void onrelease(const char *s)
 {
     addreleaseaction(newcubestr(s));
 }
-
-COMMAND(onrelease, "s");
 
 void execbind(keym &k, bool isdown)
 {
@@ -731,18 +802,15 @@ void addcomplete(char *command, int type, char *dir, char *ext)
     else completions[newcubestr(command)] = *val;
 }
 
-void addfilecomplete(char *command, char *dir, char *ext)
+SCRIPTEXPORT_AS(complete) void addfilecomplete(char *command, char *dir, char *ext)
 {
     addcomplete(command, FILES_DIR, dir, ext);
 }
 
-void addlistcomplete(char *command, char *list)
+SCRIPTEXPORT_AS(listcomplete) void addlistcomplete(char *command, char *list)
 {
     addcomplete(command, FILES_LIST, list, NULL);
 }
-
-COMMANDN(complete, addfilecomplete, "sss");
-COMMANDN(listcomplete, addlistcomplete, "ss");
 
 void complete(char *s, int maxlen, const char *cmdprefix)
 {

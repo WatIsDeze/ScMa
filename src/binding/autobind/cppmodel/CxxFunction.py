@@ -1,8 +1,18 @@
 from .CxxNode import CxxNode
+import json
+from clang import cindex
+from .. import parsecpp
 
 class CxxFunction(CxxNode):
     def __init__(self, sourceObject, parent = None):
         CxxNode.__init__(self, sourceObject, parent)
+        first_child = next(sourceObject.get_children(), None)
+        if not first_child is None:
+            if first_child.kind == cindex.CursorKind.ANNOTATE_ATTR and first_child.spelling.startswith(parsecpp.EXPORT_ANNOTATION):
+                start = first_child.spelling.rindex(parsecpp.EXPORT_ANNOTATION)
+                if start == 0:
+                    self.customFuctionName = first_child.spelling[len(parsecpp.EXPORT_ANNOTATION):]
+
         pass
 
     def forEachArgument(self):
@@ -24,11 +34,17 @@ class CxxFunction(CxxNode):
         args = []
         for arg in self.forEachArgument():
             args.append(arg.spelling)
-        return self.sourceObject.spelling + "(" + (", ".join(args)) + ")"
+        functionName = self.sourceObject.spelling
+        if self.customFuctionName:
+            functionName = self.customFuctionName
+        return functionName + "(" + (", ".join(args)) + ")"
 
     def generate(self):
-        template = """extern {fwddecl};
-COMMAND({functioname}, "{proto}", "{doc}");
+        template = """extern {functionname}({argdecl});
+COMMAND({functionname}, "{proto}", {doc});
+"""
+        template_custom = """extern {realfunctionname}({argdecl});
+ICOMMAND({functionname}, "{proto}", ({argdecl}), {realfunctionname}({argdecl}), {doc});
 """
 
         # {'i', "int"},
@@ -54,11 +70,18 @@ COMMAND({functioname}, "{proto}", "{doc}");
 
         spelling2proto  = {
             "int": "i",
+            "int *": "i",
             "float": "f",
+            "float *": "f",
             "bool": "b",
             "const char *": "s",
             "char *": "s",
-            "int *": "D"
+            "CommandTypes::KeyPress": "D",
+            "CommandTypes::Boolean": "b",
+            "ident *": "$",
+            "CommandTypes::ArgLen": "N",
+            "CommandTypes::Expression": "e",
+            "CommandTypes::OptionalFloat": "F"
         }
 
         proto = ""
@@ -76,10 +99,23 @@ COMMAND({functioname}, "{proto}", "{doc}");
             #         else:
             #             raise ValueError("Function argument type not implemented", typedef.spelling, self.sourceObject.spelling)
 
-        cppdecl = self.sourceObject.spelling + "(" + ", ".join(cppargs) + ")"
-        return template.format(
-            fwddecl = cppdecl,
-            functioname = self.sourceObject.spelling,
-            proto = proto,
-            doc = self.comment()
-        )
+        argdecl = ", ".join(cppargs)
+        functionName = self.sourceObject.spelling
+        if self.customFuctionName:
+            realFunctionName = functionName
+            functionName = self.customFuctionName
+            
+            return template_custom.format(
+                argdecl = argdecl,
+                realfunctionname = realFunctionName,
+                functionname = functionName,
+                proto = proto,
+                doc = json.dumps(str(self.comment()))
+            )            
+        else:
+            return template.format(
+                argdecl = argdecl,
+                functionname = functionName,
+                proto = proto,
+                doc = json.dumps(str(self.comment()))
+            )

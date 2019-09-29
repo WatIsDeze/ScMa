@@ -364,7 +364,7 @@ bool haveselent()
     return entgroup.length() > 0;
 }
 
-void entcancel()
+SCRIPTEXPORT void entcancel()
 {
     entgroup.shrink(0);
 }
@@ -520,7 +520,7 @@ void pasteundoents(undoblock *u)
     loopi(u->numents) pasteundoent(ue[i].i, ue[i].e);
 }
 
-void entflip()
+SCRIPTEXPORT void entflip()
 {
     if(noentedit()) return;
     int d = dimension(sel.orient);
@@ -528,7 +528,7 @@ void entflip()
     groupeditundo(e.o[d] -= (e.o[d]-mid)*2);
 }
 
-void entrotate(int *cw)
+SCRIPTEXPORT void entrotate(int *cw)
 {
     if(noentedit()) return;
     int d = dimension(sel.orient);
@@ -907,22 +907,22 @@ bool hoveringonent(int ent, int orient)
 
 VAR(entitysurf, 0, 0, 1);
 
-ICOMMAND(entadd, "", (),
+SCRIPTEXPORT void entadd(),
 {
     if(enthover >= 0 && !noentedit())
     {
         if(entgroup.find(enthover) < 0) entadd(enthover);
         if(entmoving > 1) entmoving = 1;
     }
-});
+}
 
-ICOMMAND(enttoggle, "", (),
+SCRIPTEXPORT void enttoggle()
 {
     if(enthover < 0 || noentedit() || !enttoggle(enthover)) { entmoving = 0; intret(0); }
     else { if(entmoving > 1) entmoving = 1; intret(1); }
-});
+}
 
-ICOMMAND(entmoving, "b", (int *n),
+SCRIPTEXPORT void entmoving(int *n)
 {
     if(*n >= 0)
     {
@@ -934,9 +934,9 @@ ICOMMAND(entmoving, "b", (int *n),
         }
     }
     intret(entmoving);
-});
+}
 
-void entpush(int *dir)
+SCRIPTEXPORT void entpush(int *dir)
 {
     if(noentedit()) return;
     int d = dimension(entorient);
@@ -955,7 +955,7 @@ void entpush(int *dir)
 }
 
 VAR(entautoviewdist, 0, 25, 100);
-void entautoview(int *dir)
+SCRIPTEXPORT void entautoview(int *dir)
 {
     if(!haveselent()) return;
     static int s = 0;
@@ -973,12 +973,8 @@ void entautoview(int *dir)
     );
 }
 
-COMMAND(entautoview, "i");
-COMMAND(entflip, "");
-COMMAND(entrotate, "i");
-COMMAND(entpush, "i");
 
-void delent()
+SCRIPTEXPORT void delent()
 {
     if(noentedit()) return;
     groupedit(e.type = ET_EMPTY;);
@@ -1040,19 +1036,17 @@ bool dropentity(entity &e, int drop = -1)
     return true;
 }
 
-void dropent()
+SCRIPTEXPORT void dropent()
 {
     if(noentedit()) return;
     groupedit(dropentity(e));
 }
 
-void attachent()
+SCRIPTEXPORT void attachent()
 {
     if(noentedit()) return;
     groupedit(attachentity(e));
 }
-
-COMMAND(attachent, "");
 
 static int keepents = 0;
 
@@ -1124,7 +1118,7 @@ void newentity(int type, int a1, int a2, int a3, int a4, int a5, bool fix = true
     commitchanges();
 }
 
-void newent(char *what, int *a1, int *a2, int *a3, int *a4, int *a5)
+SCRIPTEXPORT void newent(char *what, int *a1, int *a2, int *a3, int *a4, int *a5)
 {
     if(noentedit()) return;
     int type = findtype(what);
@@ -1221,7 +1215,7 @@ void new_game_entity(char *strclass, char *a1, char *a2, char *a3, char *a4, cha
     commitchanges();
 }
 
-void newgent(char *what, char *a1, char *a2, char *a3, char *a4, char *a5, char *a6, char *a7, char *a8)
+SCRIPTEXPORT void newgent(char *what, char *a1, char *a2, char *a3, char *a4, char *a5, char *a6, char *a7, char *a8)
 {
     // TODO: Determine what "what" is, and use this as the entity type?
     // From there on, we modify newentity(the one in world.cpp, which was name colliding with newgameentity before I renamed it.)
@@ -1233,13 +1227,12 @@ void newgent(char *what, char *a1, char *a2, char *a3, char *a4, char *a5, char 
     // TODO: Explain more here.
     new_game_entity(what, a1, a2, a3, a4, a5, a6, a7, a8);
 }
-COMMAND(newgent, "sssssssss");
 // WatIs: End of new game entity.
 
 int entcopygrid;
 vector<entity> entcopybuf;
 
-void entcopy()
+SCRIPTEXPORT void entcopy()
 {
     if(noentedit()) return;
     entcopygrid = sel.grid;
@@ -1249,7 +1242,7 @@ void entcopy()
     });
 }
 
-void entpaste()
+SCRIPTEXPORT void entpaste()
 {
     if(noentedit() || entcopybuf.empty()) return;
     entcancel();
@@ -1269,7 +1262,7 @@ void entpaste()
     groupeditundo(e.type = entcopybuf[j++].type;);
 }
 
-void entreplace()
+SCRIPTEXPORT void entreplace()
 {
     if(noentedit() || entcopybuf.empty()) return;
     const entity &c = entcopybuf[0];
@@ -1290,14 +1283,7 @@ void entreplace()
     }
 }
 
-COMMAND(newent, "siiiii");
-COMMAND(delent, "");
-COMMAND(dropent, "");
-COMMAND(entcopy, "");
-COMMAND(entpaste, "");
-COMMAND(entreplace, "");
-
-void entset(char *what, int *a1, int *a2, int *a3, int *a4, int *a5)
+SCRIPTEXPORT void entset(char *what, int *a1, int *a2, int *a3, int *a4, int *a5)
 {
     if(noentedit()) return;
     int type = findtype(what);
@@ -1325,7 +1311,7 @@ void printent(entities::classes::BaseEntity &e, char *buf, int len)
     nformatcubestr(buf, len, "%s %d %d %d %d %d", entities::entname(e.type), e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
 }
 
-void nearestent()
+SCRIPTEXPORT void nearestent()
 {
     if(noentedit()) return;
     int closest = -1;
@@ -1345,16 +1331,37 @@ void nearestent()
     if(closest >= 0) entadd(closest);
 }
 
-ICOMMAND(enthavesel,"",  (), addimplicit(intret(entgroup.length())));
-ICOMMAND(entselect, "e", (uint *body), if(!noentedit()) addgroup(e.type != ET_EMPTY && entgroup.find(n)<0 && executebool(body)));
-ICOMMAND(entloop,   "e", (uint *body), if(!noentedit()) addimplicit(groupeditloop(((void)e, execute(body)))));
-ICOMMAND(insel,     "",  (), entfocus(efocus, intret(pointinsel(sel, e.o))));
-ICOMMAND(entget,    "",  (), entfocus(efocus, cubestr s; printent(e, s, sizeof(s)); result(s)));
-ICOMMAND(entindex,  "",  (), intret(efocus));
-COMMAND(entset, "siiiii");
-COMMAND(nearestent, "");
+SCRIPTEXPORT void enthavesel()
+{
+    addimplicit(intret(entgroup.length()));
+}
 
-void enttype(char *type, int *numargs)
+SCRIPTEXPORT void entselect(CommandTypes::Expression body)
+{
+    if(!noentedit()) addgroup(e.type != ET_EMPTY && entgroup.find(n)<0 && executebool(body));
+}
+
+SCRIPTEXPORT void entloop(CommandTypes::Expression body)
+{
+    if(!noentedit()) addimplicit(groupeditloop(((void)e, execute(body))));
+}
+
+SCRIPTEXPORT void insel()
+{
+    entfocus(efocus, intret(pointinsel(sel, e.o)));
+}
+
+SCRIPTEXPORT void entget()
+{
+    entfocus(efocus, cubestr s; printent(e, s, sizeof(s)); result(s));
+}
+
+SCRIPTEXPORT void entindex()
+{
+    intret(efocus);
+}
+
+SCRIPTEXPORT void enttype(char *type, CommandTypes::ArgLen numargs)
 {
     if(*numargs >= 1)
     {
@@ -1367,7 +1374,7 @@ void enttype(char *type, int *numargs)
     })
 }
 
-void entattr(int *attr, int *val, int *numargs)
+SCRIPTEXPORT void entattr(int *attr, int *val, CommandTypes::ArgLen numargs)
 {
     if(*numargs >= 2)
     {
@@ -1395,9 +1402,6 @@ void entattr(int *attr, int *val, int *numargs)
         }
     });
 }
-
-COMMAND(enttype, "sN");
-COMMAND(entattr, "iiN");
 
 // TODO: Is this still needed?
 int findentity(int type, int index, int attr1, int attr2)
@@ -1651,7 +1655,7 @@ static bool isallempty(cube &c)
     return true;
 }
 
-void shrinkmap()
+SCRIPTEXPORT void shrinkmap()
 {
     extern int nompedit;
     if(noedit(true) || (nompedit && multiplayer())) return;
@@ -1686,18 +1690,13 @@ void shrinkmap()
     conoutf("shrunk map to size %d", worldscale);
 }
 
-void newmap(int *i) { bool force = !isconnected(); if(force) game::forceedit(""); if(emptymap(*i, force, NULL)) game::newmap(max(*i, 0)); }
-void mapenlarge() { if(enlargemap(false)) game::newmap(-1); }
-COMMAND(newmap, "i");
-COMMAND(mapenlarge, "");
-COMMAND(shrinkmap, "");
+SCRIPTEXPORT void newmap(int *i) { bool force = !isconnected(); if(force) game::forceedit(""); if(emptymap(*i, force, NULL)) game::newmap(max(*i, 0)); }
+SCRIPTEXPORT void mapenlarge() { if(enlargemap(false)) game::newmap(-1); }
 
-void mapname()
+SCRIPTEXPORT void mapname()
 {
     result(game::getclientmap());
 }
-
-COMMAND(mapname, "");
 
 void mpeditent(int i, const vec &o, int type, int attr1, int attr2, int attr3, int attr4, int attr5, bool local)
 {

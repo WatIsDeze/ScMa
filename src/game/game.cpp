@@ -1,6 +1,7 @@
 #include "game.h"
 #include "entities/playerstart.h"
 #include "entities/player.h"
+#include "engine/scriptexport.h"
 
 namespace game
 {
@@ -61,7 +62,7 @@ namespace game
         connected = false;
     }
 
-    void changemap(const char *name)
+    SCRIPTEXPORT void changemap(const char *name)
     {
         // Are we connected? If not, connect locally.
         if(!connected) localconnect();

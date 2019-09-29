@@ -7,7 +7,7 @@ static int fontdeftex = 0;
 font *curfont = NULL;
 int curfonttex = 0;
 
-void newfont(char *name, char *tex, int *defaultw, int *defaulth, int *scale)
+SCRIPTEXPORT_AS(font) void newfont(char *name, char *tex, int *defaultw, int *defaulth, int *scale)
 {
     font *f = &fonts[name];
     if(!f->name) f->name = newcubestr(name);
@@ -27,7 +27,7 @@ void newfont(char *name, char *tex, int *defaultw, int *defaulth, int *scale)
     fontdeftex = 0;
 }
 
-void fontborder(float *bordermin, float *bordermax)
+SCRIPTEXPORT void fontborder(float *bordermin, float *bordermax)
 {
     if(!fontdef) return;
 
@@ -35,7 +35,7 @@ void fontborder(float *bordermin, float *bordermax)
     fontdef->bordermax = max(*bordermax, *bordermin+0.01f);
 }
 
-void fontoutline(float *outlinemin, float *outlinemax)
+SCRIPTEXPORT void fontoutline(float *outlinemin, float *outlinemax)
 {
     if(!fontdef) return;
 
@@ -43,21 +43,21 @@ void fontoutline(float *outlinemin, float *outlinemax)
     fontdef->outlinemax = *outlinemax;
 }
 
-void fontoffset(char *c)
+SCRIPTEXPORT void fontoffset(char *c)
 {
     if(!fontdef) return;
 
     fontdef->charoffset = c[0];
 }
 
-void fontscale(int *scale)
+SCRIPTEXPORT void fontscale(int *scale)
 {
     if(!fontdef) return;
 
     fontdef->scale = *scale > 0 ? *scale : fontdef->defaulth;
 }
 
-void fonttex(char *s)
+SCRIPTEXPORT void fonttex(char *s)
 {
     if(!fontdef) return;
 
@@ -67,7 +67,7 @@ void fonttex(char *s)
     fontdef->texs.add(t);
 }
 
-void fontchar(float *x, float *y, float *w, float *h, float *offsetx, float *offsety, float *advance)
+SCRIPTEXPORT void fontchar(float *x, float *y, float *w, float *h, float *offsetx, float *offsety, float *advance)
 {
     if(!fontdef) return;
 
@@ -82,7 +82,7 @@ void fontchar(float *x, float *y, float *w, float *h, float *offsetx, float *off
     c.tex = fontdeftex;
 }
 
-void fontskip(int *n)
+SCRIPTEXPORT void fontskip(int *n)
 {
     if(!fontdef) return;
     loopi(max(*n, 1))
@@ -93,16 +93,7 @@ void fontskip(int *n)
     }
 }
 
-COMMANDN(font, newfont, "ssiii");
-COMMAND(fontborder, "ff");
-COMMAND(fontoutline, "ff");
-COMMAND(fontoffset, "s");
-COMMAND(fontscale, "i");
-COMMAND(fonttex, "s");
-COMMAND(fontchar, "fffffff");
-COMMAND(fontskip, "i");
-
-void fontalias(const char *dst, const char *src)
+SCRIPTEXPORT void fontalias(const char *dst, const char *src)
 {
     font *s = fonts.access(src);
     if(!s) return;
@@ -122,8 +113,6 @@ void fontalias(const char *dst, const char *src)
     fontdef = d;
     fontdeftex = d->texs.length()-1;
 }
-
-COMMAND(fontalias, "ss");
 
 font *findfont(const char *name)
 {
@@ -179,7 +168,7 @@ float text_widthf(const char *str)
 #define FONTTAB (4*FONTW)
 #define TEXTTAB(x) ((int((x)/FONTTAB)+1.0f)*FONTTAB)
 
-void tabify(const char *str, int *numtabs)
+SCRIPTEXPORT void tabify(const char *str, int *numtabs)
 {
     int tw = max(*numtabs, 0)*FONTTAB-1, tabs = 0;
     for(float w = text_widthf(str); w <= tw; w = TEXTTAB(w)) ++tabs;
@@ -190,8 +179,6 @@ void tabify(const char *str, int *numtabs)
     tstr[len+tabs] = '\0';
     cubestrret(tstr);
 }
-
-COMMAND(tabify, "si");
 
 void draw_textf(const char *fstr, float left, float top, ...)
 {

@@ -1687,14 +1687,14 @@ void dropenttofloor(entity *e)
     droptofloor(e->o, 1.0f, dropheight(*e));
 }
 
-void phystest()
+SCRIPTEXPORT void phystest()
 {
     static const char * const states[] = {"float", "fall", "slide", "slope", "floor", "step up", "step down", "bounce"};
     printf ("PHYS(pl): %s, air %d, floor: (%f, %f, %f), vel: (%f, %f, %f), g: (%f, %f, %f)\n", states[player->physstate], player->timeinair, player->floor.x, player->floor.y, player->floor.z, player->vel.x, player->vel.y, player->vel.z, player->falling.x, player->falling.y, player->falling.z);
     printf ("PHYS(cam): %s, air %d, floor: (%f, %f, %f), vel: (%f, %f, %f), g: (%f, %f, %f)\n", states[camera1->physstate], camera1->timeinair, camera1->floor.x, camera1->floor.y, camera1->floor.z, camera1->vel.x, camera1->vel.y, camera1->vel.z, camera1->falling.x, camera1->falling.y, camera1->falling.z);
 }
 
-COMMAND(phystest, "");
+// COMMAND(phystest, "");
 
 void vecfromyawpitch(float yaw, float pitch, int move, int strafe, vec &m)
 {
@@ -2001,15 +2001,59 @@ void updatephysstate(physent *d)
     d->o = old;
 }
 
-#define dir(name,v,d,s,os) ICOMMAND(name, "D", (int *down), { player->s = *down!=0; player->v = player->s ? d : (player->os ? -(d) : 0); });
+// #define dir(name,v,d,s,os) ICOMMAND(name, "D", (int *down), { player->s = *down!=0; player->v = player->s ? d : (player->os ? -(d) : 0); });
 
-dir(backward, move,   -1, k_down,  k_up);
-dir(forward,  move,    1, k_up,    k_down);
-dir(left,     strafe,  1, k_left,  k_right);
-dir(right,    strafe, -1, k_right, k_left);
+// dir(backward, move,   -1, k_down,  k_up);
+// dir(forward,  move,    1, k_up,    k_down);
+// dir(left,     strafe,  1, k_left,  k_right);
+// dir(right,    strafe, -1, k_right, k_left);
 
-ICOMMAND(jump,   "D", (int *down), { if(!*down || game::canjump()) player->jumping = *down!=0; });
-ICOMMAND(crouch, "D", (int *down), { if(!*down) player->crouching = abs(player->crouching); else if(game::cancrouch()) player->crouching = -1; });
+SCRIPTEXPORT void backward(CommandTypes::KeyPress down)
+{
+    player->k_down = *down != 0;
+    player->move = player->k_down ? -1 : (player->k_up ? 1 : 0);
+}
+
+SCRIPTEXPORT void forward(CommandTypes::KeyPress down)
+{
+    player->k_up = *down != 0;
+    player->move = player->k_up ? 1 : (player->k_down ? -1 : 0);
+}
+
+SCRIPTEXPORT void left(CommandTypes::KeyPress down)
+{
+    player->k_left = *down != 0;
+    player->strafe = player->k_left ? 1 : (player->k_right ? -1 : 0);
+}
+
+SCRIPTEXPORT void right(CommandTypes::KeyPress down)
+{
+    player->k_right = *down != 0;
+    player->strafe = player->k_right ? -1 : (player->k_left ? 1 : 0);
+}
+
+SCRIPTEXPORT void jump(CommandTypes::KeyPress down)
+{
+    if(!*down || game::canjump())
+    {
+        player->jumping = *down!=0;
+    }
+}
+
+SCRIPTEXPORT void crouch(CommandTypes::KeyPress down)
+{
+    if(!*down)
+    {
+        player->crouching = abs(player->crouching);
+    }
+    else if(game::cancrouch())
+    {
+        player->crouching = -1;
+    }
+}
+
+// ICOMMAND(jump,   "D", (CommandTypes::KeyPress down), { if(!*down || game::canjump()) player->jumping = *down!=0; });
+// ICOMMAND(crouch, "D", (CommandTypes::KeyPress down), { if(!*down) player->crouching = abs(player->crouching); else if(game::cancrouch()) player->crouching = -1; });
 
 bool entinmap(dynent *d, bool avoidplayers)        // brute force but effective way to find a free spawn spot in the map
 {

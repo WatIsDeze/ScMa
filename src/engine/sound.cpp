@@ -210,7 +210,7 @@ Mix_Music *loadmusic(const char *name)
     return music;
 }
 
-void startmusic(char *name, char *cmd)
+SCRIPTEXPORT_AS(music) void startmusic(char *name, char *cmd)
 {
     if(nosound) return;
     stopmusic();
@@ -235,8 +235,6 @@ void startmusic(char *name, char *cmd)
         }
     }
 }
-
-COMMANDN(music, startmusic, "ss");
 
 static Mix_Chunk *loadwav(const char *name)
 {
@@ -386,32 +384,34 @@ static struct soundtype
     }
 } gamesounds("game/"), mapsounds("mapsound/");
 
-void registersound(char *name, int *vol) { intret(gamesounds.addsound(name, *vol, 0)); }
-COMMAND(registersound, "si");
+SCRIPTEXPORT void registersound(char *name, int *vol) { intret(gamesounds.addsound(name, *vol, 0)); }
 
-void mapsound(char *name, int *vol, int *maxuses) { intret(mapsounds.addsound(name, *vol, *maxuses < 0 ? 0 : max(1, *maxuses))); }
-COMMAND(mapsound, "sii");
+SCRIPTEXPORT void mapsound(char *name, int *vol, int *maxuses) { intret(mapsounds.addsound(name, *vol, *maxuses < 0 ? 0 : max(1, *maxuses))); }
 
-void altsound(char *name, int *vol) { gamesounds.addalt(name, *vol); }
-COMMAND(altsound, "si");
+SCRIPTEXPORT void altsound(char *name, int *vol) { gamesounds.addalt(name, *vol); }
 
-void altmapsound(char *name, int *vol) { mapsounds.addalt(name, *vol); }
-COMMAND(altmapsound, "si");
+SCRIPTEXPORT void altmapsound(char *name, int *vol) { mapsounds.addalt(name, *vol); }
 
-ICOMMAND(numsounds, "", (), intret(gamesounds.configs.length()));
-ICOMMAND(nummapsounds, "", (), intret(mapsounds.configs.length()));
+SCRIPTEXPORT void numsounds()
+{
+    intret(gamesounds.configs.length());
+}
 
-void soundreset()
+SCRIPTEXPORT void nummapsounds()
+{
+    intret(mapsounds.configs.length());
+}
+
+SCRIPTEXPORT void soundreset()
 {
     gamesounds.reset();
 }
-COMMAND(soundreset, "");
 
-void mapsoundreset()
+SCRIPTEXPORT void mapsoundreset()
 {
     mapsounds.reset();
 }
-COMMAND(mapsoundreset, "");
+
 
 void resetchannels()
 {
@@ -678,9 +678,12 @@ int playsoundname(const char *s, const vec *loc, int vol, int flags, int loops, 
     return playsound(id, loc, NULL, flags, loops, fade, chanid, radius, expire);
 }
 
-ICOMMAND(playsound, "i", (int *n), playsound(*n));
+SCRIPTEXPORT_AS(playsound) void playsound_impl(int *n)
+{
+    playsound(*n);
+}
 
-void resetsound()
+SCRIPTEXPORT void resetsound()
 {
     clearchanges(CHANGE_SOUND);
     if(!nosound)
@@ -717,8 +720,6 @@ void resetsound()
         DELETEA(musicdonecmd);
     }
 }
-
-COMMAND(resetsound, "");
 
 #ifdef WIN32
 
