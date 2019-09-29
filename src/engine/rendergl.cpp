@@ -1433,10 +1433,11 @@ void recomputecamera()
     game::setupcamera();
     computezoom();
 
-    bool shoulddetach = thirdperson > 1 || game::detachcamera();
-    if(!thirdperson && !shoulddetach)
+    bool allowthirdperson = true;
+    bool shoulddetach = (allowthirdperson && thirdperson > 1) || game::detachcamera();
+    if((!allowthirdperson || !thirdperson) && !shoulddetach)
     {
-        *camera1 = *player;
+        camera1 = player;
         detachedcamera = false;
     }
     else
@@ -1446,14 +1447,11 @@ void recomputecamera()
         if(detachedcamera && shoulddetach) camera1->o = player->o;
         else
         {
-            // Assign camera 1 to the player pointer.
-            *camera1 = (*(entities::classes::BasePhysicalEntity*)player);
-
-            // Detach.
+            *camera1 = *player;
             detachedcamera = shoulddetach;
         }
         camera1->reset();
-        camera1->ent_type = ENT_CAMERA;
+        camera1->et_type = ENT_CAMERA;
         camera1->move = -1;
         camera1->eyeheight = camera1->aboveeye = camera1->radius = camera1->xradius = camera1->yradius = 2;
 
@@ -2177,15 +2175,15 @@ void drawcubemap(int size, const vec &o, float yaw, float pitch, const cubemapsi
     drawtex = DRAWTEX_ENVMAP;
 
     entities::classes::BasePhysicalEntity *oldcamera = camera1;
-    std::unique_ptr<entities::classes::BasePhysicalEntity> cmcamera(player);
-    //cmcamera.release();
-    cmcamera->ent_type = ENT_CAMERA;
-    cmcamera->o = o;
-    cmcamera->yaw = yaw;
-    cmcamera->pitch = pitch;
-    cmcamera->roll = 0;
-    camera1 = (entities::classes::BasePhysicalEntity*)cmcamera.get();
-
+    static entities::classes::BasePhysicalEntity cmcamera;
+    cmcamera = *player;
+    cmcamera.reset();
+    cmcamera.et_type = ENT_CAMERA;
+    cmcamera.o = o;
+    cmcamera.yaw = yaw;
+    cmcamera.pitch = pitch;
+    cmcamera.roll = 0;
+    camera1 = &cmcamera;
     setviewcell(camera1->o);
 
     float fogmargin = 1 + WATER_AMPLITUDE + nearplane;
@@ -2270,7 +2268,7 @@ void drawcubemap(int size, const vec &o, float yaw, float pitch, const cubemapsi
     ldrscale = oldldrscale;
     ldrscaleb = oldldrscaleb;
 
-    camera1 = ((entities::classes::BasePhysicalEntity*)cmcamera.release());
+    camera1 = oldcamera;
     drawtex = 0;
 }
 
