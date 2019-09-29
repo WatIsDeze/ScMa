@@ -1,2 +1,0 @@
-/usr/bin/ar qc libSchizoMania_Shared_Entities.a  CMakeFiles/SchizoMania_Shared_Entities.dir/baseentity.cpp.o CMakeFiles/SchizoMania_Shared_Entities.dir/basedynamicentity.cpp.o CMakeFiles/SchizoMania_Shared_Entities.dir/basephysicalentity.cpp.o CMakeFiles/SchizoMania_Shared_Entities.dir/attributes.cpp.o
-/usr/bin/ranlib libSchizoMania_Shared_Entities.a
