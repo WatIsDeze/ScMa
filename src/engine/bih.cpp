@@ -312,7 +312,7 @@ BIH::~BIH()
 bool BIH::mmintersect(entities::classes::BasePhysicalEntity &e, const vec &o, const vec &ray, float maxdist, int mode, float &dist)
 {
     const std::string mdlname = e.getAttribute("model");
-    model *m = loadmapmodel(mdlname);
+    model *m = loadmapmodel(mdlname.c_str());
     if(!m) return false;
     if(mode&RAY_SHADOW)
     {

@@ -54,11 +54,11 @@ namespace game
 
     extern void updateworld();
     extern void initclient();
-    extern void physicstrigger(entities::classes::BaseEntity *d, bool local, int floorlevel, int waterlevel, int material = 0);
-    extern void bounced(entities::classes::BaseEntity *d, const vec &surface);
+    extern void physicstrigger(entities::classes::BasePhysicalEntity *d, bool local, int floorlevel, int waterlevel, int material = 0);
+    extern void bounced(entities::classes::BasePhysicalEntity *d, const vec &surface);
     extern void edittrigger(const selinfo &sel, int op, int arg1 = 0, int arg2 = 0, int arg3 = 0, const VSlot *vs = NULL);
     extern void vartrigger(ident *id);
-    extern void dynentcollide(entities::classes::BaseEntity *d, entities::classes::BaseEntity *o, const vec &dir);
+    extern void dynentcollide(entities::classes::BaseDynamicEntity *d, entities::classes::BaseDynamicEntity *o, const vec &dir);
 
     // WatIsDeze: TODO: Maybe remove.
     extern void mapmodelcollide(entities::classes::BaseEntity *d, entities::classes::BaseEntity *o, const vec &dir);

@@ -25,10 +25,6 @@ BasePhysicalEntity::BasePhysicalEntity() : BaseEntity(), deltapos(0, 0, 0), newp
     reset();
 }
 
-//BasePhysicalEntity::BasePhysicalEntity(const entities::classes::BaseEntity &e) {
-
-//}
-
 BasePhysicalEntity::~BasePhysicalEntity() {
 
 }

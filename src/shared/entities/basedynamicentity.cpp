@@ -1,5 +1,6 @@
 #include "cube.h"
 #include "game.h"
+#include "ents.h"
 #include "basephysicalentity.h"
 #include "basedynamicentity.h"
 
@@ -16,9 +17,21 @@ BaseDynamicEntity::BaseDynamicEntity() : BasePhysicalEntity(), ragdoll(NULL), qu
 BaseDynamicEntity::~BaseDynamicEntity()
 {
     #ifndef STANDALONE
-        extern void cleanragdoll(BaseDynamicEntity *d);
-        if(ragdoll) cleanragdoll(this);
+        //extern void cleanragdoll(BaseDynamicEntity *d);
+        //if(ragdoll) cleanragdoll(this);
     #endif
+}
+
+// Reset to basic state values.
+void BaseDynamicEntity::reset() {
+    // Reset base physical values.
+    BasePhysicalEntity::reset();
+
+    // Stop moving.
+    stopmoving();
+
+    // Reset all animations.
+    loopi(MAXANIMPARTS) animinterp[i].reset();
 }
 
 void BaseDynamicEntity::stopmoving()

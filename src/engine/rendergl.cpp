@@ -1447,7 +1447,7 @@ void recomputecamera()
         else
         {
             // Assign camera 1 to the player pointer.
-            *camera1 = (*(entities::classes::Player*)player);
+            *camera1 = (*(entities::classes::BasePhysicalEntity*)player);
 
             // Detach.
             detachedcamera = shoulddetach;

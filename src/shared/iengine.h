@@ -382,7 +382,7 @@ extern int collideinside;
 extern entities::classes::BaseEntity *collideplayer;
 
 extern void moveplayer(entities::classes::BaseDynamicEntity *pl, int moveres, bool local);
-extern bool moveplayer(entities::classes::BaseDynamicEntity *pl, int moveres, bool local, int curtime);
+extern bool moveplayer(entities::classes::BasePhysicalEntity *pl, int moveres, bool local, int curtime);
 extern void crouchplayer(entities::classes::BasePhysicalEntity *pl, int moveres, bool local);
 extern bool collide(entities::classes::BasePhysicalEntity *d, const vec &dir = vec(0, 0, 0), float cutoff = 0.0f, bool playercol = true, bool insideplayercol = false);
 extern bool bounce(entities::classes::BasePhysicalEntity *d, float secs, float elasticity, float waterfric, float grav);
@@ -399,7 +399,7 @@ extern void vectoyawpitch(const vec &v, float &yaw, float &pitch);
 extern void updatephysstate(entities::classes::BasePhysicalEntity *d);
 extern void cleardynentcache();
 extern void updatedynentcache(entities::classes::BaseEntity *d);
-extern bool entinmap(entities::classes::BaseEntity *d, bool avoidplayers = false);
+extern bool entinmap(entities::classes::BasePhysicalEntity *d, bool avoidplayers = false);
 extern void findplayerspawn(entities::classes::BaseDynamicEntity *d, int forceent = -1, int tag = 0);
 
 // sound
@@ -434,18 +434,18 @@ struct modelattach
     modelattach(const char *tag, vec *pos) : tag(tag), name(NULL), anim(-1), basetime(0), pos(pos), m(NULL) {}
 };
 
-extern void rendermodel(const std::string &mdl, int anim, const vec &o, float yaw = 0, float pitch = 0, float roll = 0, int cull = MDL_CULL_VFC | MDL_CULL_DIST | MDL_CULL_OCCLUDED, entities::classes::BaseEntity *d = NULL, modelattach *a = NULL, int basetime = 0, int basetime2 = 0, float size = 1, const vec4 &color = vec4(1, 1, 1, 1));
-extern int intersectmodel(const std::string &mdl, int anim, const vec &pos, float yaw, float pitch, float roll, const vec &o, const vec &ray, float &dist, int mode = 0, entities::classes::BaseEntity *d = NULL, modelattach *a = NULL, int basetime = 0, int basetime2 = 0, float size = 1);
+extern void rendermodel(const char *mdl, int anim, const vec &o, float yaw = 0, float pitch = 0, float roll = 0, int cull = MDL_CULL_VFC | MDL_CULL_DIST | MDL_CULL_OCCLUDED, entities::classes::BaseEntity *d = NULL, modelattach *a = NULL, int basetime = 0, int basetime2 = 0, float size = 1, const vec4 &color = vec4(1, 1, 1, 1));
+extern int intersectmodel(const char *mdl, int anim, const vec &pos, float yaw, float pitch, float roll, const vec &o, const vec &ray, float &dist, int mode = 0, entities::classes::BaseEntity *d = NULL, modelattach *a = NULL, int basetime = 0, int basetime2 = 0, float size = 1);
 extern void abovemodel(vec &o, const std::string &mdl);
 extern void renderclient(entities::classes::BaseEntity *d, const std::string &mdlname, modelattach *attachments, int hold, int attack, int attackdelay, int lastaction, int lastpain, float scale = 1, bool ragdoll = false, float trans = 1);
 extern void interpolateorientation(entities::classes::BaseEntity *d, float &interpyaw, float &interppitch);
 extern void setbbfrommodel(entities::classes::BasePhysicalEntity *d, const std::string &mdl);
 extern const char *mapmodelname(int i);
-extern model *loadmodel(const std::string &name, int i = -1, bool msg = false);
+extern model *loadmodel(const char *name, int i = -1, bool msg = false);
 extern void preloadmodel(const char *name);
 extern mapmodelinfo loadmodelinfo(const char *name, entities::classes::BaseEntity *ent);
 extern void flushpreloadedmodels(bool msg = true);
-extern bool matchanim(const std::string &name, const char *pattern);
+extern bool matchanim(const char *name, const char *pattern);
 
 // UI
 

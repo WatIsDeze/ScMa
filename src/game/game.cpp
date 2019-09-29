@@ -50,7 +50,7 @@ namespace game
     {
         player1 = new entities::classes::Player();
         player1->respawn();
-        findplayerspawn(player1, 0, 0);
+
     }
 
     void updateentities() {
@@ -113,7 +113,7 @@ namespace game
     }
 
     // Never seen an implementation of this function, should be part of BaseEntity.
-    void dynentcollide(entities::classes::BaseEntity *d, entities::classes::BaseEntity *o, const vec &dir) {
+    void dynentcollide(entities::classes::BaseDynamicEntity *d, entities::classes::BaseDynamicEntity *o, const vec &dir) {
         conoutf("dynentcollide D et_type: %i ent_type: %i game_type: %i --- O et_type: %i ent_type: %i game_type %i", d->et_type, d->ent_type, d->game_type, o->et_type, o->ent_type, o->game_type);
     }
 
@@ -122,7 +122,7 @@ namespace game
     }
 
     // Never seen an implementation of this function, should be part of BaseEntity.
-    void bounced(entities::classes::BaseEntity *d, const vec &surface) {}
+    void bounced(entities::classes::BasePhysicalEntity *d, const vec &surface) {}
 
     // Unsure what to do with these yet.
     void edittrigger(const selinfo &sel, int op, int arg1, int arg2, int arg3, const VSlot *vs) {
@@ -224,7 +224,11 @@ namespace game
         if (i == 0) {
             return player1;
         } else {
-            if (i < entities::g_ents.length()) return entities::g_ents[i];
+            if (i < entities::g_ents.length()) {
+                return entities::g_ents[i];
+            } else {
+                return NULL;
+            }
         }
         //if (i < entities::g_lightEnts.length()) return (entities::classes::BaseEntity*)entities::g_lightEnts[i];
         //    i -= entities::g_lightEnts.length();

@@ -8,6 +8,7 @@ namespace entities
 {
     namespace classes {
         // Predefined.
+        class BaseEntity;
         class BasePhysicalEntity;
 
         // Animated Characters, which can possibly receive input

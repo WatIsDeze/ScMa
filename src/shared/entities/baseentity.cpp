@@ -30,6 +30,7 @@ BaseEntity::BaseEntity(const BasePhysicalEntity &e) : BaseEntity() {
     classname = e.classname;
     flags = e.flags;
     attached = e.attached;
+    model_idx = e.model_idx;
 }
 
 BaseEntity::BaseEntity(const BaseDynamicEntity & e) : BaseEntity() {
@@ -51,6 +52,7 @@ BaseEntity::BaseEntity(const BaseDynamicEntity & e) : BaseEntity() {
     attributes = e.attributes;
     flags = e.flags;
     attached = e.attached;
+    model_idx = e.model_idx;
 }
 
 
@@ -62,6 +64,9 @@ BaseEntity::~BaseEntity() {
 void BaseEntity::preload() {}
 void BaseEntity::think() {}
 void BaseEntity::render() {}
+void BaseEntity::reset() {
+
+}
 
 void BaseEntity::setAttribute(const std::string &key, const std::string &value, bool callAttrSet) {
     // Set the value.

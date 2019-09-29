@@ -962,7 +962,7 @@ void rendermapmodel(int idx, int anim, const vec &o, float yaw, float pitch, flo
     addbatchedmodel(m, b, batchedmodels.length()-1);
 }
 
-void rendermodel(const std::string &mdl, int anim, const vec &o, float yaw, float pitch, float roll, int flags, entities::classes::BaseDynamicEntity *d, modelattach *a, int basetime, int basetime2, float size, const vec4 &color)
+void rendermodel(const char *mdl, int anim, const vec &o, float yaw, float pitch, float roll, int flags, entities::classes::BaseDynamicEntity *d, modelattach *a, int basetime, int basetime2, float size, const vec4 &color)
 {
     model *m = loadmodel(mdl);
     if(!m) return;
@@ -1055,7 +1055,7 @@ hasboundbox:
 
 int intersectmodel(const std::string &mdl, int anim, const vec &pos, float yaw, float pitch, float roll, const vec &o, const vec &ray, float &dist, int mode, entities::classes::BaseDynamicEntity *d, modelattach *a, int basetime, int basetime2, float size)
 {
-    model *m = loadmodel(mdl);
+    model *m = loadmodel(mdl.c_str());
     if(!m) return -1;
     if(d && d->ragdoll && (!(anim&ANIM_RAGDOLL) || d->ragdoll->millis < basetime)) DELETEP(d->ragdoll);
     if(a) for(int i = 0; a[i].tag; i++)
@@ -1067,7 +1067,7 @@ int intersectmodel(const std::string &mdl, int anim, const vec &pos, float yaw, 
 
 void abovemodel(vec &o, const std::string &mdl)
 {
-    model *m = loadmodel(mdl);
+    model *m = loadmodel(mdl.c_str());
     if(!m) return;
     o.z += m->above();
 }
@@ -1137,7 +1137,7 @@ void loadskin(const char *dir, const char *altdir, Texture *&skin, Texture *&mas
 
 void setbbfrommodel(entities::classes::BasePhysicalEntity *d, const std::string &mdl)
 {
-    model *m = loadmodel(mdl);
+    model *m = loadmodel(mdl.c_str());
     if(!m) return;
     vec center, radius;
     m->collisionbox(center, radius);

@@ -1215,7 +1215,7 @@ int main(int argc, char **argv)
         frames++;
 
         // miscellaneous general game effects
-        recomputecamera();
+        //recomputecamera();
         updateparticles();
         updatesounds();
 

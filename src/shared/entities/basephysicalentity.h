@@ -16,8 +16,6 @@ namespace entities
             //
             BasePhysicalEntity();
             BasePhysicalEntity(const BasePhysicalEntity &) = default;
-            BasePhysicalEntity(const BaseEntity&e);
-
             virtual ~BasePhysicalEntity();
 
             void resetinterp();

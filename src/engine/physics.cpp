@@ -5,6 +5,7 @@
 
 #include "engine.h"
 #include "mpr.h"
+#include "ents.h"
 
 #include "../game/entities/player.h"
 
@@ -678,10 +679,10 @@ void rotatebb(vec &center, vec &radius, int yaw, int pitch, int roll)
 }
 
 template<class E, class M>
-static inline bool mmcollide(entities::classes::BasePhysicalEntity *d, const vec &dir, const entities::classes::BasePhysicalEntity &e, const vec &center, const vec &radius, int yaw, int pitch, int roll)
+static inline bool mmcollide(entities::classes::BasePhysicalEntity *d, const vec &dir, const entities::classes::BasePhysicalEntity *e, const vec &center, const vec &radius, int yaw, int pitch, int roll)
 {
     E entvol(d);
-    M mdlvol(e.o, center, radius, yaw, pitch, roll);
+    M mdlvol(e->o, center, radius, yaw, pitch, roll);
     vec cp;
     if(mpr::collide(entvol, mdlvol, NULL, NULL, &cp))
     {
@@ -817,13 +818,14 @@ bool mmcollide(entities::classes::BasePhysicalEntity *d, const vec &dir, float c
     const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     loopv(oc.mapmodels)
     {
-        entities::classes::BaseEntity &e = *ents[oc.mapmodels[i]];
-        if(e.flags&entities::EntityFlags::EF_NOCOLLIDE || !mapmodels.inrange(e.model_idx)) continue;
-        mapmodelinfo &mmi = mapmodels[e.model_idx];
+        entities::classes::BasePhysicalEntity *e = (entities::classes::BasePhysicalEntity*)ents[oc.mapmodels[i]];
+        if (!e) continue;
+        if(e->flags&entities::EntityFlags::EF_NOCOLLIDE || !mapmodels.inrange(e->model_idx)) continue;
+        mapmodelinfo &mmi = mapmodels[e->model_idx];
         model *m = mmi.collide;
         if(!m)
         {
-            if(!mmi.m && !loadmodel(NULL, e.model_idx)) continue;
+            if(!mmi.m && !loadmodel(NULL, e->model_idx)) continue;
             if(mmi.m->collidemodel) m = loadmodel(mmi.m->collidemodel);
             if(!m) m = mmi.m;
             mmi.collide = m;
@@ -832,21 +834,21 @@ bool mmcollide(entities::classes::BasePhysicalEntity *d, const vec &dir, float c
         if(!mcol) continue;
 
         vec center, radius;
-        float rejectradius = m->collisionbox(center, radius), scale = e.attr5 > 0 ? e.attr5/100.0f : 1;
+        float rejectradius = m->collisionbox(center, radius), scale = e->attr5 > 0 ? e->attr5/100.0f : 1;
         center.mul(scale);
-        if(d->o.reject(vec(e.o).add(center), d->radius + rejectradius*scale)) continue;
+        if(d->o.reject(vec(e->o).add(center), d->radius + rejectradius*scale)) continue;
 
-        int yaw = e.attr2, pitch = e.attr3, roll = e.attr4;
+        int yaw = e->attr2, pitch = e->attr3, roll = e->attr4;
         if(mcol == COLLIDE_TRI || testtricol)
         {
             if(!m->bih && !m->setBIH()) continue;
             switch(testtricol ? testtricol : d->collidetype)
             {
                 case COLLIDE_ELLIPSE:
-                    if(m->bih->ellipsecollide(d, dir, cutoff, e.o, yaw, pitch, roll, scale)) return true;
+                    if(m->bih->ellipsecollide(d, dir, cutoff, e->o, yaw, pitch, roll, scale)) return true;
                     break;
                 case COLLIDE_OBB:
-                    if(m->bih->boxcollide(d, dir, cutoff, e.o, yaw, pitch, roll, scale)) return true;
+                    if(m->bih->boxcollide(d, dir, cutoff, e->o, yaw, pitch, roll, scale)) return true;
                     break;
                 default: continue;
             }
@@ -861,15 +863,15 @@ bool mmcollide(entities::classes::BasePhysicalEntity *d, const vec &dir, float c
                     {
                         if(pitch || roll)
                         {
-                            if(fuzzycollideellipse<mpr::EntCapsule>(d, dir, cutoff, e.o, center, radius, yaw, pitch, roll)) return true;
+                            if(fuzzycollideellipse<mpr::EntCapsule>(d, dir, cutoff, e->o, center, radius, yaw, pitch, roll)) return true;
                         }
-                        else if(ellipsecollide(d, dir, e.o, center, yaw, radius.x, radius.y, radius.z, radius.z)) return true;
+                        else if(ellipsecollide(d, dir, e->o, center, yaw, radius.x, radius.y, radius.z, radius.z)) return true;
                     }
                     else if(pitch || roll)
                     {
-                        if(fuzzycollidebox<mpr::EntCapsule>(d, dir, cutoff, e.o, center, radius, yaw, pitch, roll)) return true;
+                        if(fuzzycollidebox<mpr::EntCapsule>(d, dir, cutoff, e->o, center, radius, yaw, pitch, roll)) return true;
                     }
-                    else if(ellipseboxcollide(d, dir, e.o, center, yaw, radius.x, radius.y, radius.z, radius.z)) return true;
+                    else if(ellipseboxcollide(d, dir, e->o, center, yaw, radius.x, radius.y, radius.z, radius.z)) return true;
                     break;
                 case COLLIDE_OBB:
                     if(mcol == COLLIDE_ELLIPSE)
@@ -1938,7 +1940,7 @@ void interppos(entities::classes::BasePhysicalEntity *pl)
     pl->o.add(deltapos);
 }
 
-void moveplayer(entities::classes::BasePhysicalEntity *pl, int moveres, bool local)
+void moveplayer(entities::classes::BaseDynamicEntity *pl, int moveres, bool local)
 {
     if(physsteps <= 0)
     {
@@ -1947,9 +1949,9 @@ void moveplayer(entities::classes::BasePhysicalEntity *pl, int moveres, bool loc
     }
 
     if(local) pl->o = pl->newpos;
-    loopi(physsteps-1) moveplayer(pl, moveres, local, physframetime);
+    loopi(physsteps-1) moveplayer(((entities::classes::BasePhysicalEntity*)pl), moveres, local, physframetime);
     if(local) pl->deltapos = pl->o;
-    moveplayer(pl, moveres, local, physframetime);
+    moveplayer(((entities::classes::BasePhysicalEntity*)pl), moveres, local, physframetime);
     if(local)
     {
         pl->newpos = pl->o;

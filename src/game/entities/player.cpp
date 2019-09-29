@@ -1,3 +1,4 @@
+#include "cube.h"
 #include "../game.h"
 #include "player.h"
 
@@ -23,7 +24,7 @@ void Player::preload() {
 
 void Player::think() {
     //crouchplayer(this, 10, true);
-    moveplayer(this, 10, true);
+    moveplayer((BaseDynamicEntity*)this, 10, true);
 }
 
 enum
@@ -48,13 +49,17 @@ void Player::render() {
         // Calculate the position.
         vec pos = o;
         pos.z -= eyeheight;
-        rendermodel("player/bones", ANIM_IDLE, pos, 0, 0, 0);
+        //rendermodel("player/bones", ANIM_IDLE, pos, yaw, pitch, roll);
+        vec4 color (0.5f, 0.5f, 0.5f, 1.0f);
+        float fade = 1;
+        int basetime = 1;
+        //rendermodel("player/bones", ANIM_IDLE, pos, yaw, pitch, 0, flags);
     //}
 }
 
 bool Player::onTrigger(entities::classes::BaseEntity *otherEnt, const vec &dir) {
     if (otherEnt != NULL) {
-        conoutf("%s '%s' %s %s %f %f %f", "Player: ", name.c_str(), " triggered by entity: ", otherEnt->classname.c_str(),
+        conoutf("%s '%s' %s %s %s %f %f %f", "Player: ", name.c_str(), " triggered by entity: ", otherEnt->classname.c_str(),
             "from Vector Direction: ", dir.x, dir.y, dir.z);
             return true;
     } else {

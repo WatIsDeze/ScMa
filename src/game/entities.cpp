@@ -23,6 +23,7 @@ namespace entities
     vector<entities::classes::BaseEntity *> &getents() { return g_ents; }
 
     bool mayattach(entities::classes::BasePhysicalEntity &e) { return false; }
+    bool mayattach(entities::classes::BaseEntity &e) { return false; }
     bool attachent(entities::classes::BaseEntity &e, entities::classes::BaseEntity &a) { return false; }
 
     const char *itemname(int i)
