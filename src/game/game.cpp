@@ -50,7 +50,7 @@ namespace game
     {
         player1 = new entities::classes::Player();
         player1->respawn();
-
+        findplayerspawn(player1, -1, 0);
     }
 
     void updateentities() {
@@ -336,6 +336,7 @@ namespace game
     void initclient() {
         // Setup the map time.
         maptime = maprealtime = 0;
+        SpawnPlayer();
     }
 
     const char *gameident() {

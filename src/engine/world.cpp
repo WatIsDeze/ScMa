@@ -1690,7 +1690,7 @@ bool emptymap(int scale, bool force, const char *mname, bool usecfg)    // main 
         identflags &= ~IDF_OVERRIDDEN;
     }
 
-    allchanged(true);
+    allchanged(false);
     logoutf("allchanged true");
 
     logoutf("startmap %s", mname);

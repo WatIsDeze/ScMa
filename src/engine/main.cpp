@@ -403,7 +403,11 @@ void inputgrab(bool on)
 {
     if(on)
     {
+#ifdef DEBUG
         SDL_ShowCursor(SDL_TRUE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
+#else
+        SDL_ShowCursor(SDL_FALSE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
+#endif
         if(canrelativemouse && userelativemouse)
         {
             if(SDL_SetRelativeMouseMode(SDL_TRUE) >= 0)
@@ -421,7 +425,11 @@ void inputgrab(bool on)
     }
     else
     {
-        SDL_ShowCursor(SDL_TRUE);
+#ifdef DEBUG
+        SDL_ShowCursor(SDL_TRUE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
+#else
+        SDL_ShowCursor(SDL_FALSE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
+#endif
         if(relativemouse)
         {
             SDL_SetRelativeMouseMode(SDL_FALSE);
@@ -1215,7 +1223,7 @@ int main(int argc, char **argv)
         frames++;
 
         // miscellaneous general game effects
-        //recomputecamera();
+        recomputecamera();
         updateparticles();
         updatesounds();
 
