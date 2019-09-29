@@ -1,5 +1,0 @@
-#!/bin/bash
-pushd src
-make
-popd
-./schizomania_unix
