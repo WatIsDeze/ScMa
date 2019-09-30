@@ -3,7 +3,7 @@
 
 namespace entities {
     namespace classes {
-        class DynamicLight : public BaseEntity {
+        class DynamicLight : public BasePhysicalEntity {
         public:
             DynamicLight();
             virtual ~DynamicLight();

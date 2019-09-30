@@ -41,11 +41,11 @@ enum // cube empty-space materials
 #define isdeadly(mat) ((mat)==MAT_LAVA)
 
 extern void lightent(entities::classes::BaseEntity &e, float height = 8.0f);
-extern void lightreaching(const vec &target, vec &color, vec &dir, bool fast = false, entities::classes::BaseEntity *e = 0, float minambient = 0.4f);
+extern void lightreaching(const vec &target, vec &color, vec &dir, bool fast = false, entities::classes::BasePhysicalEntity *e = 0, float minambient = 0.4f);
 
 enum { RAY_BB = 1, RAY_POLY = 3, RAY_ALPHAPOLY = 7, RAY_ENTS = 9, RAY_CLIPMAT = 16, RAY_SKIPFIRST = 32, RAY_EDITMAT = 64, RAY_SHADOW = 128, RAY_PASS = 256, RAY_SKIPSKY = 512 };
 
-extern float raycube   (const vec &o, const vec &ray,     float radius = 0, int mode = RAY_CLIPMAT, int size = 0, entities::classes::BaseEntity *t = 0);
+extern float raycube   (const vec &o, const vec &ray,     float radius = 0, int mode = RAY_CLIPMAT, int size = 0, entities::classes::BasePhysicalEntity *t = 0);
 extern float raycubepos(const vec &o, const vec &ray, vec &hit, float radius = 0, int mode = RAY_CLIPMAT, int size = 0);
 extern float rayfloor  (const vec &o, vec &floor, int mode = 0, float radius = 0);
 extern bool  raycubelos(const vec &o, const vec &dest, vec &hitpos);
@@ -227,10 +227,10 @@ extern vec getselpos();
 extern int getworldsize();
 extern int getmapversion();
 extern void renderentcone(const entities::classes::BaseEntity &e, const vec &dir, float radius, float angle);
-extern void renderentarrow(const entities::classes::BaseEntity &e, const vec &dir, float radius);
+extern void renderentarrow(const entities::classes::BasePhysicalEntity &e, const vec &dir, float radius);
 extern void renderentattachment(const entities::classes::BaseEntity &e);
 extern void renderentsphere(const entities::classes::BaseEntity &e, float radius);
-extern void renderentring(const entities::classes::BaseEntity &e, float radius, int axis = 0);
+extern void renderentring(const entities::classes::BasePhysicalEntity &e, float radius, int axis = 0);
 
 // main
 extern void fatal(const char *s, ...) PRINTFARGS(1, 2);
@@ -400,7 +400,12 @@ extern void updatephysstate(entities::classes::BasePhysicalEntity *d);
 extern void cleardynentcache();
 extern void updatedynentcache(entities::classes::BaseEntity *d);
 extern bool entinmap(entities::classes::BasePhysicalEntity *d, bool avoidplayers = false);
-extern void findplayerspawn(entities::classes::BaseDynamicEntity *d, int forceent = -1, int tag = 0);
+namespace entities {
+namespace classes {
+class Player;
+}
+}
+extern void findplayerspawn(entities::classes::Player *d, int forceent = -1, int tag = 0);
 
 // sound
 enum
@@ -460,8 +465,8 @@ namespace UI
 
 // ragdoll
 
-extern void moveragdoll(entities::classes::BaseEntity *d);
-extern void cleanragdoll(entities::classes::BaseEntity *d);
+extern void moveragdoll(entities::classes::BaseDynamicEntity *d);
+extern void cleanragdoll(entities::classes::BaseDynamicEntity *d);
 
 // server
 #define MAXCLIENTS 128                 // DO NOT set this any higher

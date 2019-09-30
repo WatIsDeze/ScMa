@@ -23,7 +23,7 @@ namespace entities
             virtual ~BaseDynamicEntity();
 
             // Reset to basic state values.
-            void reset();
+            virtual void reset();
 
             // Stop moving.
             void stopmoving();

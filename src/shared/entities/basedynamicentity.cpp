@@ -11,7 +11,7 @@ namespace classes {
 // WatIsDeze: TODO: Maybe remove the physent constructor from here.
 BaseDynamicEntity::BaseDynamicEntity() : BasePhysicalEntity(), ragdoll(NULL), query(NULL), lastrendered(0)
 {
-    BasePhysicalEntity::reset();
+
 }
 
 BaseDynamicEntity::~BaseDynamicEntity()
@@ -28,7 +28,7 @@ void BaseDynamicEntity::reset() {
     BasePhysicalEntity::reset();
 
     // Stop moving.
-    stopmoving();
+    //stopmoving();
 
     // Reset all animations.
     loopi(MAXANIMPARTS) animinterp[i].reset();

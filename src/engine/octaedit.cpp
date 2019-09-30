@@ -1110,7 +1110,7 @@ bool unpackundo(const uchar *inbuf, int inlen, int outlen)
     int numents = lilswap(*(const ushort *)buf.pad(2));
     if(numents)
     {
-        if(buf.remaining() < numents*int(2 + sizeof(entities::classes::BaseEntity)))
+        if(buf.remaining() < numents*int(2 + sizeof(entities::classes::BasePhysicalEntity)))
         {
             delete[] outbuf;
             return false;
@@ -1118,7 +1118,7 @@ bool unpackundo(const uchar *inbuf, int inlen, int outlen)
         loopi(numents)
         {
             int idx = lilswap(*(const ushort *)buf.pad(2));
-            entities::classes::BaseEntity &e = *(entities::classes::BaseEntity *)buf.pad(sizeof(entities::classes::BaseEntity));
+            entities::classes::BasePhysicalEntity &e = *(entities::classes::BasePhysicalEntity *)buf.pad(sizeof(entities::classes::BaseEntity));
             lilswap(&e.o.x, 3);
             lilswap(&e.attr1, 5);
             pasteundoent(idx, e);

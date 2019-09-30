@@ -54,7 +54,11 @@ void fatal(const char *s, ...)    // failure exit
         {
             if(SDL_WasInit(SDL_INIT_VIDEO))
             {
-                SDL_ShowCursor(SDL_TRUE);
+#ifndef NDEBUG
+        SDL_ShowCursor(SDL_TRUE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
+#else
+        SDL_ShowCursor(SDL_FALSE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
+#endif
                 SDL_SetRelativeMouseMode(SDL_FALSE);
                 if(screen) SDL_SetWindowGrab(screen, SDL_FALSE);
                 cleargamma();
@@ -403,7 +407,7 @@ void inputgrab(bool on)
 {
     if(on)
     {
-#ifdef DEBUG
+#ifndef NDEBUG
         SDL_ShowCursor(SDL_TRUE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
 #else
         SDL_ShowCursor(SDL_FALSE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
@@ -425,7 +429,7 @@ void inputgrab(bool on)
     }
     else
     {
-#ifdef DEBUG
+#ifndef NDEBUG
         SDL_ShowCursor(SDL_TRUE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
 #else
         SDL_ShowCursor(SDL_FALSE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
@@ -1106,7 +1110,11 @@ int main(int argc, char **argv)
     SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
     #endif
     setupscreen();
-    SDL_ShowCursor(SDL_TRUE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
+#ifndef NDEBUG
+        SDL_ShowCursor(SDL_TRUE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
+#else
+        SDL_ShowCursor(SDL_FALSE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
+#endif
     SDL_StopTextInput(); // workaround for spurious text-input events getting sent on first text input toggle?
 
     logoutf("init: gl");

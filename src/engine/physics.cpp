@@ -131,19 +131,19 @@ float hitentdist;
 int hitent, hitorient;
 
 
-extern void entselectionbox(const entities::classes::BaseEntity &e, vec &eo, vec &es);
+extern void entselectionbox(const entities::classes::BasePhysicalEntity &e, vec &eo, vec &es);
 
-static float disttoent(octaentities *oc, const vec &o, const vec &ray, float radius, int mode, entities::classes::BaseEntity *t)
+static float disttoent(octaentities *oc, const vec &o, const vec &ray, float radius, int mode, entities::classes::BasePhysicalEntity *t)
 {
     vec eo, es;
     int orient = -1;
     float dist = radius, f = 0.0f;
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
 
     #define entintersect(type, func) do { \
         loopv(oc->type) \
         { \
-            entities::classes::BaseEntity &e = *ents[oc->type[i]]; \
+            entities::classes::BasePhysicalEntity &e = *ents[oc->type[i]]; \
             if(!(e.flags&entities::EntityFlags::EF_OCTA) || &e==t) continue; \
             func; \
             if(f<dist && f>0 && vec(ray).mul(f).add(o).insidebb(oc->o, oc->size)) \
@@ -176,15 +176,15 @@ static float disttoent(octaentities *oc, const vec &o, const vec &ray, float rad
     return dist;
 }
 
-static float disttooutsideent(const vec &o, const vec &ray, float radius, int mode, entities::classes::BaseEntity *t)
+static float disttooutsideent(const vec &o, const vec &ray, float radius, int mode, entities::classes::BasePhysicalEntity *t)
 {
     vec eo, es;
     int orient;
     float dist = radius, f = 0.0f;
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
     loopv(outsideents)
     {
-        entities::classes::BaseEntity &e = *ents[outsideents[i]];
+        entities::classes::BasePhysicalEntity &e = *ents[outsideents[i]];
         if(!(e.flags&entities::EntityFlags::EF_OCTA) || &e == t) continue;
         entselectionbox(e, eo, es);
         if(!rayboxintersect(eo, es, o, ray, f, orient)) continue;
@@ -199,15 +199,15 @@ static float disttooutsideent(const vec &o, const vec &ray, float radius, int mo
 }
 
 // optimized shadow version
-static float shadowent(octaentities *oc, const vec &o, const vec &ray, float radius, int mode, entities::classes::BaseEntity *t)
+static float shadowent(octaentities *oc, const vec &o, const vec &ray, float radius, int mode, entities::classes::BasePhysicalEntity *t)
 {
     float dist = radius, f = 0.0f;
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
     loopv(oc->mapmodels)
     {
-        entities::classes::BaseEntity &e = *ents[oc->mapmodels[i]];
+        entities::classes::BasePhysicalEntity &e = *ents[oc->mapmodels[i]];
         if(!(e.flags&entities::EntityFlags::EF_OCTA) || &e==t) continue;
-        if(!BIH::mmintersect(((entities::classes::BasePhysicalEntity&)e), o, ray, radius, mode, f)) continue;
+        if(!BIH::mmintersect((e), o, ray, radius, mode, f)) continue;
         if(f>0 && f<dist) dist = f;
     }
     return dist;
@@ -289,7 +289,7 @@ static float shadowent(octaentities *oc, const vec &o, const vec &ray, float rad
             diff >>= 1; \
         } while(diff);
 
-float raycube(const vec &o, const vec &ray, float radius, int mode, int size, entities::classes::BaseEntity *t)
+float raycube(const vec &o, const vec &ray, float radius, int mode, int size, entities::classes::BasePhysicalEntity *t)
 {
     if(ray.iszero()) return 0;
 
@@ -347,7 +347,7 @@ float raycube(const vec &o, const vec &ray, float radius, int mode, int size, en
 }
 
 // optimized version for light shadowing... every cycle here counts!!!
-float shadowray(const vec &o, const vec &ray, float radius, int mode, entities::classes::BaseEntity *t)
+float shadowray(const vec &o, const vec &ray, float radius, int mode, entities::classes::BasePhysicalEntity *t)
 {
     INITRAYCUBE;
     CHECKINSIDEWORLD;
@@ -563,10 +563,13 @@ const vector<entities::classes::BasePhysicalEntity*> &checkdynentcache(int x, in
     int numdyns = game::numdynents(), dsize = 1<<dynentsize, dx = x<<dynentsize, dy = y<<dynentsize;
     loopi(numdyns)
     {
-        entities::classes::BaseDynamicEntity *d = ((entities::classes::BaseDynamicEntity*)game::iterdynents(i));
-        if(d->state != CS_ALIVE ||
+        entities::classes::BasePhysicalEntity *d = game::iterdynents(i);
+        if (!d)
+            continue;
+
+        if((d->state != CS_ALIVE ||
            d->o.x+d->radius <= dx || d->o.x-d->radius >= dx+dsize ||
-           d->o.y+d->radius <= dy || d->o.y-d->radius >= dy+dsize)
+           d->o.y+d->radius <= dy || d->o.y-d->radius >= dy+dsize))
             continue;
         dec.dynents.add(d);
     }
@@ -815,7 +818,7 @@ VAR(testtricol, 0, 0, 2);
 
 bool mmcollide(entities::classes::BasePhysicalEntity *d, const vec &dir, float cutoff, octaentities &oc) // collide with a mapmodel
 {
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
     loopv(oc.mapmodels)
     {
         entities::classes::BasePhysicalEntity *e = (entities::classes::BasePhysicalEntity*)ents[oc.mapmodels[i]];

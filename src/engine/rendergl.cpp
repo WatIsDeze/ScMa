@@ -2,6 +2,7 @@
 
 #include "engine.h"
 #include "../shared/ents.h"
+#include "../game/game.h"
 #include "../game/entities/player.h"
 
 bool hasVAO = false, hasTR = false, hasTSW = false, hasPBO = false, hasFBO = false, hasAFBO = false, hasDS = false, hasTF = false, hasCBF = false, hasS3TC = false, hasFXT1 = false, hasLATC = false, hasRGTC = false, hasAF = false, hasFBB = false, hasFBMS = false, hasTMS = false, hasMSS = false, hasFBMSBS = false, hasUBO = false, hasMBR = false, hasDB2 = false, hasDBB = false, hasTG = false, hasTQ = false, hasPF = false, hasTRG = false, hasTI = false, hasHFV = false, hasHFP = false, hasDBT = false, hasDC = false, hasDBGO = false, hasEGPU4 = false, hasGPU4 = false, hasGPU5 = false, hasBFE = false, hasEAL = false, hasCR = false, hasOQ2 = false, hasES3 = false, hasCB = false, hasCI = false;
@@ -1426,8 +1427,6 @@ void mousemove(int dx, int dy)
     modifyorient(dx*cursens, dy*cursens*(invmouse ? 1 : -1));
 }
 
-#include <memory>
-
 void recomputecamera()
 {
     game::setupcamera();
@@ -1443,6 +1442,9 @@ void recomputecamera()
     else
     {
         static entities::classes::BasePhysicalEntity tempcamera;
+        tempcamera.et_type = ET_GAMESPECIFIC;
+        tempcamera.ent_type = ENT_CAMERA;
+        tempcamera.game_type = ET_GAMESPECIFIC;
         camera1 = &tempcamera;
         if(detachedcamera && shoulddetach) camera1->o = player->o;
         else
@@ -1450,8 +1452,10 @@ void recomputecamera()
             *camera1 = *player;
             detachedcamera = shoulddetach;
         }
-        camera1->reset();
-        camera1->et_type = ENT_CAMERA;
+        //camera1->reset();
+        camera1->et_type = ET_GAMESPECIFIC;
+        camera1->ent_type = ENT_CAMERA;
+        camera1->game_type = ET_GAMESPECIFIC;
         camera1->move = -1;
         camera1->eyeheight = camera1->aboveeye = camera1->radius = camera1->xradius = camera1->yradius = 2;
 
@@ -2094,14 +2098,17 @@ void drawminimap()
     minimapscale = vec((0.5f - 1.0f/size)/minimapradius.x, (0.5f - 1.0f/size)/minimapradius.y, 1.0f);
 
     entities::classes::BasePhysicalEntity *oldcamera = camera1;
-    std::unique_ptr<entities::classes::BasePhysicalEntity> cmcamera;
-    cmcamera.release();
-    cmcamera->reset();
-    cmcamera->ent_type = ENT_CAMERA;
-    cmcamera->o = vec(minimapcenter.x, minimapcenter.y, minimapheight > 0 ? minimapheight : minimapcenter.z + minimapradius.z + 1);
-    cmcamera->yaw = 0;
-    cmcamera->pitch = -90;
-    cmcamera->roll = 0;
+    static entities::classes::BaseDynamicEntity cmcamera;
+    cmcamera = *player;
+    cmcamera.reset();
+    cmcamera.et_type = ET_GAMESPECIFIC;
+    cmcamera.ent_type = ENT_CAMERA;
+    cmcamera.game_type = GAMEENTITY;
+    cmcamera.o = vec(minimapcenter.x, minimapcenter.y, minimapheight > 0 ? minimapheight : minimapcenter.z + minimapradius.z + 1);
+    cmcamera.yaw = 0;
+    cmcamera.pitch = -90;
+    cmcamera.roll = 0;
+    camera1 = &cmcamera;
     setviewcell(vec(-1, -1, -1));
 
     float oldldrscale = ldrscale, oldldrscaleb = ldrscaleb;
@@ -2149,7 +2156,7 @@ void drawminimap()
     ldrscale = oldldrscale;
     ldrscaleb = oldldrscaleb;
 
-    camera1 = ((entities::classes::BasePhysicalEntity*)cmcamera.release());
+    camera1 = oldcamera;
     drawtex = 0;
 
     createtexture(minimaptex, size, size, NULL, 3, 1, GL_RGB5, GL_TEXTURE_2D);
@@ -2175,10 +2182,12 @@ void drawcubemap(int size, const vec &o, float yaw, float pitch, const cubemapsi
     drawtex = DRAWTEX_ENVMAP;
 
     entities::classes::BasePhysicalEntity *oldcamera = camera1;
-    static entities::classes::BasePhysicalEntity cmcamera;
+    static entities::classes::BaseDynamicEntity cmcamera;
     cmcamera = *player;
-    cmcamera.reset();
-    cmcamera.et_type = ENT_CAMERA;
+    //cmcamera.reset();
+    cmcamera.et_type = ET_GAMESPECIFIC;
+    cmcamera.ent_type = ENT_CAMERA;
+    cmcamera.game_type = GAMEENTITY;
     cmcamera.o = o;
     cmcamera.yaw = yaw;
     cmcamera.pitch = pitch;
@@ -2278,7 +2287,7 @@ VAR(modelpreviewpitch, -90, -15, 90);
 namespace modelpreview
 {
     entities::classes::BasePhysicalEntity *oldcamera;
-    std::unique_ptr<entities::classes::BasePhysicalEntity> camera(camera1);
+    entities::classes::BasePhysicalEntity camera;
 
     float oldaspect, oldfovy, oldfov, oldldrscale, oldldrscaleb;
     int oldfarplane, oldvieww, oldviewh;
@@ -2302,14 +2311,16 @@ namespace modelpreview
         drawtex = DRAWTEX_MODELPREVIEW;
 
         oldcamera = camera1;
-        *camera = (entities::classes::BasePhysicalEntity)*camera1;
-        camera->reset();
-        camera->ent_type = ENT_CAMERA;
-        camera->o = vec(0, 0, 0);
-        camera->yaw = 0;
-        camera->pitch = modelpreviewpitch;
-        camera->roll = 0;
-        camera1 = (entities::classes::BasePhysicalEntity*)camera.release();
+        camera = *camera1;
+        camera.reset();
+        camera.et_type = ET_GAMESPECIFIC;
+        camera.ent_type = ENT_CAMERA;
+        camera.game_type = GAMEENTITY;
+        camera.o = vec(0, 0, 0);
+        camera.yaw = 0;
+        camera.pitch = modelpreviewpitch;
+        camera.roll = 0;
+        camera1 = &camera;
 
         oldaspect = aspect;
         oldfovy = fovy;

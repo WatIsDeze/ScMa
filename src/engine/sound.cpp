@@ -462,10 +462,10 @@ void stopmapsound(entities::classes::BaseEntity *e)
 
 void checkmapsounds()
 {
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
     loopv(ents)
     {
-        entities::classes::BaseEntity &e = *ents[i];
+        entities::classes::BasePhysicalEntity &e = *ents[i];
         if(e.et_type!=ET_SOUND) continue;
         if(camera1->o.dist(e.o) < e.attr2)
         {
@@ -567,10 +567,10 @@ void preloadmapsound(int n)
 
 void preloadmapsounds()
 {
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
     loopv(ents)
     {
-        entities::classes::BaseEntity &e = *ents[i];
+        entities::classes::BasePhysicalEntity &e = *ents[i];
         if(e.et_type==ET_SOUND) mapsounds.preloadsound(e.attr1);
     }
 }

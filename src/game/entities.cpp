@@ -17,10 +17,10 @@ namespace entities
     using namespace game;
 
 #ifndef STANDALONE
-    vector<entities::classes::BaseEntity *> g_ents;
-    vector<entities::classes::BaseEntity *> g_lightEnts;
+    vector<entities::classes::BasePhysicalEntity *> g_ents;
+    vector<entities::classes::BasePhysicalEntity *> g_lightEnts;
 
-    vector<entities::classes::BaseEntity *> &getents() { return g_ents; }
+    vector<entities::classes::BasePhysicalEntity *> &getents() { return g_ents; }
 
     bool mayattach(entities::classes::BasePhysicalEntity &e) { return false; }
     bool mayattach(entities::classes::BaseEntity &e) { return false; }
@@ -158,7 +158,7 @@ namespace entities
         }
     }
 
-    void entradius(entities::classes::BaseEntity &e, bool color)
+    void entradius(entities::classes::BasePhysicalEntity &e, bool color)
     {
         switch(e.game_type)
         {
@@ -185,12 +185,12 @@ namespace entities
         }
     }
 
-    bool printent(entities::classes::BaseEntity &e, char *buf, int len)
+    bool printent(entities::classes::BasePhysicalEntity &e, char *buf, int len)
     {
         return false;
     }
 
-    const char *entnameinfo(entities::classes::BaseEntity &e) {
+    const char *entnameinfo(entities::classes::BasePhysicalEntity &e) {
         std::string str;
         str = e.classname + ":" + e.name;
         // TODO: List attributes here? Maybe...
@@ -198,7 +198,13 @@ namespace entities
     }
     const char *entname(int i)
     {
-        return "Hoi";
+        static const char * const entnames[MAXENTTYPES] =
+        {
+            "none?", "light", "mapmodel", "playerstart", "envmap", "particles", "sound", "spotlight", "decal",
+            "teleport", "teledest", "jumppad",
+            "flag"
+        };
+        return i>=0 && size_t(i)<sizeof(entnames)/sizeof(entnames[0]) ? entnames[i] : "";
     }
 
     void editent(int i, bool local)

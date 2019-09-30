@@ -305,10 +305,10 @@ const vector<int> &checklightcache(int x, int y)
 
     lce.lights.setsize(0);
     int csize = 1<<lightcachesize, cx = x<<lightcachesize, cy = y<<lightcachesize;
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
     loopv(ents)
     {
-        const entities::classes::BaseEntity &light = *ents[i];
+        const entities::classes::BasePhysicalEntity &light = *ents[i];
         switch(light.et_type)
         {
             case ET_LIGHT:
@@ -629,7 +629,7 @@ void initlights()
     loaddeferredlightshaders();
 }
 
-void lightreaching(const vec &target, vec &color, vec &dir, bool fast, entities::classes::BaseEntity *t, float minambient)
+void lightreaching(const vec &target, vec &color, vec &dir, bool fast, entities::classes::BasePhysicalEntity *t, float minambient)
 {
     if(fullbright && editmode)
     {
@@ -639,11 +639,11 @@ void lightreaching(const vec &target, vec &color, vec &dir, bool fast, entities:
     }
 
     color = dir = vec(0, 0, 0);
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
     const vector<int> &lights = checklightcache(int(target.x), int(target.y));
     loopv(lights)
     {
-        entities::classes::BaseEntity &e = *ents[lights[i]];
+        entities::classes::BasePhysicalEntity &e = *ents[lights[i]];
         if(e.et_type != ET_LIGHT || e.attr1 <= 0)
             continue;
 

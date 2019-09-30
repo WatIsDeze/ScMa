@@ -24,7 +24,7 @@ void Player::preload() {
 
 void Player::think() {
     //crouchplayer(this, 10, true);
-    moveplayer((BaseDynamicEntity*)this, 10, true);
+    moveplayer(this, 10, true);
 }
 
 enum

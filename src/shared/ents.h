@@ -79,10 +79,31 @@ namespace entities
         public:
             // Constructors.
             CoreEntity() : o(0, 0, 0), attr1(0), attr2(0), attr3(0), attr4(0), attr5(0),
-                et_type(0), ent_type(0), game_type(0), reserved(0), model_idx(0), flags(EntityFlags::EF_NOFLAG),
-                attached(nullptr), name("unnamed"), classname("gameentity") {}
+                et_type(ET_EMPTY), ent_type(ENT_INANIMATE), game_type(ET_EMPTY), reserved(0), model_idx(0), flags(EntityFlags::EF_NOFLAG),
+                attached(nullptr) {}
 
-            CoreEntity(const CoreEntity&) = default;
+//            CoreEntity(const CoreEntity &e) {
+//                //
+//                // Legacy Core Entity data.
+//                //
+//                o = e.o;                             // position
+//                attr1 = e.attr1;                     // Old integer attributes, still used for storing/loading certain attributes of ET_TYPES.
+//                attr2 = e.attr2;
+//                attr3 = e.attr3;
+//                attr4 = e.attr4;
+//                attr5 = e.attr5;
+//                et_type = e.et_type;                              // These are for the ET(Engine Type) values.
+//                ent_type = e.ent_type;                             // These are for ENT_(DynEnt/PhysEnt Type) values.
+//                game_type = e.game_type;                            // the internal game entity type values.
+//                reserved = e.reserved;
+//                name = e.name;
+//                classname = e.classname;
+//                attributes = e.attributes;
+//                flags = e.flags;
+//                attached = e.attached;
+//                model_idx = e.model_idx;
+//            }
+
             virtual ~CoreEntity() {}
 
             //

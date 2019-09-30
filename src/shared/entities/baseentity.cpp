@@ -11,6 +11,28 @@ BaseEntity::BaseEntity() : CoreEntity()
     reset();
 }
 
+BaseEntity::BaseEntity(const BaseEntity &e) {
+    //
+    // Legacy Core Entity data.
+    //
+    o = e.o;                             // position
+    attr1 = e.attr1;                     // Old integer attributes, still used for storing/loading certain attributes of ET_TYPES.
+    attr2 = e.attr2;
+    attr3 = e.attr3;
+    attr4 = e.attr4;
+    attr5 = e.attr5;
+    et_type = e.et_type;                              // These are for the ET(Engine Type) values.
+    ent_type = e.ent_type;                             // These are for ENT_(DynEnt/PhysEnt Type) values.
+    game_type = e.game_type;                            // the internal game entity type values.
+    reserved = e.reserved;
+    name = e.name;
+    classname = e.classname;
+    attributes = e.attributes;
+    flags = e.flags;
+    attached = e.attached;
+    model_idx = e.model_idx;
+}
+
 BaseEntity::BaseEntity(const BasePhysicalEntity &e) : BaseEntity() {
     //
     // Legacy Core Entity data.
@@ -26,8 +48,8 @@ BaseEntity::BaseEntity(const BasePhysicalEntity &e) : BaseEntity() {
     game_type = e.game_type;                            // the internal game entity type values.
     reserved = e.reserved;
     name = e.name;
-    attributes = e.attributes;
     classname = e.classname;
+    attributes = e.attributes;
     flags = e.flags;
     attached = e.attached;
     model_idx = e.model_idx;

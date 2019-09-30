@@ -58,8 +58,8 @@ namespace entities
     }
 
     // Entity arrays.
-    extern vector<classes::BaseEntity *> g_ents;
-    extern vector<classes::BaseEntity *> g_lightEnts;
+    extern vector<classes::BasePhysicalEntity *> g_ents;
+    extern vector<classes::BasePhysicalEntity *> g_lightEnts;
 
     //
     // Entity core functions.

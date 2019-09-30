@@ -5,7 +5,7 @@
 namespace entities {
 namespace classes {
 
-DynamicLight::DynamicLight() : BaseEntity() {
+DynamicLight::DynamicLight() : BasePhysicalEntity() {
     et_type = ET_LIGHT;
 }
 

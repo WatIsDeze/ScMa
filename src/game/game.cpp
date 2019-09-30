@@ -38,10 +38,10 @@ namespace game
         updateentities();
 
         // Allow for crouching and moving.
-        //if (connected) {
-        //    crouchplayer(player, 10, true);
-        //    moveplayer(player, 10, true);
-        //}
+        if (connected) {
+            //crouchplayer(player1, 10, true);
+            moveplayer(player1, 10, true);
+        }
 
        // if(player->clientnum >=0) c2sinfo();   // do this last, to reduce the effective frame lag
     }
@@ -50,7 +50,6 @@ namespace game
     {
         player1 = new entities::classes::Player();
         player1->respawn();
-        findplayerspawn(player1, -1, 0);
     }
 
     void updateentities() {
@@ -66,8 +65,8 @@ namespace game
 
         }
 
-        if (game::player1)
-            game::player1->think();
+        //if (game::player1)
+            //game::player1->think();
 
         if (connected) {
             conoutf("Connected: %i", connected);
@@ -154,7 +153,7 @@ namespace game
         SpawnPlayer();
 
         // Find our playerspawn.
-        findplayerspawn(player1);
+        findplayerspawn(player1, -1, 0);
     }
     void loadingmap(const char *name) {
 
@@ -216,20 +215,22 @@ namespace game
 
     bool allowmove(entities::classes::BasePhysicalEntity *d)
     {
-        if(d->ent_type!=ENT_PLAYER) return true;
+        return true;
+        //if(d->ent_type!=ENT_PLAYER) return true;
         //return !d->ms_lastaction || lastmillis-d->ms_lastaction>=1000;
     }
 
-    entities::classes::BaseEntity *iterdynents(int i) {
+    entities::classes::BasePhysicalEntity *iterdynents(int i) {
         if (i == 0) {
-            return player1;
+            return (entities::classes::BasePhysicalEntity*)player1;
         } else {
             if (i < entities::g_ents.length()) {
                 return entities::g_ents[i];
             } else {
-                return NULL;
+                return nullptr;
             }
         }
+
         //if (i < entities::g_lightEnts.length()) return (entities::classes::BaseEntity*)entities::g_lightEnts[i];
         //    i -= entities::g_lightEnts.length();
         //return NULL;

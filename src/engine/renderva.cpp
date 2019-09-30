@@ -459,7 +459,7 @@ extern int octaentsize;
 
 static octaentities *visiblemms, **lastvisiblemms;
 
-void findvisiblemms(const vector<entities::classes::BaseEntity *> &ents, bool doquery)
+void findvisiblemms(const vector<entities::classes::BasePhysicalEntity *> &ents, bool doquery)
 {
     visiblemms = NULL;
     lastvisiblemms = &visiblemms;
@@ -521,7 +521,7 @@ void rendermapmodels()
 {
     static int skipoq = 0;
     bool doquery = !drawtex && oqfrags && oqmm;
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
     findvisiblemms(ents, doquery);
 
     for(octaentities *oe = visiblemms; oe; oe = oe->next) if(oe->distance>=0)
@@ -529,7 +529,7 @@ void rendermapmodels()
         bool rendered = false;
         loopv(oe->mapmodels)
         {
-            entities::classes::BaseEntity &e = *ents[oe->mapmodels[i]];
+            entities::classes::BasePhysicalEntity &e = *ents[oe->mapmodels[i]];
             //conoutf("oe mapmodel: %d (%s)", oe->mapmodels[i], e.flags&EF_RENDER ? "render" : "no render");
             if(!(e.flags&entities::EntityFlags::EF_RENDER)) continue;
             if(!rendered)
@@ -1094,16 +1094,16 @@ void batchshadowmapmodels(bool skipmesh)
     if(!shadowmms) return;
     int nflags = entities::EntityFlags::EF_NOVIS|entities::EntityFlags::EF_NOSHADOW;
     if(skipmesh) nflags |= entities::EntityFlags::EF_SHADOWMESH;
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
     for(octaentities *oe = shadowmms; oe; oe = oe->rnext) loopvk(oe->mapmodels)
     {
-        entities::classes::BaseEntity &e = *ents[oe->mapmodels[k]];
+        entities::classes::BasePhysicalEntity &e = *ents[oe->mapmodels[k]];
         if(e.flags&nflags) continue;
         e.flags |= entities::EntityFlags::EF_RENDER;
     }
     for(octaentities *oe = shadowmms; oe; oe = oe->rnext) loopvj(oe->mapmodels)
     {
-        entities::classes::BaseEntity &e = *ents[oe->mapmodels[j]];
+        entities::classes::BasePhysicalEntity &e = *ents[oe->mapmodels[j]];
         if(!(e.flags&entities::EntityFlags::EF_RENDER)) continue;
         rendermapmodel(e);
         e.flags &= ~entities::EntityFlags::EF_RENDER;
@@ -2598,17 +2598,17 @@ static void genshadowmeshtris(shadowmesh &m, int sides, shadowdrawinfo draws[6],
 
 static void genshadowmeshmapmodels(shadowmesh &m, int sides, shadowdrawinfo draws[6])
 {
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
     for(octaentities *oe = shadowmms; oe; oe = oe->rnext) loopvk(oe->mapmodels)
     {
-        entities::classes::BaseEntity &e = *ents[oe->mapmodels[k]];
+        entities::classes::BasePhysicalEntity &e = *ents[oe->mapmodels[k]];
         if(e.flags&(entities::EntityFlags::EF_NOVIS|entities::EntityFlags::EF_NOSHADOW)) continue;
         e.flags |= entities::EntityFlags::EF_RENDER;
     }
     vector<triangle> tris;
     for(octaentities *oe = shadowmms; oe; oe = oe->rnext) loopvj(oe->mapmodels)
     {
-        entities::classes::BaseEntity &e = *ents[oe->mapmodels[j]];
+        entities::classes::BasePhysicalEntity &e = *ents[oe->mapmodels[j]];
         if(!(e.flags&entities::EntityFlags::EF_RENDER)) continue;
         e.flags &= ~entities::EntityFlags::EF_RENDER;
 
@@ -2636,7 +2636,7 @@ static void genshadowmeshmapmodels(shadowmesh &m, int sides, shadowdrawinfo draw
     }
 }
 
-static void genshadowmesh(int idx, entities::classes::BaseEntity &e)
+static void genshadowmesh(int idx, entities::classes::BasePhysicalEntity &e)
 {
     shadowmesh m;
     m.type = calcshadowinfo(e, m.origin, m.radius, m.spotloc, m.spotangle, shadowbias);
@@ -2672,10 +2672,10 @@ void clearshadowmeshes()
     if(shadowvbos.length()) { glDeleteBuffers_(shadowvbos.length(), shadowvbos.getbuf()); shadowvbos.setsize(0); }
     if(shadowmeshes.numelems)
     {
-        vector<entities::classes::BaseEntity *> &ents = entities::getents();
+        vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
         loopv(ents)
         {
-            entities::classes::BaseEntity &e = *ents[i];
+            entities::classes::BasePhysicalEntity &e = *ents[i];
             if(e.flags&entities::EntityFlags::EF_SHADOWMESH) e.flags &= ~entities::EntityFlags::EF_SHADOWMESH;
         }
     }
@@ -2693,10 +2693,10 @@ void genshadowmeshes()
 
     renderprogress(0, "generating shadow meshes..");
 
-    vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
     loopv(ents)
     {
-        entities::classes::BaseEntity &e = *ents[i];
+        entities::classes::BasePhysicalEntity &e = *ents[i];
         if(e.et_type != ET_LIGHT) continue;
         genshadowmesh(i, e);
     }

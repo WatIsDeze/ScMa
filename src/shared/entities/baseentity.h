@@ -16,7 +16,7 @@ namespace entities
             // Base functions.
             //
             BaseEntity();
-            BaseEntity(const BaseEntity& e) = default;
+            BaseEntity(const BaseEntity& e);
             BaseEntity(const BasePhysicalEntity &e);
             BaseEntity(const BaseDynamicEntity &e);
             virtual ~BaseEntity();
@@ -28,7 +28,7 @@ namespace entities
             // Called each frame to render.
             virtual void render();
             // Reset the entity to its basic states.
-            void reset();
+            virtual void reset();
 
 
             //

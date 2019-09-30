@@ -13,7 +13,8 @@ namespace game
         }
 
         // Render our client player.
-        game::player1->render();
+        if (game::player1 != NULL)
+            game::player1->render();
     }
 
     VARP(hudgun, 0, 1, 1);

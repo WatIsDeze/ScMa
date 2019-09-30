@@ -369,11 +369,11 @@ void flushpreloadedmodels(bool msg)
 
 void preloadusedmapmodels(bool msg, bool bih)
 {
-    vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
     vector<int> used;
     loopv(ents)
     {
-        entities::classes::BaseEntity &e = *ents[i];
+        entities::classes::BasePhysicalEntity &e = *ents[i];
         if(e.et_type==ET_MAPMODEL && e.et_type >= 0 && used.find(e.et_type) < 0) used.add(e.et_type);
     }
 

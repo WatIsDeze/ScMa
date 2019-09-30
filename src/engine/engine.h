@@ -383,10 +383,10 @@ extern bool debugaa();
 extern void cleanupaa();
 
 // ents
-extern char *entname(entities::classes::BaseEntity &e);
+extern char *entname(entities::classes::BasePhysicalEntity &e);
 extern bool haveselent();
 extern undoblock *copyundoents(undoblock *u);
-extern void pasteundoent(int idx, const entities::classes::BaseEntity &ue);
+extern void pasteundoent(int idx, const entities::classes::BasePhysicalEntity &ue);
 extern void pasteundoents(undoblock *u);
 
 // octaedit
@@ -642,7 +642,7 @@ extern void modifyorient(float yaw, float pitch);
 extern void mousemove(int dx, int dy);
 extern bool overlapsdynent(const vec &o, float radius);
 extern void rotatebb(vec &center, vec &radius, int yaw, int pitch, int roll = 0);
-extern float shadowray(const vec &o, const vec &ray, float radius, int mode, entities::classes::BaseEntity *t = NULL);
+extern float shadowray(const vec &o, const vec &ray, float radius, int mode, entities::classes::BasePhysicalEntity *t = NULL);
 
 // world
 
