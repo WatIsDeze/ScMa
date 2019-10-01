@@ -1,4 +1,4 @@
-#include "../engine/engine.h"
+#include "engine.h"
 #include "game.h"
 #include "entities.h"
 
@@ -17,10 +17,10 @@ namespace entities
     using namespace game;
 
 #ifndef STANDALONE
-    vector<entities::classes::BasePhysicalEntity *> g_ents;
-    vector<entities::classes::BasePhysicalEntity *> g_lightEnts;
+    vector<entities::classes::BaseEntity *> g_ents;
+    vector<entities::classes::BaseEntity *> g_lightEnts;
 
-    vector<entities::classes::BasePhysicalEntity *> &getents() { return g_ents; }
+    vector<entities::classes::BaseEntity *> &getents() { return g_ents; }
 
     bool mayattach(entities::classes::BasePhysicalEntity &e) { return false; }
     bool mayattach(entities::classes::BaseEntity &e) { return false; }
@@ -83,8 +83,10 @@ namespace entities
         }
 
         // Specifically load in the client player model.
-        if (game::player1 != NULL)
+        if (game::player1 != NULL) {
             game::player1->preload();
+            conoutf("Loading in player");
+        }
     }
 
     void resetspawns() {
@@ -158,7 +160,7 @@ namespace entities
         }
     }
 
-    void entradius(entities::classes::BasePhysicalEntity &e, bool color)
+    void entradius(entities::classes::BaseEntity &e, bool color)
     {
         switch(e.game_type)
         {
@@ -185,12 +187,12 @@ namespace entities
         }
     }
 
-    bool printent(entities::classes::BasePhysicalEntity &e, char *buf, int len)
+    bool printent(entities::classes::BaseEntity &e, char *buf, int len)
     {
         return false;
     }
 
-    const char *entnameinfo(entities::classes::BasePhysicalEntity &e) {
+    const char *entnameinfo(entities::classes::BaseEntity &e) {
         std::string str;
         str = e.classname + ":" + e.name;
         // TODO: List attributes here? Maybe...

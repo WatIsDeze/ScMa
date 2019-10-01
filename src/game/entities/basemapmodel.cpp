@@ -60,7 +60,7 @@ void BaseMapModel::preloadMapModel(const std::string &filename) {
     // In case this is the first time, a filename will be supplied for sure.
     if (!filename.empty()) {
         mmi = loadmodelinfo(filename.c_str(), this);
-        mapmodels.add(mmi);
+        mapmodels.add();
         model_idx = mapmodels.length();
     } else {
         preloadMapModel("world/box");

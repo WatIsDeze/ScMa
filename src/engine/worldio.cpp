@@ -615,7 +615,7 @@ bool save_world(const char *mname, bool nolms)
     hdr.headersize = sizeof(hdr);
     hdr.worldsize = worldsize;
     hdr.numents = 0;
-    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
+    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     loopv(ents) if(ents[i]->et_type!=ET_EMPTY || nolms) hdr.numents++;
     hdr.numpvs = nolms ? 0 : getnumviewcells();
     hdr.blendmap = shouldsaveblendmap();
@@ -674,7 +674,7 @@ bool save_world(const char *mname, bool nolms)
     {
         if(ents[i]->et_type!=ET_EMPTY || nolms)
         {
-            entities::classes::BasePhysicalEntity tmp = *ents[i];
+            entities::classes::BaseEntity tmp = *ents[i];
             lilswap(&tmp.o.x, 3);
             lilswap(&tmp.attr1, 5);
 
@@ -841,7 +841,7 @@ bool load_world(const char *mname, const char *cname)        // Does not support
     i >> j;
 
     // Reference to our entities vector list stored in the entities namespace.
-    vector<entities::classes::BasePhysicalEntity*> &ents = entities::getents();
+    vector<entities::classes::BaseEntity*> &ents = entities::getents();
 
     // TODO: Ensure that our data is valid, do not access invalid or nonexistent elements.
     // Parse entities and allocate them, or rather, add them to the list! ;-)
@@ -858,7 +858,7 @@ bool load_world(const char *mname, const char *cname)        // Does not support
             classname = element["game"]["classname"];
 
             // Allocate our entity.
-            entities::classes::BasePhysicalEntity &e = *(entities::classes::BasePhysicalEntity*)entities::newgameentity((char*)classname.c_str());
+            entities::classes::BaseEntity &e = *entities::newgameentity((char*)classname.c_str());
 
             // Fetch base entity data. (Old ancient entity info.)
             e.classname = classname;
@@ -1069,18 +1069,18 @@ void writecollideobj(char *name)
         conoutf(CON_ERROR, "geometry for collide model not selected");
         return;
     }
-    vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
-    entities::classes::BasePhysicalEntity *mm = NULL;
+    vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    entities::classes::BaseEntity *mm = NULL;
     loopv(entgroup)
     {
-        entities::classes::BasePhysicalEntity &e = *ents[entgroup[i]];
+        entities::classes::BaseEntity &e = *ents[entgroup[i]];
         if(e.et_type != ET_MAPMODEL || !pointinsel(sel, e.o)) continue;
         mm = &e;
         break;
     }
     if(!mm) loopv(ents)
     {
-        entities::classes::BasePhysicalEntity &e = *ents[i];
+        entities::classes::BaseEntity &e = *ents[i];
         if(e.et_type != ET_MAPMODEL || !pointinsel(sel, e.o)) continue;
         mm = &e;
         break;

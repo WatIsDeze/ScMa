@@ -40,7 +40,9 @@ target_include_directories(SchizoMania_Shared_Client
         entities/
 )
 target_link_libraries(SchizoMania_Shared_Client
-    PUBLIC
+	PUBLIC
+		SchizoMania_Game_Client
+		SchizoMania_Shared_Entities
         enet
         ${SDL2_LIBRARIES}
         ${FREETYPE_LIBRARIES}

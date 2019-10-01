@@ -131,19 +131,19 @@ float hitentdist;
 int hitent, hitorient;
 
 
-extern void entselectionbox(const entities::classes::BasePhysicalEntity &e, vec &eo, vec &es);
+extern void entselectionbox(const entities::classes::BaseEntity &e, vec &eo, vec &es);
 
-static float disttoent(octaentities *oc, const vec &o, const vec &ray, float radius, int mode, entities::classes::BasePhysicalEntity *t)
+static float disttoent(octaentities *oc, const vec &o, const vec &ray, float radius, int mode, entities::classes::BaseEntity *t)
 {
     vec eo, es;
     int orient = -1;
     float dist = radius, f = 0.0f;
-    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
+    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
 
     #define entintersect(type, func) do { \
         loopv(oc->type) \
         { \
-            entities::classes::BasePhysicalEntity &e = *ents[oc->type[i]]; \
+            entities::classes::BaseEntity &e = *ents[oc->type[i]]; \
             if(!(e.flags&entities::EntityFlags::EF_OCTA) || &e==t) continue; \
             func; \
             if(f<dist && f>0 && vec(ray).mul(f).add(o).insidebb(oc->o, oc->size)) \
@@ -162,7 +162,7 @@ static float disttoent(octaentities *oc, const vec &o, const vec &ray, float rad
     });
 
     #define entselintersect(type) entintersect(type, { \
-        entselectionbox((entities::classes::BasePhysicalEntity&)e, eo, es); \
+        entselectionbox((entities::classes::BaseEntity&)e, eo, es); \
         if(!rayboxintersect(eo, es, o, ray, f, orient)) continue; \
     })
 
@@ -181,10 +181,10 @@ static float disttooutsideent(const vec &o, const vec &ray, float radius, int mo
     vec eo, es;
     int orient;
     float dist = radius, f = 0.0f;
-    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
+    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     loopv(outsideents)
     {
-        entities::classes::BasePhysicalEntity &e = *ents[outsideents[i]];
+        entities::classes::BaseEntity &e = *ents[outsideents[i]];
         if(!(e.flags&entities::EntityFlags::EF_OCTA) || &e == t) continue;
         entselectionbox(e, eo, es);
         if(!rayboxintersect(eo, es, o, ray, f, orient)) continue;
@@ -202,10 +202,10 @@ static float disttooutsideent(const vec &o, const vec &ray, float radius, int mo
 static float shadowent(octaentities *oc, const vec &o, const vec &ray, float radius, int mode, entities::classes::BasePhysicalEntity *t)
 {
     float dist = radius, f = 0.0f;
-    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
+    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     loopv(oc->mapmodels)
     {
-        entities::classes::BasePhysicalEntity &e = *ents[oc->mapmodels[i]];
+        entities::classes::BasePhysicalEntity &e = *(entities::classes::BasePhysicalEntity*)ents[oc->mapmodels[i]];
         if(!(e.flags&entities::EntityFlags::EF_OCTA) || &e==t) continue;
         if(!BIH::mmintersect((e), o, ray, radius, mode, f)) continue;
         if(f>0 && f<dist) dist = f;
@@ -563,7 +563,7 @@ const vector<entities::classes::BasePhysicalEntity*> &checkdynentcache(int x, in
     int numdyns = game::numdynents(), dsize = 1<<dynentsize, dx = x<<dynentsize, dy = y<<dynentsize;
     loopi(numdyns)
     {
-        entities::classes::BasePhysicalEntity *d = game::iterdynents(i);
+        entities::classes::BasePhysicalEntity *d = (entities::classes::BaseDynamicEntity*)game::iterdynents(i);
         if (!d)
             continue;
 
@@ -650,7 +650,7 @@ bool plcollide(entities::classes::BasePhysicalEntity *d, const vec &dir, bool in
             {   
                 collideplayer = o;
                 //game::dynentcollide(d, o, collidewall);
-                ((entities::classes::BaseEntity*)d)->onTouch(o, collidewall);
+                d->onTouch(o, collidewall);
                 return true;
             }
             if(collideinside > lastinside)
@@ -664,7 +664,7 @@ bool plcollide(entities::classes::BasePhysicalEntity *d, const vec &dir, bool in
     {
         collideplayer = insideplayer;
         //game::dynentcollide(d, insideplayer, vec(0, 0, 0));
-        ((entities::classes::BaseEntity*)d)->onTouch(insideplayer, vec(0, 0, 0));
+        d->onTouch(insideplayer, vec(0, 0, 0));
         return true;
     }
     return false;
@@ -818,10 +818,10 @@ VAR(testtricol, 0, 0, 2);
 
 bool mmcollide(entities::classes::BasePhysicalEntity *d, const vec &dir, float cutoff, octaentities &oc) // collide with a mapmodel
 {
-    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
+    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     loopv(oc.mapmodels)
     {
-        entities::classes::BasePhysicalEntity *e = (entities::classes::BasePhysicalEntity*)ents[oc.mapmodels[i]];
+        entities::classes::BaseEntity *e = ents[oc.mapmodels[i]];
         if (!e) continue;
         if(e->flags&entities::EntityFlags::EF_NOCOLLIDE || !mapmodels.inrange(e->model_idx)) continue;
         mapmodelinfo &mmi = mapmodels[e->model_idx];
@@ -848,10 +848,10 @@ bool mmcollide(entities::classes::BasePhysicalEntity *d, const vec &dir, float c
             switch(testtricol ? testtricol : d->collidetype)
             {
                 case COLLIDE_ELLIPSE:
-                    if(m->bih->ellipsecollide(d, dir, cutoff, e->o, yaw, pitch, roll, scale)) return true;
+                    if(m->bih->ellipsecollide((entities::classes::BasePhysicalEntity*)d, dir, cutoff, e->o, yaw, pitch, roll, scale)) return true;
                     break;
                 case COLLIDE_OBB:
-                    if(m->bih->boxcollide(d, dir, cutoff, e->o, yaw, pitch, roll, scale)) return true;
+                    if(m->bih->boxcollide((entities::classes::BasePhysicalEntity*)d, dir, cutoff, e->o, yaw, pitch, roll, scale)) return true;
                     break;
                 default: continue;
             }
@@ -879,9 +879,9 @@ bool mmcollide(entities::classes::BasePhysicalEntity *d, const vec &dir, float c
                 case COLLIDE_OBB:
                     if(mcol == COLLIDE_ELLIPSE)
                     {
-                        if(mmcollide<mpr::EntOBB, mpr::ModelEllipse>(d, dir, e, center, radius, yaw, pitch, roll)) return true;
+                        if(mmcollide<mpr::EntOBB, mpr::ModelEllipse>(d, dir, (entities::classes::BasePhysicalEntity*)e, center, radius, yaw, pitch, roll)) return true;
                     }
-                    else if(mmcollide<mpr::EntOBB, mpr::ModelOBB>(d, dir, e, center, radius, yaw, pitch, roll)) return true;
+                    else if(mmcollide<mpr::EntOBB, mpr::ModelOBB>(d, dir, (entities::classes::BasePhysicalEntity*)e, center, radius, yaw, pitch, roll)) return true;
                     break;
                 default: continue;
             }
@@ -1701,7 +1701,7 @@ float dropheight(entities::classes::BaseEntity &e)
     }
 }
 
-void dropenttofloor(entities::classes::BasePhysicalEntity *e)
+void dropenttofloor(entities::classes::BaseEntity *e)
 {
     droptofloor(e->o, 1.0f, dropheight(*e));
 }
@@ -1756,7 +1756,7 @@ FVAR(straferoll, 0, 0.033f, 90);
 FVAR(faderoll, 0, 0.95f, 1);
 VAR(floatspeed, 1, 100, 10000);
 
-void modifyvelocity(entities::classes::BasePhysicalEntity *pl, bool local, bool water, bool floating, int curtime)
+void modifyvelocity(entities::classes::BaseDynamicEntity *pl, bool local, bool water, bool floating, int curtime)
 {
     bool allowmove = game::allowmove(pl);
     if(floating)
@@ -1817,7 +1817,7 @@ void modifyvelocity(entities::classes::BasePhysicalEntity *pl, bool local, bool 
 //    pl->vel.lerp(pl->vel, d, fpsfric);
 }
 
-void modifygravity(entities::classes::BasePhysicalEntity *pl, bool water, int curtime)
+void modifygravity(entities::classes::BaseDynamicEntity *pl, bool water, int curtime)
 {
     float secs = curtime/1000.0f;
     vec g(0, 0, 0);
@@ -1848,7 +1848,7 @@ void modifygravity(entities::classes::BasePhysicalEntity *pl, bool water, int cu
 // moveres indicated the physics precision (which is lower for monsters and multiplayer prediction)
 // local is false for multiplayer prediction
 
-bool moveplayer(entities::classes::BasePhysicalEntity *pl, int moveres, bool local, int curtime)
+bool moveplayer(entities::classes::BaseDynamicEntity *pl, int moveres, bool local, int curtime)
 {
     int material = lookupmaterial(vec(pl->o.x, pl->o.y, pl->o.z + (3*pl->aboveeye - pl->eyeheight)/4));
     bool water = isliquid(material&MATF_VOLUME);
@@ -1952,9 +1952,9 @@ void moveplayer(entities::classes::BaseDynamicEntity *pl, int moveres, bool loca
     }
 
     if(local) pl->o = pl->newpos;
-    loopi(physsteps-1) moveplayer(((entities::classes::BasePhysicalEntity*)pl), moveres, local, physframetime);
+    loopi(physsteps-1) moveplayer(pl, moveres, local, physframetime);
     if(local) pl->deltapos = pl->o;
-    moveplayer(((entities::classes::BasePhysicalEntity*)pl), moveres, local, physframetime);
+    moveplayer(pl, moveres, local, physframetime);
     if(local)
     {
         pl->newpos = pl->o;

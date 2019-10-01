@@ -685,10 +685,10 @@ struct stainrenderer
 
     void genmmtris(octaentities &oe)
     {
-        const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
+        const vector<entities::classes::BaseEntity *> &ents = entities::getents();
         loopv(oe.mapmodels)
         {
-            entities::classes::BasePhysicalEntity &e = *ents[oe.mapmodels[i]];
+            entities::classes::BaseEntity &e = *ents[oe.mapmodels[i]];
             model *m = loadmapmodel(e.model_idx);
             if(!m) continue;
 

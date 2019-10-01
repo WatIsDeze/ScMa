@@ -55,9 +55,9 @@ void fatal(const char *s, ...)    // failure exit
             if(SDL_WasInit(SDL_INIT_VIDEO))
             {
 #ifndef NDEBUG
-        SDL_ShowCursor(SDL_TRUE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
-#else
         SDL_ShowCursor(SDL_FALSE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
+#else
+        SDL_ShowCursor(SDL_TRUE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
 #endif
                 SDL_SetRelativeMouseMode(SDL_FALSE);
                 if(screen) SDL_SetWindowGrab(screen, SDL_FALSE);
@@ -408,9 +408,9 @@ void inputgrab(bool on)
     if(on)
     {
 #ifndef NDEBUG
-        SDL_ShowCursor(SDL_TRUE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
-#else
         SDL_ShowCursor(SDL_FALSE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
+#else
+        SDL_ShowCursor(SDL_TRUE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
 #endif
         if(canrelativemouse && userelativemouse)
         {
@@ -430,9 +430,9 @@ void inputgrab(bool on)
     else
     {
 #ifndef NDEBUG
-        SDL_ShowCursor(SDL_TRUE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
-#else
         SDL_ShowCursor(SDL_FALSE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
+#else
+        SDL_ShowCursor(SDL_TRUE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
 #endif
         if(relativemouse)
         {
@@ -1111,9 +1111,9 @@ int main(int argc, char **argv)
     #endif
     setupscreen();
 #ifndef NDEBUG
-        SDL_ShowCursor(SDL_TRUE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
-#else
         SDL_ShowCursor(SDL_FALSE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
+#else
+        SDL_ShowCursor(SDL_TRUE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
 #endif
     SDL_StopTextInput(); // workaround for spurious text-input events getting sent on first text input toggle?
 

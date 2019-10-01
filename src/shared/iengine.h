@@ -7,6 +7,20 @@ extern int totalmillis;                 // total elapsed time
 extern uint totalsecs;
 extern int gamespeed, paused;
 
+// Predefined base engine entities.
+// Predefinitions.
+namespace entities {
+namespace classes {
+    class CoreEntity;
+    class BaseEntity;
+    class BasePhysicalEntity;
+    class BaseDynamicEntity;
+    class BaseMapModel;
+    class DynamicLight;
+    class Player;
+} // classes
+} // entities.
+
 enum
 {
     MATF_INDEX_SHIFT  = 0,
@@ -227,10 +241,10 @@ extern vec getselpos();
 extern int getworldsize();
 extern int getmapversion();
 extern void renderentcone(const entities::classes::BaseEntity &e, const vec &dir, float radius, float angle);
-extern void renderentarrow(const entities::classes::BasePhysicalEntity &e, const vec &dir, float radius);
+extern void renderentarrow(const entities::classes::BaseEntity &e, const vec &dir, float radius);
 extern void renderentattachment(const entities::classes::BaseEntity &e);
 extern void renderentsphere(const entities::classes::BaseEntity &e, float radius);
-extern void renderentring(const entities::classes::BasePhysicalEntity &e, float radius, int axis = 0);
+extern void renderentring(const entities::classes::BaseEntity &e, float radius, int axis = 0);
 
 // main
 extern void fatal(const char *s, ...) PRINTFARGS(1, 2);
@@ -382,7 +396,7 @@ extern int collideinside;
 extern entities::classes::BaseEntity *collideplayer;
 
 extern void moveplayer(entities::classes::BaseDynamicEntity *pl, int moveres, bool local);
-extern bool moveplayer(entities::classes::BasePhysicalEntity *pl, int moveres, bool local, int curtime);
+extern bool moveplayer(entities::classes::BaseDynamicEntity *pl, int moveres, bool local, int curtime);
 extern void crouchplayer(entities::classes::BasePhysicalEntity *pl, int moveres, bool local);
 extern bool collide(entities::classes::BasePhysicalEntity *d, const vec &dir = vec(0, 0, 0), float cutoff = 0.0f, bool playercol = true, bool insideplayercol = false);
 extern bool bounce(entities::classes::BasePhysicalEntity *d, float secs, float elasticity, float waterfric, float grav);
@@ -391,7 +405,7 @@ extern void avoidcollision(entities::classes::BasePhysicalEntity *d, const vec &
 extern bool overlapsdynent(const vec &o, float radius);
 extern bool movecamera(entities::classes::BasePhysicalEntity *pl, const vec &dir, float dist, float stepdist);
 extern void physicsframe();
-extern void dropenttofloor(entities::classes::BasePhysicalEntity *e);
+extern void dropenttofloor(entities::classes::BaseEntity *e);
 extern bool droptofloor(vec &o, float radius, float height);
 
 extern void vecfromyawpitch(float yaw, float pitch, int move, int strafe, vec &m);
@@ -400,11 +414,7 @@ extern void updatephysstate(entities::classes::BasePhysicalEntity *d);
 extern void cleardynentcache();
 extern void updatedynentcache(entities::classes::BaseEntity *d);
 extern bool entinmap(entities::classes::BasePhysicalEntity *d, bool avoidplayers = false);
-namespace entities {
-namespace classes {
-class Player;
-}
-}
+
 extern void findplayerspawn(entities::classes::Player *d, int forceent = -1, int tag = 0);
 
 // sound
@@ -426,7 +436,7 @@ enum { MDL_CULL_VFC = 1<<0, MDL_CULL_DIST = 1<<1, MDL_CULL_OCCLUDED = 1<<2, MDL_
 
 struct model;
 struct mapmodelinfo;
-namespace entities { namespace classes { class BaseEntity; } }
+
 struct modelattach
 {
     const char *tag, *name;

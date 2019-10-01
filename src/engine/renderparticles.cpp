@@ -80,10 +80,10 @@ void clearparticleemitters()
 void addparticleemitters()
 {
     emitters.setsize(0);
-    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
+    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     loopv(ents)
     {
-        entities::classes::BasePhysicalEntity &e = *ents[i];
+        entities::classes::BaseEntity &e = *ents[i];
         if(e.et_type != ET_PARTICLES) continue;
         emitters.add(particleemitter(&e));
     }
@@ -1424,16 +1424,16 @@ void updateparticles()
     }
     if(editmode) // show sparkly thingies for map entities in edit mode
     {
-        const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
+        const vector<entities::classes::BaseEntity *> &ents = entities::getents();
         // note: order matters in this case as particles of the same type are drawn in the reverse order that they are added
         loopv(entgroup)
         {
-            entities::classes::BasePhysicalEntity &e = *ents[entgroup[i]];
+            entities::classes::BaseEntity &e = *ents[entgroup[i]];
             particle_textcopy(e.o, entname(e), PART_TEXT, 1, 0xFF4B19, 2.0f);
         }
         loopv(ents)
         {
-            entities::classes::BasePhysicalEntity &e = *ents[i];
+            entities::classes::BaseEntity &e = *ents[i];
             if(e.et_type==ET_EMPTY) continue;
             particle_textcopy(e.o, entname(e), PART_TEXT, 1, 0x1EC850, 2.0f);
             regular_particle_splash(PART_EDIT, 2, 40, e.o, 0x3232FF, 0.32f*particlesize/100.0f);

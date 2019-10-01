@@ -45,38 +45,6 @@ enum
     S_FLAGFAIL
 };
 
-namespace entities
-{
-    namespace classes {
-        class CoreEntity;
-        class BaseEntity;
-        class BasePhysicalEntity;
-        class BaseDynamicEntity;
-        class BaseMapModel;
-        class DynamicLight;
-        class Player;
-    }
-
-    // Entity arrays.
-    extern vector<classes::BasePhysicalEntity *> g_ents;
-    extern vector<classes::BasePhysicalEntity *> g_lightEnts;
-
-    //
-    // Entity core functions.
-    //
-    // Preloads the entities.
-    extern void preloadentities();
-
-    // Renders all the entities.
-    extern void renderentities();
-
-    // Sets the spawn state on a given entity index.
-    extern void setspawn(int i, bool on);
-
-    // Resets all the spawns.
-    extern void resetspawns();
-}
-
 namespace game
 {
     // Extern variables.
@@ -98,7 +66,7 @@ namespace game
     extern float clipconsole(float w, float h);
 
     // Physics.
-    extern void physicstrigger(entities::classes::BasePhysicalEntity *d, bool local, int floorlevel, int waterlevel, int material);
+    extern void physicstrigger(entities::classes::BaseDynamicEntity *d, bool local, int floorlevel, int waterlevel, int material);
 
     // Renderer.
     #define MAXTEAMS 2

@@ -16,6 +16,7 @@ namespace entities
             // Base functions.
             //
             BaseEntity();
+            BaseEntity(const CoreEntity& e);
             BaseEntity(const BaseEntity& e);
             BaseEntity(const BasePhysicalEntity &e);
             BaseEntity(const BaseDynamicEntity &e);
@@ -32,10 +33,10 @@ namespace entities
 
 
             //
-            // Attribute set and get, and event.
+            // Attributes set and get.
             //
             // Sets the key its value in the attributes list, also determines whether to automatically call onAttributeSet.
-            void setAttribute(const std::string &key, const std::string &value, bool callOnAttrSet);
+            bool setAttribute(const std::string &key, const std::string &value, bool callOnAttrSet);
             // Returns the value of the attribute key.
             std::string getAttribute(const std::string &key);
 

@@ -8,18 +8,18 @@ namespace entities
     }
 
     extern void editent(int i, bool local);
-    extern const char *entnameinfo(entities::classes::BasePhysicalEntity &e);
+    extern const char *entnameinfo(entities::classes::BaseEntity &e);
     extern const char *entname(int i);
     extern float dropheight(entities::classes::BaseEntity &e);
     extern void fixentity(entities::classes::BaseEntity &e);
-    extern void entradius(entities::classes::BasePhysicalEntity &e, bool color);
+    extern void entradius(entities::classes::BaseEntity &e, bool color);
     extern bool mayattach(entities::classes::BaseEntity &e);
     extern bool attachent(entities::classes::BaseEntity &e, entities::classes::BaseEntity &a);
-    extern bool printent(entities::classes::BasePhysicalEntity &e, char *buf, int len);
+    extern bool printent(entities::classes::BaseEntity &e, char *buf, int len);
     extern entities::classes::BaseEntity *newgameentity(char *strclass = NULL);
     extern void deletegameentity(entities::classes::BaseEntity *e);
     extern void clearents();
-    extern vector<entities::classes::BasePhysicalEntity *> &getents();
+    extern vector<entities::classes::BaseEntity *> &getents();
     extern const char *entmodel(const entities::classes::BaseEntity &e);
     extern void animatemapmodel(const entities::classes::BaseEntity &e, int &anim, int &basetime);
 }
@@ -54,7 +54,7 @@ namespace game
 
     extern void updateworld();
     extern void initclient();
-    extern void physicstrigger(entities::classes::BasePhysicalEntity *d, bool local, int floorlevel, int waterlevel, int material = 0);
+    extern void physicstrigger(entities::classes::BaseDynamicEntity *d, bool local, int floorlevel, int waterlevel, int material = 0);
     extern void bounced(entities::classes::BasePhysicalEntity *d, const vec &surface);
     extern void edittrigger(const selinfo &sel, int op, int arg1 = 0, int arg2 = 0, int arg3 = 0, const VSlot *vs = NULL);
     extern void vartrigger(ident *id);
@@ -75,7 +75,7 @@ namespace game
     extern bool canjump();
     extern bool cancrouch();
     extern bool allowmove(entities::classes::BasePhysicalEntity *d);
-    extern entities::classes::BasePhysicalEntity *iterdynents(int i);
+    extern entities::classes::BaseEntity *iterdynents(int i);
     extern int numdynents();
     extern void RenderGameEntities();
     extern void renderavatar();

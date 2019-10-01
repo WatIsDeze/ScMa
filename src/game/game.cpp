@@ -1,4 +1,5 @@
 #include "game.h"
+#include "entities.h"
 #include "entities/playerstart.h"
 #include "entities/player.h"
 
@@ -37,12 +38,6 @@ namespace game
        // gets2c();
         updateentities();
 
-        // Allow for crouching and moving.
-        if (connected) {
-            //crouchplayer(player1, 10, true);
-            moveplayer(player1, 10, true);
-        }
-
        // if(player->clientnum >=0) c2sinfo();   // do this last, to reduce the effective frame lag
     }
 
@@ -65,18 +60,15 @@ namespace game
 
         }
 
-        //if (game::player1)
-            //game::player1->think();
-
-        if (connected) {
-            conoutf("Connected: %i", connected);
-        }
+        if (game::player1)
+            game::player1->think();
     }
 
     void gameconnect(bool _remote)
     {
         // Store connection state.
-        connected = _remote;
+        //connected = _remote;
+        connected = true;
 
         // Toggle edit mode if required.
         if(editmode)
@@ -153,7 +145,7 @@ namespace game
         SpawnPlayer();
 
         // Find our playerspawn.
-        findplayerspawn(player1, -1, 0);
+        findplayerspawn(player1);
     }
     void loadingmap(const char *name) {
 
@@ -220,7 +212,7 @@ namespace game
         //return !d->ms_lastaction || lastmillis-d->ms_lastaction>=1000;
     }
 
-    entities::classes::BasePhysicalEntity *iterdynents(int i) {
+    entities::classes::BaseEntity *iterdynents(int i) {
         if (i == 0) {
             return (entities::classes::BasePhysicalEntity*)player1;
         } else {
@@ -237,7 +229,7 @@ namespace game
     }
     // int numdynents() { return players.length()+monsters.length()+movables.length(); }
     int numdynents() {
-        return entities::g_ents.length() + 1; // + 1 is for the player.
+        return entities::g_ents.length(); // + 1 is for the player.
     }
 
     // This function should be used to render HUD View stuff etc.
@@ -256,7 +248,10 @@ namespace game
     }
 
     void setupcamera() {
-
+        /*player1->yaw = target->yaw;
+        player1->pitch = target->pitch;
+        player1->o = target->o;
+        player1->resetinterp();*/
     }
 
     bool allowthirdperson() {
@@ -325,7 +320,7 @@ namespace game
 
     //---------------------------------------------------------------
 
-    void physicstrigger(entities::classes::BasePhysicalEntity *d, bool local, int floorlevel, int waterlevel, int material)
+    void physicstrigger(entities::classes::BaseDynamicEntity *d, bool local, int floorlevel, int waterlevel, int material)
     {
         // This function seems to be used for playing material audio. No worries about that atm.
 /*        if     (waterlevel>0) { if(material!=MAT_LAVA) playsound(S_SPLASHOUT, d==player1 ? NULL : &d->o); }
@@ -336,7 +331,6 @@ namespace game
 
     void initclient() {
         // Setup the map time.
-        maptime = maprealtime = 0;
         SpawnPlayer();
     }
 

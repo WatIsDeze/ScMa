@@ -1,3 +1,4 @@
+#include "cube.h"
 #include "engine.h"
 
 CVAR1R(ambient, 0x191919);
@@ -298,6 +299,8 @@ void clearlightcache(int id)
 
 const vector<int> &checklightcache(int x, int y)
 {
+    using namespace entities;
+
     x >>= lightcachesize;
     y >>= lightcachesize;
     lightcacheentry &lce = lightcache[LIGHTCACHEHASH(x, y)];
@@ -305,10 +308,10 @@ const vector<int> &checklightcache(int x, int y)
 
     lce.lights.setsize(0);
     int csize = 1<<lightcachesize, cx = x<<lightcachesize, cy = y<<lightcachesize;
-    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
+    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     loopv(ents)
     {
-        const entities::classes::BasePhysicalEntity &light = *ents[i];
+        const entities::classes::BasePhysicalEntity &light = *(entities::classes::BasePhysicalEntity*)ents[i];
         switch(light.et_type)
         {
             case ET_LIGHT:
@@ -639,11 +642,11 @@ void lightreaching(const vec &target, vec &color, vec &dir, bool fast, entities:
     }
 
     color = dir = vec(0, 0, 0);
-    vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
+    vector<entities::classes::BaseEntity *> &ents = entities::getents();
     const vector<int> &lights = checklightcache(int(target.x), int(target.y));
     loopv(lights)
     {
-        entities::classes::BasePhysicalEntity &e = *ents[lights[i]];
+        entities::classes::BasePhysicalEntity &e = *(entities::classes::BasePhysicalEntity*)ents[lights[i]];
         if(e.et_type != ET_LIGHT || e.attr1 <= 0)
             continue;
 

@@ -1,6 +1,6 @@
 #ifndef BASEPHYSICALENTITY_H
 #define BASEPHYSICALENTITY_H
-// Defined here, for several reasons, since it has to replace good ol' extentity.
+
 namespace entities
 {
     namespace classes {
@@ -19,7 +19,7 @@ namespace entities
             virtual ~BasePhysicalEntity();
 
             void resetinterp();
-            void reset();
+            virtual void reset();
 
             vec feetpos(float offset) const;
             vec headpos(float offset) const;
@@ -29,8 +29,7 @@ namespace entities
             //
             // Physics variables.
             //
-            //vec o, vel, falling;                          // origin, velocity
-            vec vel, falling;                               // origin, velocity
+            vec vel, falling;                               // velocity, falling
             vec deltapos, newpos;                           // movement interpolation
             float yaw, pitch, roll;
             float maxspeed;                                 // cubes per second, 100 for player

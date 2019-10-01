@@ -1,4 +1,5 @@
 #include "game.h"
+#include "entities.h"
 #include "entities/player.h"
 
 namespace game

@@ -418,13 +418,13 @@ struct vacollect : verthash
     {
         if(decals.length()) extdecals.put(decals.getbuf(), decals.length());
         if(extdecals.empty()) return;
-        vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
+        vector<entities::classes::BaseEntity *> &ents = entities::getents();
         loopv(extdecals)
         {
             octaentities *oe = extdecals[i];
             loopvj(oe->decals)
             {
-                entities::classes::BasePhysicalEntity &e = *ents[oe->decals[j]];
+                entities::classes::BaseEntity &e = *ents[oe->decals[j]];
                 if(e.flags & entities::EntityFlags::EF_RENDER) continue;
                 e.flags |= (int)entities::EntityFlags::EF_RENDER;
                 DecalSlot &s = lookupdecalslot(e.attr1, true);
@@ -439,7 +439,7 @@ struct vacollect : verthash
             octaentities *oe = extdecals[i];
             loopvj(oe->decals)
             {
-                entities::classes::BasePhysicalEntity &e = *ents[oe->decals[j]];
+                entities::classes::BaseEntity &e = *ents[oe->decals[j]];
                 if(e.flags& entities::EntityFlags::EF_RENDER) e.flags &= (int)~entities::EntityFlags::EF_RENDER;
             }
         }

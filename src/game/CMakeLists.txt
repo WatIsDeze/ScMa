@@ -30,9 +30,12 @@ target_include_directories(SchizoMania_Game_Client
     PUBLIC 
         ${CMAKE_SOURCE_DIR}
     PRIVATE
-        ../shared/
+		../
+		../engine/
+		../game/
+		../shared/
         ../shared/entities/
-        entities/
+		entities/
         
 )
 

@@ -92,7 +92,7 @@ struct BIH
     void preload();
 
     // Static function, why should we have a global mmintersect ?
-    static bool mmintersect(entities::classes::BasePhysicalEntity &e, const vec &o, const vec &ray, float maxdist, int mode, float &dist);
+    static bool mmintersect(entities::classes::BaseEntity &e, const vec &o, const vec &ray, float maxdist, int mode, float &dist);
 };
 
 #endif // BIH_H

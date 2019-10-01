@@ -14,7 +14,6 @@
 #include "model.h"
 #include "ents.h"
 
-namespace entities { namespace classes { class Player; } }
 extern entities::classes::Player *player;
 extern entities::classes::BasePhysicalEntity *camera1;                // special ent that acts as camera, same object as player in FPS mode
 
@@ -383,10 +382,10 @@ extern bool debugaa();
 extern void cleanupaa();
 
 // ents
-extern char *entname(entities::classes::BasePhysicalEntity &e);
+extern char *entname(entities::classes::BaseEntity &e);
 extern bool haveselent();
 extern undoblock *copyundoents(undoblock *u);
-extern void pasteundoent(int idx, const entities::classes::BasePhysicalEntity &ue);
+extern void pasteundoent(int idx, const entities::classes::CoreEntity &ue);
 extern void pasteundoents(undoblock *u);
 
 // octaedit

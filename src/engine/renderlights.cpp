@@ -3416,14 +3416,14 @@ VAR(debuglightscissor, 0, 0, 1);
 
 void viewlightscissor()
 {
-    vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
+    vector<entities::classes::BaseEntity *> &ents = entities::getents();
     gle::defvertex(2);
     loopv(entgroup)
     {
         int idx = entgroup[i];
         if(ents.inrange(idx) && ents[idx]->et_type == ET_LIGHT)
         {
-            entities::classes::BasePhysicalEntity &e = *ents[idx];
+            entities::classes::BaseEntity &e = *ents[idx];
             loopvj(lights) if(lights[j].o == e.o)
             {
                 lightinfo &l = lights[j];
@@ -3447,10 +3447,10 @@ void collectlights()
     if(lights.length()) return;
 
     // point lights processed here
-    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
+    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     if(!editmode || !fullbright) loopv(ents)
     {
-        const entities::classes::BasePhysicalEntity *e = ents[i];
+        const entities::classes::BaseEntity *e = ents[i];
         if(e->et_type != ET_LIGHT || e->attr1 <= 0) continue;
 
         if(smviscull)
@@ -4347,14 +4347,14 @@ void rendershadowmaps(int offset = 0)
 
     glEnable(GL_SCISSOR_TEST);
 
-    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
+    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     for(int i = offset; i < shadowmaps.length(); i++)
     {
         shadowmapinfo &sm = shadowmaps[i];
         if(sm.light < 0) continue;
 
         lightinfo &l = lights[sm.light];
-        entities::classes::BasePhysicalEntity *e = l.ent >= 0 ? ents[l.ent] : NULL;
+        entities::classes::BaseEntity *e = l.ent >= 0 ? ents[l.ent] : NULL;
 
         int border, sidemask;
         if(l.spot)
