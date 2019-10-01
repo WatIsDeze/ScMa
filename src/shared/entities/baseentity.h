@@ -15,12 +15,12 @@ namespace entities
             //
             // Base functions.
             //
-            BaseEntity();
-            BaseEntity(const CoreEntity& e);
-            BaseEntity(const BaseEntity& e);
-            BaseEntity(const BasePhysicalEntity &e);
-            BaseEntity(const BaseDynamicEntity &e);
-            virtual ~BaseEntity();
+//            BaseEntity();
+//            BaseEntity(const CoreEntity& e);
+//            BaseEntity(const BaseEntity& e);
+//            BaseEntity(const BasePhysicalEntity *e);
+//            BaseEntity(const BaseDynamicEntity *e);
+//            virtual ~BaseEntity();
 
             // Called every time a map is being loaded.
             virtual void preload();

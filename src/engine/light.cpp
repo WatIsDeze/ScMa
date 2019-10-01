@@ -276,11 +276,11 @@ void clearlightcache(int id)
 {
     if(id >= 0)
     {
-        const entities::classes::BaseEntity &light = *entities::getents()[id];
-        int radius = light.attr1;
+        const entities::classes::BaseEntity *light = entities::getents()[id];
+		int radius = light->attr1;
         if(radius <= 0) return;
-        for(int x = int(max(light.o.x-radius, 0.0f))>>lightcachesize, ex = int(min(light.o.x+radius, worldsize-1.0f))>>lightcachesize; x <= ex; x++)
-        for(int y = int(max(light.o.y-radius, 0.0f))>>lightcachesize, ey = int(min(light.o.y+radius, worldsize-1.0f))>>lightcachesize; y <= ey; y++)
+		for(int x = int(max(light->o.x-radius, 0.0f))>>lightcachesize, ex = int(min(light->o.x+radius, worldsize-1.0f))>>lightcachesize; x <= ex; x++)
+			for(int y = int(max(light->o.y-radius, 0.0f))>>lightcachesize, ey = int(min(light->o.y+radius, worldsize-1.0f))>>lightcachesize; y <= ey; y++)
         {
             lightcacheentry &lce = lightcache[LIGHTCACHEHASH(x, y)];
             if(lce.x != x || lce.y != y) continue;
@@ -311,15 +311,15 @@ const vector<int> &checklightcache(int x, int y)
     const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     loopv(ents)
     {
-        const entities::classes::BasePhysicalEntity &light = *(entities::classes::BasePhysicalEntity*)ents[i];
-        switch(light.et_type)
+        const entities::classes::BasePhysicalEntity *light = (entities::classes::BasePhysicalEntity*)ents[i];
+		switch(light->et_type)
         {
             case ET_LIGHT:
             {
-                int radius = light.attr1;
+				int radius = light->attr1;
                 if(radius <= 0 ||
-                   light.o.x + radius < cx || light.o.x - radius > cx + csize ||
-                   light.o.y + radius < cy || light.o.y - radius > cy + csize)
+				   light->o.x + radius < cx || light->o.x - radius > cx + csize ||
+				   light->o.y + radius < cy || light->o.y - radius > cy + csize)
                     continue;
                 break;
             }
@@ -646,29 +646,29 @@ void lightreaching(const vec &target, vec &color, vec &dir, bool fast, entities:
     const vector<int> &lights = checklightcache(int(target.x), int(target.y));
     loopv(lights)
     {
-        entities::classes::BasePhysicalEntity &e = *(entities::classes::BasePhysicalEntity*)ents[lights[i]];
-        if(e.et_type != ET_LIGHT || e.attr1 <= 0)
+        entities::classes::BasePhysicalEntity *e = (entities::classes::BasePhysicalEntity*)ents[lights[i]];
+		if(e->et_type != ET_LIGHT || e->attr1 <= 0)
             continue;
 
         vec ray(target);
-        ray.sub(e.o);
+		ray.sub(e->o);
         float mag = ray.magnitude();
-        if(mag >= float(e.attr1))
+		if(mag >= float(e->attr1))
             continue;
 
         if(mag < 1e-4f) ray = vec(0, 0, -1);
         else
         {
             ray.div(mag);
-            if(shadowray(e.o, ray, mag, RAY_SHADOW | RAY_POLY, t) < mag)
+			if(shadowray(e->o, ray, mag, RAY_SHADOW | RAY_POLY, t) < mag)
                 continue;
         }
 
-        float intensity = 1 - mag / float(e.attr1);
-        if(e.attached && e.attached->et_type==ET_SPOTLIGHT)
+		float intensity = 1 - mag / float(e->attr1);
+		if(e->attached && e->attached->et_type==ET_SPOTLIGHT)
         {
-            vec spot = vec(e.attached->o).sub(e.o).normalize();
-            float spotatten = 1 - (1 - ray.dot(spot)) / (1 - cos360(clamp(int(e.attached->attr1), 1, 89)));
+			vec spot = vec(e->attached->o).sub(e->o).normalize();
+			float spotatten = 1 - (1 - ray.dot(spot)) / (1 - cos360(clamp(int(e->attached->attr1), 1, 89)));
             if(spotatten <= 0) continue;
             intensity *= spotatten;
         }
@@ -678,7 +678,7 @@ void lightreaching(const vec &target, vec &color, vec &dir, bool fast, entities:
         //    conoutf(CON_DEBUG, "%d - %f %f", i, intensity, mag);
         //}
 
-        vec lightcol = vec(e.attr2, e.attr3, e.attr4).mul(1.0f/255).max(0);
+		vec lightcol = vec(e->attr2, e->attr3, e->attr4).mul(1.0f/255).max(0);
         color.add(vec(lightcol).mul(intensity));
         dir.add(vec(ray).mul(-intensity*lightcol.x*lightcol.y*lightcol.z));
     }

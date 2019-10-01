@@ -54,7 +54,7 @@ enum // cube empty-space materials
 #define isclipped(mat) ((mat)==MAT_GLASS)
 #define isdeadly(mat) ((mat)==MAT_LAVA)
 
-extern void lightent(entities::classes::BaseEntity &e, float height = 8.0f);
+extern void lightent(entities::classes::BaseEntity *e, float height = 8.0f);
 extern void lightreaching(const vec &target, vec &color, vec &dir, bool fast = false, entities::classes::BasePhysicalEntity *e = 0, float minambient = 0.4f);
 
 enum { RAY_BB = 1, RAY_POLY = 3, RAY_ALPHAPOLY = 7, RAY_ENTS = 9, RAY_CLIPMAT = 16, RAY_SKIPFIRST = 32, RAY_EDITMAT = 64, RAY_SHADOW = 128, RAY_PASS = 256, RAY_SKIPSKY = 512 };
@@ -240,11 +240,11 @@ extern void mpeditent(int i, const vec &o, int type, int attr1, int attr2, int a
 extern vec getselpos();
 extern int getworldsize();
 extern int getmapversion();
-extern void renderentcone(const entities::classes::BaseEntity &e, const vec &dir, float radius, float angle);
-extern void renderentarrow(const entities::classes::BaseEntity &e, const vec &dir, float radius);
-extern void renderentattachment(const entities::classes::BaseEntity &e);
-extern void renderentsphere(const entities::classes::BaseEntity &e, float radius);
-extern void renderentring(const entities::classes::BaseEntity &e, float radius, int axis = 0);
+extern void renderentcone(const entities::classes::BaseEntity *e, const vec &dir, float radius, float angle);
+extern void renderentarrow(const entities::classes::BaseEntity *e, const vec &dir, float radius);
+extern void renderentattachment(const entities::classes::BaseEntity *e);
+extern void renderentsphere(const entities::classes::BaseEntity *e, float radius);
+extern void renderentring(const entities::classes::BaseEntity *e, float radius, int axis = 0);
 
 // main
 extern void fatal(const char *s, ...) PRINTFARGS(1, 2);

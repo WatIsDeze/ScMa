@@ -65,7 +65,6 @@
 // Engine and game related includes.
 #include "tools.h"
 #include "geom.h"
-#include "ents.h"
 #include "command.h"
 
 #ifndef STANDALONE

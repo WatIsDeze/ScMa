@@ -3,13 +3,15 @@
 #include "entities/playerstart.h"
 #include "entities/player.h"
 
+
+
 namespace game
 {
     // Global player entity pointer.
-    entities::classes::Player *player1 = NULL;
+    ::entities::classes::Player *player1 = NULL;
 
     // List of connected players. (For future network usage.)
-    vector<entities::classes::Player*> players;
+    vector<::entities::classes::Player*> players;
 
     // Networking State properties.
     bool connected = false;
@@ -275,7 +277,7 @@ namespace game
         {
             // Let's go at it!
             entities::classes::BaseEntity *e = entities::g_lightEnts[i];
-            //e->render();
+            e->render();
         }
     }
 

@@ -131,7 +131,7 @@ float hitentdist;
 int hitent, hitorient;
 
 
-extern void entselectionbox(const entities::classes::BaseEntity &e, vec &eo, vec &es);
+extern void entselectionbox(const entities::classes::BaseEntity *e, vec &eo, vec &es);
 
 static float disttoent(octaentities *oc, const vec &o, const vec &ray, float radius, int mode, entities::classes::BaseEntity *t)
 {
@@ -143,8 +143,8 @@ static float disttoent(octaentities *oc, const vec &o, const vec &ray, float rad
     #define entintersect(type, func) do { \
         loopv(oc->type) \
         { \
-            entities::classes::BaseEntity &e = *ents[oc->type[i]]; \
-            if(!(e.flags&entities::EntityFlags::EF_OCTA) || &e==t) continue; \
+            entities::classes::BaseEntity *e = ents[oc->type[i]]; \
+            if(!(e->flags&entities::EntityFlags::EF_OCTA) || e==t) continue; \
             func; \
             if(f<dist && f>0 && vec(ray).mul(f).add(o).insidebb(oc->o, oc->size)) \
             { \
@@ -158,11 +158,11 @@ static float disttoent(octaentities *oc, const vec &o, const vec &ray, float rad
     if((mode&RAY_POLY) == RAY_POLY) entintersect(mapmodels,
     {
         // Ensure that the entity is a mapmodel type.
-        if(!BIH::mmintersect(((entities::classes::BasePhysicalEntity&)e), o, ray, radius, mode, f)) continue;
+        if(!BIH::mmintersect(((entities::classes::BasePhysicalEntity*)e), o, ray, radius, mode, f)) continue;
     });
 
     #define entselintersect(type) entintersect(type, { \
-        entselectionbox((entities::classes::BaseEntity&)e, eo, es); \
+        entselectionbox(e, eo, es); \
         if(!rayboxintersect(eo, es, o, ray, f, orient)) continue; \
     })
 
@@ -184,8 +184,8 @@ static float disttooutsideent(const vec &o, const vec &ray, float radius, int mo
     const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     loopv(outsideents)
     {
-        entities::classes::BaseEntity &e = *ents[outsideents[i]];
-        if(!(e.flags&entities::EntityFlags::EF_OCTA) || &e == t) continue;
+        entities::classes::BaseEntity *e = ents[outsideents[i]];
+        if(!(e->flags&entities::EntityFlags::EF_OCTA) || e == t) continue;
         entselectionbox(e, eo, es);
         if(!rayboxintersect(eo, es, o, ray, f, orient)) continue;
         if(f<dist && f>0)
@@ -205,8 +205,8 @@ static float shadowent(octaentities *oc, const vec &o, const vec &ray, float rad
     const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     loopv(oc->mapmodels)
     {
-        entities::classes::BasePhysicalEntity &e = *(entities::classes::BasePhysicalEntity*)ents[oc->mapmodels[i]];
-        if(!(e.flags&entities::EntityFlags::EF_OCTA) || &e==t) continue;
+        entities::classes::BasePhysicalEntity *e = (entities::classes::BasePhysicalEntity*)ents[oc->mapmodels[i]];
+        if(!(e->flags&entities::EntityFlags::EF_OCTA) || e==t) continue;
         if(!BIH::mmintersect((e), o, ray, radius, mode, f)) continue;
         if(f>0 && f<dist) dist = f;
     }
@@ -1689,9 +1689,9 @@ bool droptofloor(vec &o, float radius, float height)
     return false;
 }
 
-float dropheight(entities::classes::BaseEntity &e)
+float dropheight(entities::classes::BaseEntity *e)
 {
-    switch(e.et_type)
+	switch(e->et_type)
     {
         case ET_PARTICLES:
         case ET_MAPMODEL: return 0.0f;
@@ -1703,7 +1703,7 @@ float dropheight(entities::classes::BaseEntity &e)
 
 void dropenttofloor(entities::classes::BaseEntity *e)
 {
-    droptofloor(e->o, 1.0f, dropheight(*e));
+	droptofloor(e->o, 1.0f, dropheight(e));
 }
 
 void phystest()

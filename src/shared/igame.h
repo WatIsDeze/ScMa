@@ -8,20 +8,20 @@ namespace entities
     }
 
     extern void editent(int i, bool local);
-    extern const char *entnameinfo(entities::classes::BaseEntity &e);
+    extern const char *entnameinfo(entities::classes::BaseEntity *e);
     extern const char *entname(int i);
-    extern float dropheight(entities::classes::BaseEntity &e);
-    extern void fixentity(entities::classes::BaseEntity &e);
-    extern void entradius(entities::classes::BaseEntity &e, bool color);
-    extern bool mayattach(entities::classes::BaseEntity &e);
-    extern bool attachent(entities::classes::BaseEntity &e, entities::classes::BaseEntity &a);
-    extern bool printent(entities::classes::BaseEntity &e, char *buf, int len);
+    extern float dropheight(entities::classes::BaseEntity *e);
+    extern void fixentity(entities::classes::BaseEntity *e);
+    extern void entradius(entities::classes::BaseEntity *e, bool color);
+    extern bool mayattach(entities::classes::BaseEntity *e);
+    extern bool attachent(entities::classes::BaseEntity *e, entities::classes::BaseEntity *a);
+    extern bool printent(entities::classes::BaseEntity *e, char *buf, int len);
     extern entities::classes::BaseEntity *newgameentity(char *strclass = NULL);
     extern void deletegameentity(entities::classes::BaseEntity *e);
     extern void clearents();
     extern vector<entities::classes::BaseEntity *> &getents();
-    extern const char *entmodel(const entities::classes::BaseEntity &e);
-    extern void animatemapmodel(const entities::classes::BaseEntity &e, int &anim, int &basetime);
+    extern const char *entmodel(const entities::classes::BaseEntity *e);
+    extern void animatemapmodel(const entities::classes::BaseEntity *e, int &anim, int &basetime);
 }
 
 namespace game

@@ -25,10 +25,6 @@ BasePhysicalEntity::BasePhysicalEntity() : BaseEntity(), deltapos(0, 0, 0), newp
     reset();
 }
 
-BasePhysicalEntity::~BasePhysicalEntity() {
-
-}
-
 void BasePhysicalEntity::resetinterp() {
     newpos = o;
     deltapos = vec(0, 0, 0);

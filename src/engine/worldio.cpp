@@ -3,7 +3,9 @@
 #include "engine.h"
 
 // Include game.h for our game entity casting.
-#include "../game/game.h"
+#include "game/game.h"
+#include "shared/ents.h"
+#include "world.h"
 
 // Use JSON, no shit.
 using json = nlohmann::json;
@@ -27,11 +29,11 @@ void fixmapname(char *name)
     validmapname(name, name, NULL, "");
 }
 
-static void fixent(entities::classes::BasePhysicalEntity &e, int version)
+static void fixent(entities::classes::BasePhysicalEntity *e, int version)
 {
     if(version <= 0)
     {
-        if(e.et_type >= ET_DECAL) e.et_type++;
+		if(e->et_type >= ET_DECAL) e->et_type++;
     }
 }
 
@@ -112,10 +114,10 @@ bool loadents(const char *fname, vector<entities::classes::BasePhysicalEntity> &
 
     loopi(min(hdr.numents, MAXENTS))
     {
-        entity &e = ents.add();
-        f->read(&e, sizeof(entity));
-        lilswap(&e.o.x, 3);
-        lilswap(&e.attr1, 5);
+        entity *e = ents.add();
+        f->read(e, sizeof(entity));
+        lilswap(&e->o.x, 3);
+        lilswap(&e->attr1, 5);
         fixent(e, hdr.version);
         if(eif > 0) f->seek(eif, SEEK_CUR);
         if(samegame)
@@ -858,34 +860,34 @@ bool load_world(const char *mname, const char *cname)        // Does not support
             classname = element["game"]["classname"];
 
             // Allocate our entity.
-            entities::classes::BaseEntity &e = *entities::newgameentity((char*)classname.c_str());
+            entities::classes::BaseEntity *e = entities::newgameentity((char*)classname.c_str());
 
             // Fetch base entity data. (Old ancient entity info.)
-            e.classname = classname;
-            e.et_type = element["et_type"];
-            e.ent_type = element["ent_type"];
-            e.game_type = element["game_type"];
-            e.o.x = element["o"]["x"];
-            e.o.y = element["o"]["y"];
-            e.o.z = element["o"]["z"];
-            e.attr1 = element["int_attr1"];
-            e.attr2 = element["int_attr2"];
-            e.attr3 = element["int_attr3"];
-            e.attr4 = element["int_attr4"];
-            e.attr5 = element["int_attr5"];
-            e.reserved = element["int_reserved"];
-            e.model_idx = element["model_idx"];
+			e->classname = classname;
+			e->et_type = element["et_type"];
+			e->ent_type = element["ent_type"];
+			e->game_type = element["game_type"];
+			e->o.x = element["o"]["x"];
+			e->o.y = element["o"]["y"];
+			e->o.z = element["o"]["z"];
+			e->attr1 = element["int_attr1"];
+			e->attr2 = element["int_attr2"];
+			e->attr3 = element["int_attr3"];
+			e->attr4 = element["int_attr4"];
+			e->attr5 = element["int_attr5"];
+			e->reserved = element["int_reserved"];
+			e->model_idx = element["model_idx"];
 
             // Fetch a reference to the game attributes json element.
             const json& attributes_element = element["game"]["attributes"];
-            e.attributes = attributes_element.get<std::map<std::string, std::string>>();
+			e->attributes = attributes_element.get<std::map<std::string, std::string>>();
 
             // All went well, so lets add our entity to the list.
-            ents.add(&e);
+            ents.add(e);
 
             // Remove it again in case the entity was > ET_GAMESPECIFIC
             //if (e.et_type >= ET_GAMESPECIFIC) {
-            //    entities::deletegameentity(&e);
+            //    entities::deletegameentity(e);
             //}
         }
     }
@@ -1073,16 +1075,16 @@ void writecollideobj(char *name)
     entities::classes::BaseEntity *mm = NULL;
     loopv(entgroup)
     {
-        entities::classes::BaseEntity &e = *ents[entgroup[i]];
-        if(e.et_type != ET_MAPMODEL || !pointinsel(sel, e.o)) continue;
-        mm = &e;
+        entities::classes::BaseEntity *e = ents[entgroup[i]];
+		if(e->et_type != ET_MAPMODEL || !pointinsel(sel, e->o)) continue;
+		mm = e;
         break;
     }
     if(!mm) loopv(ents)
     {
-        entities::classes::BaseEntity &e = *ents[i];
-        if(e.et_type != ET_MAPMODEL || !pointinsel(sel, e.o)) continue;
-        mm = &e;
+        entities::classes::BaseEntity *e = ents[i];
+		if(e->et_type != ET_MAPMODEL || !pointinsel(sel, e->o)) continue;
+		mm = e;
         break;
     }
     if(!mm)

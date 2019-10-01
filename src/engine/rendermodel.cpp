@@ -373,8 +373,8 @@ void preloadusedmapmodels(bool msg, bool bih)
     vector<int> used;
     loopv(ents)
     {
-        entities::classes::BaseEntity &e = *ents[i];
-        if(e.et_type==ET_MAPMODEL && e.et_type >= 0 && used.find(e.et_type) < 0) used.add(e.model_idx);
+        entities::classes::BaseEntity *e = ents[i];
+		if(e->et_type==ET_MAPMODEL && e->et_type >= 0 && used.find(e->et_type) < 0) used.add(e->model_idx);
     }
 
     vector<const char *> col;

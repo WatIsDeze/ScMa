@@ -1,6 +1,6 @@
 #include "cube.h"
-#include "game.h"
 #include "ents.h"
+#include "game.h"
 #include "basephysicalentity.h"
 #include "basedynamicentity.h"
 

@@ -1,5 +1,8 @@
 #ifndef COREENTITY_H
 #define COREENTITY_H
+#include "cube.h"
+#include "game/game.h"
+#include "ents.h"
 
 namespace entities {
     // Classes.
@@ -21,47 +24,29 @@ namespace entities {
         class CoreEntity
         {
         public:
-            // Constructors.
-            CoreEntity();
-    //            CoreEntity(const CoreEntity &e) {
-    //                //
-    //                // Legacy Core Entity data.
-    //                //
-    //                o = e.o;                             // position
-    //                attr1 = e.attr1;                     // Old integer attributes, still used for storing/loading certain attributes of ET_TYPES.
-    //                attr2 = e.attr2;
-    //                attr3 = e.attr3;
-    //                attr4 = e.attr4;
-    //                attr5 = e.attr5;
-    //                et_type = e.et_type;                              // These are for the ET(Engine Type) values.
-    //                ent_type = e.ent_type;                             // These are for ENT_(DynEnt/PhysEnt Type) values.
-    //                game_type = e.game_type;                            // the internal game entity type values.
-    //                reserved = e.reserved;
-    //                name = e.name;
-    //                classname = e.classname;
-    //                attributes = e.attributes;
-    //                flags = e.flags;
-    //                attached = e.attached;
-    //                model_idx = e.model_idx;
-    //            }
 
-            virtual ~CoreEntity() {}
 
             //
             // Legacy Core Entity data.
             //
-            vec o;                                      // position
-            short attr1, attr2, attr3, attr4, attr5;    // Old integer attributes, still used for storing/loading ET_TYPES.
-            uchar et_type;                              // These are for the ET(Engine Type) values.
-            uchar ent_type;                             // These are for ENT_(DynEnt/PhysEnt Type) values.
-            uchar game_type;                            // the internal game entity type values.
-            uchar reserved;
+            vec o {0.0f, 0.0f, 0.0f};                                      // position
+            short attr1 = 0;
+            short attr2 = 0;
+            short attr3 = 0;
+            short attr4 = 0;
+            short attr5 = 0;
+            // storing/loading ET_TYPES.
+            uchar et_type = ET_EMPTY;                              // These are for the ET(Engine Type) values.
+            uchar ent_type = ENT_INANIMATE;                             // These are for ENT_(DynEnt/PhysEnt Type) values.
+            uchar game_type = GAMEENTITY;                            // the internal game entity type values.
+            uchar reserved = 0;
+            short model_idx = 0;
 
             //
             // Legacy Core ExtEntity data and functions.
             //
-            int flags;
-            BaseEntity *attached;
+            int flags = EntityFlags::EF_NOFLAG;
+            BaseEntity *attached = nullptr;
 
             bool spawned() const;
             void setspawned(bool val);
@@ -71,7 +56,6 @@ namespace entities {
             //
             // Legacy of ours, but it made more sense than using short attr1 ... etc.
             //
-            short model_idx;
 
             //
             // CoreEntity functions.

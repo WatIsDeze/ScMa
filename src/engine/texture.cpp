@@ -3035,13 +3035,13 @@ void initenvmaps()
     const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     loopv(ents)
     {
-        const entities::classes::BaseEntity &ent = *ents[i];
-        if(ent.et_type != ET_ENVMAP) continue;
+        const entities::classes::BaseEntity *ent = ents[i];
+		if(ent->et_type != ET_ENVMAP) continue;
         envmap &em = envmaps.add();
-        em.radius = ent.attr1 ? clamp(int(ent.attr1), 0, 10000) : envmapradius;
-        em.size = ent.attr2 ? clamp(int(ent.attr2), 4, 9) : 0;
-        em.blur = ent.attr3 ? clamp(int(ent.attr3), 1, 2) : 0;
-        em.o = ent.o;
+		em.radius = ent->attr1 ? clamp(int(ent->attr1), 0, 10000) : envmapradius;
+		em.size = ent->attr2 ? clamp(int(ent->attr2), 4, 9) : 0;
+		em.blur = ent->attr3 ? clamp(int(ent->attr3), 1, 2) : 0;
+		em.o = ent->o;
     }
 }
 

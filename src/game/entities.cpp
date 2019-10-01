@@ -12,6 +12,8 @@
 #include "entities/playerstart.h"
 #include "entities/player.h"
 
+
+
 namespace entities
 {
     using namespace game;
@@ -22,9 +24,9 @@ namespace entities
 
     vector<entities::classes::BaseEntity *> &getents() { return g_ents; }
 
-    bool mayattach(entities::classes::BasePhysicalEntity &e) { return false; }
-    bool mayattach(entities::classes::BaseEntity &e) { return false; }
-    bool attachent(entities::classes::BaseEntity &e, entities::classes::BaseEntity &a) { return false; }
+    bool mayattach(entities::classes::BasePhysicalEntity *e) { return false; }
+    bool mayattach(entities::classes::BaseEntity *e) { return false; }
+    bool attachent(entities::classes::BaseEntity *e, entities::classes::BaseEntity *a) { return false; }
 
     const char *itemname(int i)
     {
@@ -57,14 +59,14 @@ namespace entities
         return entmdlnames[type];
     }
 
-    const char *entmodel(const entities::classes::BaseEntity &e)
+    const char *entmodel(const entities::classes::BaseEntity *e)
     {
-        if(e.game_type == TELEPORT)
+		if(e->game_type == TELEPORT)
         {
-            if(e.attr2 > 0) return mapmodelname(e.attr2);
-            if(e.attr2 < 0) return NULL;
+			if(e->attr2 > 0) return mapmodelname(e->attr2);
+			if(e->attr2 < 0) return NULL;
         }
-        return e.game_type < MAXENTTYPES ? entmdlname(e.et_type) : NULL;
+		return e->game_type < MAXENTTYPES ? entmdlname(e->et_type) : NULL;
     }
 
     void preloadentities()
@@ -127,7 +129,7 @@ namespace entities
         while(entities::g_ents.length()) deletegameentity(entities::g_ents.pop());
     }
 
-    void animatemapmodel(const entities::classes::BaseEntity &e, int &anim, int &basetime)
+    void animatemapmodel(const entities::classes::BaseEntity *e, int &anim, int &basetime)
     {/*        const fpsentity &f = (const fpsentity &)e;
         if(validtrigger(f.attr3)) switch(f.triggerstate)
         {
@@ -136,7 +138,7 @@ namespace entities
             case TRIGGERED: anim = ANIM_TRIGGER|ANIM_END; break;
             case TRIGGER_RESETTING: anim = ANIM_TRIGGER|ANIM_REVERSE; basetime = f.lasttrigger; break;
         }*/
-        //const entities::classes::BaseMapModelEntity &ent = (const entities::classes::BaseMapModelEntity&)e;
+        //const entities::classes::BaseMapModelEntity *ent = (const entities::classes::BaseMapModelEntity&)e;
         //anim = ANIM_MAPMODEL | ANIM_START | ANIM_LOOP;
         //basetime = SDL_GetTicks() - e.reserved;
         //e.reserved = SDL_GetTicks();
@@ -145,56 +147,56 @@ namespace entities
 
     // Fixes entities, which mainly just mangles the attributes. I see little reason to keep this around...
     // TODO: Do we need this? Remove it?
-    void fixentity(entities::classes::BaseEntity &e)
+    void fixentity(entities::classes::BaseEntity *e)
     {
-        switch(e.game_type)
+		switch(e->game_type)
         {
             case FLAG:
-                e.attr5 = e.attr4;
-                e.attr4 = e.attr3;
+				e->attr5 = e->attr4;
+				e->attr4 = e->attr3;
             case TELEDEST:
-                e.attr3 = e.attr2;
-                e.attr2 = e.attr1;
-                e.attr1 = (int)game::player1->yaw;
+				e->attr3 = e->attr2;
+				e->attr2 = e->attr1;
+				e->attr1 = (int)game::player1->yaw;
                 break;
         }
     }
 
-    void entradius(entities::classes::BaseEntity &e, bool color)
+    void entradius(entities::classes::BaseEntity *e, bool color)
     {
-        switch(e.game_type)
+		switch(e->game_type)
         {
             case TELEPORT:
-                loopv(entities::g_ents) if(entities::g_ents[i]->game_type == TELEDEST && e.attr1==entities::g_ents[i]->attr2)
+				loopv(entities::g_ents) if(entities::g_ents[i]->game_type == TELEDEST && e->attr1==entities::g_ents[i]->attr2)
                 {
-                    renderentarrow(e, vec(entities::g_ents[i]->o).sub(e.o).normalize(), e.o.dist(entities::g_ents[i]->o));
+					renderentarrow(e, vec(entities::g_ents[i]->o).sub(e->o).normalize(), e->o.dist(entities::g_ents[i]->o));
                     break;
                 }
                 break;
 
             case JUMPPAD:
-                renderentarrow(e, vec((int)(char)e.attr3*10.0f, (int)(char)e.attr2*10.0f, e.attr1*12.5f).normalize(), 4);
+				renderentarrow(e, vec((int)(char)e->attr3*10.0f, (int)(char)e->attr2*10.0f, e->attr1*12.5f).normalize(), 4);
                 break;
 
             case FLAG:
             case TELEDEST:
             {
                 vec dir;
-                vecfromyawpitch(e.attr1, 0, 1, 0, dir);
+				vecfromyawpitch(e->attr1, 0, 1, 0, dir);
                 renderentarrow(e, dir, 4);
                 break;
             }
         }
     }
 
-    bool printent(entities::classes::BaseEntity &e, char *buf, int len)
+    bool printent(entities::classes::BaseEntity *e, char *buf, int len)
     {
         return false;
     }
 
-    const char *entnameinfo(entities::classes::BaseEntity &e) {
+    const char *entnameinfo(entities::classes::BaseEntity *e) {
         std::string str;
-        str = e.classname + ":" + e.name;
+		str = e->classname + ":" + e->name;
         // TODO: List attributes here? Maybe...
         return str.c_str();
     }
@@ -211,7 +213,7 @@ namespace entities
 
     void editent(int i, bool local)
     {
-//        entities::classes::BaseEntity &e = *ents[i];
+//        entities::classes::BaseEntity *e = ents[i];
         extern int edit_entity;
         edit_entity = i;
         //conoutf("%i", i);
@@ -220,9 +222,9 @@ namespace entities
         //if(local) addmsg(N_EDITENT, "rii3ii5", i, (int)(e.o.x*DMF), (int)(e.o.y*DMF), (int)(e.o.z*DMF), e.et_type, e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
     }
 
-    float dropheight(entities::classes::BaseEntity &e)
+    float dropheight(entities::classes::BaseEntity *e)
     {
-        if(e.game_type==FLAG) return 0.0f;
+		if(e->game_type==FLAG) return 0.0f;
         return 4.0f;
     }
 #endif

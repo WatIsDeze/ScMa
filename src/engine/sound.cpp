@@ -465,13 +465,13 @@ void checkmapsounds()
     const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     loopv(ents)
     {
-        entities::classes::BaseEntity &e = *ents[i];
-        if(e.et_type!=ET_SOUND) continue;
-        if(camera1->o.dist(e.o) < e.attr2)
+        entities::classes::BaseEntity *e = ents[i];
+		if(e->et_type!=ET_SOUND) continue;
+		if(camera1->o.dist(e->o) < e->attr2)
         {
-            if(!(e.flags&entities::EntityFlags::EF_SOUND)) playsound(e.attr1, NULL, &e, SND_MAP, -1);
+			if(!(e->flags&entities::EntityFlags::EF_SOUND)) playsound(e->attr1, NULL, e, SND_MAP, -1);
         }
-        else if(e.flags&entities::EntityFlags::EF_SOUND) stopmapsound(&e);
+		else if(e->flags&entities::EntityFlags::EF_SOUND) stopmapsound(e);
     }
 }
 
@@ -570,8 +570,8 @@ void preloadmapsounds()
     const vector<entities::classes::BaseEntity *> &ents = entities::getents();
     loopv(ents)
     {
-        entities::classes::BaseEntity &e = *ents[i];
-        if(e.et_type==ET_SOUND) mapsounds.preloadsound(e.attr1);
+        entities::classes::BaseEntity *e = ents[i];
+		if(e->et_type==ET_SOUND) mapsounds.preloadsound(e->attr1);
     }
 }
 
