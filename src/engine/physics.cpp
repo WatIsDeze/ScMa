@@ -1694,8 +1694,6 @@ SCRIPTEXPORT void phystest()
     printf ("PHYS(cam): %s, air %d, floor: (%f, %f, %f), vel: (%f, %f, %f), g: (%f, %f, %f)\n", states[camera1->physstate], camera1->timeinair, camera1->floor.x, camera1->floor.y, camera1->floor.z, camera1->vel.x, camera1->vel.y, camera1->vel.z, camera1->falling.x, camera1->falling.y, camera1->falling.z);
 }
 
-// COMMAND(phystest, "");
-
 void vecfromyawpitch(float yaw, float pitch, int move, int strafe, vec &m)
 {
     if(move)
@@ -2001,13 +1999,6 @@ void updatephysstate(physent *d)
     d->o = old;
 }
 
-// #define dir(name,v,d,s,os) ICOMMAND(name, "D", (int *down), { player->s = *down!=0; player->v = player->s ? d : (player->os ? -(d) : 0); });
-
-// dir(backward, move,   -1, k_down,  k_up);
-// dir(forward,  move,    1, k_up,    k_down);
-// dir(left,     strafe,  1, k_left,  k_right);
-// dir(right,    strafe, -1, k_right, k_left);
-
 SCRIPTEXPORT void backward(CommandTypes::KeyPress down)
 {
     player->k_down = *down != 0;
@@ -2051,9 +2042,6 @@ SCRIPTEXPORT void crouch(CommandTypes::KeyPress down)
         player->crouching = -1;
     }
 }
-
-// ICOMMAND(jump,   "D", (CommandTypes::KeyPress down), { if(!*down || game::canjump()) player->jumping = *down!=0; });
-// ICOMMAND(crouch, "D", (CommandTypes::KeyPress down), { if(!*down) player->crouching = abs(player->crouching); else if(game::cancrouch()) player->crouching = -1; });
 
 bool entinmap(dynent *d, bool avoidplayers)        // brute force but effective way to find a free spawn spot in the map
 {

@@ -1752,10 +1752,8 @@ void allchanged(bool load)
     }
 }
 
-void recalc()
+SCRIPTEXPORT void recalc()
 {
     allchanged(true);
 }
-
-COMMAND(recalc, "");
 

@@ -3,6 +3,8 @@
 #ifndef _TOOLS_H
 #define _TOOLS_H
 
+#include "cube.h"
+
 #ifdef NULL
 #undef NULL
 #endif
@@ -181,7 +183,19 @@ inline char *copycubestr(char *d, const char *s, size_t len)
 }
 template<size_t N> inline char *copycubestr(char (&d)[N], const char *s) { return copycubestr(d, s, N); }
 
-inline char *concatcubestr(char *d, const char *s, size_t len) { size_t used = strlen(d); return used < len ? copycubestr(d+used, s, len-used) : d; }
+inline char *concatcubestr(char *d, const char *s, size_t len)
+{
+    size_t used = strlen(d);
+    if (used < len)
+    {
+        return copycubestr(d+used, s, len-used);
+    }
+    else
+    {
+        return d;
+    }
+}
+
 template<size_t N> inline char *concatcubestr(char (&d)[N], const char *s) { return concatcubestr(d, s, N); }
 
 inline char *prependcubestr(char *d, const char *s, size_t len)

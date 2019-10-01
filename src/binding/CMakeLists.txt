@@ -16,14 +16,16 @@ execute_process(
 foreach(input_file ${input_sources})
     execute_process(
         COMMAND python3 index.py cmake_output ${input_file}
-        WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         OUTPUT_VARIABLE input_file_target
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
-    list(APPEND output_sources ${CMAKE_CURRENT_BINARY_DIR}/${input_file_target})
+    get_filename_component(output_file_target ${CMAKE_CURRENT_BINARY_DIR}/${input_file_target} ABSOLUTE)
+    list(APPEND output_sources ${output_file_target})
     add_custom_command(
         OUTPUT
             ${CMAKE_CURRENT_BINARY_DIR}/${input_file_target}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMAND
             python3 index.py gen ${input_file} > ${CMAKE_CURRENT_BINARY_DIR}/${input_file_target}
         VERBATIM
@@ -49,4 +51,14 @@ execute_process(
 
 add_library(SchizoMania_Binding
     ${output_sources}
+)
+
+target_include_directories(SchizoMania_Binding
+    PRIVATE
+        ../
+)
+
+target_link_libraries(SchizoMania_Binding
+    PRIVATE
+        SchizoMania_Shared_Client    
 )

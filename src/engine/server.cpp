@@ -2,6 +2,7 @@
 // runs dedicated or as client coroutine
 
 #include "engine.h"
+#include "scriptexport.h"
 
 #define LOGSTRLEN 512
 
@@ -1104,7 +1105,7 @@ void initserver(bool listen, bool dedicated)
 }
 
 #ifndef STANDALONE
-void startlistenserver(int *usemaster)
+SCRIPTEXPORT void startlistenserver(int *usemaster)
 {
     if(serverhost) { conoutf(CON_ERROR, "listen server is already running"); return; }
 
@@ -1116,9 +1117,8 @@ void startlistenserver(int *usemaster)
 
     conoutf("listen server started for %d clients%s", maxclients, allowupdatemaster ? " and listed with master server" : "");
 }
-COMMAND(startlistenserver, "i");
 
-void stoplistenserver()
+SCRIPTEXPORT void stoplistenserver()
 {
     if(!serverhost) { conoutf(CON_ERROR, "listen server is not running"); return; }
 
@@ -1128,7 +1128,6 @@ void stoplistenserver()
 
     conoutf("listen server stopped");
 }
-COMMAND(stoplistenserver, "");
 #endif
 
 bool serveroption(char *opt)

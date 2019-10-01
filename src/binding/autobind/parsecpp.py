@@ -98,7 +98,7 @@ class CppParser:
 
     def dump_code(self):
         template = """
-#include "shared/command.h"
+#include "shared/cube.h"
 
 {}
         """

@@ -49,7 +49,7 @@
   #endif
 #endif
 
-#include "enet/include/enet/enet.h"
+#include <enet/enet.h>
 #include <zlib.h>
 
 // C++ STD Lib.

@@ -1064,7 +1064,7 @@ SCRIPTEXPORT void moveblendmap(int *dx, int *dy)
     else
         moveblendmap(*dx>>BM_SCALE, *dy>>BM_SCALE);
     showblendmap();
-});
+}
 
 void renderblendbrush()
 {

@@ -472,8 +472,6 @@ SCRIPTEXPORT void screenres(int w, int h)
     }
 }
 
-// ICOMMAND(screenres, "ii", (int *w, int *h), screenres(*w, *h));
-
 static void setgamma(int val)
 {
     if(screen && SDL_SetWindowBrightness(screen, val/100.0f) < 0) conoutf(CON_ERROR, "Could not set gamma: %s", SDL_GetError());

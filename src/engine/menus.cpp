@@ -49,7 +49,6 @@ SCRIPTEXPORT void applychanges()
     if(changetypes&CHANGE_SOUND) execident("resetsound");
 }
 
-// COMMAND(applychanges, "");
 SCRIPTEXPORT void pendingchanges(int *idx)
 {
     if (needsapply.inrange(*idx))

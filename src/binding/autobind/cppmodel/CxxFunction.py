@@ -37,36 +37,16 @@ class CxxFunction(CxxNode):
         functionName = self.sourceObject.spelling
         if self.customFuctionName:
             functionName = self.customFuctionName
-        return functionName + "(" + (", ".join(args)) + ")"
+        returntype = self.sourceObject.result_type.spelling
+        return returntype + " " + functionName + "(" + (", ".join(args)) + ")"
 
     def generate(self):
-        template = """extern {functionname}({argdecl});
+        template = """extern {returnt} {functionname}({argdecl});
 COMMAND({functionname}, "{proto}", {doc});
 """
-        template_custom = """extern {realfunctionname}({argdecl});
+        template_custom = """extern {returnt} {realfunctionname}({argdecl});
 ICOMMAND({functionname}, "{proto}", ({argdecl}), {realfunctionname}({argdecl}), {doc});
 """
-
-        # {'i', "int"},
-        # {'b', "bool"},
-        # {'f', "float"},
-        # {'F', "Float"}, //?
-        # {'t', "tea?"}, //??
-        # {'T', "Tea?"}, //??
-        # {'E', "Exp?"}, //??
-        # {'N', "Number?"}, //??
-        # {'D', "Double?"}, //??
-        # {'S', "String?"},
-        # {'s', "string"},
-        # {'e', "e?"},
-        # {'r', "r?"},
-        # {'$', "$?"},
-        # {'1', "1?"},
-        # {'2', "2?"},
-        # {'3', "3?"},
-        # {'4', "4?"},
-        # {'C', "C?"},
-        # {'V', "V?"}
 
         spelling2proto  = {
             "int": "i",
@@ -81,7 +61,8 @@ ICOMMAND({functionname}, "{proto}", ({argdecl}), {realfunctionname}({argdecl}), 
             "ident *": "$",
             "CommandTypes::ArgLen": "N",
             "CommandTypes::Expression": "e",
-            "CommandTypes::OptionalFloat": "F"
+            "CommandTypes::OptionalFloat": "F",
+            "tagval *": "t",
         }
 
         proto = ""
@@ -101,6 +82,7 @@ ICOMMAND({functionname}, "{proto}", ({argdecl}), {realfunctionname}({argdecl}), 
 
         argdecl = ", ".join(cppargs)
         functionName = self.sourceObject.spelling
+        returntype = self.sourceObject.result_type.spelling
         if self.customFuctionName:
             realFunctionName = functionName
             functionName = self.customFuctionName
@@ -110,6 +92,7 @@ ICOMMAND({functionname}, "{proto}", ({argdecl}), {realfunctionname}({argdecl}), 
                 realfunctionname = realFunctionName,
                 functionname = functionName,
                 proto = proto,
+                returnt = returntype,
                 doc = json.dumps(str(self.comment()))
             )            
         else:
@@ -117,5 +100,6 @@ ICOMMAND({functionname}, "{proto}", ({argdecl}), {realfunctionname}({argdecl}), 
                 argdecl = argdecl,
                 functionname = functionName,
                 proto = proto,
+                returnt = returntype,
                 doc = json.dumps(str(self.comment()))
             )

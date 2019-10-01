@@ -139,6 +139,7 @@ bool loadents(const char *fname, vector<entity> &ents, uint *crc)
     delete f;
 
     return true;*/
+    return false;
 }
 
 #ifndef STANDALONE
@@ -180,8 +181,6 @@ SCRIPTEXPORT void mapcfgname()
     path(cfgname);
     result(cfgname);
 }
-
-//COMMAND(mapcfgname, "");
 
 void backup(const char *name, const char *backupname)
 {
@@ -964,9 +963,6 @@ bool load_world(const char *mname, const char *cname)        // still supports a
 SCRIPTEXPORT void savecurrentmap() { save_world(game::getclientmap()); }
 SCRIPTEXPORT void savemap(char *mname) { save_world(mname); }
 
-// COMMAND(savemap, "s");
-// COMMAND(savecurrentmap, "");
-
 SCRIPTEXPORT void writeobj(char *name)
 {
     defformatcubestr(fname, "%s.obj", name);
@@ -1060,8 +1056,6 @@ SCRIPTEXPORT void writeobj(char *name)
 
     conoutf("generated model %s", fname);
 }
-
-// COMMAND(writeobj, "s");
 
 SCRIPTEXPORT void writecollideobj(char *name)
 {
@@ -1171,8 +1165,6 @@ SCRIPTEXPORT void writecollideobj(char *name)
 
     conoutf("generated collide model %s", fname);
 }
-
-// COMMAND(writecollideobj, "s");
 
 #endif
 

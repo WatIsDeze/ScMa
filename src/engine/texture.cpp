@@ -1676,7 +1676,7 @@ const char *MatSlot::name() const { return tempformatcubestr("material slot %s",
 
 const char *DecalSlot::name() const { return tempformatcubestr("decal slot %d", Slot::index); }
 
-void texturereset(int *n)
+SCRIPTEXPORT void texturereset(int *n)
 {
     if(!(identflags&IDF_OVERRIDDEN) && !game::allowedittoggle()) return;
     defslot = NULL;
@@ -1697,26 +1697,20 @@ void texturereset(int *n)
     }
 }
 
-COMMAND(texturereset, "i");
-
-void materialreset()
+SCRIPTEXPORT void materialreset()
 {
     if(!(identflags&IDF_OVERRIDDEN) && !game::allowedittoggle()) return;
     defslot = NULL;
     loopi((MATF_VOLUME|MATF_INDEX)+1) materialslots[i].reset();
 }
 
-COMMAND(materialreset, "");
-
-void decalreset(int *n)
+SCRIPTEXPORT void decalreset(int *n)
 {
     if(!(identflags&IDF_OVERRIDDEN) && !game::allowedittoggle()) return;
     defslot = NULL;
     resetslotshader();
     decalslots.deletecontents(*n);
 }
-
-COMMAND(decalreset, "i");
 
 static int compactedvslots = 0, compactvslotsprogress = 0, clonedvslots = 0;
 static bool markingvslots = false;
@@ -1862,13 +1856,13 @@ int compactvslots(bool cull)
     return total;
 }
 
-ICOMMAND(compactvslots, "i", (int *cull),
+SCRIPTEXPORT void compactvslots(int *cull)
 {
     extern int nompedit;
     if(nompedit && multiplayer()) return;
     compactvslots(*cull!=0);
     allchanged();
-});
+}
 
 static void clampvslotoffset(VSlot &dst, Slot *slot = NULL)
 {
@@ -2231,13 +2225,13 @@ static void fixinsidefaces(cube *c, const ivec &o, int size, int tex)
     }
 }
 
-ICOMMAND(fixinsidefaces, "i", (int *tex),
+SCRIPTEXPORT void fixinsidefaces(int *tex)
 {
     extern int nompedit;
     if(noedit(true) || (nompedit && multiplayer())) return;
     fixinsidefaces(worldroot, ivec(0, 0, 0), worldsize>>1, *tex && vslots.inrange(*tex) ? *tex : DEFAULT_GEOM);
     allchanged();
-});
+}
 
 const struct slottex
 {
@@ -2266,7 +2260,7 @@ int findslottex(const char *name)
     return -1;
 }
 
-void texture(char *type, char *name, int *rot, int *xoffset, int *yoffset, float *scale)
+SCRIPTEXPORT void texture(char *type, char *name, int *rot, int *xoffset, int *yoffset, float *scale)
 {
     int tnum = findslottex(type), matslot;
     if(tnum==TEX_DIFFUSE)
@@ -2307,72 +2301,63 @@ void texture(char *type, char *name, int *rot, int *xoffset, int *yoffset, float
     }
 }
 
-COMMAND(texture, "ssiiif");
-
-void texgrass(char *name)
+SCRIPTEXPORT void texgrass(char *name)
 {
     if(!defslot) return;
     Slot &s = *defslot;
     DELETEA(s.grass);
     s.grass = name[0] ? newcubestr(makerelpath("media/texture", name)) : NULL;
 }
-COMMAND(texgrass, "s");
 
-void texscroll(float *scrollS, float *scrollT)
+SCRIPTEXPORT void texscroll(float *scrollS, float *scrollT)
 {
     if(!defslot) return;
     Slot &s = *defslot;
     s.variants->scroll = vec2(*scrollS/1000.0f, *scrollT/1000.0f);
     propagatevslot(s.variants, 1<<VSLOT_SCROLL);
 }
-COMMAND(texscroll, "ff");
 
-void texoffset_(int *xoffset, int *yoffset)
+SCRIPTEXPORT_AS(texoffset) void texoffset_(int *xoffset, int *yoffset)
 {
     if(!defslot) return;
     Slot &s = *defslot;
     s.variants->offset = ivec2(*xoffset, *yoffset).max(0);
     propagatevslot(s.variants, 1<<VSLOT_OFFSET);
 }
-COMMANDN(texoffset, texoffset_, "ii");
 
-void texrotate_(int *rot)
+SCRIPTEXPORT_AS(texrotate) void texrotate_(int *rot)
 {
     if(!defslot) return;
     Slot &s = *defslot;
     s.variants->rotation = clamp(*rot, 0, 7);
     propagatevslot(s.variants, 1<<VSLOT_ROTATION);
 }
-COMMANDN(texrotate, texrotate_, "i");
 
-void texscale(float *scale)
+SCRIPTEXPORT void texscale(float *scale)
 {
     if(!defslot) return;
     Slot &s = *defslot;
     s.variants->scale = *scale <= 0 ? 1 : *scale;
     propagatevslot(s.variants, 1<<VSLOT_SCALE);
 }
-COMMAND(texscale, "f");
 
-void texlayer(int *layer)
+SCRIPTEXPORT void texlayer(int *layer)
 {
     if(!defslot) return;
     Slot &s = *defslot;
     s.variants->layer = *layer < 0 ? max(slots.length()-1+*layer, 0) : *layer;
     propagatevslot(s.variants, 1<<VSLOT_LAYER);
 }
-COMMAND(texlayer, "i");
 
-void texdetail(int *detail)
+SCRIPTEXPORT void texdetail(int *detail)
 {
     if(!defslot) return;
     Slot &s = *defslot;
     s.variants->detail = *detail < 0 ? max(slots.length()-1+*detail, 0) : *detail;
     propagatevslot(s.variants, 1<<VSLOT_DETAIL);
 }
-COMMAND(texdetail, "i");
 
-void texalpha(float *front, float *back)
+SCRIPTEXPORT void texalpha(float *front, float *back)
 {
     if(!defslot) return;
     Slot &s = *defslot;
@@ -2380,18 +2365,16 @@ void texalpha(float *front, float *back)
     s.variants->alphaback = clamp(*back, 0.0f, 1.0f);
     propagatevslot(s.variants, 1<<VSLOT_ALPHA);
 }
-COMMAND(texalpha, "ff");
 
-void texcolor(float *r, float *g, float *b)
+SCRIPTEXPORT void texcolor(float *r, float *g, float *b)
 {
     if(!defslot) return;
     Slot &s = *defslot;
     s.variants->colorscale = vec(clamp(*r, 0.0f, 2.0f), clamp(*g, 0.0f, 2.0f), clamp(*b, 0.0f, 2.0f));
     propagatevslot(s.variants, 1<<VSLOT_COLOR);
 }
-COMMAND(texcolor, "fff");
 
-void texrefract(float *k, float *r, float *g, float *b)
+SCRIPTEXPORT void texrefract(float *k, float *r, float *g, float *b)
 {
     if(!defslot) return;
     Slot &s = *defslot;
@@ -2402,24 +2385,21 @@ void texrefract(float *k, float *r, float *g, float *b)
         s.variants->refractcolor = vec(1, 1, 1);
     propagatevslot(s.variants, 1<<VSLOT_REFRACT);
 }
-COMMAND(texrefract, "ffff");
 
-void texsmooth(int *id, int *angle)
+SCRIPTEXPORT void texsmooth(int *id, int *angle)
 {
     if(!defslot) return;
     Slot &s = *defslot;
     s.smooth = smoothangle(*id, *angle);
 }
-COMMAND(texsmooth, "ib");
 
-void decaldepth(float *depth, float *fade)
+SCRIPTEXPORT void decaldepth(float *depth, float *fade)
 {
     if(!defslot || defslot->type() != Slot::DECAL) return;
     DecalSlot &s = *(DecalSlot *)defslot;
     s.depth = clamp(*depth, 1e-3f, 1e3f);
     s.fade = clamp(*fade, 0.0f, s.depth);
 }
-COMMAND(decaldepth, "ff");
 
 static void addglow(ImageData &c, ImageData &g, const vec &glowcolor)
 {
@@ -3166,7 +3146,7 @@ bool reloadtexture(Texture &tex)
     return true;
 }
 
-void reloadtex(char *name)
+SCRIPTEXPORT void reloadtex(char *name)
 {
     Texture *t = textures.access(path(name, true));
     if(!t) { conoutf(CON_ERROR, "texture %s is not loaded", name); return; }
@@ -3181,8 +3161,6 @@ void reloadtex(char *name)
         conoutf(CON_ERROR, "failed to reload texture %s", name);
     }
 }
-
-COMMAND(reloadtex, "s");
 
 void reloadtextures()
 {
@@ -3479,7 +3457,7 @@ bool loaddds(const char *filename, ImageData &image, int force)
     return true;
 }
 
-void gendds(char *infile, char *outfile)
+SCRIPTEXPORT void gendds(char *infile, char *outfile)
 {
     if(!hasS3TC || usetexcompress <= 1) { conoutf(CON_ERROR, "OpenGL driver does not support S3TC texture compression"); return; }
 
@@ -3577,7 +3555,6 @@ void gendds(char *infile, char *outfile)
 
     setuptexcompress();
 }
-COMMAND(gendds, "ss");
 
 void writepngchunk(stream *f, const char *type, uchar *data = NULL, uint len = 0)
 {
@@ -3833,7 +3810,7 @@ bool loadimage(const char *filename, ImageData &image)
 
 SVARP(screenshotdir, "screenshot");
 
-void screenshot(char *filename)
+SCRIPTEXPORT void screenshot(char *filename)
 {
     static cubestr buf;
     int format = -1, dirlen = 0;
@@ -3884,9 +3861,7 @@ void screenshot(char *filename)
     saveimage(path(buf), format, image, true);
 }
 
-COMMAND(screenshot, "s");
-
-void flipnormalmapy(char *destfile, char *normalfile) // jpg/png/tga-> tga
+SCRIPTEXPORT void flipnormalmapy(char *destfile, char *normalfile) // jpg/png/tga-> tga
 {
     ImageData ns;
     if(!loadimage(normalfile, ns)) return;
@@ -3899,7 +3874,7 @@ void flipnormalmapy(char *destfile, char *normalfile) // jpg/png/tga-> tga
     saveimage(destfile, guessimageformat(destfile, IMG_TGA), d);
 }
 
-void mergenormalmaps(char *heightfile, char *normalfile) // jpg/png/tga + tga -> tga
+SCRIPTEXPORT void mergenormalmaps(char *heightfile, char *normalfile) // jpg/png/tga + tga -> tga
 {
     ImageData hs, ns;
     if(!loadimage(heightfile, hs) || !loadimage(normalfile, ns) || hs.w != ns.w || hs.h != ns.h) return;
@@ -3910,7 +3885,7 @@ void mergenormalmaps(char *heightfile, char *normalfile) // jpg/png/tga + tga ->
     saveimage(normalfile, guessimageformat(normalfile, IMG_TGA), d);
 }
 
-void normalizenormalmap(char *destfile, char *normalfile) // jpg/png/tga-> tga
+SCRIPTEXPORT void normalizenormalmap(char *destfile, char *normalfile) // jpg/png/tga-> tga
 {
     ImageData ns;
     if(!loadimage(normalfile, ns)) return;
@@ -3921,7 +3896,7 @@ void normalizenormalmap(char *destfile, char *normalfile) // jpg/png/tga-> tga
     saveimage(destfile, guessimageformat(destfile, IMG_TGA), d);
 }
 
-void removealphachannel(char *destfile, char *rgbafile)
+SCRIPTEXPORT void removealphachannel(char *destfile, char *rgbafile)
 {
     ImageData ns;
     if(!loadimage(rgbafile, ns)) return;
@@ -3934,8 +3909,4 @@ void removealphachannel(char *destfile, char *rgbafile)
     saveimage(destfile, guessimageformat(destfile, IMG_TGA), d);
 }
 
-COMMAND(flipnormalmapy, "ss");
-COMMAND(mergenormalmaps, "ss");
-COMMAND(normalizenormalmap, "ss");
-COMMAND(removealphachannel, "ss");
 

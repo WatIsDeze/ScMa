@@ -3542,7 +3542,7 @@ int listlen(const char *s)
     while(parselist(s)) n++;
     return n;
 }
-ICOMMAND(listlen, "s", (char *s), intret(listlen(s), "builtin");
+ICOMMAND(listlen, "s", (char *s), intret(listlen(s)), "builtin");
 
 void at(tagval *args, int numargs)
 {
@@ -3776,7 +3776,7 @@ void listcount(ident *id, const char *list, const uint *body)
     if(n) poparg(*id);
     intret(r);
 }
-COMMAND(listcount, "builtin");
+COMMAND(listcount, "", "builtin");
 
 void prettylist(const char *s, const char *conj)
 {

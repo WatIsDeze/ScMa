@@ -273,12 +273,12 @@ cube &blockcube(int x, int y, int z, const block3 &b, int rgrid) // looks up a w
 
 int selchildcount = 0, selchildmat = -1;
 
-SCRIPTEXPORT void havesel()
+SCRIPTEXPORT_AS(havesel) void havesel_impl()
 {
     intret(havesel ? selchildcount : 0);
 }
 
-SCRIPTEXPORT void selchildcount()
+SCRIPTEXPORT_AS(selchildcount) void selchildcount_impl()
 {
     if(selchildcount < 0)
     {
@@ -290,9 +290,9 @@ SCRIPTEXPORT void selchildcount()
     }
 }
 
-SCRIPTEXPORT void selchildmat(char *prefix)
+SCRIPTEXPORT_AS(selchildmat) void selchildmat_impl(char *prefix)
 {
-    if(selchildmat > 0) result(getmaterialdesc(selchildmat, prefix)); };
+    if(selchildmat > 0) result(getmaterialdesc(selchildmat, prefix)); 
 }
 
 
@@ -773,9 +773,7 @@ void pruneundos(int maxremain)                          // bound memory
     }
 }
 
-void clearundos() { pruneundos(0); }
-
-COMMAND(clearundos, "");
+SCRIPTEXPORT void clearundos() { pruneundos(0); }
 
 undoblock *newundocube(const selinfo &s)
 {
@@ -1221,7 +1219,7 @@ void cleanupprefabs()
     enumerate(prefabs, prefab, p, p.cleanup());
 }
 
-void delprefab(char *name)
+SCRIPTEXPORT void delprefab(char *name)
 {
     prefab *p = prefabs.access(name);
     if(p)
@@ -1231,9 +1229,8 @@ void delprefab(char *name)
         conoutf("deleted prefab %s", name);
     }
 }
-COMMAND(delprefab, "s");
 
-void saveprefab(char *name)
+SCRIPTEXPORT void saveprefab(char *name)
 {
     if(!name[0] || noedit(true) || (nompedit && multiplayer())) return;
     prefab *b = prefabs.access(name);
@@ -1259,7 +1256,6 @@ void saveprefab(char *name)
     delete f;
     conoutf("wrote prefab file %s", filename);
 }
-COMMAND(saveprefab, "s");
 
 void pasteblock(block3 &b, selinfo &sel, bool local)
 {
@@ -1296,13 +1292,12 @@ prefab *loadprefab(const char *name, bool msg = true)
    return b;
 }
 
-void pasteprefab(char *name)
+SCRIPTEXPORT void pasteprefab(char *name)
 {
     if(!name[0] || noedit() || (nompedit && multiplayer())) return;
     prefab *b = loadprefab(name, true);
     if(b) pasteblock(*b->copy, sel, true);
 }
-COMMAND(pasteprefab, "s");
 
 struct prefabmesh
 {
@@ -2223,7 +2218,7 @@ SCRIPTEXPORT void vdelta(CommandTypes::Expression body)
     usevdelta--;
 }
 
-SCRIPTEXPORT vrotate(int *n)
+SCRIPTEXPORT void vrotate(int *n)
 {
     if(noedit()) return;
     VSlot ds;
@@ -2511,7 +2506,7 @@ SCRIPTEXPORT_AS(texmru) void texmru_impl(int *idx)
     intret(texmru.inrange(*idx) ? texmru[*idx] : texmru.length()); 
 }
 
-SCRIPTEXPORT void looptexmru(ident *id, uint *body)
+SCRIPTEXPORT void looptexmru(ident *id, CommandTypes::Expression body)
 {
     loopstart(id, stack);
     filltexlist();
@@ -2524,12 +2519,12 @@ SCRIPTEXPORT void looptexmru(ident *id, uint *body)
 }
 SCRIPTEXPORT void numvslots()
 {
-    itret(vslots.length());
+    intret(vslots.length());
 }
 
 SCRIPTEXPORT void numslots()
 {
-    itret(slots.length());
+    intret(slots.length());
 }
 
 

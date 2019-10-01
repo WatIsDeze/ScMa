@@ -1,4 +1,5 @@
 #include "engine.h"
+#include "scriptexport.h"
 
 struct normalkey
 {
@@ -277,5 +278,8 @@ int smoothangle(int id, int angle)
     return id;
 }
 
-ICOMMAND(smoothangle, "ib", (int *id, int *angle), intret(smoothangle(*id, *angle)));
+SCRIPTEXPORT_AS(smoothangle) void smoothangle_impl(int *id, int *angle)
+{
+    intret(smoothangle(*id, *angle));
+}
 

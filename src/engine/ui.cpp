@@ -3229,7 +3229,7 @@ namespace UI
         if(buildparent) loopi(buildchild) buildparent->children[i]->setalign(*xalign, *yalign);
     }, "builtin ui");
 
-    SCRIPTEXPORT void uiclamp(int *left, int *right, int *top, int *bottom),
+    SCRIPTEXPORT void uiclamp(int *left, int *right, int *top, int *bottom)
     {
         if(buildparent) buildparent->setclamp(*left, *right, *top, *bottom);
     }
@@ -3258,7 +3258,7 @@ namespace UI
         BUILD(VerticalList, o, o->setup(*space), children);
     }
 
-    SCRIPTEXPORT void uilist, "fe", (float *space, CommandTypes::Expression children)
+    SCRIPTEXPORT void uilist(float *space, CommandTypes::Expression children)
     {
         for(Object *parent = buildparent; parent && !parent->istype<VerticalList>(); parent = parent->parent)
         {
@@ -3281,8 +3281,11 @@ namespace UI
         BUILDCOLUMNS(TableHeader, o, o->setup(), columndata, children);
     }
 
-    SCRIPTEXPORT void uitablerow, "ee", (CommandTypes::Expression columndata, CommandTypes::Expression children),
-        BUILDCOLUMNS(TableRow, o, o->setup(), columndata, children));
+    SCRIPTEXPORT void uitablerow(CommandTypes::Expression columndata, CommandTypes::Expression children)
+    {
+        BUILDCOLUMNS(TableRow, o, o->setup(), columndata, children);
+    }
+
     SCRIPTEXPORT void uitable(float *spacew, float *spaceh, CommandTypes::Expression children)
     {
         BUILD(Table, o, o->setup(*spacew, *spaceh), children);
@@ -3587,7 +3590,7 @@ namespace UI
             o->setup(tex, *minw, *minh,
                 parsepixeloffset(cropx, tex->xs), parsepixeloffset(cropy, tex->ys),
                 parsepixeloffset(cropw, tex->xs), parsepixeloffset(croph, tex->ys));
-        }, children)
+        }, children);
     }
 
     SCRIPTEXPORT void uiborderedimage(char *texname, tagval *texborder, float *screenborder, CommandTypes::Expression children)

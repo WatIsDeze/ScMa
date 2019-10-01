@@ -1008,7 +1008,7 @@ void setviewcell(const vec &p)
     if(!usepvs || !usewaterpvs) curwaterpvs = 0;
 }
 
-void clearpvs()
+SCRIPTEXPORT void clearpvs()
 {
     DELETEP(viewcells);
     pvs.setsize(0);
@@ -1018,8 +1018,6 @@ void clearpvs()
     lockpvs = 0;
     lockpvs_(false);
 }
-
-COMMAND(clearpvs, "");
 
 static void findwaterplanes()
 {
@@ -1059,7 +1057,7 @@ static void findwaterplanes()
     if(waterfalls.length() > 0 && numwaterplanes < MAXWATERPVS) numwaterplanes++;
 }
 
-void testpvs(int *vcsize)
+SCRIPTEXPORT void testpvs(int *vcsize)
 {
     lockpvs_(false);
 
@@ -1094,9 +1092,8 @@ void testpvs(int *vcsize)
     loopi(numwaterplanes) waterplanes[i].height = oldwaterplanes[i];
 }
 
-COMMAND(testpvs, "i");
 
-void genpvs(int *viewcellsize)
+SCRIPTEXPORT void genpvs(int *viewcellsize)
 {
     if(worldsize > 1<<15)
     {
@@ -1177,15 +1174,11 @@ void genpvs(int *viewcellsize)
             pvs.length(), pvsbuf.length()/1024.0f, pvsbuf.length()/max(pvs.length(), 1), (end - start) / 1000.0f);
 }
 
-COMMAND(genpvs, "i");
-
-void pvsstats()
+SCRIPTEXPORT void pvsstats()
 {
     conoutf("%d unique view cells totaling %.1f kB and averaging %d B",
         pvs.length(), pvsbuf.length()/1024.0f, pvsbuf.length()/max(pvs.length(), 1));
 }
-
-COMMAND(pvsstats, "");
 
 static inline bool pvsoccluded(uchar *buf, const ivec &co, int size, const ivec &bbmin, const ivec &bbmax)
 {

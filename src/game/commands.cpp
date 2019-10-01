@@ -58,7 +58,7 @@ namespace game {
     };
 
     // ent_list_attr - Lists all the properties of the given entity.
-    SCRIPTEXPORT ent_list_attr()
+    SCRIPTEXPORT void ent_list_attr()
     {
         // TODO: Fix the namespace variable issues.
         //extern vector<entities::classes::BaseEntity *> entities::ents;

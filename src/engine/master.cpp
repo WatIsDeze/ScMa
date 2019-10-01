@@ -7,6 +7,7 @@
 #endif
 
 #include "cube.h"
+#include "scriptexport.h"
 #include <signal.h>
 #include <enet/enettime.h>
 

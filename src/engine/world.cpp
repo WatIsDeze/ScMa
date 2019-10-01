@@ -907,7 +907,7 @@ bool hoveringonent(int ent, int orient)
 
 VAR(entitysurf, 0, 0, 1);
 
-SCRIPTEXPORT void entadd(),
+SCRIPTEXPORT void entadd()
 {
     if(enthover >= 0 && !noentedit())
     {
@@ -922,7 +922,7 @@ SCRIPTEXPORT void enttoggle()
     else { if(entmoving > 1) entmoving = 1; intret(1); }
 }
 
-SCRIPTEXPORT void entmoving(int *n)
+SCRIPTEXPORT_AS(entmoving) void entmoving_impl(int *n)
 {
     if(*n >= 0)
     {

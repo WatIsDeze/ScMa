@@ -1057,7 +1057,10 @@ void gl_checkextensions()
     if(hasGPU5 && hasTG) tqaaresolvegather = 1;
 }
 
-ICOMMAND(glext, "s", (char *ext), intret(hasext(ext) ? 1 : 0));
+SCRIPTEXPORT void glext(char *ext)
+{
+    intret(hasext(ext) ? 1 : 0);
+}
 
 struct timer
 {
@@ -1219,14 +1222,26 @@ void gl_init()
 
 VAR(wireframe, 0, 0, 1);
 
-ICOMMAND(getcamyaw, "", (), floatret(camera1->yaw));
-ICOMMAND(getcampitch, "", (), floatret(camera1->pitch));
-ICOMMAND(getcamroll, "", (), floatret(camera1->roll));
-ICOMMAND(getcampos, "", (),
+SCRIPTEXPORT void getcamyaw()
+{
+    floatret(camera1->yaw);
+}
+
+SCRIPTEXPORT void getcampitch()
+{
+    floatret(camera1->pitch);
+}
+
+SCRIPTEXPORT void getcamroll()
+{
+    floatret(camera1->roll);
+}
+
+SCRIPTEXPORT void getcampos()
 {
     defformatcubestr(pos, "%s %s %s", floatstr(camera1->o.x), floatstr(camera1->o.y), floatstr(camera1->o.z));
     result(pos);
-});
+}
 
 vec worldpos, camdir, camright, camup;
 
@@ -2596,14 +2611,12 @@ void loadcrosshair(const char *name, int i)
     }
 }
 
-void loadcrosshair_(const char *name, int *i)
+SCRIPTEXPORT_AS(loadcrosshair) void loadcrosshair_(const char *name, int *i)
 {
     loadcrosshair(name, *i);
 }
 
-COMMANDN(loadcrosshair, loadcrosshair_, "si");
-
-ICOMMAND(getcrosshair, "i", (int *i),
+SCRIPTEXPORT void getcrosshair(int *i)
 {
     const char *name = "";
     if(*i >= 0 && *i < MAXCROSSHAIRS)
@@ -2612,7 +2625,7 @@ ICOMMAND(getcrosshair, "i", (int *i),
         if(!name) name = "media/interface/crosshair/default.png";
     }
     result(name);
-});
+}
 
 void writecrosshairs(stream *f)
 {

@@ -183,13 +183,11 @@ void trydisconnect(bool local)
     else conoutf("not connected");
 }
 
-// ICOMMAND(connect, "sis", (char *name, int *port, char *pw), connectserv(name, *port, pw));
 SCRIPTEXPORT void lanconnect(int *port, char *pw)
 {
     connectserv(NULL, *port, pw);
 }
 
-// COMMAND(reconnect, "s");
 SCRIPTEXPORT void disconnect(int *local)
 {
     trydisconnect(*local != 0);
