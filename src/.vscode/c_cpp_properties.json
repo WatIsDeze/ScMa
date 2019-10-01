@@ -17,7 +17,8 @@
         {
             "name": "OSX",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "./**"
             ],
             "defines": [
                 "GL_SILENCE_DEPRECATION=1"
