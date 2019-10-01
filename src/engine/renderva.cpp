@@ -513,7 +513,7 @@ static inline void rendermapmodel(entities::classes::BaseEntity *e)
         return;
 
     int anim = ANIM_MAPMODEL|ANIM_LOOP, basetime = 0;
-	if(e->flags&entities::EntityFlags::EF_ANIM) ((entities::classes::BaseMapModel&)e).onAnimate(anim, basetime);
+    if(e->flags&entities::EntityFlags::EF_ANIM) ((entities::classes::BaseMapModel*)e)->onAnimate(anim, basetime);
 	rendermapmodel(e->model_idx, anim, e->o, e->attr2, e->attr3, e->attr4, MDL_CULL_VFC | MDL_CULL_DIST, basetime, e->attr5 > 0 ? e->attr5/100.0f : 1.0f);
 }
 

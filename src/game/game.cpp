@@ -36,7 +36,7 @@ namespace game
        // gets2c();
         //updateentities();
         //crouchplayer(player1, 10, true);
-        moveplayer(player1, 10, true);
+        //moveplayer(player1, 10, true);
 
        // if(player->clientnum >=0) c2sinfo();   // do this last, to reduce the effective frame lag
     }
@@ -45,7 +45,6 @@ namespace game
     {
         player1 = new entities::classes::Player();
         player1->respawn();
-        player1->resetinterp();
     }
 
     void updateentities() {
@@ -149,7 +148,7 @@ namespace game
         SpawnPlayer();
 
         // Find our playerspawn.
-        findplayerspawn(player1, 1, 0);
+        findplayerspawn(player1, -1, 0);
     }
     void loadingmap(const char *name) {
 
@@ -157,8 +156,13 @@ namespace game
 
     void startmap(const char *name)
     {
+        // Spawn our player.
         SpawnPlayer();
-        findplayerspawn(player1, 0);
+
+        // Find player spawn point.
+        findplayerspawn(player1, -1, 0);
+
+        // Reset entity spawns.
         entities::resetspawns();
         copycubestr(clientmap, name ? name : "");
         execident("mapstart");
@@ -218,7 +222,7 @@ namespace game
 
     entities::classes::BaseEntity *iterdynents(int i) {
         if (i == 0) {
-            return (entities::classes::BasePhysicalEntity*)player1;
+            return player1;
         } else {
             if (i < entities::g_ents.length()) {
                 return entities::g_ents[i];
@@ -252,8 +256,7 @@ namespace game
     }
 
     void setupcamera() {
-        player1->o = player1->newpos;
-        player1->resetinterp();
+
     }
 
     bool allowthirdperson() {
@@ -335,7 +338,7 @@ namespace game
         // Setup the map time.
         maptime = 0;
         SpawnPlayer();
-        findplayerspawn(player1, 0, 0);
+        findplayerspawn(player1, -1, 0);
 
     }
 

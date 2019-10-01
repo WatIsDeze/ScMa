@@ -1442,9 +1442,6 @@ void recomputecamera()
     else
     {
         static entities::classes::BasePhysicalEntity tempcamera;
-        tempcamera.et_type = ET_GAMESPECIFIC;
-        tempcamera.ent_type = ENT_CAMERA;
-        tempcamera.game_type = ET_GAMESPECIFIC;
         camera1 = &tempcamera;
         if(detachedcamera && shoulddetach) camera1->o = player->o;
         else
@@ -1452,13 +1449,10 @@ void recomputecamera()
             *camera1 = *player;
             detachedcamera = shoulddetach;
         }
-        //camera1->reset();
-        camera1->et_type = ET_GAMESPECIFIC;
+        camera1->reset();
         camera1->ent_type = ENT_CAMERA;
-        camera1->game_type = ET_GAMESPECIFIC;
         camera1->move = -1;
         camera1->eyeheight = camera1->aboveeye = camera1->radius = camera1->xradius = camera1->yradius = 2;
-
         matrix3 orient;
         orient.identity();
         orient.rotate_around_z(camera1->yaw*RAD);
@@ -2101,9 +2095,7 @@ void drawminimap()
     static entities::classes::BaseDynamicEntity cmcamera;
     cmcamera = *player;
     cmcamera.reset();
-    cmcamera.et_type = ET_GAMESPECIFIC;
     cmcamera.ent_type = ENT_CAMERA;
-    cmcamera.game_type = GAMEENTITY;
     cmcamera.o = vec(minimapcenter.x, minimapcenter.y, minimapheight > 0 ? minimapheight : minimapcenter.z + minimapradius.z + 1);
     cmcamera.yaw = 0;
     cmcamera.pitch = -90;
@@ -2184,10 +2176,8 @@ void drawcubemap(int size, const vec &o, float yaw, float pitch, const cubemapsi
     entities::classes::BasePhysicalEntity *oldcamera = camera1;
     static entities::classes::BaseDynamicEntity cmcamera;
     cmcamera = *player;
-    //cmcamera.reset();
-    cmcamera.et_type = ET_GAMESPECIFIC;
+    cmcamera.reset();
     cmcamera.ent_type = ENT_CAMERA;
-    cmcamera.game_type = GAMEENTITY;
     cmcamera.o = o;
     cmcamera.yaw = yaw;
     cmcamera.pitch = pitch;

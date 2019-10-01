@@ -50,23 +50,12 @@ namespace entities
 
     const char *entmdlname(int type)
     {
-        static const char * const entmdlnames[MAXENTTYPES] =
-        {
-            NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-            "game/teleport", NULL, NULL,
-            NULL
-        };
-        return entmdlnames[type];
+        return "";
     }
 
     const char *entmodel(const entities::classes::BaseEntity *e)
     {
-		if(e->game_type == TELEPORT)
-        {
-			if(e->attr2 > 0) return mapmodelname(e->attr2);
-			if(e->attr2 < 0) return NULL;
-        }
-		return e->game_type < MAXENTTYPES ? entmdlname(e->et_type) : NULL;
+        return NULL;
     }
 
     void preloadentities()
@@ -79,8 +68,8 @@ namespace entities
                 entities::classes::BaseEntity *e = entities::g_ents[i];
 
                 // Ensure that they don't get preloaded in preload, should be done in the constructor of ET_MAPMODEL entities.
-                if (e->et_type != ET_MAPMODEL)
-                    e->preload();
+                //if (e->et_type != ET_MAPMODEL)
+                e->preload();
              }
         }
 
@@ -110,7 +99,7 @@ namespace entities
             if (strclass != NULL && strcmp(strclass, "door") == 0) { return new entities::classes::Door(); }
             if (strclass != NULL && strcmp(strclass, "model") == 0) { return new entities::classes::BaseMapModel(); }
 
-            conoutf("Returned entities::class::BaseEntity*");
+            conoutf("Returned entities::class:: %s", strclass);
             // No entity was found, so we'll return base entity for now.
             // TODO: Should we do this at all? I guess returning NULL is fine too and warning our user instead.
             return new entities::classes::BaseEntity();

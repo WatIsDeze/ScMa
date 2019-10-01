@@ -24,7 +24,7 @@ namespace entities {
         class CoreEntity
         {
         public:
-
+            CoreEntity();
 
             //
             // Legacy Core Entity data.

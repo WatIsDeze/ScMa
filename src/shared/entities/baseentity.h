@@ -15,7 +15,7 @@ namespace entities
             //
             // Base functions.
             //
-//            BaseEntity();
+            BaseEntity();
 //            BaseEntity(const CoreEntity& e);
 //            BaseEntity(const BaseEntity& e);
 //            BaseEntity(const BasePhysicalEntity *e);

@@ -14,7 +14,7 @@
 #include "model.h"
 #include "ents.h"
 
-extern entities::classes::Player *player;
+extern entities::classes::BaseDynamicEntity *player;
 extern entities::classes::BasePhysicalEntity *camera1;                // special ent that acts as camera, same object as player in FPS mode
 
 extern int worldscale, worldsize;

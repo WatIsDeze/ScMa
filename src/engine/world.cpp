@@ -1226,26 +1226,25 @@ entities::classes::BaseEntity *new_game_entity(bool local, const vec &o, int &id
         }
     } else {
         while(ents.length() < idx) {
-            ents.add(entities::newgameentity(strclass))->et_type = ET_EMPTY;
-//            ents.add(entities::newgameentity())->et_type = ET_EMPTY;
+//            ents.add(entities::newgameentity(strclass))->et_type = ET_EMPTY;
+            ents.add(entities::newgameentity())->et_type = ET_EMPTY;
         }
     }
 
     entities::classes::BaseEntity *e = entities::newgameentity(strclass);
     e->o = o;
     // Maybe remove this too.
-    /*   e->attr1 = 0;
+    e->attr1 = 0;
     e->attr2 = 0;
     e->attr3 = 0;
     e->attr4 = 0;
     e->attr5 = 0;
     e->reserved = 0;
-*/
-    e->et_type = ET_EMPTY;
+
+    e->et_type = ET_GAMESPECIFIC;
     e->ent_type = ENT_INANIMATE;
     e->game_type = GAMEENTITY;
-    e->et_type = GAMEENTITY;
-    e->et_type = ET_GAMESPECIFIC;
+
     // TODO: Remove this.
 /*    if(local && fix)
     {
@@ -1293,22 +1292,12 @@ void new_game_entity(char *strclass, char *a1, char *a2, char *a3, char *a4, cha
     t->game_type = new_game_type;
 
     // Copy string attributes.
-    //copycubestr(t->classname, strclass, 256);
     t->name = std::string(strclass) + std::to_string(idx);
     t->classname = std::string(strclass);
 
-/*    copycubestr(t->str_attr1, a1, 256);
-    copycubestr(t->str_attr2, a2, 256);
-    copycubestr(t->str_attr3, a3, 256);
-    copycubestr(t->str_attr4, a4, 256);
-    copycubestr(t->str_attr5, a5, 256);
-    copycubestr(t->str_attr6, a6, 256);
-    copycubestr(t->str_attr7, a7, 256);
-    copycubestr(t->str_attr8, a8, 256);
-*/
     enttoggle(idx);
     makeundoent();
-    entedit(idx, e->et_type = new_et_type);
+    entedit(idx, e->et_type = new_et_type; e->ent_type = new_ent_type; e->game_type = new_game_type);
     commitchanges();
 }
 
@@ -1580,13 +1569,16 @@ int findentity_byclass(const std::string &classname, int index, int attr1, int a
         for(int i = index; i<ents.length(); i++)
         {
             entities::classes::BaseEntity *e = ents[i];
+
             if (!e) continue;
-            if(!e->classname.compare(classname))
+            if(e->classname.compare(classname) == 0) {
+                conoutf("->classname %s , %s", e->classname.c_str(), classname.c_str());
                 return i;
+            }
         }
     }
 
-    return -1;
+    return index;
 }
 
 void findplayerspawn(entities::classes::Player *d, int forceent, int tag) // place at random spawn

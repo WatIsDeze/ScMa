@@ -5,6 +5,10 @@
 namespace entities {
 namespace classes {
 
+BaseEntity::BaseEntity() : CoreEntity() {
+
+}
+
 void BaseEntity::preload() {}
 void BaseEntity::think() {}
 void BaseEntity::render() {}

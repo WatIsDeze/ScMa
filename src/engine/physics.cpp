@@ -1945,6 +1945,8 @@ void interppos(entities::classes::BasePhysicalEntity *pl)
 
 void moveplayer(entities::classes::BaseDynamicEntity *pl, int moveres, bool local)
 {
+    conoutf("MovePlayer %s", pl->name);
+
     if(physsteps <= 0)
     {
         if(local) interppos(pl);

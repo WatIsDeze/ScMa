@@ -8,7 +8,7 @@ namespace classes {
 
 Player::Player() : BaseDynamicEntity() {
     state = CS_ALIVE;
-    et_type = ENT_PLAYER;
+    et_type = ET_GAMESPECIFIC;
     ent_type = ENT_PLAYER;
     game_type = GAMEENTITY;
     collidetype = COLLIDE_OBB;
