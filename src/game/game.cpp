@@ -21,14 +21,10 @@ namespace game
 
     void updateworld() {
         // Update the map time. (First frame since maptime = 0.
-        if(!maptime) {
-            maptime = lastmillis;
-            maprealtime = totalmillis;
-            return;
-        }
+        if(!maptime) { maptime = lastmillis; maprealtime = totalmillis; return; }
 
         // Escape this function if there is no currenttime yet from server to client. (Meaning it is 0.)
-        if(!curtime) return; //{ gets2c(); if (player1->) c2sinfo(); return; } //c2sinfo(); }///if(player1->clientnum>=0) c2sinfo(); return; }
+        //if(!curtime) return; //{ gets2c(); if (player1->) c2sinfo(); return; } //c2sinfo(); }///if(player1->clientnum>=0) c2sinfo(); return; }
         //if(!curtime) return; //{ gets2c(); c2sinfo(); }///if(player1->clientnum>=0) c2sinfo(); return; }
 
         // Update the physics.
@@ -36,7 +32,9 @@ namespace game
 
         // Update all our entity objects.
        // gets2c();
-        updateentities();
+        //updateentities();
+        //crouchplayer(player1, 10, true);
+        moveplayer(player1, 10, true);
 
        // if(player->clientnum >=0) c2sinfo();   // do this last, to reduce the effective frame lag
     }
@@ -45,6 +43,7 @@ namespace game
     {
         player1 = new entities::classes::Player();
         player1->respawn();
+        player1->resetinterp();
     }
 
     void updateentities() {
@@ -141,11 +140,14 @@ namespace game
         // Copy into mapname and reset maptime.
         maptime = 0;
 
+        // Clear.
+        entities::clearents();
+
         // SpawnPlayer.
         SpawnPlayer();
 
         // Find our playerspawn.
-        findplayerspawn(player1);
+        findplayerspawn(player1, 1, 0);
     }
     void loadingmap(const char *name) {
 
@@ -154,7 +156,7 @@ namespace game
     void startmap(const char *name)
     {
         SpawnPlayer();
-        findplayerspawn(player1);
+        findplayerspawn(player1, 0);
         entities::resetspawns();
         copycubestr(clientmap, name ? name : "");
         execident("mapstart");
@@ -229,13 +231,13 @@ namespace game
     }
     // int numdynents() { return players.length()+monsters.length()+movables.length(); }
     int numdynents() {
-        return entities::g_ents.length(); // + 1 is for the player.
+        return entities::g_ents.length() + 1; // + 1 is for the player.
     }
 
     // This function should be used to render HUD View stuff etc.
     void rendergame(bool mainpass) {
         // This function should be used to render HUD View stuff etc.
-//        game::RenderGameEntities();
+
     }
 
     const char *defaultcrosshair(int index) {
@@ -248,10 +250,8 @@ namespace game
     }
 
     void setupcamera() {
-        /*player1->yaw = target->yaw;
-        player1->pitch = target->pitch;
-        player1->o = target->o;
-        player1->resetinterp();*/
+        player1->o = player1->newpos;
+        player1->resetinterp();
     }
 
     bool allowthirdperson() {
@@ -275,7 +275,7 @@ namespace game
         {
             // Let's go at it!
             entities::classes::BaseEntity *e = entities::g_lightEnts[i];
-            e->render();
+            //e->render();
         }
     }
 
@@ -331,7 +331,10 @@ namespace game
 
     void initclient() {
         // Setup the map time.
+        maptime = 0;
         SpawnPlayer();
+        findplayerspawn(player1, 0, 0);
+
     }
 
     const char *gameident() {

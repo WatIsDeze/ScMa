@@ -690,19 +690,16 @@ static inline model *loadmapmodel(int n)
     return NULL;
 }
 
-static inline model *loadmapmodel(const std::string &filename)
+static inline model *loadmapmodel(const char *filename)
 {
     loopv(mapmodels)
     {
-        // Fetch the name.
-        std::string name = mapmodels[i].name;
-
         // Compare if the mapmodel's values equal each other.
         model *m = mapmodels[i].m;
 
-        if (strcmp(m->name, filename.c_str()) == 0)
+        if (strcmp(m->name, filename) == 0)
             // If they equal each other, it means we don't have to load it in again. Just return the pointer.
-            return m ? m : loadmodel(filename.c_str());
+            return m ? m : loadmodel(filename);
         else
             return NULL;
     }

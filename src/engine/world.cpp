@@ -1143,6 +1143,9 @@ entities::classes::BaseEntity *newentity(bool local, const vec &o, int type, int
     e.ent_type = ENT_INANIMATE;
     e.game_type = type;
     e.reserved = 0;
+    e.classname = "engine_ent";
+    e.name = "engine_ent_" + std::to_string(idx);
+
     if(local && fix)
     {
         switch(type)
@@ -1205,7 +1208,7 @@ entities::classes::BaseEntity *new_game_entity(bool local, const vec &o, int &id
     if(local)
     {
         idx = -1;
-        for(int i = keepents; i < ents.length(); i++) if(ents[i]->et_type == ET_EMPTY) { idx = i; break; }
+        for(int i = keepents; i < ents.length(); i++) if(ents[i]->et_type == ET_EMPTY) { conoutf("idx = %i", idx); idx = i; break; }
         if(idx < 0 && ents.length() >= MAXENTS) { conoutf("too many entities"); return NULL; }
     } else {
         while(ents.length() < idx) {

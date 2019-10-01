@@ -16,6 +16,8 @@ namespace game
         // Render our client player.
         if (game::player1 != NULL)
             game::player1->render();
+        else
+            conoutf("no player");
     }
 
     VARP(hudgun, 0, 1, 1);

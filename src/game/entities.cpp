@@ -85,7 +85,6 @@ namespace entities
         // Specifically load in the client player model.
         if (game::player1 != NULL) {
             game::player1->preload();
-            conoutf("Loading in player");
         }
     }
 
@@ -102,6 +101,7 @@ namespace entities
 
     // Returns the entity class respectively according to its registered name.
     entities::classes::BaseEntity *newgameentity(char *strclass) {
+            if (strclass != NULL && strcmp(strclass, "coreentity") == 0) { return new entities::classes::BaseEntity(); }
             if (strclass != NULL && strcmp(strclass, "playerstart") == 0) { return new entities::classes::PlayerStart(); }
             if (strclass != NULL && strcmp(strclass, "basemonster") == 0) { return new entities::classes::BaseMonster(); }
             if (strclass != NULL && strcmp(strclass, "dynamiclight") == 0) { return new entities::classes::DynamicLight(); }
@@ -204,7 +204,7 @@ namespace entities
         {
             "none?", "light", "mapmodel", "playerstart", "envmap", "particles", "sound", "spotlight", "decal",
             "teleport", "teledest", "jumppad",
-            "flag"
+            "flag", "gameentity"
         };
         return i>=0 && size_t(i)<sizeof(entnames)/sizeof(entnames[0]) ? entnames[i] : "";
     }
@@ -217,7 +217,7 @@ namespace entities
         //conoutf("%i", i);
 
         //e.flags = 0;
-        //if(local) addmsg(N_EDITENT, "rii3ii5", i, (int)(e.o.x*DMF), (int)(e.o.y*DMF), (int)(e.o.z*DMF), e.type, e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
+        //if(local) addmsg(N_EDITENT, "rii3ii5", i, (int)(e.o.x*DMF), (int)(e.o.y*DMF), (int)(e.o.z*DMF), e.et_type, e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
     }
 
     float dropheight(entities::classes::BaseEntity &e)

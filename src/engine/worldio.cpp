@@ -877,8 +877,8 @@ bool load_world(const char *mname, const char *cname)        // Does not support
             e.model_idx = element["model_idx"];
 
             // Fetch a reference to the game attributes json element.
-            const json& attribute_element = element["game"]["attributes"];
-            e.attributes = attribute_element.get<std::map<std::string, std::string>>();
+            const json& attributes_element = element["game"]["attributes"];
+            e.attributes = attributes_element.get<std::map<std::string, std::string>>();
 
             // All went well, so lets add our entity to the list.
             ents.add(&e);

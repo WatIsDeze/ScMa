@@ -31,16 +31,6 @@ namespace entities
             // Reset the entity to its basic states.
             virtual void reset();
 
-
-            //
-            // Attributes set and get.
-            //
-            // Sets the key its value in the attributes list, also determines whether to automatically call onAttributeSet.
-            bool setAttribute(const std::string &key, const std::string &value, bool callOnAttrSet);
-            // Returns the value of the attribute key.
-            std::string getAttribute(const std::string &key);
-
-
             //
             // OnEvent callbacks.
             //
@@ -50,6 +40,14 @@ namespace entities
             virtual bool onTouch(BaseEntity *otherEnt, const vec &dir);
             // Can be overloaded to execute certain actions when the key/value of an attribute is changed.
             virtual void onAttributeSet(const std::string &key, const std::string &value);
+
+            //
+            // Attributes set and get.
+            //
+            // Sets the key its value in the attributes list, also determines whether to automatically call onAttributeSet.
+            bool setAttribute(const std::string &key, const std::string &value, bool callOnAttrSet);
+            // Returns the value of the attribute key.
+            std::string getAttribute(const std::string &key);
         };
     } // classes
 } // entities

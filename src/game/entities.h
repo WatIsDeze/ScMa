@@ -24,7 +24,7 @@ namespace entities
     extern void preloadentities();
 
     // Renders all the entities.
-    extern void renderentities();
+   // extern void renderentities();
 
     // Sets the spawn state on a given entity index.
     extern void setspawn(int i, bool on);

@@ -449,7 +449,7 @@ model *loadmodel(const char *name, int i, bool msg)
 }
 
 mapmodelinfo loadmodelinfo(const char *name, entities::classes::BaseEntity *ent) {
-    mapmodelinfo mmi;
+    mapmodelinfo &mmi = mapmodels.add();
 
     // Preload first.
     preloadmodel(name);

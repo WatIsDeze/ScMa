@@ -151,15 +151,12 @@ bool BaseEntity::setAttribute(const std::string &key, const std::string &value, 
 }
 
 std::string BaseEntity::getAttribute(const std::string &key) {
-    std::string retkey;
 
     if (attributes.find(key) != attributes.end()) {
-        retkey = attributes[key];
+        return attributes[key];
     } else {
-       retkey.clear();
+       return std::string();
     }
-
-    return retkey;
 }
 
 //
