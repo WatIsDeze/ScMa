@@ -1629,7 +1629,7 @@ void findplayerspawn(entities::classes::Player *d, int forceent, int tag) // pla
         d->o.x = d->o.y = d->o.z = 0.5f*worldsize;
         d->o.z += 1;
         entinmap(d);
-    //}
+//    }
 }
 
 void splitocta(cube *c, int size)

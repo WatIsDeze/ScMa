@@ -144,14 +144,14 @@ namespace game
         // Copy into mapname and reset maptime.
         maptime = 0;
 
+        // Clear old entity list..
+        entities::clearents();
+
         // SpawnPlayer.
         SpawnPlayer();
 
         // Find our playerspawn.
         findplayerspawn(player1);
-
-        // Clear.
-        entities::clearents();
     }
     void loadingmap(const char *name) {
 

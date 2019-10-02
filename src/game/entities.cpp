@@ -115,6 +115,7 @@ namespace entities
     // Deletes all game entities in the stack.
     void clearents()
     {
+        // Delete stack entities.
         while(entities::g_ents.length()) deletegameentity(entities::g_ents.pop());
     }
 

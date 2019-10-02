@@ -1134,7 +1134,7 @@ int main(int argc, char **argv)
     renderbackground("initializing...");
 
     logoutf("init: world");
-    player = (entities::classes::Player*)game::iterdynents(0);
+    player = dynamic_cast<entities::classes::Player*>(game::iterdynents(0));
     camera1 = player->camera;
     emptymap(0, true, NULL, false);
 
