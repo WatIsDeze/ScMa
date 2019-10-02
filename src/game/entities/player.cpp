@@ -7,16 +7,16 @@ namespace entities {
 namespace classes {
 
 Player::Player() : BaseDynamicEntity() {
-    state = CS_SPAWNING;
+    state = CS_ALIVE;
     et_type = ET_GAMESPECIFIC;
     ent_type = ENT_PLAYER;
-    game_type = PLAYERSTART;
+    game_type = GAMEENTITY;
     collidetype = COLLIDE_OBB;
     physstate = PHYS_FLOOR;
 
     // Reset.
-    setName("playerstart");
-    setClassName("Playerstart");
+    setName("player");
+    setClassName("Player");
 
     // Camera.
     camera = new entities::classes::BasePhysicalEntity();
@@ -31,12 +31,12 @@ void Player::preload() {
     conoutf("%s", "Preloading player entity");
     preloadmodel("player/bones");
 
-    state = CS_SPAWNING;
+    state = CS_ALIVE;
     et_type = ET_GAMESPECIFIC;
     ent_type = ENT_PLAYER;
-    game_type = PLAYERSTART;
+    game_type = GAMEENTITY;
     collidetype = COLLIDE_OBB;
-    physstate = PHYS_FALL;
+    physstate = PHYS_FLOOR;
 
     // Reset.
     setName("player");
@@ -46,11 +46,11 @@ void Player::preload() {
 void Player::think() {
 //    o.x = 512;
 //    o.y = 512;
-//    o.z = 512;
+    //o.z = 512;
 
-    camera->o = o; //WatIsDeze: Uncomment this and camera moves??
-    moveplayer(this, 10, false);
-    conoutf("Player1->o {%f %f %f}", o.x, o.y, o.z);
+    //camera->o = o; //WatIsDeze: Uncomment this and camera moves??
+    moveplayer(this, 10, true);
+    conoutf("Player1->o {%f, %f, %f} player1->camera->o {%f, %f, %f}", o.x, o.y, o.z, camera->o.x, camera->o.y, camera->o.z);
 }
 
 enum
@@ -79,7 +79,7 @@ void Player::render() {
         /*vec4 color (0.5f, 0.5f, 0.5f, 1.0f);
         float fade = 1;
         int basetime = 1;*/
-        //rendermodel("player/bones", ANIM_IDLE, pos, yaw, pitch, 0, MDL_CULL_VFC | MDL_CULL_DIST | MDL_CULL_OCCLUDED);
+        rendermodel("player/bones", ANIM_IDLE, pos, yaw, pitch, 0, MDL_CULL_VFC | MDL_CULL_DIST | MDL_CULL_OCCLUDED);
     }
 }
 

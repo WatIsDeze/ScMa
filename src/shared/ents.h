@@ -38,8 +38,6 @@ enum { ENT_PLAYER = 0, ENT_AI, ENT_INANIMATE, ENT_CAMERA, ENT_BOUNCE };
 // Physics collision types. (ent->collidetype)
 enum { COLLIDE_NONE = 0, COLLIDE_ELLIPSE, COLLIDE_OBB, COLLIDE_TRI };
 
-
-
 enum { ETR_SPAWN = ET_GAMESPECIFIC, };
 
 enum                              // static entity types

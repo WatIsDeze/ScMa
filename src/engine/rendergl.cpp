@@ -1432,64 +1432,72 @@ void recomputecamera()
     game::setupcamera();
     computezoom();
 
+    auto prepCamera1 = dynamic_cast<entities::classes::BasePhysicalEntity*>(camera1);
+    auto prepPlayer = dynamic_cast<entities::classes::BasePhysicalEntity*>(player);
+
+    assert(prepCamera1);
+    assert(prepPlayer);
+
     bool allowthirdperson = true;
     bool shoulddetach = (allowthirdperson && thirdperson > 1) || game::detachcamera();
     if((!allowthirdperson || !thirdperson) && !shoulddetach)
     {
-        camera1 = player->camera;
+        *prepCamera1 = *prepPlayer;
+
         detachedcamera = false;
     }
     else
     {
         static entities::classes::BasePhysicalEntity tempcamera;
-        camera1 = &tempcamera;
-        if(detachedcamera && shoulddetach) camera1->o = player->o;
-        else
-        {
-            camera1 = player->camera;
+
+        if(detachedcamera && shoulddetach) {
+            prepCamera1->o = prepPlayer->o;
+        } else {
+            *prepCamera1 = *prepPlayer;
+
             detachedcamera = shoulddetach;
         }
-        camera1->reset();
-        camera1->ent_type = ENT_CAMERA;
-        camera1->move = -1;
-        camera1->eyeheight = camera1->aboveeye = camera1->radius = camera1->xradius = camera1->yradius = 2;
+        prepCamera1->reset();
+        prepCamera1->ent_type = ENT_CAMERA;
+        prepCamera1->move = 0;
+        prepCamera1->eyeheight = prepCamera1->aboveeye = prepCamera1->radius = prepCamera1->xradius = prepCamera1->yradius = 2;
         matrix3 orient;
         orient.identity();
-        orient.rotate_around_z(camera1->yaw*RAD);
-        orient.rotate_around_x(camera1->pitch*RAD);
-        orient.rotate_around_y(camera1->roll*-RAD);
+        orient.rotate_around_z(prepCamera1->yaw*RAD);
+        orient.rotate_around_x(prepCamera1->pitch*RAD);
+        orient.rotate_around_y(prepCamera1->roll*-RAD);
         vec dir = vec(orient.b).neg(), side = vec(orient.a).neg(), up = orient.c;
 
         if(game::collidecamera())
         {
-            movecamera(camera1, dir, thirdpersondistance, 1);
-            movecamera(camera1, dir, clamp(thirdpersondistance - camera1->o.dist(player->o), 0.0f, 1.0f), 0.1f);
+            movecamera(prepCamera1, dir, thirdpersondistance, 1);
+            movecamera(prepCamera1, dir, clamp(thirdpersondistance - prepCamera1->o.dist(prepPlayer->o), 0.0f, 1.0f), 0.1f);
             if(thirdpersonup)
             {
-                vec pos = camera1->o;
+                vec pos = prepCamera1->o;
                 float dist = fabs(thirdpersonup);
                 if(thirdpersonup < 0) up.neg();
-                movecamera(camera1, up, dist, 1);
-                movecamera(camera1, up, clamp(dist - camera1->o.dist(pos), 0.0f, 1.0f), 0.1f);
+                movecamera(prepCamera1, up, dist, 1);
+                movecamera(prepCamera1, up, clamp(dist - prepCamera1->o.dist(pos), 0.0f, 1.0f), 0.1f);
             }
             if(thirdpersonside)
             {
-                vec pos = camera1->o;
+                vec pos = prepCamera1->o;
                 float dist = fabs(thirdpersonside);
                 if(thirdpersonside < 0) side.neg();
-                movecamera(camera1, side, dist, 1);
-                movecamera(camera1, side, clamp(dist - camera1->o.dist(pos), 0.0f, 1.0f), 0.1f);
+                movecamera(prepCamera1, side, dist, 1);
+                movecamera(prepCamera1, side, clamp(dist - prepCamera1->o.dist(pos), 0.0f, 1.0f), 0.1f);
             }
         }
         else
         {
-            camera1->o.add(vec(dir).mul(thirdpersondistance));
-            if(thirdpersonup) camera1->o.add(vec(up).mul(thirdpersonup));
-            if(thirdpersonside) camera1->o.add(vec(side).mul(thirdpersonside));
+            prepCamera1->o.add(vec(dir).mul(thirdpersondistance));
+            if(thirdpersonup) prepCamera1->o.add(vec(up).mul(thirdpersonup));
+            if(thirdpersonside) prepCamera1->o.add(vec(side).mul(thirdpersonside));
         }
     }
 
-    setviewcell(camera1->o);
+    setviewcell(prepCamera1->o);
 }
 
 float calcfrustumboundsphere(float nearplane, float farplane,  const vec &pos, const vec &view, vec &center)
@@ -2092,15 +2100,15 @@ void drawminimap()
     minimapscale = vec((0.5f - 1.0f/size)/minimapradius.x, (0.5f - 1.0f/size)/minimapradius.y, 1.0f);
 
     entities::classes::BasePhysicalEntity *oldcamera = camera1;
-    static entities::classes::BasePhysicalEntity *cmcamera;
-    cmcamera = player->camera;
-    cmcamera->reset();
-    cmcamera->ent_type = ENT_CAMERA;
-    cmcamera->o = vec(minimapcenter.x, minimapcenter.y, minimapheight > 0 ? minimapheight : minimapcenter.z + minimapradius.z + 1);
-    cmcamera->yaw = 0;
-    cmcamera->pitch = -90;
-    cmcamera->roll = 0;
-    camera1 = cmcamera;
+    static entities::classes::BaseDynamicEntity cmcamera;
+    cmcamera = *player;
+    cmcamera.reset();
+    cmcamera.ent_type = ENT_CAMERA;
+    cmcamera.o = vec(minimapcenter.x, minimapcenter.y, minimapheight > 0 ? minimapheight : minimapcenter.z + minimapradius.z + 1);
+    cmcamera.yaw = 0;
+    cmcamera.pitch = -90;
+    cmcamera.roll = 0;
+    camera1 = &cmcamera;
     setviewcell(vec(-1, -1, -1));
 
     float oldldrscale = ldrscale, oldldrscaleb = ldrscaleb;

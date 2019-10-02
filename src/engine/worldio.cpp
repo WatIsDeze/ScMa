@@ -696,8 +696,9 @@ bool save_world(const char *mname, bool nolms)
             j[i]["model_idx"] = tmp.model_idx;
 
             // Store game related attributes.
-            j[i]["game"]["classname"] = tmp.classname;
-            j[i]["game"]["attributes"] = json(tmp.attributes);
+            j[i]["game"]["name"]        = tmp.name;
+            j[i]["game"]["classname"]   = tmp.classname;
+            j[i]["game"]["attributes"]  = json(tmp.attributes);
         }
     }
 

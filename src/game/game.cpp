@@ -99,8 +99,6 @@ namespace game
         // If world loading fails, start a new empty map instead.
         if(!load_world(name))
             emptymap(0, true, name);
-
-        startmap(name);
     }
 
     void forceedit(const char *name) {
@@ -146,14 +144,14 @@ namespace game
         // Copy into mapname and reset maptime.
         maptime = 0;
 
-        // Clear.
-        entities::clearents();
-
         // SpawnPlayer.
         SpawnPlayer();
 
         // Find our playerspawn.
-        findplayerspawn(player1, -1, 0);
+        findplayerspawn(player1);
+
+        // Clear.
+        entities::clearents();
     }
     void loadingmap(const char *name) {
 
@@ -220,7 +218,8 @@ namespace game
 
     bool allowmove(entities::classes::BasePhysicalEntity *d)
     {
-        if(d->ent_type!=ENT_PLAYER) return true;
+        return true;
+        //if(d->ent_type!=ENT_PLAYER) return true;
         //return !d->ms_lastaction || lastmillis-d->ms_lastaction>=1000;
     }
 
@@ -247,7 +246,6 @@ namespace game
     // This function should be used to render HUD View stuff etc.
     void rendergame(bool mainpass) {
         // This function should be used to render HUD View stuff etc.
-
     }
 
     const char *defaultcrosshair(int index) {
@@ -260,8 +258,17 @@ namespace game
     }
 
     void setupcamera() {
-        // Empty unless you want it to follow an other entity, which means you set
-        // player1->yaw, pitch, o, and never forget to call player1->resetinterp(); afterwards.
+        entities::classes::BasePhysicalEntity *target = dynamic_cast<entities::classes::BasePhysicalEntity*>(player1);
+        assert(target);
+        if(target)
+        {
+            player1->strafe = target->strafe;
+            player1->move = target->move;
+            player1->yaw = target->yaw;
+            player1->pitch = target->state==CS_DEAD ? 0 : target->pitch;
+            player1->o = target->o;
+            player1->resetinterp();
+        }
     }
 
     bool allowthirdperson() {
@@ -343,7 +350,7 @@ namespace game
         // Setup the map time.
         maptime = 0;
         SpawnPlayer();
-        findplayerspawn(player1, -1, 0);
+        findplayerspawn(player1);
     }
 
     const char *gameident() {

@@ -36,7 +36,6 @@ void BasePhysicalEntity::resetinterp() {
 }
 
 void BasePhysicalEntity::reset() {
-    BaseEntity::reset();
     inwater = 0;
     timeinair = 0;
     eyeheight = maxheight;

@@ -12,7 +12,6 @@ namespace classes {
 BaseDynamicEntity::BaseDynamicEntity() : BasePhysicalEntity(), ragdoll(NULL), query(NULL), lastrendered(0)
 {
     reset();
-    ent_type = ENT_INANIMATE;
     setName("basedynamicentity");
     setClassName("BaseDynamicEntity");
 }
@@ -23,6 +22,13 @@ BaseDynamicEntity::~BaseDynamicEntity()
         //extern void cleanragdoll(BaseDynamicEntity *d);
         //if(ragdoll) cleanragdoll(this);
     #endif
+}
+
+// Stop movement.
+void BaseDynamicEntity::stopmoving()
+{
+    k_left = k_right = k_up = k_down = jumping = false;
+    move = strafe = crouching = 0;
 }
 
 // Reset to basic state values.
@@ -36,13 +42,6 @@ void BaseDynamicEntity::reset() {
     // Reset all animations.
     loopi(MAXANIMPARTS) animinterp[i].reset();
 }
-
-void BaseDynamicEntity::stopmoving()
-{
-    k_left = k_right = k_up = k_down = jumping = false;
-    move = strafe = crouching = 0;
-}
-
 
 vec BaseDynamicEntity::abovehead() {
     // WatIsDeze: Seems to determine to which lengths the camera and the character are allowed to go when jumping or crouching through a tunnel etc.

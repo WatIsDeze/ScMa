@@ -18,7 +18,7 @@ namespace entities
             ~BasePhysicalEntity();
 
             void resetinterp();
-            virtual void reset();
+            void reset();
 
             vec feetpos(float offset) const;
             vec headpos(float offset) const;
