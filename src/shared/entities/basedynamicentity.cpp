@@ -11,7 +11,10 @@ namespace classes {
 // WatIsDeze: TODO: Maybe remove the physent constructor from here.
 BaseDynamicEntity::BaseDynamicEntity() : BasePhysicalEntity(), ragdoll(NULL), query(NULL), lastrendered(0)
 {
-    BasePhysicalEntity::reset();
+    reset();
+    ent_type = ENT_INANIMATE;
+    setName("basedynamicentity");
+    setClassName("BaseDynamicEntity");
 }
 
 BaseDynamicEntity::~BaseDynamicEntity()

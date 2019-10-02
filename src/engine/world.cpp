@@ -1571,7 +1571,7 @@ int findentity_byclass(const std::string &classname, int index, int attr1, int a
             entities::classes::BaseEntity *e = ents[i];
 
             if (!e) continue;
-            if(e->classname.compare(classname) == 0) {
+            if(e->classname == classname) {
                 conoutf("->classname %s , %s", e->classname.c_str(), classname.c_str());
                 return i;
             }

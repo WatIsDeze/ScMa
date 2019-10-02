@@ -1436,7 +1436,7 @@ void recomputecamera()
     bool shoulddetach = (allowthirdperson && thirdperson > 1) || game::detachcamera();
     if((!allowthirdperson || !thirdperson) && !shoulddetach)
     {
-        camera1 = player;
+        camera1 = player->camera;
         detachedcamera = false;
     }
     else
@@ -1446,7 +1446,7 @@ void recomputecamera()
         if(detachedcamera && shoulddetach) camera1->o = player->o;
         else
         {
-            *camera1 = *player;
+            camera1 = player->camera;
             detachedcamera = shoulddetach;
         }
         camera1->reset();
@@ -2092,15 +2092,15 @@ void drawminimap()
     minimapscale = vec((0.5f - 1.0f/size)/minimapradius.x, (0.5f - 1.0f/size)/minimapradius.y, 1.0f);
 
     entities::classes::BasePhysicalEntity *oldcamera = camera1;
-    static entities::classes::BaseDynamicEntity cmcamera;
-    cmcamera = *player;
-    cmcamera.reset();
-    cmcamera.ent_type = ENT_CAMERA;
-    cmcamera.o = vec(minimapcenter.x, minimapcenter.y, minimapheight > 0 ? minimapheight : minimapcenter.z + minimapradius.z + 1);
-    cmcamera.yaw = 0;
-    cmcamera.pitch = -90;
-    cmcamera.roll = 0;
-    camera1 = &cmcamera;
+    static entities::classes::BasePhysicalEntity *cmcamera;
+    cmcamera = player->camera;
+    cmcamera->reset();
+    cmcamera->ent_type = ENT_CAMERA;
+    cmcamera->o = vec(minimapcenter.x, minimapcenter.y, minimapheight > 0 ? minimapheight : minimapcenter.z + minimapradius.z + 1);
+    cmcamera->yaw = 0;
+    cmcamera->pitch = -90;
+    cmcamera->roll = 0;
+    camera1 = cmcamera;
     setviewcell(vec(-1, -1, -1));
 
     float oldldrscale = ldrscale, oldldrscaleb = ldrscaleb;

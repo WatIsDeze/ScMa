@@ -22,7 +22,12 @@ BasePhysicalEntity::BasePhysicalEntity() : BaseEntity(), deltapos(0, 0, 0), newp
            blocked(false)
 {
     ent_type = ENT_INANIMATE;
-    reset();
+    setName("basephysicalentity");
+    setClassName("BasePhysicalEntity");
+}
+
+BasePhysicalEntity::~BasePhysicalEntity() {
+
 }
 
 void BasePhysicalEntity::resetinterp() {

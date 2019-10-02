@@ -50,7 +50,9 @@ void BaseMapModel::render() {
 }
 
 void BaseMapModel::onAttributeSet(const std::string &key, const std::string &value) {
-
+    if (key == "model") {
+        preloadMapModel(value);
+    }
 }
 
 void BaseMapModel::onAnimate(int &anim, int &basetime) {

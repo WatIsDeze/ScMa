@@ -12,11 +12,13 @@ namespace entities {
             void think();
             void render();
 
+            void reset();
             void respawn();
 
             bool onTrigger(entities::classes::BaseEntity *otherEnt, const vec &dir);
             bool onTouch(entities::classes::BaseEntity *otherEnt, const vec &dir);
 
+            entities::classes::BasePhysicalEntity *camera;
         private:
 
         };

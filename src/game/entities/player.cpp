@@ -7,27 +7,50 @@ namespace entities {
 namespace classes {
 
 Player::Player() : BaseDynamicEntity() {
-    state = CS_ALIVE;
+    state = CS_SPAWNING;
     et_type = ET_GAMESPECIFIC;
     ent_type = ENT_PLAYER;
-    game_type = GAMEENTITY;
+    game_type = PLAYERSTART;
     collidetype = COLLIDE_OBB;
-    classname = "player";
+    physstate = PHYS_FLOOR;
+
+    // Reset.
+    setName("playerstart");
+    setClassName("Playerstart");
+
+    // Camera.
+    camera = new entities::classes::BasePhysicalEntity();
 }
 
 Player::~Player() {
-
+    delete camera;
 }
 
 void Player::preload() {
+    // Load in our player entity model.
     conoutf("%s", "Preloading player entity");
     preloadmodel("player/bones");
+
+    state = CS_SPAWNING;
+    et_type = ET_GAMESPECIFIC;
+    ent_type = ENT_PLAYER;
+    game_type = PLAYERSTART;
+    collidetype = COLLIDE_OBB;
+    physstate = PHYS_FALL;
+
+    // Reset.
+    setName("player");
+    setClassName("Player");
 }
 
 void Player::think() {
-    //crouchplayer(this, 10, true);
-    moveplayer(this, 10, true);
-    //conoutf("Player: %f %f %f", o.x, o.y, o.z);
+//    o.x = 512;
+//    o.y = 512;
+//    o.z = 512;
+
+    camera->o = o; //WatIsDeze: Uncomment this and camera moves??
+    moveplayer(this, 10, false);
+    conoutf("Player1->o {%f %f %f}", o.x, o.y, o.z);
 }
 
 enum
@@ -80,9 +103,15 @@ bool Player::onTouch(entities::classes::BaseEntity *otherEnt, const vec &dir) {
     }
 }
 
+void Player::reset() {
+    // Reset.
+    setName("player");
+    setClassName("PlayerEntity");
+}
+
 void Player::respawn() {
     // First respawn base entity.
-    BaseDynamicEntity::reset();
+    //BaseDynamicEntity::reset();
 
     // Set spawned state.
     setspawned(true);
@@ -90,7 +119,7 @@ void Player::respawn() {
     // Edit mode or in-game?
     if(editmode)
         state = CS_EDITING;
-    else if(state != CS_SPECTATOR)
+    else
         state = CS_ALIVE;
 }
 

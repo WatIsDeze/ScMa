@@ -12,6 +12,8 @@ namespace entities {
             void think();
             void render();
 
+            void reset();
+
         private:
 
         };

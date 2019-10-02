@@ -26,15 +26,15 @@ namespace game
         if(!maptime) { maptime = lastmillis; maprealtime = totalmillis; return; }
 
         // Escape this function if there is no currenttime yet from server to client. (Meaning it is 0.)
-        //if(!curtime) return; //{ gets2c(); if (player1->) c2sinfo(); return; } //c2sinfo(); }///if(player1->clientnum>=0) c2sinfo(); return; }
+        if(!curtime) return; //{ gets2c(); if (player1->) c2sinfo(); return; } //c2sinfo(); }///if(player1->clientnum>=0) c2sinfo(); return; }
         //if(!curtime) return; //{ gets2c(); c2sinfo(); }///if(player1->clientnum>=0) c2sinfo(); return; }
-
         // Update the physics.
         physicsframe();
 
         // Update all our entity objects.
-       // gets2c();
-        //updateentities();
+        updateentities();
+        // gets2c();
+
         //crouchplayer(player1, 10, true);
         //moveplayer(player1, 10, true);
 
@@ -43,8 +43,14 @@ namespace game
 
     void SpawnPlayer()   // place at random spawn
     {
-        player1 = new entities::classes::Player();
-        player1->respawn();
+        if (player1)
+        {
+            player1->reset();
+            player1->respawn();
+        } else {
+            player1 = new entities::classes::Player();
+            player1->respawn();
+        }
     }
 
     void updateentities() {
@@ -94,8 +100,7 @@ namespace game
         if(!load_world(name))
             emptymap(0, true, name);
 
-        // Add the player entity to index 0 of the entity list.
-
+        startmap(name);
     }
 
     void forceedit(const char *name) {
@@ -156,14 +161,15 @@ namespace game
 
     void startmap(const char *name)
     {
+        // Reset entity spawns.
+        entities::resetspawns();
+
         // Spawn our player.
         SpawnPlayer();
 
         // Find player spawn point.
         findplayerspawn(player1, -1, 0);
 
-        // Reset entity spawns.
-        entities::resetspawns();
         copycubestr(clientmap, name ? name : "");
         execident("mapstart");
     }
@@ -204,19 +210,17 @@ namespace game
 
     bool canjump()
     {
-        //if(!intermission) respawn();
-        return player1->state!=CS_DEAD;// && !intermission;
+        return player1->state!=CS_DEAD;
     }
 
     bool cancrouch()
     {
-        return player1->state!=CS_DEAD;// && !intermission;
+        return player1->state!=CS_DEAD;
     }
 
     bool allowmove(entities::classes::BasePhysicalEntity *d)
     {
-        return true;
-        //if(d->ent_type!=ENT_PLAYER) return true;
+        if(d->ent_type!=ENT_PLAYER) return true;
         //return !d->ms_lastaction || lastmillis-d->ms_lastaction>=1000;
     }
 
@@ -256,7 +260,8 @@ namespace game
     }
 
     void setupcamera() {
-
+        // Empty unless you want it to follow an other entity, which means you set
+        // player1->yaw, pitch, o, and never forget to call player1->resetinterp(); afterwards.
     }
 
     bool allowthirdperson() {
@@ -271,7 +276,7 @@ namespace game
         return player1->state!=CS_EDITING;
     }
 
-    void lighteffects(entities::classes::BaseEntity *e, vec &color, vec &dir) {
+    void lighteffects(entities::classes::BaseEntity *e, vec&color, vec &dir) {
     }
 
     void renderDynamicLights() {
@@ -325,7 +330,7 @@ namespace game
 
     //---------------------------------------------------------------
 
-    void physicstrigger(entities::classes::BaseDynamicEntity *d, bool local, int floorlevel, int waterlevel, int material)
+    void physicstrigger(entities::classes::BasePhysicalEntity *d, bool local, int floorlevel, int waterlevel, int material)
     {
         // This function seems to be used for playing material audio. No worries about that atm.
 /*        if     (waterlevel>0) { if(material!=MAT_LAVA) playsound(S_SPLASHOUT, d==player1 ? NULL : &d->o); }
@@ -339,7 +344,6 @@ namespace game
         maptime = 0;
         SpawnPlayer();
         findplayerspawn(player1, -1, 0);
-
     }
 
     const char *gameident() {

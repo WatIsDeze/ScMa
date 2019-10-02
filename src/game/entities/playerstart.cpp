@@ -26,5 +26,12 @@ void PlayerStart::render() {
 
 }
 
+void PlayerStart::reset() {
+    BaseEntity::reset();
+    // Reset.
+    setName("playerstart");
+    setClassName("PlayerStart");
+}
+
 } // classes
 } // entities

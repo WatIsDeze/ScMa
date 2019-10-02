@@ -82,7 +82,7 @@ SDL_GLContext glcontext = NULL;
 
 int curtime = 0, lastmillis = 1, elapsedtime = 0, totalmillis = 1;
 
-entities::classes::BaseDynamicEntity *player = NULL;
+entities::classes::Player *player = NULL;
 
 int initing = NOT_INITING;
 
@@ -1134,8 +1134,8 @@ int main(int argc, char **argv)
     renderbackground("initializing...");
 
     logoutf("init: world");
-    player = (entities::classes::BaseDynamicEntity*)game::iterdynents(0);
-    camera1 = (entities::classes::BasePhysicalEntity*)player;
+    player = (entities::classes::Player*)game::iterdynents(0);
+    camera1 = player->camera;
     emptymap(0, true, NULL, false);
 
     logoutf("init: sound");

@@ -15,6 +15,7 @@ namespace entities
             // Core physent functions.
             //
             BasePhysicalEntity();
+            ~BasePhysicalEntity();
 
             void resetinterp();
             virtual void reset();

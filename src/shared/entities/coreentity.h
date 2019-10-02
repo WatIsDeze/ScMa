@@ -1,8 +1,7 @@
 #ifndef COREENTITY_H
 #define COREENTITY_H
+
 #include "cube.h"
-#include "game/game.h"
-#include "ents.h"
 
 namespace entities {
     // Classes.
@@ -25,20 +24,20 @@ namespace entities {
         {
         public:
             CoreEntity();
+            virtual ~CoreEntity();
 
             //
             // Legacy Core Entity data.
             //
-            vec o {0.0f, 0.0f, 0.0f};                                      // position
+            vec o {0.0f, 0.0f, 0.0f};       // position
             short attr1 = 0;
             short attr2 = 0;
             short attr3 = 0;
             short attr4 = 0;
             short attr5 = 0;
-            // storing/loading ET_TYPES.
-            uchar et_type = ET_EMPTY;                              // These are for the ET(Engine Type) values.
-            uchar ent_type = ENT_INANIMATE;                             // These are for ENT_(DynEnt/PhysEnt Type) values.
-            uchar game_type = GAMEENTITY;                            // the internal game entity type values.
+            uchar et_type = ET_EMPTY;       // These are for the ET(Engine Type) values.
+            uchar ent_type = ENT_INANIMATE; // These are for ENT_(DynEnt/PhysEnt Type) values.
+            uchar game_type = GAMEENTITY;   // the internal game entity type values.
             uchar reserved = 0;
             short model_idx = 0;
 
@@ -54,24 +53,46 @@ namespace entities {
             void clearspawned();
 
             //
-            // Legacy of ours, but it made more sense than using short attr1 ... etc.
+            // onEvent functions.
             //
+            // Can be overloaded to execute certain actions when the key/value of an attribute is changed.
+            virtual void onAttributeSet(const std::string &key, const std::string &value) {}
 
             //
-            // CoreEntity functions.
+            // Attributes set and get.
+            //
+            // Sets the key its value in the attributes list, also determines whether to automatically call onAttributeSet.
+            bool setAttribute(const std::string &key, const std::string &value, bool callOnAttrSet);
+            // Returns the value of the attribute key.
+            std::string getAttribute(const std::string &key);
+
+            //
+            // CoreEntity virtual functions.
             //
             virtual void reset();
+            virtual void resetExt(bool clearName = true, bool clearClassname = true, bool clearAttributes = true);
 
         public:
             //
-            // Core BaseEntity data.
+            // CoreEntity data.
             //
             // Entity Name. (Used for trigger events.)
-            std::string name;
+            std::string name = "coreentity_unnamed";
             // Entity class name. (Used to spawn the proper inheritance class instance.)
-            std::string classname;
+            std::string classname = "CoreEntity";
             // Contains the json attributes.
-            std::map<std::string, std::string> attributes;
+            std::map<std::string, std::string> attributes = {};
+
+        protected:
+            //
+            // CoreEntity utility functions.
+            //
+            void setName(const std::string &str = "coreentity") {
+                name = str + "_" + std::to_string(entities::getents().length());
+            }
+            void setClassName(const std::string &str = "CoreEntity") {
+                classname = str;
+            }
         };
     } // classes
 } // entities

@@ -16,6 +16,7 @@ namespace entities
             // Base functions.
             //
             BaseEntity();
+            virtual ~BaseEntity();
 //            BaseEntity(const CoreEntity& e);
 //            BaseEntity(const BaseEntity& e);
 //            BaseEntity(const BasePhysicalEntity *e);
@@ -34,20 +35,12 @@ namespace entities
             //
             // OnEvent callbacks.
             //
+            // Can be used to call functions given on which key changed into what value.
+            virtual void onAttributeSet(const std::string &key, const std::string &value);
             // otherEnt = the entity which has triggered you.
             virtual bool onTrigger(BaseEntity *otherEnt, const vec &dir);
             // otherEnt = the entity which has touched you.
             virtual bool onTouch(BaseEntity *otherEnt, const vec &dir);
-            // Can be overloaded to execute certain actions when the key/value of an attribute is changed.
-            virtual void onAttributeSet(const std::string &key, const std::string &value);
-
-            //
-            // Attributes set and get.
-            //
-            // Sets the key its value in the attributes list, also determines whether to automatically call onAttributeSet.
-            bool setAttribute(const std::string &key, const std::string &value, bool callOnAttrSet);
-            // Returns the value of the attribute key.
-            std::string getAttribute(const std::string &key);
         };
     } // classes
 } // entities

@@ -1696,7 +1696,7 @@ float dropheight(entities::classes::BaseEntity *e)
         case ET_PARTICLES:
         case ET_MAPMODEL: return 0.0f;
         default:
-            //if(e.et_type >= ET_GAMESPECIFIC) return entities::dropheight(e);
+            if(e->et_type >= ET_GAMESPECIFIC) return entities::dropheight(e);
             return 4.0f;
     }
 }
@@ -1756,7 +1756,7 @@ FVAR(straferoll, 0, 0.033f, 90);
 FVAR(faderoll, 0, 0.95f, 1);
 VAR(floatspeed, 1, 100, 10000);
 
-void modifyvelocity(entities::classes::BaseDynamicEntity *pl, bool local, bool water, bool floating, int curtime)
+void modifyvelocity(entities::classes::BasePhysicalEntity *pl, bool local, bool water, bool floating, int curtime)
 {
     bool allowmove = game::allowmove(pl);
     if(floating)
@@ -1817,7 +1817,7 @@ void modifyvelocity(entities::classes::BaseDynamicEntity *pl, bool local, bool w
 //    pl->vel.lerp(pl->vel, d, fpsfric);
 }
 
-void modifygravity(entities::classes::BaseDynamicEntity *pl, bool water, int curtime)
+void modifygravity(entities::classes::BasePhysicalEntity *pl, bool water, int curtime)
 {
     float secs = curtime/1000.0f;
     vec g(0, 0, 0);
@@ -1848,7 +1848,7 @@ void modifygravity(entities::classes::BaseDynamicEntity *pl, bool water, int cur
 // moveres indicated the physics precision (which is lower for monsters and multiplayer prediction)
 // local is false for multiplayer prediction
 
-bool moveplayer(entities::classes::BaseDynamicEntity *pl, int moveres, bool local, int curtime)
+bool moveplayer(entities::classes::BasePhysicalEntity *pl, int moveres, bool local, int curtime)
 {
     int material = lookupmaterial(vec(pl->o.x, pl->o.y, pl->o.z + (3*pl->aboveeye - pl->eyeheight)/4));
     bool water = isliquid(material&MATF_VOLUME);
@@ -1943,10 +1943,8 @@ void interppos(entities::classes::BasePhysicalEntity *pl)
     pl->o.add(deltapos);
 }
 
-void moveplayer(entities::classes::BaseDynamicEntity *pl, int moveres, bool local)
+void moveplayer(entities::classes::BasePhysicalEntity *pl, int moveres, bool local)
 {
-    conoutf("MovePlayer %s", pl->name);
-
     if(physsteps <= 0)
     {
         if(local) interppos(pl);

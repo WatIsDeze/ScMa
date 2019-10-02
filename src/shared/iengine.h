@@ -395,8 +395,8 @@ extern vec collidewall;
 extern int collideinside;
 extern entities::classes::BaseEntity *collideplayer;
 
-extern void moveplayer(entities::classes::BaseDynamicEntity *pl, int moveres, bool local);
-extern bool moveplayer(entities::classes::BaseDynamicEntity *pl, int moveres, bool local, int curtime);
+extern void moveplayer(entities::classes::BasePhysicalEntity *pl, int moveres, bool local);
+extern bool moveplayer(entities::classes::BasePhysicalEntity *pl, int moveres, bool local, int curtime);
 extern void crouchplayer(entities::classes::BasePhysicalEntity *pl, int moveres, bool local);
 extern bool collide(entities::classes::BasePhysicalEntity *d, const vec &dir = vec(0, 0, 0), float cutoff = 0.0f, bool playercol = true, bool insideplayercol = false);
 extern bool bounce(entities::classes::BasePhysicalEntity *d, float secs, float elasticity, float waterfric, float grav);
