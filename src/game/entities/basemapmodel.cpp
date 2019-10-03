@@ -11,7 +11,7 @@ BaseMapModel::BaseMapModel() : BaseDynamicEntity() {
     state = CS_ALIVE;
 
     // Internal engine type.
-    et_type = ET_MAPMODEL;
+	et_type = MAPMODEL;
 
     // Internal engine entity type.
     ent_type = ENT_INANIMATE;
@@ -25,7 +25,7 @@ BaseMapModel::BaseMapModel() : BaseDynamicEntity() {
     // Last but not least, set our collide method.
     collidetype = COLLIDE_TRI;
 
-    setName("basemm_");
+	setName("model");
     setClassName("model");
 }
 
@@ -67,16 +67,16 @@ void BaseMapModel::onAnimate(int &anim, int &basetime) {
 void BaseMapModel::preloadMapModel(const std::string &filename) {
     // In case this is the first time, a filename will be supplied for sure.
     if (!filename.empty()) {
-        mapmodelinfo &_mmi = mapmodels.add();
-        _mmi.m = loadmodel(filename.c_str(), -1, true);
-        _mmi.collide = loadmodel(filename.c_str(), -1, true);
-        copycubestr(mmi.name, filename.c_str());
+		mapmodelinfo &_mmi = mapmodels.add();
+		_mmi.m = loadmodel(filename.c_str(), -1, true);
+		_mmi.collide = loadmodel(filename.c_str(), -1, true);
+		copycubestr(_mmi.name, filename.c_str());
 
         // Copy into mmi.
 
-        //mmi = loadmodelinfo(filename.c_str(), this);
-        //mapmodels.add();
-        //model_idx = mapmodels.length();
+		//mmi = loadmodelinfo(filename.c_str(), this);
+		//mapmodels.add();
+		//model_idx = mapmodels.length();
     } else {
         preloadMapModel("world/box");
     }
