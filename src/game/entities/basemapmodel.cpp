@@ -24,6 +24,9 @@ BaseMapModel::BaseMapModel() : BaseDynamicEntity() {
 
     // Last but not least, set our collide method.
     collidetype = COLLIDE_TRI;
+
+    setName("basemm_");
+    setClassName("model");
 }
 
 BaseMapModel::BaseMapModel(const std::string &filename) : BaseMapModel() {
@@ -39,10 +42,12 @@ BaseMapModel::~BaseMapModel() {
 }
 
 void BaseMapModel::preload() {
-
+    if (attributes.find("model") != attributes.end())
+        preloadMapModel(getAttribute("model"));
 }
 
 void BaseMapModel::think() {
+
 }
 
 void BaseMapModel::render() {
@@ -62,9 +67,16 @@ void BaseMapModel::onAnimate(int &anim, int &basetime) {
 void BaseMapModel::preloadMapModel(const std::string &filename) {
     // In case this is the first time, a filename will be supplied for sure.
     if (!filename.empty()) {
-        mmi = loadmodelinfo(filename.c_str(), this);
-        mapmodels.add();
-        model_idx = mapmodels.length();
+        mapmodelinfo &_mmi = mapmodels.add();
+        _mmi.m = loadmodel(filename.c_str(), -1, true);
+        _mmi.collide = loadmodel(filename.c_str(), -1, true);
+        copycubestr(mmi.name, filename.c_str());
+
+        // Copy into mmi.
+
+        //mmi = loadmodelinfo(filename.c_str(), this);
+        //mapmodels.add();
+        //model_idx = mapmodels.length();
     } else {
         preloadMapModel("world/box");
     }

@@ -15,8 +15,8 @@ Player::Player() : BaseDynamicEntity() {
     physstate = PHYS_FLOOR;
 
     // Reset.
-    setName("player");
-    setClassName("Player");
+	setName("Player");
+	setClassName("player");
 
     // Camera.
     camera = new entities::classes::BasePhysicalEntity();
@@ -34,9 +34,9 @@ void Player::preload() {
     state = CS_ALIVE;
     et_type = ET_GAMESPECIFIC;
     ent_type = ENT_PLAYER;
-    game_type = GAMEENTITY;
+	game_type = PLAYER;
     collidetype = COLLIDE_OBB;
-    physstate = PHYS_FLOOR;
+	physstate = PHYS_FALL;
 
     // Reset.
     setName("player");
@@ -50,7 +50,7 @@ void Player::think() {
 
     //camera->o = o; //WatIsDeze: Uncomment this and camera moves??
     moveplayer(this, 10, true);
-    conoutf("Player1->o {%f, %f, %f} player1->camera->o {%f, %f, %f}", o.x, o.y, o.z, camera->o.x, camera->o.y, camera->o.z);
+    //conoutf("Player1->o {%f, %f, %f} player1->camera->o {%f, %f, %f}", o.x, o.y, o.z, camera->o.x, camera->o.y, camera->o.z);
 }
 
 enum
@@ -106,7 +106,7 @@ bool Player::onTouch(entities::classes::BaseEntity *otherEnt, const vec &dir) {
 void Player::reset() {
     // Reset.
     setName("player");
-    setClassName("PlayerEntity");
+	setClassName("playerentity");
 }
 
 void Player::respawn() {

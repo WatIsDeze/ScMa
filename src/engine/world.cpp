@@ -1146,8 +1146,8 @@ entities::classes::BaseEntity *newentity(bool local, const vec &o, int type, int
     e->ent_type = ENT_INANIMATE;
     e->game_type = type;
     e->reserved = 0;
-    e->classname = "engine_ent";
-    e->name = "engine_ent_" + std::to_string(idx);
+	e->classname = "tesseract_ent";
+	e->name = "tesseract_ent_" + std::to_string(idx);
 
     if(local && fix)
     {
@@ -1176,7 +1176,7 @@ entities::classes::BaseEntity *newentity(bool local, const vec &o, int type, int
     }
     if(ents.inrange(idx)) { entities::deletegameentity(ents[idx]); ents[idx] = e; }
     else { idx = ents.length(); ents.add(e); }
-    return e;
+	return e;
 }
 
 void newentity(int type, int a1, int a2, int a3, int a4, int a5, bool fix = true)
@@ -1227,52 +1227,31 @@ entities::classes::BaseEntity *new_game_entity(bool local, const vec &o, int &id
     } else {
         while(ents.length() < idx) {
 //            ents.add(entities::newgameentity(strclass))->et_type = ET_EMPTY;
-            ents.add(entities::newgameentity())->et_type = ET_EMPTY;
+			ents.add(entities::newgameentity())->et_type = ET_EMPTY;
         }
     }
 
     entities::classes::BaseEntity *e = entities::newgameentity(strclass);
-    e->o = o;
-    // Maybe remove this too.
-    e->attr1 = 0;
-    e->attr2 = 0;
-    e->attr3 = 0;
-    e->attr4 = 0;
-    e->attr5 = 0;
-    e->reserved = 0;
 
+	// Set origin.
+	e->o = o;
+
+	// Set entity type, it is now aware that it is a game specific entity. (Thus based on class name.)
     e->et_type = ET_GAMESPECIFIC;
+
+	// Set internal engine entity type, ENT_PLAYER, ENT_INANIMATE, ENT_AI etc.
     e->ent_type = ENT_INANIMATE;
+
+	// This one is a bit of a....
     e->game_type = GAMEENTITY;
 
-    // TODO: Remove this.
-/*    if(local && fix)
-    {
-        switch(type)
-        {
-                case ET_DECAL:
-                    if(!e->attr2 && !e->attr3 && !e->attr4)
-                    {
-                        e->attr2 = (int)camera1->yaw;
-                        e->attr3 = (int)camera1->pitch;
-                        e->attr4 = (int)camera1->roll;
-                    }
-                    break;
-                case ET_MAPMODEL:
-                    if(!e->attr2) e->attr2 = (int)camera1->yaw;
-                    break;
-                case ET_PLAYERSTART:
-                    e->attr5 = e->attr4;
-                    e->attr4 = e->attr3;
-                    e->attr3 = e->attr2;
-                    e->attr2 = e->attr1;
-                    e->attr1 = (int)camera1->yaw;
-                    break;
-        }
-        entities::fixentity(e);
-    }*/
-    if(ents.inrange(idx)) { entities::deletegameentity(ents[idx]); ents[idx] = e; }
-    else { idx = ents.length(); ents.add(e); }
+	if(ents.inrange(idx)) {
+		entities::deletegameentity(ents[idx]);
+		ents[idx] = e;
+	} else {
+		idx = ents.length();
+		ents.add(e);
+	}
     return e;
 }
 
@@ -1570,9 +1549,8 @@ int findentity_byclass(const std::string &classname, int index, int attr1, int a
         {
             entities::classes::BaseEntity *e = ents[i];
 
-            if (!e) continue;
             if(e->classname == classname) {
-                conoutf("->classname %s , %s", e->classname.c_str(), classname.c_str());
+				conoutf("Found Entity by Class: %s , %s", classname.c_str(), e->classname.c_str());
                 return i;
             }
         }
@@ -1583,53 +1561,53 @@ int findentity_byclass(const std::string &classname, int index, int attr1, int a
 
 void findplayerspawn(entities::classes::Player *d, int forceent, int tag) // place at random spawn
 {
-//    int pick = forceent;
-//    if(pick<0)
-//    {
-//        int r = rnd(10)+1;
-//        pick = spawncycle;
-//        loopi(r)
-//        {
-//            pick = findentity_byclass("playerstart", pick+1, -1, tag);
-//            if(pick < 0) break;
-//        }
-//        if(pick < 0 && tag)
-//        {
-//            pick = spawncycle;
-//            loopi(r)
-//            {
-//                pick = findentity_byclass("playerstart", pick+1, -1, 0);
-//                if(pick < 0) break;
-//            }
-//        }
-//        if(pick >= 0) spawncycle = pick;
-//    }
-//    if(pick>=0)
-//    {
-//        const vector<entities::classes::BaseEntity *> &ents = entities::getents();
-//        d->pitch = 0;
-//        d->roll = 0;
-//        for(int attempt = pick; attempt < ents.length(); attempt++ )
-//        {
-//            d->o = ents[attempt]->o;
-//            d->yaw = ents[attempt]->attr1;
-//            if(entinmap(d, true)) break;
-//            attempt = findentity_byclass("playerstart", attempt+1, -1, tag);
-//            if(attempt<0 || attempt==pick)
-//            {
-//                d->o = ents[pick]->o;
-//                d->yaw = ents[pick]->attr1;
-//                entinmap(d);
-//                break;
-//            }
-//        }
-//    }
-//    else
-//    {
+/*	int pick = forceent;
+	if(pick < 0)
+	{
+		int r = rnd(10)+1;
+		pick = spawncycle;
+		loopi(r)
+		{
+			pick = findentity_byclass("playerstart", pick+1, -1, tag);
+			if(pick < 0) break;
+		}
+		if(pick < 0 && tag)
+		{
+			pick = spawncycle;
+			loopi(r)
+			{
+				pick = findentity_byclass("playerstart", pick+1, -1, 0);
+				if(pick < 0) break;
+			}
+		}
+		if(pick >= 0) spawncycle = pick;
+	}
+	if(pick>=0)
+	{
+		const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+		d->pitch = 0;
+		d->roll = 0;
+		for(int attempt = pick; attempt < ents.length(); attempt++ )
+		{
+			d->o = ents[attempt]->o;
+			d->yaw = ents[attempt]->attr1;
+			if(entinmap(d, true)) break;
+			attempt = findentity_byclass("playerstart", attempt+1, -1, tag);
+			if(attempt < 0 || attempt==pick)
+			{
+				d->o = ents[pick]->o;
+				d->yaw = ents[pick]->attr1;
+				entinmap(d);
+				break;
+			}
+		}
+	}
+	else
+	{*/
         d->o.x = d->o.y = d->o.z = 0.5f*worldsize;
         d->o.z += 1;
         entinmap(d);
-//    }
+	//}
 }
 
 void splitocta(cube *c, int size)

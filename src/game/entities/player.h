@@ -5,19 +5,34 @@ namespace entities {
     namespace classes {
         class Player : public entities::classes::BaseDynamicEntity {
         public:
+			//
+			// Constructors/Destructor.
+			//
             Player();
             virtual ~Player();
 
+			//
+			// Base/Core entity functions.
+			//
             void preload();
             void think();
             void render();
 
+			//
+			// Entity functions.
+			//
             void reset();
             void respawn();
 
+			//
+			// onEvent functions.
+			//
             bool onTrigger(entities::classes::BaseEntity *otherEnt, const vec &dir);
             bool onTouch(entities::classes::BaseEntity *otherEnt, const vec &dir);
 
+			//
+			// Entity member variables.
+			//
             entities::classes::BasePhysicalEntity *camera;
         private:
 

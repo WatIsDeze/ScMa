@@ -154,7 +154,7 @@ namespace entities
 
     void entradius(entities::classes::BaseEntity *e, bool color)
     {
-		switch(e->game_type)
+/*		switch(e->game_type)
         {
             case TELEPORT:
 				loopv(entities::g_ents) if(entities::g_ents[i]->game_type == TELEDEST && e->attr1==entities::g_ents[i]->attr2)
@@ -176,7 +176,7 @@ namespace entities
                 renderentarrow(e, dir, 4);
                 break;
             }
-        }
+		}*/
     }
 
     bool printent(entities::classes::BaseEntity *e, char *buf, int len)

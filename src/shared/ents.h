@@ -38,8 +38,6 @@ enum { ENT_PLAYER = 0, ENT_AI, ENT_INANIMATE, ENT_CAMERA, ENT_BOUNCE };
 // Physics collision types. (ent->collidetype)
 enum { COLLIDE_NONE = 0, COLLIDE_ELLIPSE, COLLIDE_OBB, COLLIDE_TRI };
 
-enum { ETR_SPAWN = ET_GAMESPECIFIC, };
-
 enum                              // static entity types
 {
     NOTUSED = ET_EMPTY,           // entity slot not in use in map
@@ -55,8 +53,12 @@ enum                              // static entity types
     TELEDEST,                     // attr1 = angle, attr2 = idx
     JUMPPAD,                      // attr1 = zpush, attr2 = ypush, attr3 = xpush
     FLAG,                         // attr1 = angle, attr2 = team
-    GAMEENTITY,					  // classname = game entity class type, attributes list is what it is, and can be accessed in any derived BaseEntity class.
-    MAXENTTYPES,
+
+	// SchizoMania entity types. (game_type values.)
+	GAMEENTITY,					  // classname = game entity class type, attributes list is what it is, and can be accessed in any derived BaseEntity class.
+	PLAYER,
+	DOOR,
+	MAXENTTYPES,
 
     I_FIRST = 0,
     I_LAST = -1

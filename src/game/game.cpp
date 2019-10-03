@@ -11,7 +11,7 @@ namespace game
     ::entities::classes::Player *player1 = NULL;
 
     // List of connected players. (For future network usage.)
-    vector<::entities::classes::Player*> players;
+	//vector<::entities::classes::Player*> players;
 
     // Networking State properties.
     bool connected = false;
@@ -28,17 +28,14 @@ namespace game
         // Escape this function if there is no currenttime yet from server to client. (Meaning it is 0.)
         if(!curtime) return; //{ gets2c(); if (player1->) c2sinfo(); return; } //c2sinfo(); }///if(player1->clientnum>=0) c2sinfo(); return; }
         //if(!curtime) return; //{ gets2c(); c2sinfo(); }///if(player1->clientnum>=0) c2sinfo(); return; }
-        // Update the physics.
+
+		// Update the physics.
         physicsframe();
 
         // Update all our entity objects.
         updateentities();
         // gets2c();
-
-        //crouchplayer(player1, 10, true);
-        //moveplayer(player1, 10, true);
-
-       // if(player->clientnum >=0) c2sinfo();   // do this last, to reduce the effective frame lag
+		// if(player->clientnum >=0) c2sinfo();   // do this last, to reduce the effective frame lag
     }
 
     void SpawnPlayer()   // place at random spawn
@@ -165,8 +162,8 @@ namespace game
         // Spawn our player.
         SpawnPlayer();
 
-        // Find player spawn point.
-        findplayerspawn(player1, -1, 0);
+		// Find player spawn point.
+		findplayerspawn(player1, -1, 0);
 
         copycubestr(clientmap, name ? name : "");
         execident("mapstart");
@@ -349,7 +346,7 @@ namespace game
     void initclient() {
         // Setup the map time.
         maptime = 0;
-        SpawnPlayer();
+		SpawnPlayer();
         findplayerspawn(player1);
     }
 

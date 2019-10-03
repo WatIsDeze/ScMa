@@ -5,9 +5,13 @@ namespace entities {
 namespace classes {
 
 PlayerStart::PlayerStart() : BaseEntity() {
-    et_type = ET_PLAYERSTART;
+	// Reset defaults.
+	reset();
+
+	// Setup specifics.
+	et_type = ET_GAMESPECIFIC;
     ent_type = ENT_INANIMATE;
-    game_type = PLAYERSTART;
+	game_type = GAMEENTITY;
 }
 
 PlayerStart::~PlayerStart() {
@@ -15,7 +19,7 @@ PlayerStart::~PlayerStart() {
 }
 
 void PlayerStart::preload() {
-    conoutf("%s", "Preloading playerstart entity");
+
 }
 
 void PlayerStart::think() {
@@ -27,10 +31,12 @@ void PlayerStart::render() {
 }
 
 void PlayerStart::reset() {
+	// Reset Base.
     BaseEntity::reset();
-    // Reset.
-    setName("playerstart");
-    setClassName("PlayerStart");
+
+	// Set names.
+	setName("PlayerStart");
+	setClassName("playerstart");
 }
 
 } // classes

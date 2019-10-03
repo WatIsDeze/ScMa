@@ -1459,7 +1459,7 @@ void recomputecamera()
         }
         prepCamera1->reset();
         prepCamera1->ent_type = ENT_CAMERA;
-        prepCamera1->move = 0;
+        prepCamera1->move = -1;
         prepCamera1->eyeheight = prepCamera1->aboveeye = prepCamera1->radius = prepCamera1->xradius = prepCamera1->yradius = 2;
         matrix3 orient;
         orient.identity();

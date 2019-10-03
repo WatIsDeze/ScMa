@@ -7,7 +7,18 @@
 namespace entities {
 namespace classes {
 
-Door::Door() : entities::classes::BaseMapModel("world/door") {
+Door::Door() :  entities::classes::BaseMapModel("world/door") {
+    state = CS_ALIVE;
+    et_type = ET_GAMESPECIFIC;
+    ent_type = ENT_INANIMATE;
+    game_type = GAMEENTITY;
+    collidetype = COLLIDE_OBB;
+    physstate = PHYS_FLOOR;
+
+    // Reset.
+	setName("Door");
+	setClassName("door");
+
     // Doors animate, makes sense.
     flags |= entities::EntityFlags::EF_ANIM;
 }
