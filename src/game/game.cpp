@@ -157,13 +157,13 @@ namespace game
     void startmap(const char *name)
     {
         // Reset entity spawns.
-        entities::resetspawns();
+		entities::resetspawns();
 
         // Spawn our player.
         SpawnPlayer();
 
 		// Find player spawn point.
-		findplayerspawn(player1, -1, 0);
+		findplayerspawn(player1);
 
         copycubestr(clientmap, name ? name : "");
         execident("mapstart");

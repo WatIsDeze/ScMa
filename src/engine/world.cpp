@@ -1488,7 +1488,46 @@ int findentity(int type, int index, int attr1, int attr2)
     return -1;
 }
 
-int spawncycle = -1;
+int findentity_byclass(const std::string &classname)
+{
+	const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+	for(int i = 0; i <ents.length(); i++)
+	{
+		entities::classes::BaseEntity *e = ents[i];
+
+		if (!e) continue;
+		if(!e->classname.compare(classname)) {
+			conoutf("Found Entity '%s' by Class: '%s'", e->name.c_str(), classname.c_str());
+			return i;
+		}
+	}
+
+	return -1;
+}
+
+
+// We do not need forceent = -1 anymore atm, neither do we need tag = 0 for now. But it's here for backwards reasons.
+void findplayerspawn(entities::classes::Player *d, int forceent, int tag) // Place at spawn (some day, random spawn).
+{
+		int idx = findentity_byclass(d->classname);
+
+		if (entities::getents().inrange(idx)) {
+			vec o = entities::getents()[idx]->o;
+			d->o = o;
+			d->o.z += 1;
+			entinmap(d);
+		} else {
+			d->o.x = d->o.y = d->o.z = 0.5f*worldsize;
+			d->o.z += 1;
+			entinmap(d);
+		}
+}
+
+//=====================
+// WatIsDeze: Old findplayerspawn codes. We don't need these for now.
+//
+//=====================
+//int spawncycle = -1;
 
 //void findplayerspawn(dynent *d, int forceent, int tag) // place at random spawn
 //{
@@ -1540,75 +1579,75 @@ int spawncycle = -1;
 //        entinmap(d);
 //    }
 //}
-int findentity_byclass(const std::string &classname, int index, int attr1, int attr2)
-{
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
-    if(index > ents.length()) index = ents.length();
-    else {
-        for(int i = index; i<ents.length(); i++)
-        {
-            entities::classes::BaseEntity *e = ents[i];
+//int findentity_byclass(const std::string &classname, int index, int attr1, int attr2)
+//{
+//    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+//    if(index > ents.length()) index = ents.length();
+//    else {
+//        for(int i = index; i<ents.length(); i++)
+//        {
+//            entities::classes::BaseEntity *e = ents[i];
 
-            if(e->classname == classname) {
-				conoutf("Found Entity by Class: %s , %s", classname.c_str(), e->classname.c_str());
-                return i;
-            }
-        }
-    }
+//            if(e->classname == classname) {
+//				conoutf("Found Entity by Class: %s , %s", classname.c_str(), e->classname.c_str());
+//                return i;
+//            }
+//        }
+//    }
 
-    return index;
-}
+//    return index;
+//}
 
-void findplayerspawn(entities::classes::Player *d, int forceent, int tag) // place at random spawn
-{
-/*	int pick = forceent;
-	if(pick < 0)
-	{
-		int r = rnd(10)+1;
-		pick = spawncycle;
-		loopi(r)
-		{
-			pick = findentity_byclass("playerstart", pick+1, -1, tag);
-			if(pick < 0) break;
-		}
-		if(pick < 0 && tag)
-		{
-			pick = spawncycle;
-			loopi(r)
-			{
-				pick = findentity_byclass("playerstart", pick+1, -1, 0);
-				if(pick < 0) break;
-			}
-		}
-		if(pick >= 0) spawncycle = pick;
-	}
-	if(pick>=0)
-	{
-		const vector<entities::classes::BaseEntity *> &ents = entities::getents();
-		d->pitch = 0;
-		d->roll = 0;
-		for(int attempt = pick; attempt < ents.length(); attempt++ )
-		{
-			d->o = ents[attempt]->o;
-			d->yaw = ents[attempt]->attr1;
-			if(entinmap(d, true)) break;
-			attempt = findentity_byclass("playerstart", attempt+1, -1, tag);
-			if(attempt < 0 || attempt==pick)
-			{
-				d->o = ents[pick]->o;
-				d->yaw = ents[pick]->attr1;
-				entinmap(d);
-				break;
-			}
-		}
-	}
-	else
-	{*/
-        d->o.x = d->o.y = d->o.z = 0.5f*worldsize;
-        d->o.z += 1;
-        entinmap(d);
-	//}
-}
+//void findplayerspawn(entities::classes::Player *d, int forceent, int tag) // place at random spawn
+//{
+//	int pick = forceent;
+//	if(pick < 0)
+//	{
+//		int r = rnd(10)+1;
+//		pick = spawncycle;
+//		loopi(r)
+//		{
+//			pick = findentity_byclass("playerstart", pick+1, -1, tag);
+//			if(pick < 0) break;
+//		}
+//		if(pick < 0 && tag)
+//		{
+//			pick = spawncycle;
+//			loopi(r)
+//			{
+//				pick = findentity_byclass("playerstart", pick+1, -1, 0);
+//				if(pick < 0) break;
+//			}
+//		}
+//		if(pick >= 0) spawncycle = pick;
+//	}
+//	if(pick>=0)
+//	{
+//		const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+//		d->pitch = 0;
+//		d->roll = 0;
+//		for(int attempt = pick; attempt < ents.length(); attempt++ )
+//		{
+//			d->o = ents[attempt]->o;
+//			d->yaw = ents[attempt]->attr1;
+//			if(entinmap(d, true)) break;
+//			attempt = findentity_byclass("playerstart", attempt+1, -1, tag);
+//			if(attempt < 0 || attempt==pick)
+//			{
+//				d->o = ents[pick]->o;
+//				d->yaw = ents[pick]->attr1;
+//				entinmap(d);
+//				break;
+//			}
+//		}
+//	}
+//	else
+//	{
+//        d->o.x = d->o.y = d->o.z = 0.5f*worldsize;
+//        d->o.z += 1;
+//        entinmap(d);
+//	}
+//}
 
 void splitocta(cube *c, int size)
 {

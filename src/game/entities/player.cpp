@@ -10,11 +10,11 @@ Player::Player() : BaseDynamicEntity() {
     state = CS_ALIVE;
     et_type = ET_GAMESPECIFIC;
     ent_type = ENT_PLAYER;
-    game_type = GAMEENTITY;
+	game_type = PLAYER;
     collidetype = COLLIDE_OBB;
-    physstate = PHYS_FLOOR;
+	physstate = PHYS_FALL;
 
-    // Reset.
+	// Reset.
 	setName("Player");
 	setClassName("player");
 
@@ -37,20 +37,10 @@ void Player::preload() {
 	game_type = PLAYER;
     collidetype = COLLIDE_OBB;
 	physstate = PHYS_FALL;
-
-    // Reset.
-    setName("player");
-    setClassName("Player");
 }
 
 void Player::think() {
-//    o.x = 512;
-//    o.y = 512;
-    //o.z = 512;
-
-    //camera->o = o; //WatIsDeze: Uncomment this and camera moves??
     moveplayer(this, 10, true);
-    //conoutf("Player1->o {%f, %f, %f} player1->camera->o {%f, %f, %f}", o.x, o.y, o.z, camera->o.x, camera->o.y, camera->o.z);
 }
 
 enum

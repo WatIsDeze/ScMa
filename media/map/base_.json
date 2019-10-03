@@ -4,7 +4,8 @@
         "et_type": 3,
         "game": {
             "attributes": {},
-            "classname": "playerstart"
+            "classname": "playerstart",
+            "name": "baseentity_0"
         },
         "game_type": 3,
         "int_attr1": 0,
@@ -15,9 +16,9 @@
         "int_reserved": 0,
         "model_idx": -1,
         "o": {
-            "x": 532.0,
-            "y": 556.0,
-            "z": 532.0
+            "x": 308.0000915527344,
+            "y": 300.0,
+            "z": 579.9999389648438
         }
     },
     {
@@ -25,7 +26,8 @@
         "et_type": 3,
         "game": {
             "attributes": {},
-            "classname": "playerstart"
+            "classname": "playerstart",
+            "name": "baseentity_1"
         },
         "game_type": 3,
         "int_attr1": 0,
@@ -36,9 +38,9 @@
         "int_reserved": 0,
         "model_idx": -1,
         "o": {
-            "x": 564.0,
-            "y": 404.0,
-            "z": 524.0
+            "x": 260.0,
+            "y": 771.9994506835938,
+            "z": 580.002197265625
         }
     }
 ]

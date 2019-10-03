@@ -92,17 +92,20 @@ namespace entities
 
     // Returns the entity class respectively according to its registered name.
     entities::classes::BaseEntity *newgameentity(char *strclass) {
-            if (strclass != NULL && strcmp(strclass, "coreentity") == 0) { return new entities::classes::BaseEntity(); }
-            if (strclass != NULL && strcmp(strclass, "playerstart") == 0) { return new entities::classes::PlayerStart(); }
-            if (strclass != NULL && strcmp(strclass, "basemonster") == 0) { return new entities::classes::BaseMonster(); }
-            if (strclass != NULL && strcmp(strclass, "dynamiclight") == 0) { return new entities::classes::DynamicLight(); }
-            if (strclass != NULL && strcmp(strclass, "door") == 0) { return new entities::classes::Door(); }
-            if (strclass != NULL && strcmp(strclass, "model") == 0) { return new entities::classes::BaseMapModel(); }
+			entities::classes::BaseEntity *ent = NULL;
 
-            conoutf("Returned entities::class:: %s", strclass);
+			if (strclass != NULL && strcmp(strclass, "playerstart") == 0) { ent = new entities::classes::PlayerStart(); }
+			if (strclass != NULL && strcmp(strclass, "basemonster") == 0) { ent = new entities::classes::BaseMonster(); }
+			if (strclass != NULL && strcmp(strclass, "dynamiclight") == 0) { ent = new entities::classes::DynamicLight(); }
+			if (strclass != NULL && strcmp(strclass, "door") == 0) { ent = new entities::classes::Door(); }
+			if (strclass != NULL && strcmp(strclass, "model") == 0) { ent = new entities::classes::BaseMapModel(); }
+
+			if (ent)
+				conoutf("Returned entities::classes::%s", ent->classname.c_str());
+
             // No entity was found, so we'll return base entity for now.
             // TODO: Should we do this at all? I guess returning NULL is fine too and warning our user instead.
-            return new entities::classes::BaseEntity();
+			return ent;
     }
     // Deletes the entity class in specific.
     void deletegameentity(entities::classes::BaseEntity *e) {

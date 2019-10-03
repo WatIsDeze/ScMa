@@ -89,9 +89,16 @@ namespace entities {
             //
             void setName(const std::string &str = "coreentity") {
                 name = str + "_" + std::to_string(entities::getents().length());
-            }
+
+				// Do not forget to store it in our attributes list, so it can be saved to disk.
+				setAttribute("name", name, false);
+			}
             void setClassName(const std::string &str = "CoreEntity") {
-                classname = str;
+				// Store classname.
+				classname = str;
+
+				// Do not forget to store it in our attributes list, so it can be saved to disk.
+				setAttribute("classname", classname, false);
             }
         };
     } // classes
