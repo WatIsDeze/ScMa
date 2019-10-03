@@ -1,0 +1,27 @@
+[
+    {
+        "ent_type": 2,
+        "et_type": 9,
+        "game": {
+            "attributes": {
+                "classname": "playerstart",
+                "name": "PlayerStart_0"
+            },
+            "classname": "playerstart",
+            "name": "playerstart0"
+        },
+        "game_type": 13,
+        "int_attr1": 0,
+        "int_attr2": 0,
+        "int_attr3": 0,
+        "int_attr4": 0,
+        "int_attr5": 0,
+        "int_reserved": 0,
+        "model_idx": 0,
+        "o": {
+            "x": 606.0,
+            "y": 610.0,
+            "z": 532.0
+        }
+    }
+]
