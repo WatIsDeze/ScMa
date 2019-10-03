@@ -118,12 +118,12 @@ void setconskip(int &skip, int filter, int n)
     }
 }
 
-SCRIPTEXPORT_AS(conskip) void conskip_impl(int *n)
+SCRIPTEXPORT_AS(conskip) void conskip_scriptimpl(int *n)
 {
     setconskip(conskip, UI::uivisible("fullconsole") ? fullconfilter : confilter, *n);
 }
 
-SCRIPTEXPORT_AS(miniconskip) void miniconskip_impl(int *n)
+SCRIPTEXPORT_AS(miniconskip) void miniconskip_scriptimpl(int *n)
 {
     setconskip(miniconskip, miniconfilter, *n);
 }
@@ -283,7 +283,7 @@ void bindkey(char *key, char *action, int state, const char *cmd)
     binding = newcubestr(action, len);
 }
 
-SCRIPTEXPORT void bind(char *key, char *action)
+SCRIPTEXPORT_AS(bind) void bind_scriptimpl(char *key, char *action)
 {
     bindkey(key, action, keym::ACTION_DEFAULT, "bind");
 }

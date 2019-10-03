@@ -583,7 +583,7 @@ int listzipfiles(const char *dir, const char *ext, vector<char *> &files)
 }
 
 #ifndef STANDALONE
-// SCRIPTEXPORT_AS() void addzip_impl(const char *name, const char *mount, const char *strip)
+// SCRIPTEXPORT_AS(addzip) void addzip_scriptimpl(const char *name, const char *mount, const char *strip)
 // {
 //     addzip(name, mount[0] ? mount : NULL, strip[0] ? strip : NULL);
 // }

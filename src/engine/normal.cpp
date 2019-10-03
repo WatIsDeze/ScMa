@@ -278,7 +278,7 @@ int smoothangle(int id, int angle)
     return id;
 }
 
-SCRIPTEXPORT_AS(smoothangle) void smoothangle_impl(int *id, int *angle)
+SCRIPTEXPORT_AS(smoothangle) void smoothangle_scriptimpl(int *id, int *angle)
 {
     intret(smoothangle(*id, *angle));
 }

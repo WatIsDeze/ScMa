@@ -45,7 +45,7 @@ class CxxFunction(CxxNode):
 COMMAND({functionname}, "{proto}", {doc});
 """
         template_custom = """extern {returnt} {realfunctionname}({argdecl});
-ICOMMAND({functionname}, "{proto}", ({argdecl}), {realfunctionname}({argdecl}), {doc});
+ICOMMAND({functionname}, "{proto}", ({argdecl}), {realfunctionname}({arguse}), {doc});
 """
 
         spelling2proto  = {
@@ -67,10 +67,14 @@ ICOMMAND({functionname}, "{proto}", ({argdecl}), {realfunctionname}({argdecl}), 
 
         proto = ""
         cppargs = []
+        argname = []
+        argnameitr = 0
         for arg in self.forEachArgument():
             if (arg.spelling in spelling2proto):
                 proto = proto + spelling2proto[arg.spelling]
                 cppargs.append(arg.spelling)
+                argname.append(chr(97 + argnameitr))
+                argnameitr = argnameitr + 1
             else:
                 raise ValueError("Function argument type not implemented", arg.spelling, self.sourceObject.spelling)
             # for typedef in arg.get_children():
@@ -80,7 +84,13 @@ ICOMMAND({functionname}, "{proto}", ({argdecl}), {realfunctionname}({argdecl}), 
             #         else:
             #             raise ValueError("Function argument type not implemented", typedef.spelling, self.sourceObject.spelling)
 
+        arguselst = []
+        for [a, b] in zip(cppargs, argname):
+            arguselst.append(a + " " + b)
+
         argdecl = ", ".join(cppargs)
+        argusedecl = ", ".join(arguselst)
+        arguse = ", ".join(argname)
         functionName = self.sourceObject.spelling
         returntype = self.sourceObject.result_type.spelling
         if self.customFuctionName:
@@ -88,7 +98,8 @@ ICOMMAND({functionname}, "{proto}", ({argdecl}), {realfunctionname}({argdecl}), 
             functionName = self.customFuctionName
             
             return template_custom.format(
-                argdecl = argdecl,
+                argdecl = argusedecl,
+                arguse = arguse,
                 realfunctionname = realFunctionName,
                 functionname = functionName,
                 proto = proto,

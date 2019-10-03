@@ -532,7 +532,7 @@ void initgbuffer()
 VARF(forcepacknorm, 0, 0, 1, initwarning("g-buffer setup", INIT_LOAD, CHANGE_SHADERS));
 
 bool usepacknorm() { return forcepacknorm || msaasamples || !useavatarmask(); }
-SCRIPTEXPORT_AS(usepacknorm) void usepacknorm_impl()
+SCRIPTEXPORT_AS(usepacknorm) void usepacknorm_scriptimpl()
 {
     intret(usepacknorm() ? 1 : 0);
 }

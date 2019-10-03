@@ -678,7 +678,7 @@ int playsoundname(const char *s, const vec *loc, int vol, int flags, int loops, 
     return playsound(id, loc, NULL, flags, loops, fade, chanid, radius, expire);
 }
 
-SCRIPTEXPORT_AS(playsound) void playsound_impl(int *n)
+SCRIPTEXPORT_AS(playsound) void playsound_scriptimpl(int *n)
 {
     playsound(*n);
 }

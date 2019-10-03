@@ -36,7 +36,9 @@ foreach(input_file ${input_sources})
     )
     set_source_files_properties(
         ${CMAKE_CURRENT_BINARY_DIR}/${input_file_target}
-        PROPERTIES GENERATED TRUE
+        PROPERTIES
+            GENERATED TRUE
+            DEPENDS target_${input_file_target}
     )
 endforeach()
 

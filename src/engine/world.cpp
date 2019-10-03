@@ -922,7 +922,7 @@ SCRIPTEXPORT void enttoggle()
     else { if(entmoving > 1) entmoving = 1; intret(1); }
 }
 
-SCRIPTEXPORT_AS(entmoving) void entmoving_impl(int *n)
+SCRIPTEXPORT_AS(entmoving) void entmoving_scriptimpl(int *n)
 {
     if(*n >= 0)
     {

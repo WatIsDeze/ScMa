@@ -583,7 +583,7 @@ void mpremip(bool local)
     allchanged();
 }
 
-SCRIPTEXPORT_AS(remip) void remip_impl()
+SCRIPTEXPORT_AS(remip) void remip_scriptimpl()
 {
     mpremip(true);
 }

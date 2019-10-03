@@ -39,7 +39,7 @@ bool isconnected(bool attempt, bool local)
     return curpeer || (attempt && connpeer) || (local && haslocalclients());
 }
 
-SCRIPTEXPORT_AS(isconnected) void isconnected_script(CommandTypes::Boolean attempt, CommandTypes::Boolean local)
+SCRIPTEXPORT_AS(isconnected) void isconnected_scriptimpl(CommandTypes::Boolean attempt, CommandTypes::Boolean local)
 {
     intret(isconnected(*attempt > 0, *local != 0) ? 1 : 0);
 }
@@ -188,7 +188,7 @@ SCRIPTEXPORT void lanconnect(int *port, char *pw)
     connectserv(NULL, *port, pw);
 }
 
-SCRIPTEXPORT void disconnect(int *local)
+SCRIPTEXPORT_AS(disconnect) void disconnect_scriptimpl(int *local)
 {
     trydisconnect(*local != 0);
 }

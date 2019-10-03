@@ -744,7 +744,7 @@ SCRIPTEXPORT void initservers()
     if(autoupdateservers && !updatedservers) updatefrommaster();
 }
 
-SCRIPTEXPORT_AS(addserver) void addserver_impl(const char *name, int *port, const char *password)
+SCRIPTEXPORT_AS(addserver) void addserver_scriptimpl(const char *name, int *port, const char *password)
 {
     addserver(name, *port, password[0] ? password : NULL);
 }
@@ -754,7 +754,7 @@ SCRIPTEXPORT void keepserver(const char *name, int *port, const char *password)
     addserver(name, *port, password[0] ? password : NULL, true);
 }
 
-SCRIPTEXPORT_AS(clearservers) void clearservers_impl(int *full)
+SCRIPTEXPORT_AS(clearservers) void clearservers_scriptimpl(int *full)
 {
     clearservers(*full!=0);
 }

@@ -609,7 +609,7 @@ void mpcalclight(bool local)
     calclight();
 }
 
-SCRIPTEXPORT_AS(calclight) void calclight_impl()
+SCRIPTEXPORT_AS(calclight) void calclight_scriptimpl()
 {
     mpcalclight(true);
 }

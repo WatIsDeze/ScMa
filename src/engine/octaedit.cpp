@@ -114,7 +114,7 @@ VARF(dragging, 0, 0, 1,
 );
 
 int moving = 0;
-SCRIPTEXPORT_AS(moving) void moving_impl(int *n)
+SCRIPTEXPORT_AS(moving) void moving_scriptimpl(int *n)
 {
     if(*n >= 0)
     {
@@ -273,12 +273,12 @@ cube &blockcube(int x, int y, int z, const block3 &b, int rgrid) // looks up a w
 
 int selchildcount = 0, selchildmat = -1;
 
-SCRIPTEXPORT_AS(havesel) void havesel_impl()
+SCRIPTEXPORT_AS(havesel) void havesel_scriptimpl()
 {
     intret(havesel ? selchildcount : 0);
 }
 
-SCRIPTEXPORT_AS(selchildcount) void selchildcount_impl()
+SCRIPTEXPORT_AS(selchildcount) void selchildcount_scriptimpl()
 {
     if(selchildcount < 0)
     {
@@ -290,7 +290,7 @@ SCRIPTEXPORT_AS(selchildcount) void selchildcount_impl()
     }
 }
 
-SCRIPTEXPORT_AS(selchildmat) void selchildmat_impl(char *prefix)
+SCRIPTEXPORT_AS(selchildmat) void selchildmat_scriptimpl(char *prefix)
 {
     if(selchildmat > 0) result(getmaterialdesc(selchildmat, prefix)); 
 }
@@ -2500,7 +2500,7 @@ SCRIPTEXPORT void getreptex()
 {
     if(!noedit()) intret(vslots.inrange(reptex) ? reptex : -1); 
 }
-SCRIPTEXPORT_AS(texmru) void texmru_impl(int *idx)
+SCRIPTEXPORT_AS(texmru) void texmru_scriptimpl(int *idx)
 {
     filltexlist();
     intret(texmru.inrange(*idx) ? texmru[*idx] : texmru.length()); 
@@ -2564,7 +2564,7 @@ void replace(bool insel)
     mpreplacetex(reptex, lasttex, insel, sel, true);
 }
 
-SCRIPTEXPORT_AS(replace) void replace_impl()
+SCRIPTEXPORT_AS(replace) void replace_scriptimpl()
 {
     replace(false);
 }

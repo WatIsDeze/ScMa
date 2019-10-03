@@ -303,7 +303,7 @@ const char * mapmodelname(int i)
     return mapmodels.inrange(i) ? mapmodels[i].name : NULL;
 }
 
-SCRIPTEXPORT_AS(mapmodelname) void mapmodelname_impl(int *index, int *prefix)
+SCRIPTEXPORT_AS(mapmodelname) void mapmodelname_scriptimpl(int *index, int *prefix)
 {
     if(mapmodels.inrange(*index))
     {

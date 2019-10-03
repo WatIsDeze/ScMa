@@ -2035,7 +2035,7 @@ namespace UI
     };
 
     float uicontextscale = 0;
-    SCRIPTEXPORT_AS(uicontextscale) void uicontextscale_impl()
+    SCRIPTEXPORT_AS(uicontextscale) void uicontextscale_scriptimpl()
     {
         floatret(FONTH*uicontextscale);
     }
@@ -3145,37 +3145,37 @@ namespace UI
         return window && world->children.find(window) >= 0;
     }
 
-    SCRIPTEXPORT_AS(showui) void showui_impl(char *name)
+    SCRIPTEXPORT_AS(showui) void showui_scriptimpl(char *name)
     {
         intret(showui(name) ? 1 : 0);
     }
 
-    SCRIPTEXPORT_AS(hideui) void hideui_impl(char *name)
+    SCRIPTEXPORT_AS(hideui) void hideui_scriptimpl(char *name)
     {
         intret(hideui(name) ? 1 : 0);
     }
 
-    SCRIPTEXPORT_AS(hidetopui) void hidetopui_impl()
+    SCRIPTEXPORT_AS(hidetopui) void hidetopui_scriptimpl()
     {
         intret(world->hidetop() ? 1 : 0);
     }
 
-    SCRIPTEXPORT_AS(hideallui) void hideallui_impl()
+    SCRIPTEXPORT_AS(hideallui) void hideallui_scriptimpl()
     {
         intret(world->hideall());
     }
 
-    SCRIPTEXPORT_AS(toggleui) void toggleui_impl(char *name)
+    SCRIPTEXPORT_AS(toggleui) void toggleui_scriptimpl(char *name)
     {
         intret(toggleui(name) ? 1 : 0);
     }
 
-    SCRIPTEXPORT_AS(holdui) void holdui_impl(char *name, CommandTypes::KeyPress down)
+    SCRIPTEXPORT_AS(holdui) void holdui_scriptimpl(char *name, CommandTypes::KeyPress down)
     {
         holdui(name, *down!=0);
     }
 
-    SCRIPTEXPORT_AS(uivisible) void uivisible_impl(char *name)
+    SCRIPTEXPORT_AS(uivisible) void uivisible_scriptimpl(char *name)
     {
         intret(uivisible(name) ? 1 : 0);
     }
