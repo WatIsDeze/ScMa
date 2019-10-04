@@ -59,9 +59,10 @@ enum                              // static entity types
 
 	// Objects.
 	BUTTON,
-	DOOR,
-
 	MAXENTTYPES,
+
+	//new entities
+	DOOR,
 
     I_FIRST = 0,
     I_LAST = -1
