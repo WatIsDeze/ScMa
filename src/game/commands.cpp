@@ -73,4 +73,76 @@ namespace game {
             conoutf("%s", "No valid entity selected to fetch an attribute from.");
         }
     };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#ifndef SCRIPTBIND_RUN
+ICOMMAND(ent_set_attr, "ss", (char * a, char * b), game::ent_set_attr(a, b), "---------------------------------------------------------------------------------------------// ENTITY COMMANDS. // ---------------------------------------------------------------------------------------------// ent_set_attr - Sets the value of the designated key property. args: (str)key (str)value.");
+
+ICOMMAND(ent_get_attr, "s", (char * a), game::ent_get_attr(a), "ent_get_attr - Retreives the value of the designated key property. args: (str)key");
+
+ICOMMAND(ent_list_attr, "", (), game::ent_list_attr(), "ent_list_attr - Lists all the properties of the given entity.");
+
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //
 }

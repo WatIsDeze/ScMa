@@ -49,6 +49,7 @@ add_library(SchizoMania_Engine_Client STATIC
     rendersky.cpp
     rendertext.cpp
     renderva.cpp
+    scriptexport.h
     server.cpp
     serverbrowser.cpp
     shader.cpp
@@ -96,6 +97,7 @@ target_link_libraries(SchizoMania_Engine_Client
         SchizoMania_Shared_Client
         ${OS_LIBS}
     PRIVATE
+        SchizoMania_Binding
         ${SDL2_MIXER_LIBRARIES}
         ${SDL2_IMAGE_LIBRARIES}
         ${PNG_LIBRARIES}

@@ -1158,3 +1158,70 @@ int main(int argc, char **argv)
     return EXIT_SUCCESS;
 }
 #endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#ifndef SCRIPTBIND_RUN
+COMMAND(startlistenserver, "i", "");
+
+COMMAND(stoplistenserver, "", "");
+
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

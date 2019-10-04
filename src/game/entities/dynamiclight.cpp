@@ -24,3 +24,39 @@ void DynamicLight::think() {
 
 } // classes
 } // entities
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

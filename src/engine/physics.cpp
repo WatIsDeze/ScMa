@@ -2078,3 +2078,83 @@ bool entinmap(dynent *d, bool avoidplayers)        // brute force but effective 
     return false;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#ifndef SCRIPTBIND_RUN
+COMMAND(phystest, "", "");
+
+COMMAND(backward, "D", "");
+
+COMMAND(forward, "D", "");
+
+COMMAND(left, "D", "");
+
+COMMAND(right, "D", "");
+
+COMMAND(jump, "D", "");
+
+COMMAND(crouch, "D", "");
+
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

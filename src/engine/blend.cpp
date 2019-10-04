@@ -349,9 +349,14 @@ static void optimizeblendmap(uchar &type, BlendMapNode &node)
     }
 }
 
-SCRIPTEXPORT void optimizeblendmap()
+SCRIPTEXPORT_AS(optimizeblendmap) void optimizeblendmap_scriptimpl()
 {
     optimizeblendmap(blendmap.type, blendmap);
+}
+
+void optimizeblendmap()
+{
+    optimizeblendmap_scriptimpl();
 }
 
 VARF(blendpaintmode, 0, 0, 5,
@@ -997,7 +1002,7 @@ void trypaintblendmap()
     paintblendmap(false);
 }
 
-SCRIPTEXPORT void paintblendmap(int *isdown)
+SCRIPTEXPORT_AS(paintblendmap) void paintblendmap_scriptimpl(int *isdown)
 {
     if(*isdown)
     {
@@ -1031,7 +1036,7 @@ SCRIPTEXPORT void invertblendmapsel()
 }
 
 
-SCRIPTEXPORT void invertblendmap()
+SCRIPTEXPORT_AS(invertblendmap) void invertblendmap_scriptimpl()
 {
     if(noedit(false) || (nompedit && multiplayer())) return;
     invertblendmap(0, 0, worldsize>>BM_SCALE, worldsize>>BM_SCALE);
@@ -1051,7 +1056,7 @@ SCRIPTEXPORT void clearblendmap()
     showblendmap();
 }
 
-SCRIPTEXPORT void moveblendmap(int *dx, int *dy)
+SCRIPTEXPORT_AS(moveblendmap) void moveblendmap_scriptimpl(int *dx, int *dy)
 {
     if(noedit(true) || (nompedit && multiplayer())) return;
     if(*dx%(BM_IMAGE_SIZE<<BM_SCALE) || *dy%(BM_IMAGE_SIZE<<BM_SCALE))
@@ -1151,3 +1156,63 @@ uchar shouldsaveblendmap()
     return blendmap.solid!=&bmsolids[0xFF] ? 1 : 0;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#ifndef SCRIPTBIND_RUN
+ICOMMAND(optimizeblendmap, "", (), optimizeblendmap_scriptimpl(), "");
+
+COMMAND(dumpblendtexs, "", "");
+
+COMMAND(clearblendbrushes, "", "");
+
+COMMAND(delblendbrush, "s", "");
+
+COMMAND(addblendbrush, "ss", "");
+
+COMMAND(nextblendbrush, "i", "");
+
+COMMAND(setblendbrush, "s", "");
+
+COMMAND(getblendbrushname, "i", "");
+
+COMMAND(curblendbrush, "", "");
+
+COMMAND(rotateblendbrush, "i", "");
+
+ICOMMAND(paintblendmap, "i", (int * a), paintblendmap_scriptimpl(a), "");
+
+COMMAND(clearblendmapsel, "", "");
+
+COMMAND(invertblendmapsel, "", "");
+
+ICOMMAND(invertblendmap, "", (), invertblendmap_scriptimpl(), "");
+
+COMMAND(showblendmap, "", "");
+
+COMMAND(clearblendmap, "", "");
+
+ICOMMAND(moveblendmap, "ii", (int * a, int * b), moveblendmap_scriptimpl(a, b), "");
+
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

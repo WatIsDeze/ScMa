@@ -907,7 +907,7 @@ bool hoveringonent(int ent, int orient)
 
 VAR(entitysurf, 0, 0, 1);
 
-SCRIPTEXPORT void entadd()
+SCRIPTEXPORT_AS(entadd) void entadd_scriptimpl()
 {
     if(enthover >= 0 && !noentedit())
     {
@@ -916,7 +916,7 @@ SCRIPTEXPORT void entadd()
     }
 }
 
-SCRIPTEXPORT void enttoggle()
+SCRIPTEXPORT_AS(enttoggle) void enttoggle_scriptimpl()
 {
     if(enthover < 0 || noentedit() || !enttoggle(enthover)) { entmoving = 0; intret(0); }
     else { if(entmoving > 1) entmoving = 1; intret(1); }
@@ -1729,3 +1729,104 @@ void mpeditent(int i, const vec &o, int type, int attr1, int attr2, int attr3, i
 int getworldsize() { return worldsize; }
 int getmapversion() { return mapversion; }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#ifndef SCRIPTBIND_RUN
+COMMAND(entcancel, "", "");
+
+COMMAND(entflip, "", "");
+
+COMMAND(entrotate, "i", "");
+
+ICOMMAND(entadd, "", (), entadd_scriptimpl(), "");
+
+ICOMMAND(enttoggle, "", (), enttoggle_scriptimpl(), "");
+
+ICOMMAND(entmoving, "i", (int * a), entmoving_scriptimpl(a), "");
+
+COMMAND(entpush, "i", "");
+
+COMMAND(entautoview, "i", "");
+
+COMMAND(delent, "", "");
+
+COMMAND(dropent, "", "");
+
+COMMAND(attachent, "", "");
+
+COMMAND(newent, "siiiii", "");
+
+COMMAND(newgent, "sssssssss", "");
+
+COMMAND(entcopy, "", "");
+
+COMMAND(entpaste, "", "");
+
+COMMAND(entreplace, "", "");
+
+COMMAND(entset, "siiiii", "");
+
+COMMAND(nearestent, "", "");
+
+COMMAND(enthavesel, "", "");
+
+COMMAND(entselect, "e", "");
+
+COMMAND(entloop, "e", "");
+
+COMMAND(insel, "", "");
+
+COMMAND(entget, "", "");
+
+COMMAND(entindex, "", "");
+
+COMMAND(enttype, "sN", "");
+
+COMMAND(entattr, "iiN", "");
+
+COMMAND(shrinkmap, "", "");
+
+COMMAND(newmap, "i", "");
+
+COMMAND(mapenlarge, "", "");
+
+COMMAND(mapname, "", "");
+
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

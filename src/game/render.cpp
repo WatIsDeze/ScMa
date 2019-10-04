@@ -1,4 +1,5 @@
 #include "game.h"
+#include "engine/scriptexport.h"
 
 namespace game
 {
@@ -20,7 +21,6 @@ namespace game
     void swayhudgun(int curtime) {
 
     }
-
 
     void drawhudmodel(entities::classes::BaseEntity *d, int anim, int basetime) {
 
@@ -59,3 +59,26 @@ namespace game
     }
 }
 
+SCRIPTEXPORT int getplayercolor(int team, int color)
+{
+    switch(team)
+    {
+        case 1: return 0x0000FF;
+        case 2: return 0xFF0000;
+        default: return 0xFFFF77;
+    }
+}
+
+
+
+
+
+
+
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#ifndef SCRIPTBIND_RUN
+COMMAND(getplayercolor, "ii", "");
+
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

@@ -39,7 +39,9 @@ target_include_directories(SchizoMania_Game_Client
 target_link_libraries(SchizoMania_Game_Client
     PUBLIC
         SchizoMania_Shared_Client
-        #${OS_LIBS}
+    PRIVATE
+       SchizoMania_Binding
+    #${OS_LIBS}
 )
 # target_compile_definitions(SchizoMania_Game_Server PUBLIC -DSTANDALONE)
 

@@ -23,6 +23,7 @@ class CppParser:
         self.file = file
         self.flags = CompileFlagsFor("../build", file)
         if skipComments is False:
+            self.flags.append("-DSCRIPTBIND_RUN")
             self.flags.append("-fparse-all-comments")
         self.tree = {}
         self.model = None
@@ -97,16 +98,12 @@ class CppParser:
         print (self.model.dump())
 
     def dump_code(self):
-        template = """
-#include "shared/cube.h"
-
-{}
-        """
+        template = """{}"""
         generated_funcs = []
         for node in self.model.forEachChild():
             if type(node) is CxxFunction:
                 generated_funcs.append(node.generate())
-        print(template.format("\n".join(generated_funcs)))
+        return template.format("\n".join(generated_funcs))
 
     def dump_includes(self):
         includes = set()

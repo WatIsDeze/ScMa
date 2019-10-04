@@ -2734,3 +2734,36 @@ void rendershadowmesh(shadowmesh *m)
     gle::clearvbo();
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

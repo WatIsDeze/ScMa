@@ -27,3 +27,44 @@ void BaseMonster::render() {
 
 } // classes
 } // entities
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

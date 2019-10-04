@@ -1170,3 +1170,43 @@ SCRIPTEXPORT void movierecording()
     intret(recorder::isrecording() ? 1 : 0);
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#ifndef SCRIPTBIND_RUN
+COMMAND(movie, "s", "");
+
+COMMAND(movierecording, "", "");
+
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

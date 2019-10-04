@@ -971,7 +971,7 @@ void getfps(int &fps, int &bestdiff, int &worstdiff)
     worstdiff = fps-1000/worst;
 }
 
-SCRIPTEXPORT void getfps(int *raw)
+SCRIPTEXPORT_AS(getfps) void getfps_scriptimpl(int *raw)
 {
     if(*raw) floatret(1000.0f/fpshistory[(fpspos+MAXFPSHISTORY-1)%MAXFPSHISTORY]);
     else
@@ -1223,3 +1223,33 @@ int main(int argc, char **argv)
     } __except(stackdumper(0, GetExceptionInformation()), EXCEPTION_CONTINUE_SEARCH) { return 0; }
     #endif
 }
+
+
+SCRIPTEXPORT void testlog(char * text)
+{
+	conoutf("testlog: %s", text);
+}
+
+
+
+
+
+
+
+
+
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#ifndef SCRIPTBIND_RUN
+COMMAND(quit, "", "");
+
+COMMAND(screenres, "ii", "");
+
+COMMAND(resetgl, "", "");
+
+ICOMMAND(getfps, "i", (int * a), getfps_scriptimpl(a), "");
+
+COMMAND(testlog, "s", "");
+
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

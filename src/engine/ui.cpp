@@ -543,7 +543,10 @@ namespace UI
 
         void buildchildren(uint *contents)
         {
-            if((*contents&CODE_OP_MASK) == CODE_EXIT) children.deletecontents();
+            if((*contents&CODE_OP_MASK) == CODE_EXIT)
+            {
+            	children.deletecontents();
+			}
             else
             {
                 Object *oldparent = buildparent;
@@ -2780,7 +2783,10 @@ namespace UI
             if(isfocus() && !hasstate(STATE_HOVER)) commit();
             if(changed)
             {
-                if(id == id_) setsval(id, edit->lines[0].text, onchange);
+                if(id == id_)
+                {
+                	setsval(id, edit->lines[0].text, onchange);
+				}
                 changed = false;
             }
             bool shouldfree = false;
@@ -3756,3 +3762,194 @@ namespace UI
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#ifndef SCRIPTBIND_RUN
+ICOMMAND(uicontextscale, "", (), UI::uicontextscale_scriptimpl(), "");
+
+ICOMMAND(newui, "ssss", (char * a, char * b, char * c, char * d), UI::newui(a, b, c, d), "");
+
+ICOMMAND(uiallowinput, "i", (int * a), UI::uiallowinput(a), "");
+
+ICOMMAND(uieschide, "i", (int * a), UI::uieschide(a), "");
+
+ICOMMAND(showui, "s", (char * a), UI::showui_scriptimpl(a), "");
+
+ICOMMAND(hideui, "s", (char * a), UI::hideui_scriptimpl(a), "");
+
+ICOMMAND(hidetopui, "", (), UI::hidetopui_scriptimpl(), "");
+
+ICOMMAND(hideallui, "", (), UI::hideallui_scriptimpl(), "");
+
+ICOMMAND(toggleui, "s", (char * a), UI::toggleui_scriptimpl(a), "");
+
+ICOMMAND(holdui, "sD", (char * a, CommandTypes::KeyPress b), UI::holdui_scriptimpl(a, b), "");
+
+ICOMMAND(uivisible, "s", (char * a), UI::uivisible_scriptimpl(a), "");
+
+ICOMMAND(uiname, "", (), UI::uiname(), "");
+
+ICOMMAND(uialign, "ii", (int * a, int * b), UI::uialign(a, b), "");
+
+ICOMMAND(uiclamp, "iiii", (int * a, int * b, int * c, int * d), UI::uiclamp(a, b, c, d), "");
+
+ICOMMAND(uigroup, "e", (CommandTypes::Expression a), UI::uigroup(a), "");
+
+ICOMMAND(uihlist, "fe", (float * a, CommandTypes::Expression b), UI::uihlist(a, b), "");
+
+ICOMMAND(uivlist, "fe", (float * a, CommandTypes::Expression b), UI::uivlist(a, b), "");
+
+ICOMMAND(uilist, "fe", (float * a, CommandTypes::Expression b), UI::uilist(a, b), "");
+
+ICOMMAND(uigrid, "iffe", (int * a, float * b, float * c, CommandTypes::Expression d), UI::uigrid(a, b, c, d), "");
+
+ICOMMAND(uitableheader, "ee", (CommandTypes::Expression a, CommandTypes::Expression b), UI::uitableheader(a, b), "");
+
+ICOMMAND(uitablerow, "ee", (CommandTypes::Expression a, CommandTypes::Expression b), UI::uitablerow(a, b), "");
+
+ICOMMAND(uitable, "ffe", (float * a, float * b, CommandTypes::Expression c), UI::uitable(a, b, c), "");
+
+ICOMMAND(uispace, "ffe", (float * a, float * b, CommandTypes::Expression c), UI::uispace(a, b, c), "");
+
+ICOMMAND(uioffset, "ffe", (float * a, float * b, CommandTypes::Expression c), UI::uioffset(a, b, c), "");
+
+ICOMMAND(uifill, "ffe", (float * a, float * b, CommandTypes::Expression c), UI::uifill(a, b, c), "");
+
+ICOMMAND(uitarget, "ffe", (float * a, float * b, CommandTypes::Expression c), UI::uitarget(a, b, c), "");
+
+ICOMMAND(uiclip, "ffe", (float * a, float * b, CommandTypes::Expression c), UI::uiclip(a, b, c), "");
+
+ICOMMAND(uiscroll, "ffe", (float * a, float * b, CommandTypes::Expression c), UI::uiscroll(a, b, c), "");
+
+ICOMMAND(uihscrolloffset, "", (), UI::uihscrolloffset(), "");
+
+ICOMMAND(uivscrolloffset, "", (), UI::uivscrolloffset(), "");
+
+ICOMMAND(uihscrollbar, "e", (CommandTypes::Expression a), UI::uihscrollbar(a), "");
+
+ICOMMAND(uivscrollbar, "e", (CommandTypes::Expression a), UI::uivscrollbar(a), "");
+
+ICOMMAND(uiscrollarrow, "fe", (float * a, CommandTypes::Expression b), UI::uiscrollarrow(a, b), "");
+
+ICOMMAND(uiscrollbutton, "e", (CommandTypes::Expression a), UI::uiscrollbutton(a), "");
+
+ICOMMAND(uihslider, "$fffee", (ident * a, float * b, float * c, float * d, CommandTypes::Expression e, CommandTypes::Expression f), UI::uihslider(a, b, c, d, e, f), "");
+
+ICOMMAND(uivslider, "$fffee", (ident * a, float * b, float * c, float * d, CommandTypes::Expression e, CommandTypes::Expression f), UI::uivslider(a, b, c, d, e, f), "");
+
+ICOMMAND(uisliderarrow, "fe", (float * a, CommandTypes::Expression b), UI::uisliderarrow(a, b), "");
+
+ICOMMAND(uisliderbutton, "e", (CommandTypes::Expression a), UI::uisliderbutton(a), "");
+
+ICOMMAND(uicolor, "iffe", (int * a, float * b, float * c, CommandTypes::Expression d), UI::uicolor(a, b, c, d), "");
+
+ICOMMAND(uimodcolor, "iffe", (int * a, float * b, float * c, CommandTypes::Expression d), UI::uimodcolor(a, b, c, d), "");
+
+ICOMMAND(uivgradient, "iiffe", (int * a, int * b, float * c, float * d, CommandTypes::Expression e), UI::uivgradient(a, b, c, d, e), "");
+
+ICOMMAND(uimodvgradient, "iiffe", (int * a, int * b, float * c, float * d, CommandTypes::Expression e), UI::uimodvgradient(a, b, c, d, e), "");
+
+ICOMMAND(uihgradient, "iiffe", (int * a, int * b, float * c, float * d, CommandTypes::Expression e), UI::uihgradient(a, b, c, d, e), "");
+
+ICOMMAND(uimodhgradient, "iiffe", (int * a, int * b, float * c, float * d, CommandTypes::Expression e), UI::uimodhgradient(a, b, c, d, e), "");
+
+ICOMMAND(uioutline, "iffe", (int * a, float * b, float * c, CommandTypes::Expression d), UI::uioutline(a, b, c, d), "");
+
+ICOMMAND(uiline, "iffe", (int * a, float * b, float * c, CommandTypes::Expression d), UI::uiline(a, b, c, d), "");
+
+ICOMMAND(uitriangle, "iffie", (int * a, float * b, float * c, int * d, CommandTypes::Expression e), UI::uitriangle(a, b, c, d, e), "");
+
+ICOMMAND(uitriangleoutline, "iffie", (int * a, float * b, float * c, int * d, CommandTypes::Expression e), UI::uitriangleoutline(a, b, c, d, e), "");
+
+ICOMMAND(uimodtriangle, "iffie", (int * a, float * b, float * c, int * d, CommandTypes::Expression e), UI::uimodtriangle(a, b, c, d, e), "");
+
+ICOMMAND(uicircle, "ife", (int * a, float * b, CommandTypes::Expression c), UI::uicircle(a, b, c), "");
+
+ICOMMAND(uicircleoutline, "ife", (int * a, float * b, CommandTypes::Expression c), UI::uicircleoutline(a, b, c), "");
+
+ICOMMAND(uimodcircle, "ife", (int * a, float * b, CommandTypes::Expression c), UI::uimodcircle(a, b, c), "");
+
+ICOMMAND(uicolortext, "tife", (tagval * a, int * b, float * c, CommandTypes::Expression d), UI::uicolortext(a, b, c, d), "");
+
+ICOMMAND(uitext, "tfe", (tagval * a, float * b, CommandTypes::Expression c), UI::uitext(a, b, c), "");
+
+ICOMMAND(uitextfill, "ffe", (float * a, float * b, CommandTypes::Expression c), UI::uitextfill(a, b, c), "");
+
+ICOMMAND(uiwrapcolortext, "tfife", (tagval * a, float * b, int * c, float * d, CommandTypes::Expression e), UI::uiwrapcolortext(a, b, c, d, e), "");
+
+ICOMMAND(uiwraptext, "tffe", (tagval * a, float * b, float * c, CommandTypes::Expression d), UI::uiwraptext(a, b, c, d), "");
+
+ICOMMAND(uicolorcontext, "tife", (tagval * a, int * b, float * c, CommandTypes::Expression d), UI::uicolorcontext(a, b, c, d), "");
+
+ICOMMAND(uicontext, "tfe", (tagval * a, float * b, CommandTypes::Expression c), UI::uicontext(a, b, c), "");
+
+ICOMMAND(uicontextfill, "ffe", (float * a, float * b, CommandTypes::Expression c), UI::uicontextfill(a, b, c), "");
+
+ICOMMAND(uiwrapcolorcontext, "tfife", (tagval * a, float * b, int * c, float * d, CommandTypes::Expression e), UI::uiwrapcolorcontext(a, b, c, d, e), "");
+
+ICOMMAND(uiwrapcontext, "tffe", (tagval * a, float * b, float * c, CommandTypes::Expression d), UI::uiwrapcontext(a, b, c, d), "");
+
+ICOMMAND(uitexteditor, "siifsie", (char * a, int * b, int * c, float * d, char * e, int * f, CommandTypes::Expression g), UI::uitexteditor(a, b, c, d, e, f, g), "");
+
+ICOMMAND(uifont, "se", (char * a, CommandTypes::Expression b), UI::uifont(a, b), "");
+
+ICOMMAND(uiabovehud, "", (), UI::uiabovehud(), "");
+
+ICOMMAND(uiconsole, "ffe", (float * a, float * b, CommandTypes::Expression c), UI::uiconsole(a, b, c), "");
+
+ICOMMAND(uifield, "$iefe", (ident * a, int * b, CommandTypes::Expression c, float * d, CommandTypes::Expression e), UI::uifield(a, b, c, d, e), "");
+
+ICOMMAND(uikeyfield, "$iefe", (ident * a, int * b, CommandTypes::Expression c, float * d, CommandTypes::Expression e), UI::uikeyfield(a, b, c, d, e), "");
+
+ICOMMAND(uiimage, "sffe", (char * a, float * b, float * c, CommandTypes::Expression d), UI::uiimage(a, b, c, d), "");
+
+ICOMMAND(uistretchedimage, "sffe", (char * a, float * b, float * c, CommandTypes::Expression d), UI::uistretchedimage(a, b, c, d), "");
+
+ICOMMAND(uicroppedimage, "sfftttte", (char * a, float * b, float * c, tagval * d, tagval * e, tagval * f, tagval * g, CommandTypes::Expression h), UI::uicroppedimage(a, b, c, d, e, f, g, h), "");
+
+ICOMMAND(uiborderedimage, "stfe", (char * a, tagval * b, float * c, CommandTypes::Expression d), UI::uiborderedimage(a, b, c, d), "");
+
+ICOMMAND(uitiledimage, "sffffe", (char * a, float * b, float * c, float * d, float * e, CommandTypes::Expression f), UI::uitiledimage(a, b, c, d, e, f), "");
+
+ICOMMAND(uimodelpreview, "ssffe", (char * a, char * b, float * c, float * d, CommandTypes::Expression e), UI::uimodelpreview(a, b, c, d, e), "");
+
+ICOMMAND(uiplayerpreview, "iiiiffe", (int * a, int * b, int * c, int * d, float * e, float * f, CommandTypes::Expression g), UI::uiplayerpreview(a, b, c, d, e, f, g), "");
+
+ICOMMAND(uiprefabpreview, "siffe", (char * a, int * b, float * c, float * d, CommandTypes::Expression e), UI::uiprefabpreview(a, b, c, d, e), "");
+
+ICOMMAND(uislotview, "iffe", (int * a, float * b, float * c, CommandTypes::Expression d), UI::uislotview(a, b, c, d), "");
+
+ICOMMAND(uivslotview, "iffe", (int * a, float * b, float * c, CommandTypes::Expression d), UI::uivslotview(a, b, c, d), "");
+
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

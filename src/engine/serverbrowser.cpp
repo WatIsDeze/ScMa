@@ -790,3 +790,113 @@ void writeservercfg()
     delete f;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#ifndef SCRIPTBIND_RUN
+COMMAND(sortservers, "", "");
+
+COMMAND(refreshservers, "", "");
+
+COMMAND(numservers, "", "");
+
+COMMAND(servinfovalid, "i", "");
+
+COMMAND(servinfodesc, "i", "");
+
+COMMAND(servinfoname, "i", "");
+
+COMMAND(servinfoport, "i", "");
+
+COMMAND(servinfohaspassword, "i", "");
+
+COMMAND(servinfokeep, "i", "");
+
+COMMAND(servinfomap, "i", "");
+
+COMMAND(servinfoping, "i", "");
+
+COMMAND(servinfonumplayers, "i", "");
+
+COMMAND(servinfomaxplayers, "i", "");
+
+COMMAND(servinfoplayers, "i", "");
+
+COMMAND(servinfoattr, "ii", "");
+
+COMMAND(connectservinfo, "is", "");
+
+COMMAND(updatefrommaster, "", "");
+
+COMMAND(initservers, "", "");
+
+ICOMMAND(addserver, "sis", (const char * a, int * b, const char * c), addserver_scriptimpl(a, b, c), "");
+
+COMMAND(keepserver, "sis", "");
+
+ICOMMAND(clearservers, "i", (int * a), clearservers_scriptimpl(a), "");
+
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

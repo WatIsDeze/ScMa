@@ -25,6 +25,17 @@ class CxxFunction(CxxNode):
         
         yield from iterate(self.sourceObject)
 
+    def getContainingNamespaces(self, node, data):
+        if node is None:
+            data = self.getContainingNamespaces(self.sourceObject, data)
+        else:
+            if node:
+                if (node.kind == cindex.CursorKind.NAMESPACE):
+                    data.append(node.spelling)
+                if node.semantic_parent and node.semantic_parent.kind != cindex.CursorKind.TRANSLATION_UNIT:
+                    data = self.getContainingNamespaces(node.semantic_parent, data)
+        return data
+
     def comment(self):
         if self.sourceObject.brief_comment is None:
             return ""
@@ -35,18 +46,26 @@ class CxxFunction(CxxNode):
         for arg in self.forEachArgument():
             args.append(arg.spelling)
         functionName = self.sourceObject.spelling
+        namespace = "::".join(self.getContainingNamespaces(self.sourceObject, [])) 
         if self.customFuctionName:
             functionName = self.customFuctionName
+        if namespace:
+            functionName = namespace + "::" +functionName
         returntype = self.sourceObject.result_type.spelling
         return returntype + " " + functionName + "(" + (", ".join(args)) + ")"
 
     def generate(self):
-        template = """extern {returnt} {functionname}({argdecl});
-COMMAND({functionname}, "{proto}", {doc});
+        template = """COMMAND({functionname}, "{proto}", {doc});
 """
-        template_custom = """extern {returnt} {realfunctionname}({argdecl});
-ICOMMAND({functionname}, "{proto}", ({argdecl}), {realfunctionname}({arguse}), {doc});
+        template_custom = """ICOMMAND({functionname}, "{proto}", ({argdecl}), {realfunctionname}({arguse}), {doc});
 """
+
+#         template = """extern {returnt} {functionname}({argdecl});
+# COMMAND({functionname}, "{proto}", {doc});
+# """
+#         template_custom = """extern {returnt} {realfunctionname}({argdecl});
+# ICOMMAND({functionname}, "{proto}", ({argdecl}), {realfunctionname}({arguse}), {doc});
+# """
 
         spelling2proto  = {
             "int": "i",
@@ -93,15 +112,24 @@ ICOMMAND({functionname}, "{proto}", ({argdecl}), {realfunctionname}({arguse}), {
         arguse = ", ".join(argname)
         functionName = self.sourceObject.spelling
         returntype = self.sourceObject.result_type.spelling
-        if self.customFuctionName:
-            realFunctionName = functionName
-            functionName = self.customFuctionName
+        namespace = "::".join(self.getContainingNamespaces(self.sourceObject, []))
+        realFunctionName = ""
+        if namespace:
+            namespace = namespace + "::"
+            realFunctionName = namespace
+
+        realFunctionName = realFunctionName + functionName
+
+        if self.customFuctionName or namespace:
+            if self.customFuctionName:
+                functionName = self.customFuctionName
             
             return template_custom.format(
                 argdecl = argusedecl,
                 arguse = arguse,
                 realfunctionname = realFunctionName,
                 functionname = functionName,
+                namespace = namespace,
                 proto = proto,
                 returnt = returntype,
                 doc = json.dumps(str(self.comment()))
@@ -110,6 +138,8 @@ ICOMMAND({functionname}, "{proto}", ({argdecl}), {realfunctionname}({arguse}), {
             return template.format(
                 argdecl = argdecl,
                 functionname = functionName,
+                realfunctionname = realFunctionName,
+                namespace = namespace,
                 proto = proto,
                 returnt = returntype,
                 doc = json.dumps(str(self.comment()))

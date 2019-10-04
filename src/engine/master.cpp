@@ -738,3 +738,83 @@ int main(int argc, char **argv)
     return EXIT_SUCCESS;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#ifndef SCRIPTBIND_RUN
+COMMAND(adduser, "ss", "");
+
+COMMAND(clearusers, "", "");
+
+COMMAND(clearbans, "", "");
+
+COMMAND(ban, "s", "");
+
+COMMAND(servban, "s", "");
+
+COMMAND(gban, "s", "");
+
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

@@ -38,6 +38,8 @@ target_link_libraries(SchizoMania_Shared_Client
         ${FREETYPE_LIBRARIES}
         ${ZLIB_LIBRARIES}
         ${OPENGL_LIBRARIES}
+    PRIVATE
+        SchizoMania_Binding
 )
 
 # target_compile_definitions(SchizoMania_Shared_Server PUBLIC -DSTANDALONE)

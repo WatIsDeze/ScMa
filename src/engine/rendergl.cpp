@@ -2834,3 +2834,84 @@ void cleanupgl()
     gle::cleanup();
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#ifndef SCRIPTBIND_RUN
+COMMAND(glext, "s", "");
+
+COMMAND(getcamyaw, "", "");
+
+COMMAND(getcampitch, "", "");
+
+COMMAND(getcamroll, "", "");
+
+COMMAND(getcampos, "", "");
+
+ICOMMAND(loadcrosshair, "si", (const char * a, int * b), loadcrosshair_(a, b), "");
+
+COMMAND(getcrosshair, "i", "");
+
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

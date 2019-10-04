@@ -1856,7 +1856,7 @@ int compactvslots(bool cull)
     return total;
 }
 
-SCRIPTEXPORT void compactvslots(int *cull)
+SCRIPTEXPORT_AS(compactvslots) void compactvslots_scriptimpl(int *cull)
 {
     extern int nompedit;
     if(nompedit && multiplayer()) return;
@@ -2225,7 +2225,7 @@ static void fixinsidefaces(cube *c, const ivec &o, int size, int tex)
     }
 }
 
-SCRIPTEXPORT void fixinsidefaces(int *tex)
+SCRIPTEXPORT_AS(fixinsidefaces) void fixinsidefaces_scriptimpl(int *tex)
 {
     extern int nompedit;
     if(noedit(true) || (nompedit && multiplayer())) return;
@@ -2317,7 +2317,7 @@ SCRIPTEXPORT void texscroll(float *scrollS, float *scrollT)
     propagatevslot(s.variants, 1<<VSLOT_SCROLL);
 }
 
-SCRIPTEXPORT_AS(texoffset) void texoffset_(int *xoffset, int *yoffset)
+SCRIPTEXPORT_AS(texoffset) void texoffset_scriptimpl(int *xoffset, int *yoffset)
 {
     if(!defslot) return;
     Slot &s = *defslot;
@@ -2325,7 +2325,7 @@ SCRIPTEXPORT_AS(texoffset) void texoffset_(int *xoffset, int *yoffset)
     propagatevslot(s.variants, 1<<VSLOT_OFFSET);
 }
 
-SCRIPTEXPORT_AS(texrotate) void texrotate_(int *rot)
+SCRIPTEXPORT_AS(texrotate) void texrotate_scriptimpl(int *rot)
 {
     if(!defslot) return;
     Slot &s = *defslot;
@@ -3464,7 +3464,7 @@ SCRIPTEXPORT void gendds(char *infile, char *outfile)
     glHint(GL_TEXTURE_COMPRESSION_HINT, GL_NICEST);
 
     defformatcubestr(cfile, "<compress>%s", infile);
-    extern void reloadtex(char *name);
+//    extern void reloadtex(char *name);
     Texture *t = textures.access(path(cfile));
     if(t) reloadtex(cfile);
     t = textureload(cfile);
@@ -3910,3 +3910,81 @@ SCRIPTEXPORT void removealphachannel(char *destfile, char *rgbafile)
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#ifndef SCRIPTBIND_RUN
+COMMAND(texturereset, "i", "");
+
+COMMAND(materialreset, "", "");
+
+COMMAND(decalreset, "i", "");
+
+ICOMMAND(compactvslots, "i", (int * a), compactvslots_scriptimpl(a), "");
+
+ICOMMAND(fixinsidefaces, "i", (int * a), fixinsidefaces_scriptimpl(a), "");
+
+COMMAND(texture, "ssiiif", "");
+
+COMMAND(texgrass, "s", "");
+
+COMMAND(texscroll, "ff", "");
+
+ICOMMAND(texoffset, "ii", (int * a, int * b), texoffset_scriptimpl(a, b), "");
+
+ICOMMAND(texrotate, "i", (int * a), texrotate_scriptimpl(a), "");
+
+COMMAND(texscale, "f", "");
+
+COMMAND(texlayer, "i", "");
+
+COMMAND(texdetail, "i", "");
+
+COMMAND(texalpha, "ff", "");
+
+COMMAND(texcolor, "fff", "");
+
+COMMAND(texrefract, "ffff", "");
+
+COMMAND(texsmooth, "ii", "");
+
+COMMAND(decaldepth, "ff", "");
+
+COMMAND(reloadtex, "s", "");
+
+COMMAND(gendds, "ss", "");
+
+COMMAND(screenshot, "s", "");
+
+COMMAND(flipnormalmapy, "ss", "");
+
+COMMAND(mergenormalmaps, "ss", "");
+
+COMMAND(normalizenormalmap, "ss", "");
+
+COMMAND(removealphachannel, "ss", "");
+
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

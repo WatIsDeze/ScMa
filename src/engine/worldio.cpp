@@ -23,7 +23,7 @@ void validmapname(char *dst, const char *src, const char *prefix = NULL, const c
 }
 
 /* Make the name of the map great again (tm) */
-SCRIPTEXPORT_AS(bla) void fixmapname(char *name)
+SCRIPTEXPORT void fixmapname(char *name)
 {
     validmapname(name, name, NULL, "");
 }
@@ -962,6 +962,10 @@ bool load_world(const char *mname, const char *cname)        // still supports a
 
 SCRIPTEXPORT void savecurrentmap() { save_world(game::getclientmap()); }
 SCRIPTEXPORT void savemap(char *mname) { save_world(mname); }
+SCRIPTEXPORT_AS(map) void loadmap(char *mname)
+{
+	load_world(mname);
+}
 
 SCRIPTEXPORT void writeobj(char *name)
 {
@@ -1168,3 +1172,53 @@ SCRIPTEXPORT void writecollideobj(char *name)
 
 #endif
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#ifndef SCRIPTBIND_RUN
+COMMAND(fixmapname, "s", "Make the name of the map great again (tm)");
+
+COMMAND(mapcfgname, "", "");
+
+COMMAND(savecurrentmap, "", "");
+
+COMMAND(savemap, "s", "");
+
+ICOMMAND(map, "s", (char * a), loadmap(a), "");
+
+COMMAND(writeobj, "s", "");
+
+COMMAND(writecollideobj, "s", "");
+
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

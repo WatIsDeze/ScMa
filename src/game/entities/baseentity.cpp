@@ -26,3 +26,40 @@ void BaseEntity::render() {
 
 } // classes
 } // entities
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

@@ -298,7 +298,7 @@ SCRIPTEXPORT void editbind(char *key, char *action)
     bindkey(key, action, keym::ACTION_EDITING, "editbind");
 }
 
-SCRIPTEXPORT void getbind(char *key)
+SCRIPTEXPORT_AS(getbind) void getbind_scriptimpl(char *key)
 {
     getbind(key, keym::ACTION_DEFAULT);
 }
@@ -313,7 +313,7 @@ SCRIPTEXPORT void geteditbind(char *key)
     getbind(key, keym::ACTION_EDITING);
 }
 
-SCRIPTEXPORT void searchbinds(char *action)
+SCRIPTEXPORT_AS(searchbinds) void searchbinds_scriptimpl(char *action)
 {
     searchbinds(action, keym::ACTION_DEFAULT);
 }
@@ -880,3 +880,107 @@ void writecompletions(stream *f)
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#ifndef SCRIPTBIND_RUN
+COMMAND(fullconsole, "iN$", "");
+
+COMMAND(toggleconsole, "", "");
+
+ICOMMAND(conskip, "i", (int * a), conskip_scriptimpl(a), "");
+
+ICOMMAND(miniconskip, "i", (int * a), miniconskip_scriptimpl(a), "");
+
+COMMAND(clearconsole, "", "");
+
+COMMAND(keymap, "is", "");
+
+ICOMMAND(bind, "ss", (char * a, char * b), bind_scriptimpl(a, b), "");
+
+COMMAND(specbind, "ss", "");
+
+COMMAND(editbind, "ss", "");
+
+ICOMMAND(getbind, "s", (char * a), getbind_scriptimpl(a), "");
+
+COMMAND(getspecbind, "s", "");
+
+COMMAND(geteditbind, "s", "");
+
+ICOMMAND(searchbinds, "s", (char * a), searchbinds_scriptimpl(a), "");
+
+COMMAND(searchspecbinds, "s", "");
+
+COMMAND(searcheditbinds, "s", "");
+
+COMMAND(clearbinds, "", "");
+
+COMMAND(clearspecbinds, "", "");
+
+COMMAND(cleareditbinds, "", "");
+
+COMMAND(clearallbinds, "", "");
+
+COMMAND(inputcommand, "ssss", "");
+
+COMMAND(saycommand, "s", "");
+
+ICOMMAND(history, "i", (int * a), history_(a), "");
+
+COMMAND(onrelease, "s", "");
+
+ICOMMAND(complete, "sss", (char * a, char * b, char * c), addfilecomplete(a, b, c), "");
+
+ICOMMAND(listcomplete, "ss", (char * a, char * b), addlistcomplete(a, b), "");
+
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

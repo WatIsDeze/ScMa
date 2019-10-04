@@ -13,35 +13,6 @@ execute_process(
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 
-foreach(input_file ${input_sources})
-    execute_process(
-        COMMAND python3 index.py cmake_output ${input_file}
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        OUTPUT_VARIABLE input_file_target
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-    get_filename_component(output_file_target ${CMAKE_CURRENT_BINARY_DIR}/${input_file_target} ABSOLUTE)
-    list(APPEND output_sources ${output_file_target})
-    add_custom_command(
-        OUTPUT
-            ${CMAKE_CURRENT_BINARY_DIR}/${input_file_target}
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        COMMAND
-            python3 index.py gen ${input_file} > ${CMAKE_CURRENT_BINARY_DIR}/${input_file_target}
-        VERBATIM
-    )
-    add_custom_target(
-        target_${input_file_target}
-        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${input_file_target}
-    )
-    set_source_files_properties(
-        ${CMAKE_CURRENT_BINARY_DIR}/${input_file_target}
-        PROPERTIES
-            GENERATED TRUE
-            DEPENDS target_${input_file_target}
-    )
-endforeach()
-
 set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
     ${input_sources} ${binding_sources}
 )
@@ -51,6 +22,47 @@ execute_process(
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
 )
 
+
+foreach(input_file ${input_sources})
+    execute_process(
+        COMMAND python3 index.py cmake_output ${input_file}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        OUTPUT_VARIABLE input_file_target
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    get_filename_component(output_file_target ${CMAKE_CURRENT_BINARY_DIR}/${input_file_target} ABSOLUTE)
+
+    list(APPEND output_sources ${output_file_target})
+
+    add_custom_command(
+        OUTPUT command_${input_file_target}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMAND
+            python3 index.py gen ${input_file} > ${CMAKE_CURRENT_BINARY_DIR}/${input_file_target}
+        COMMENT "Preprocessing ${input_file}"
+    )
+    add_custom_target(
+        target_${input_file_target}
+        DEPENDS
+            command_${input_file_target}
+        VERBATIM
+    )
+    set_source_files_properties(
+        ${input_file}
+        PROPERTIES
+            GENERATED TRUE
+            DEPENDS target_${input_file_target}
+            OBJECT_DEPENDS ${input_file}
+    )
+    set_source_files_properties(
+        ${CMAKE_CURRENT_BINARY_DIR}/${input_file_target}
+        PROPERTIES
+            GENERATED TRUE
+            DEPENDS target_${input_file_target}
+    )
+endforeach()
+
+message("output_sources ${output_sources}")
 add_library(SchizoMania_Binding
     ${output_sources}
 )
@@ -64,3 +76,15 @@ target_link_libraries(SchizoMania_Binding
     PRIVATE
         SchizoMania_Shared_Client    
 )
+
+foreach(input_file ${input_sources})
+    execute_process(
+        COMMAND python3 index.py cmake_output ${input_file}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        OUTPUT_VARIABLE input_file_target
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    get_filename_component(output_file_target ${CMAKE_CURRENT_BINARY_DIR}/${input_file_target} ABSOLUTE)
+
+    add_dependencies(SchizoMania_Binding target_${input_file_target})
+endforeach()

@@ -4,6 +4,27 @@ from autobind.parsecpp import CppParser
 import sys
 import os
 
+def file_get_contents_upto(file, token):
+    with open(file, "r") as handle:
+        lines = handle.readlines()
+        for idx, line in enumerate(lines):
+            if (line.startswith(token)):
+                return "".join(lines[:idx])
+    return "".join(lines)
+
+def file_get_contents_from(file, token):
+    with open(file, "r") as handle:
+        lines = handle.readlines()
+        for idx, line in enumerate(lines):
+            if (line.startswith(token)):
+                return "".join(lines[idx+1:])
+    return ""
+
+def file_write_data(file, data):
+    with open(file, "w+") as handle:
+        handle.write(data)
+
+
 def debug_dump(file):
     parser = CppParser(file)
     parser.start()
@@ -20,7 +41,19 @@ def generate_code(file):
     parser = CppParser(file)
     parser.start()
     parser.cppmodel_generate()
-    parser.dump_code()
+    token_in = "// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //"
+    token_out = "// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //"
+    fileTop = file_get_contents_upto(file, token_in)
+    fileBottom = file_get_contents_from(file, token_out)
+    fileMid = parser.dump_code()
+    if fileTop and fileTop != "\n":
+        if fileMid:
+            file_write_data(file, fileTop + "\n" + token_in + "\n#ifndef SCRIPTBIND_RUN\n" + fileMid +"\n#endif\n" + token_out + "\n" + fileBottom)
+        else:
+            file_write_data(file, fileTop + "\n" + token_in + "\n" + token_out + "\n" + fileBottom)
+        print ("// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //\n// //{}\n// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //\n".format(file))
+    else:
+        print ("// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //\n// #error |{}|\n// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //\n".format(fileTop))
 
 def find_deps(file, commonRoot):
     parser = CppParser(file, skipComments = True)

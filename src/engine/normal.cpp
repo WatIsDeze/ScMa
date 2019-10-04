@@ -283,3 +283,55 @@ SCRIPTEXPORT_AS(smoothangle) void smoothangle_scriptimpl(int *id, int *angle)
     intret(smoothangle(*id, *angle));
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#ifndef SCRIPTBIND_RUN
+ICOMMAND(smoothangle, "ii", (int * a, int * b), smoothangle_scriptimpl(a, b), "");
+
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

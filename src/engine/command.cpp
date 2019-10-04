@@ -2903,7 +2903,10 @@ void executeret(ident *id, tagval *args, int numargs, bool lookup, tagval &resul
     ++rundepth;
     tagval *prevret = commandret;
     commandret = &result;
-    if(rundepth > MAXRUNDEPTH) debugcode("exceeded recursion limit");
+    if(rundepth > MAXRUNDEPTH)
+    {
+ 		debugcode("exceeded recursion limit");
+	}
     else if(id) switch(id->type)
     {
         default:
@@ -4358,3 +4361,43 @@ void clearsleep_(int *clearoverrides)
 COMMANDN(clearsleep, clearsleep_, "i", "builtin");
 #endif
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#ifndef SCRIPTBIND_RUN
+ICOMMAND(nodebug, "e", (CommandTypes::Expression a), nodebug_imp(a), "");
+
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

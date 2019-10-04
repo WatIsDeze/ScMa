@@ -828,3 +828,64 @@ void updatemumble()
 #endif
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#ifndef SCRIPTBIND_RUN
+ICOMMAND(music, "ss", (char * a, char * b), startmusic(a, b), "");
+
+COMMAND(registersound, "si", "");
+
+COMMAND(mapsound, "sii", "");
+
+COMMAND(altsound, "si", "");
+
+COMMAND(altmapsound, "si", "");
+
+COMMAND(numsounds, "", "");
+
+COMMAND(nummapsounds, "", "");
+
+COMMAND(soundreset, "", "");
+
+COMMAND(mapsoundreset, "", "");
+
+ICOMMAND(playsound, "i", (int * a), playsound_scriptimpl(a), "");
+
+COMMAND(resetsound, "", "");
+
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //
