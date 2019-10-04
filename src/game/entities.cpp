@@ -141,23 +141,6 @@ namespace entities
 
     }
 
-    // Fixes entities, which mainly just mangles the attributes. I see little reason to keep this around...
-    // TODO: Do we need this? Remove it?
-    void fixentity(entities::classes::BaseEntity *e)
-    {
-		switch(e->game_type)
-        {
-            case FLAG:
-				e->attr5 = e->attr4;
-				e->attr4 = e->attr3;
-            case TELEDEST:
-				e->attr3 = e->attr2;
-				e->attr2 = e->attr1;
-				e->attr1 = (int)game::player1->yaw;
-                break;
-        }
-    }
-
     void entradius(entities::classes::BaseEntity *e, bool color)
     {
 /*		switch(e->game_type)
@@ -220,7 +203,7 @@ namespace entities
 
     float dropheight(entities::classes::BaseEntity *e)
     {
-		if(e->game_type==FLAG) return 0.0f;
+//		if(e->game_type==FLAG) return 0.0f;
         return 4.0f;
     }
 #endif

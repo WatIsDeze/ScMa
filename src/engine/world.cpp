@@ -1146,34 +1146,9 @@ entities::classes::BaseEntity *newentity(bool local, const vec &o, int type, int
     e->ent_type = ENT_INANIMATE;
     e->game_type = type;
     e->reserved = 0;
-	e->classname = "tesseract_ent";
+	e->classname = "et_";
 	e->name = "tesseract_ent_" + std::to_string(idx);
 
-    if(local && fix)
-    {
-        switch(type)
-        {
-                case ET_DECAL:
-                    if(!e->attr2 && !e->attr3 && !e->attr4)
-                    {
-                        e->attr2 = (int)camera1->yaw;
-                        e->attr3 = (int)camera1->pitch;
-                        e->attr4 = (int)camera1->roll;
-                    }
-                    break;
-                case ET_MAPMODEL:
-                    if(!e->attr2) e->attr2 = (int)camera1->yaw;
-                    break;
-                case ET_PLAYERSTART:
-                    e->attr5 = e->attr4;
-                    e->attr4 = e->attr3;
-                    e->attr3 = e->attr2;
-                    e->attr2 = e->attr1;
-                    e->attr1 = (int)camera1->yaw;
-                    break;
-        }
-        entities::fixentity(e);
-    }
     if(ents.inrange(idx)) { entities::deletegameentity(ents[idx]); ents[idx] = e; }
     else { idx = ents.length(); ents.add(e); }
 	return e;
@@ -1231,6 +1206,7 @@ entities::classes::BaseEntity *new_game_entity(bool local, const vec &o, int &id
         }
     }
 
+	// Allocate the entity according to its class.
     entities::classes::BaseEntity *e = entities::newgameentity(strclass);
 
 	// Set origin.
@@ -1271,7 +1247,7 @@ void new_game_entity(char *strclass, char *a1, char *a2, char *a3, char *a4, cha
     t->game_type = new_game_type;
 
     // Copy string attributes.
-    t->name = std::string(strclass) + std::to_string(idx);
+	t->name = std::string(strclass) + "_" + std::to_string(idx);
     t->classname = std::string(strclass);
 
     enttoggle(idx);

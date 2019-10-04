@@ -49,15 +49,18 @@ enum                              // static entity types
     MAPSOUND = ET_SOUND,
     SPOTLIGHT = ET_SPOTLIGHT,
     DECAL = ET_DECAL,
-    TELEPORT,                     // attr1 = idx, attr2 = model, attr3 = tag
-    TELEDEST,                     // attr1 = angle, attr2 = idx
-    JUMPPAD,                      // attr1 = zpush, attr2 = ypush, attr3 = xpush
-    FLAG,                         // attr1 = angle, attr2 = team
 
-	// SchizoMania entity types. (game_type values.)
-	GAMEENTITY,					  // classname = game entity class type, attributes list is what it is, and can be accessed in any derived BaseEntity class.
+	// SchizoMania entity types. (game_type values, all should be >= ET_GAMEENTITY
+	// Anyhting >= GAMEENTITY usese classname is...
+	GAMEENTITY = ET_GAMESPECIFIC, // classname = game entity class type, attributes list is what it is, and can be accessed in any derived BaseEntity class.
 	PLAYER,
+	NPC_BASIC,
+	AI_BASIC,
+
+	// Objects.
+	BUTTON,
 	DOOR,
+
 	MAXENTTYPES,
 
     I_FIRST = 0,
