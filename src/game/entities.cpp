@@ -95,16 +95,19 @@ namespace entities
 			entities::classes::BaseEntity *ent = NULL;
 
 			if (strclass != NULL && strcmp(strclass, "playerstart") == 0) { ent = new entities::classes::PlayerStart(); }
-			if (strclass != NULL && strcmp(strclass, "basemonster") == 0) { ent = new entities::classes::BaseMonster(); }
-			if (strclass != NULL && strcmp(strclass, "dynamiclight") == 0) { ent = new entities::classes::DynamicLight(); }
-			if (strclass != NULL && strcmp(strclass, "door") == 0) { ent = new entities::classes::Door(); }
-			if (strclass != NULL && strcmp(strclass, "model") == 0) { ent = new entities::classes::BaseMapModel(); }
+			else if (strclass != NULL && strcmp(strclass, "basemonster") == 0) { ent = new entities::classes::BaseMonster(); }
+			else if (strclass != NULL && strcmp(strclass, "dynamiclight") == 0) { ent = new entities::classes::DynamicLight(); }
+			else if (strclass != NULL && strcmp(strclass, "door") == 0) { ent = new entities::classes::Door(); }
+			else if (strclass != NULL && strcmp(strclass, "model") == 0) { ent = new entities::classes::BaseMapModel(); }
 
 			if (ent)
 				conoutf("Returned entities::classes::%s", ent->classname.c_str());
+			else
+				ent = new entities::classes::BaseEntity();
 
             // No entity was found, so we'll return base entity for now.
             // TODO: Should we do this at all? I guess returning NULL is fine too and warning our user instead.
+
 			return ent;
     }
     // Deletes the entity class in specific.
