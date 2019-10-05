@@ -6,6 +6,7 @@
 #include "game/game.h"
 #include "shared/ents.h"
 #include "world.h"
+#include "shared/entities/basephysicalentity.h"
 
 // Use JSON, no shit.
 using json = nlohmann::json;
@@ -861,7 +862,7 @@ bool load_world(const char *mname, const char *cname)        // Does not support
             classname = element["game"]["classname"];
 
             // Allocate our entity.
-            entities::classes::BaseEntity *e = entities::newgameentity((char*)classname.c_str());
+            entities::classes::BaseEntity *e = entities::newgameentity(classname.c_str());
 
             // Fetch base entity data. (Old ancient entity info.)
 			e->classname = classname;

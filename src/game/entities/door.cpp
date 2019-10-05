@@ -3,9 +3,11 @@
 #include "ents.h"
 #include "basemapmodel.h"
 #include "door.h"
+#include "shared/entities/entityfactory.h"
 
 namespace entities {
 namespace classes {
+
 
 Door::Door() :  entities::classes::BaseMapModel("world/door") {
     state = CS_ALIVE;
@@ -63,6 +65,12 @@ bool Door::onTouch(entities::classes::BaseEntity *otherEnt, const vec &dir) {
             "from Vector Direction: ", dir.x, dir.y, dir.z);
     return true;
 }
+
+CoreEntity* Door::factory(){
+	return new Door();
+}
+
+ENTITY_FACTORY(Door);
 
 } // classes
 } // entities

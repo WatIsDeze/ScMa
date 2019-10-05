@@ -2,6 +2,7 @@
 #include "game.h"
 #include "ents.h"
 #include "coreentity.h"
+#include "entityfactory.h"
 
 namespace entities {
 namespace classes {
@@ -90,5 +91,13 @@ void CoreEntity::resetExt(bool clearName, bool clearClassname, bool clearAttribu
     if (clearClassname == true)
         classname.clear();
 }
+
+CoreEntity* CoreEntity::factory(){
+	return new CoreEntity();
+}
+
+ENTITY_FACTORY(CoreEntity)
+
 } // classes
 } // entities
+

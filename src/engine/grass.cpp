@@ -1,4 +1,5 @@
 #include "engine.h"
+#include "shared/entities/basephysicalentity.h"
 
 VARP(grass, 0, 1, 1);
 VAR(dbggrass, 0, 0, 1);

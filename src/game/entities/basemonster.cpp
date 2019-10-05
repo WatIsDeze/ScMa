@@ -1,5 +1,6 @@
-#include "../game.h"
 #include "basemonster.h"
+#include "../game.h"
+#include "shared/entities/entityfactory.h"
 
 namespace entities {
 namespace classes {
@@ -24,6 +25,12 @@ void BaseMonster::render() {
     // TODO: Fix this.
     //if(isthirdperson()) renderclient(player1, "ogro", NULL, 0, ANIM_ATTACK1, 300, player1->lastaction, player1->lastpain);
 }
+
+CoreEntity* BaseMonster::factory(){
+	return new BaseMonster();
+}
+
+ENTITY_FACTORY(BaseMonster);
 
 } // classes
 } // entities

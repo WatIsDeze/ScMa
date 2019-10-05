@@ -1,7 +1,8 @@
+#include "baseentity.h"
 #include "cube.h"
 #include "game.h"
 #include "ents.h"
-#include "baseentity.h"
+#include "entityfactory.h"
 
 namespace entities {
 namespace classes {
@@ -31,6 +32,12 @@ void BaseEntity::reset() {
 void BaseEntity::onAttributeSet(const std::string &key, const std::string &value) {}
 bool BaseEntity::onTrigger(entities::classes::BaseEntity *otherEnt, const vec &dir) {}
 bool BaseEntity::onTouch(entities::classes::BaseEntity *otherEnt, const vec &dir) {}
+
+CoreEntity* BaseEntity::factory(){
+	return new BaseEntity();
+}
+
+ENTITY_FACTORY(BaseEntity);
 
 } // classes
 } // entities

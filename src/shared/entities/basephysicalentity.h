@@ -1,12 +1,10 @@
 #ifndef BASEPHYSICALENTITY_H
 #define BASEPHYSICALENTITY_H
+#include "baseentity.h"
 
 namespace entities
 {
     namespace classes {
-        // Predefined.
-        class BaseEntity;
-
         // PhysicalEntity: Used for objects such as crates, etc.
         class BasePhysicalEntity : public BaseEntity
         {
@@ -49,6 +47,8 @@ namespace entities
             uchar collidetype;          // one of COLLIDE_* above
 
             bool blocked;               // used by physics to signal ai
+			
+			static CoreEntity* factory();
         };
     } // classes
 } // entities

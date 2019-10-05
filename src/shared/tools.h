@@ -2,6 +2,19 @@
 
 #ifndef _TOOLS_H
 #define _TOOLS_H
+#include <cstdarg>
+#include <cstdio>
+#include <cstring>
+#include <utility>
+#include <enet/enet.h>
+
+#include <SDL.h>
+#ifdef __APPLE__
+#include <OpenGL/opengl.h>
+#else
+#include <SDL_opengl.h>
+#endif
+#include "zlib.h"
 
 #ifdef NULL
 #undef NULL
@@ -45,15 +58,15 @@ inline void operator delete[](void *, void *) {}
 #ifdef swap
 #undef swap
 #else
-#define swap std::swap
-#endif
-/*template<class T>
+//#define swap std::swap
+template<class T>
 static inline void swap(T &a, T &b)
 {
     T t = a;
     a = b;
     b = t;
-}*/
+}
+#endif
 #ifdef max
 #undef max
 #endif

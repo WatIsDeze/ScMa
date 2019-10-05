@@ -2,6 +2,7 @@
 #include "game/game.h"
 
 #include "basemapmodel.h"
+#include "shared/entities/entityfactory.h"
 
 namespace entities {
 namespace classes {
@@ -81,6 +82,12 @@ void BaseMapModel::preloadMapModel(const std::string &filename) {
         preloadMapModel("world/box");
     }
 }
+
+CoreEntity* BaseMapModel::factory(){
+	return new BaseMapModel();
+}
+
+ENTITY_FACTORY(BaseMapModel);
 
 } // classes
 } // entities

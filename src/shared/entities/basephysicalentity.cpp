@@ -1,7 +1,8 @@
+#include "basephysicalentity.h"
 #include "cube.h"
 #include "game.h"
 #include "ents.h"
-#include "basephysicalentity.h"
+#include "shared/entities/entityfactory.h"
 
 namespace entities
 {
@@ -56,6 +57,12 @@ vec BasePhysicalEntity::headpos(float offset = 0) const {
 bool BasePhysicalEntity::crouched() const {
     return fabs(eyeheight - maxheight*CROUCHHEIGHT) < 1e-4f;
 }
+
+CoreEntity* BasePhysicalEntity::factory(){
+	return new BasePhysicalEntity();
+}
+
+ENTITY_FACTORY(BasePhysicalEntity);
 
 } // classes
 } // entities

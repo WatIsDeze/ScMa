@@ -2,6 +2,8 @@
 
 #include "engine.h"
 #include "ents.h"
+#include "shared/entities/baseentity.h"
+
 
 using namespace entities;
 using namespace classes;

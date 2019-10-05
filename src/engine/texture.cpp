@@ -1,6 +1,7 @@
 // texture.cpp: texture slot management
 
 #include "engine.h"
+#include "shared/entities/basephysicalentity.h"
 
 #ifdef __APPLE__
   #include "SDL_image.h"

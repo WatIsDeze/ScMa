@@ -1,7 +1,8 @@
+#include "player.h"
 #include "cube.h"
 #include "game.h"
 #include "ents.h"
-#include "player.h"
+#include "shared/entities/entityfactory.h"
 
 namespace entities {
 namespace classes {
@@ -112,6 +113,12 @@ void Player::respawn() {
     else
         state = CS_ALIVE;
 }
+
+CoreEntity* Player::factory(){
+	return new Player();
+}
+
+ENTITY_FACTORY(Player);
 
 } // classes
 } // entities

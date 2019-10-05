@@ -1,5 +1,6 @@
 #ifndef DYNAMICLIGHTX_H
 #define DYNAMICLIGHTX_H
+#include "shared/entities/basephysicalentity.h"
 
 namespace entities {
     namespace classes {
@@ -27,6 +28,8 @@ namespace entities {
 
             // Obviously speaks for itself, the color.
             vec4 lightColor;
+			
+            static CoreEntity* factory();
         };
     } // classes
 } // entities

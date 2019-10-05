@@ -1,9 +1,12 @@
 #ifndef PLAYER_H
 #define PLAYER_H
+#include "shared/entities/basedynamicentity.h"
+
+struct vec;
 
 namespace entities {
     namespace classes {
-        class Player : public entities::classes::BaseDynamicEntity {
+        class Player : public BaseDynamicEntity {
         public:
 			//
 			// Constructors/Destructor.
@@ -34,6 +37,8 @@ namespace entities {
 			// Entity member variables.
 			//
             entities::classes::BasePhysicalEntity *camera;
+			
+            static CoreEntity* factory();
         private:
 
         };

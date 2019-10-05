@@ -568,7 +568,7 @@ void pasteundoent(int idx, const entities::classes::CoreEntity* ue)
 {
     if(idx < 0 || idx >= MAXENTS) return;
     vector<entities::classes::BaseEntity *> &ents = entities::getents();
-    while(ents.length() < idx) ents.add((entities::classes::BaseEntity*)entities::newgameentity())->et_type = ET_EMPTY;
+    while(ents.length() < idx) ents.add((entities::classes::BaseEntity*)entities::newgameentity(""))->et_type = ET_EMPTY;
     int efocus = -1;
 	entedit(idx, e = (entities::classes::BaseEntity*)ue);
 }
@@ -1131,11 +1131,11 @@ entities::classes::BaseEntity *newentity(bool local, const vec &o, int type, int
         if(idx < 0 && ents.length() >= MAXENTS) { conoutf("too many entities"); return NULL; }
     } else {
         while(ents.length() < idx) {
-            ents.add(entities::newgameentity())->et_type = ET_EMPTY;
+            ents.add(entities::newgameentity(""))->et_type = ET_EMPTY;
         }
     }
 
-    entities::classes::BaseEntity *e = entities::newgameentity();
+    entities::classes::BaseEntity *e = entities::newgameentity("");
     e->o = o;
     e->attr1 = v1;
     e->attr2 = v2;
@@ -1146,7 +1146,6 @@ entities::classes::BaseEntity *newentity(bool local, const vec &o, int type, int
     e->ent_type = ENT_INANIMATE;
     e->game_type = type;
     e->reserved = 0;
-	e->classname = "et_";
 	e->name = "tesseract_ent_" + std::to_string(idx);
 
     if(ents.inrange(idx)) { entities::deletegameentity(ents[idx]); ents[idx] = e; }
@@ -1202,7 +1201,7 @@ entities::classes::BaseEntity *new_game_entity(bool local, const vec &o, int &id
     } else {
         while(ents.length() < idx) {
 //            ents.add(entities::newgameentity(strclass))->et_type = ET_EMPTY;
-			ents.add(entities::newgameentity())->et_type = ET_EMPTY;
+			ents.add(entities::newgameentity(""))->et_type = ET_EMPTY;
         }
     }
 

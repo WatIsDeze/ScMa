@@ -1,5 +1,7 @@
 #include "cube.h"
 #include "engine.h"
+#include "shared/entities/baseentity.h"
+#include "shared/entities/basephysicalentity.h"
 
 CVAR1R(ambient, 0x191919);
 FVARR(ambientscale, 0, 1, 16);

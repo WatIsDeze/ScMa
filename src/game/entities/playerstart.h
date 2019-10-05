@@ -1,5 +1,6 @@
 #ifndef PLAYERSTART_H
 #define PLAYERSTART_H
+#include "shared/entities/baseentity.h"
 
 namespace entities {
     namespace classes {
@@ -14,6 +15,7 @@ namespace entities {
 
             void reset();
 
+			static CoreEntity* factory();
         private:
 
         };

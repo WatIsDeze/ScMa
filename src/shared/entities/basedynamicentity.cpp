@@ -3,6 +3,7 @@
 #include "game.h"
 #include "basephysicalentity.h"
 #include "basedynamicentity.h"
+#include "entityfactory.h"
 
 namespace entities {
 namespace classes {
@@ -47,6 +48,12 @@ vec BaseDynamicEntity::abovehead() {
     // WatIsDeze: Seems to determine to which lengths the camera and the character are allowed to go when jumping or crouching through a tunnel etc.
     return vec(o).addz(aboveeye+4);
 }
+
+CoreEntity* BaseDynamicEntity::factory() {
+	return new BaseDynamicEntity();
+}
+
+ENTITY_FACTORY(BaseDynamicEntity);
 
 } // classes
 } // entities

@@ -11,6 +11,7 @@
 #include "entities/dynamiclight.h"
 #include "entities/playerstart.h"
 #include "entities/player.h"
+#include "shared/entities/entityfactory.h"
 
 
 
@@ -91,20 +92,20 @@ namespace entities
     void setspawn(int i, bool on) { if(entities::g_ents.inrange(i) && entities::g_ents[i] != NULL) entities::g_ents[i]->setspawned(on); }
 
     // Returns the entity class respectively according to its registered name.
-    entities::classes::BaseEntity *newgameentity(char *strclass) {
-			entities::classes::BaseEntity *ent = NULL;
-
-			if (strclass != NULL && strcmp(strclass, "playerstart") == 0) { ent = new entities::classes::PlayerStart(); }
-			else if (strclass != NULL && strcmp(strclass, "basemonster") == 0) { ent = new entities::classes::BaseMonster(); }
-			else if (strclass != NULL && strcmp(strclass, "dynamiclight") == 0) { ent = new entities::classes::DynamicLight(); }
-			else if (strclass != NULL && strcmp(strclass, "door") == 0) { ent = new entities::classes::Door(); }
-			else if (strclass != NULL && strcmp(strclass, "model") == 0) { ent = new entities::classes::BaseMapModel(); }
+    entities::classes::BaseEntity *newgameentity(const char *strclass) {
+    		auto entity = EntityFactory::ConstructEntity(std::string(strclass));
+			entities::classes::BaseEntity *ent = dynamic_cast<entities::classes::BaseEntity *>(entity);
 
 			if (ent)
+			{
 				conoutf("Returned entities::classes::%s", ent->classname.c_str());
+			}
 			else
+			{
+				delete entity;
 				ent = new entities::classes::BaseEntity();
-
+			}
+		
             // No entity was found, so we'll return base entity for now.
             // TODO: Should we do this at all? I guess returning NULL is fine too and warning our user instead.
 

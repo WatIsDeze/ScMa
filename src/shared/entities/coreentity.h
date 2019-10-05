@@ -2,6 +2,7 @@
 #define COREENTITY_H
 
 #include "cube.h"
+#include "ents.h"
 
 namespace entities {
     // Classes.
@@ -71,6 +72,8 @@ namespace entities {
             //
             virtual void reset();
             virtual void resetExt(bool clearName = true, bool clearClassname = true, bool clearAttributes = true);
+			
+			static entities::classes::CoreEntity* factory();
 
         public:
             //
@@ -95,7 +98,6 @@ namespace entities {
 			}
             void setClassName(const std::string &str = "CoreEntity") {
 				// Store classname.
-				classname = str;
 
 				// Do not forget to store it in our attributes list, so it can be saved to disk.
 				setAttribute("classname", classname, false);

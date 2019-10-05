@@ -1,5 +1,6 @@
 #ifndef BASEMONSTER_H
 #define BASEMONSTER_H
+#include "shared/entities/baseentity.h"
 
 namespace entities {
     namespace classes {
@@ -12,6 +13,7 @@ namespace entities {
             void think();
             void render();
 
+			static CoreEntity* factory();
         private:
 
         };

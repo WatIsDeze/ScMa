@@ -1,5 +1,6 @@
 #ifndef BASEMAPMODEL_H
 #define BASEMAPMODEL_H
+#include "shared/entities/basedynamicentity.h"
 
 namespace entities
 {
@@ -23,6 +24,7 @@ namespace entities
 
         public:
             void preloadMapModel(const std::string &filename);
+        	static CoreEntity* factory();
 
         private:
             void loadModelAttributes();
@@ -30,7 +32,7 @@ namespace entities
         private:
             mapmodelinfo mmi;
         };
-        
+		
     } // classes
 } // entities
 

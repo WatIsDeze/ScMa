@@ -1,6 +1,8 @@
 // renderparticles.cpp
 
 #include "engine.h"
+#include "shared/entities/basephysicalentity.h"
+
 
 Shader *particleshader = NULL, *particlenotextureshader = NULL, *particlesoftshader = NULL, *particletextshader = NULL;
 

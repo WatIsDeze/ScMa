@@ -8,6 +8,12 @@
 // ET_*: The internal engine entity type.
 // (ent->et_type = ..)
 
+// Include our base entity types.
+
+//#include "entities/basephysicalentity.h"    // Include the physical entity, for objects such as crates etc.
+//#include "entities/basedynamicentity.h"     // Include the dynamical entity, for objects that can move as if it were players.
+
+
 enum {
     ET_EMPTY=0,         // Empty entities. Not in use. (No functionality, usually removed, or yet to be replaced.)
     ET_LIGHT,           // Light entities, can be dynamic lights(flickering, moving, on/off)
@@ -112,11 +118,5 @@ namespace entities
     } // classes
 } // entities
 
-// Include our base entity types.
-#include "entities/animinfo.h"              // Include the basic animation info for our entities.
-#include "entities/coreentity.h"            // Include the core entity (legacy).
-#include "entities/baseentity.h"            // Include the basic entity to base all others on.
-#include "entities/basephysicalentity.h"    // Include the physical entity, for objects such as crates etc.
-#include "entities/basedynamicentity.h"     // Include the dynamical entity, for objects that can move as if it were players.
 
 #endif // ENTS_H

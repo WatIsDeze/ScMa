@@ -1,5 +1,7 @@
 #ifndef BASEDYNAMICENTITY_H
 #define BASEDYNAMICENTITY_H
+#include "animinfo.h"
+#include "basephysicalentity.h"
 
 struct occludequery;
 struct ragdolldata;
@@ -7,9 +9,6 @@ struct ragdolldata;
 namespace entities
 {
     namespace classes {
-        // Predefined.
-        class BaseEntity;
-        class BasePhysicalEntity;
 
         // Animated Characters, which can possibly receive input
         class BaseDynamicEntity : public BasePhysicalEntity
@@ -43,6 +42,8 @@ namespace entities
             ragdolldata *ragdoll;
             occludequery *query;
             int lastrendered;
+			
+			static CoreEntity* factory();
         };
     } // classes
 } // entities

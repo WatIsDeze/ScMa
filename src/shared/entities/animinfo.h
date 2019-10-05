@@ -1,6 +1,6 @@
 #ifndef ANIMINFO_H
 #define ANIMINFO_H
-
+#include "shared/tools.h"
 // Settings
 #define MAXANIMPARTS 3
 

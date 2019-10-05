@@ -1,6 +1,7 @@
 #include "cube.h"
 #include "engine.h"
 #include "textedit.h"
+#include "shared/entities/animinfo.h"
 
 namespace UI
 {

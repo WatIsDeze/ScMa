@@ -1,16 +1,17 @@
 #ifndef BASEENTITY_H
 #define BASEENTITY_H
+#include "coreentity.h"
 
 // Defined here, for several reasons, since it has to replace good ol' extentity.
 namespace entities
 {
     namespace classes {
         // Predefined.
-        class CoreEntity;
         class BasePhysicalEntity;
         class BaseDynamicEntity;
 
-        class BaseEntity : public CoreEntity {
+        class BaseEntity : public CoreEntity
+        {
         public:
             //
             // Base functions.
@@ -41,6 +42,8 @@ namespace entities
             virtual bool onTrigger(BaseEntity *otherEnt, const vec &dir);
             // otherEnt = the entity which has touched you.
             virtual bool onTouch(BaseEntity *otherEnt, const vec &dir);
+			
+            static CoreEntity* factory();
         };
     } // classes
 } // entities

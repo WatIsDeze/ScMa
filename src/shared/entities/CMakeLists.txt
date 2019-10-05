@@ -13,6 +13,8 @@ add_library(SchizoMania_Shared_Entities STATIC
 	basedynamicentity.h
 	basephysicalentity.cpp
 	basephysicalentity.h
+	entityfactory.h
+	entityfactory.cpp
 )
 
 # add_library(SchizoMania_Server STATIC

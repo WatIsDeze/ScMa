@@ -1,5 +1,6 @@
 #include "../game.h"
 #include "playerstart.h"
+#include "shared/entities/entityfactory.h"
 
 namespace entities {
 namespace classes {
@@ -38,6 +39,12 @@ void PlayerStart::reset() {
 	setName("PlayerStart");
 	setClassName("playerstart");
 }
+
+CoreEntity* PlayerStart::factory(){
+	return new PlayerStart();
+}
+
+ENTITY_FACTORY(PlayerStart);
 
 } // classes
 } // entities

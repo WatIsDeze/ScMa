@@ -1,4 +1,5 @@
 #include "engine.h"
+#include "shared/entities/basephysicalentity.h"
 
 struct QuadNode
 {

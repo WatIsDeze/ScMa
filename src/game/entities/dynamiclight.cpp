@@ -1,6 +1,7 @@
 #include "../game.h"
 // #include "baseentity.h"
 #include "dynamiclight.h"
+#include "shared/entities/entityfactory.h"
 
 namespace entities {
 namespace classes {
@@ -40,6 +41,12 @@ void DynamicLight::setState(const DYNAMIC_LIGHT_STATE &state) {
     // Change the state.
     lightState = state;
 }
+
+CoreEntity* DynamicLight::factory(){
+	return new DynamicLight();
+}
+
+ENTITY_FACTORY(DynamicLight);
 
 } // classes
 } // entities

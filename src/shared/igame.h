@@ -16,7 +16,7 @@ namespace entities
     extern bool mayattach(entities::classes::BaseEntity *e);
     extern bool attachent(entities::classes::BaseEntity *e, entities::classes::BaseEntity *a);
     extern bool printent(entities::classes::BaseEntity *e, char *buf, int len);
-    extern entities::classes::BaseEntity *newgameentity(char *strclass = NULL);
+    extern entities::classes::BaseEntity *newgameentity(const char *strclass);
     extern void deletegameentity(entities::classes::BaseEntity *e);
     extern void clearents();
     extern vector<entities::classes::BaseEntity *> &getents();
