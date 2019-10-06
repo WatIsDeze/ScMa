@@ -853,7 +853,7 @@ bool load_world(const char *mname, const char *cname)        // Does not support
         // For now only proceed if a type is available.
         if (element.find("et_type") != element.end()) {
             // Classname and type, used to determine what to load in and allocate the precise class firsthand.
-            std::string classname("");
+            std::string classname;
             int et_type = element["et_type"];
             int ent_type = element["ent_type"];
             int game_type = element["game_type"];
