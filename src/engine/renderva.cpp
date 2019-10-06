@@ -2735,35 +2735,5 @@ void rendershadowmesh(shadowmesh *m)
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
 // <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

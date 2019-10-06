@@ -1758,67 +1758,6 @@ SCRIPTEXPORT void recalc()
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
 #ifndef SCRIPTBIND_RUN
 COMMAND(recalc, "", "");

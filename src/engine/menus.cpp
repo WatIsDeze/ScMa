@@ -86,40 +86,6 @@ void clearmainmenu()
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
 #ifndef SCRIPTBIND_RUN
 COMMAND(applychanges, "", "");

@@ -829,40 +829,6 @@ void updatemumble()
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
 #ifndef SCRIPTBIND_RUN
 ICOMMAND(music, "ss", (char * a, char * b), startmusic(a, b), "");

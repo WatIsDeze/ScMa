@@ -3763,36 +3763,6 @@ namespace UI
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
 #ifndef SCRIPTBIND_RUN
 ICOMMAND(uicontextscale, "", (), UI::uicontextscale_scriptimpl(), "");

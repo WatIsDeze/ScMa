@@ -1160,63 +1160,6 @@ int main(int argc, char **argv)
 #endif
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
 #ifndef SCRIPTBIND_RUN
 COMMAND(startlistenserver, "i", "");

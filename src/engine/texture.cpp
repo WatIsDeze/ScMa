@@ -3910,30 +3910,6 @@ SCRIPTEXPORT void removealphachannel(char *destfile, char *rgbafile)
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
 #ifndef SCRIPTBIND_RUN
 COMMAND(texturereset, "i", "");

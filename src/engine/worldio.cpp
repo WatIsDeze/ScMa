@@ -1173,37 +1173,6 @@ SCRIPTEXPORT void writecollideobj(char *name)
 #endif
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
 #ifndef SCRIPTBIND_RUN
 COMMAND(fixmapname, "s", "Make the name of the map great again (tm)");

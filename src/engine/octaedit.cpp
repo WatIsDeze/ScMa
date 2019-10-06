@@ -2902,40 +2902,6 @@ EDITSTAT(oq, int, getnumqueries());
 EDITSTAT(pvs, int, getnumviewcells());
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
 #ifndef SCRIPTBIND_RUN
 ICOMMAND(moving, "i", (int * a), moving_scriptimpl(a), "");

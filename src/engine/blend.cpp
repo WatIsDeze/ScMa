@@ -1157,27 +1157,6 @@ uchar shouldsaveblendmap()
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
 #ifndef SCRIPTBIND_RUN
 ICOMMAND(optimizeblendmap, "", (), optimizeblendmap_scriptimpl(), "");

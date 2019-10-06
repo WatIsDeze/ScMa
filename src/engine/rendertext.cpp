@@ -422,45 +422,6 @@ void reloadfonts()
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
 #ifndef SCRIPTBIND_RUN
 ICOMMAND(font, "ssiii", (char * a, char * b, int * c, int * d, int * e), newfont(a, b, c, d, e), "");

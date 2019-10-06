@@ -97,34 +97,5 @@ SCRIPTEXPORT_AS(help) void Help::Print(const char* arg)
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
 // <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

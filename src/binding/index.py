@@ -4,12 +4,18 @@ from autobind.parsecpp import CppParser
 import sys
 import os
 
+def drop_trailing_empty_lines(lines):
+    idx = len(lines) - 1
+    while idx > 0 and lines[idx] and lines[idx] == "\n":
+        idx = idx - 1
+    return lines[:idx + 1]
+
 def file_get_contents_upto(file, token):
     with open(file, "r") as handle:
         lines = handle.readlines()
         for idx, line in enumerate(lines):
             if (line.startswith(token)):
-                return "".join(lines[:idx])
+                return "".join(drop_trailing_empty_lines(lines[:idx]))
     return "".join(lines)
 
 def file_get_contents_from(file, token):
@@ -48,9 +54,9 @@ def generate_code(file):
     fileMid = parser.dump_code()
     if fileTop and fileTop != "\n":
         if fileMid:
-            file_write_data(file, fileTop + "\n" + token_in + "\n#ifndef SCRIPTBIND_RUN\n" + fileMid +"\n#endif\n" + token_out + "\n" + fileBottom)
+            file_write_data(file, fileTop + "\n\n" + token_in + "\n#ifndef SCRIPTBIND_RUN\n" + fileMid +"\n#endif\n" + token_out + "\n" + fileBottom)
         else:
-            file_write_data(file, fileTop + "\n" + token_in + "\n" + token_out + "\n" + fileBottom)
+            file_write_data(file, fileTop + "\n\n" + token_in + "\n" + token_out + "\n" + fileBottom)
         print ("// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //\n// //{}\n// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //\n".format(file))
     else:
         print ("// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //\n// #error |{}|\n// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //\n".format(fileTop))

@@ -694,40 +694,6 @@ void lightreaching(const vec &target, vec &color, vec &dir, bool fast, entities:
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
 #ifndef SCRIPTBIND_RUN
 ICOMMAND(calclight, "", (), calclight_scriptimpl(), "");

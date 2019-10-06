@@ -1231,14 +1231,6 @@ SCRIPTEXPORT void testlog(char * text)
 }
 
 
-
-
-
-
-
-
-
-
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
 #ifndef SCRIPTBIND_RUN
 COMMAND(quit, "", "");

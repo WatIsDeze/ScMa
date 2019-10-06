@@ -4362,39 +4362,6 @@ COMMANDN(clearsleep, clearsleep_, "i", "builtin");
 #endif
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
 #ifndef SCRIPTBIND_RUN
 ICOMMAND(nodebug, "e", (CommandTypes::Expression a), nodebug_imp(a), "");

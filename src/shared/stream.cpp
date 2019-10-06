@@ -1237,38 +1237,5 @@ char *loadfile(const char *fn, size_t *size, bool utf8)
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
 // <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

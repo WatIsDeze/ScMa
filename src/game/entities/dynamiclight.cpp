@@ -26,37 +26,5 @@ void DynamicLight::think() {
 } // entities
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
 // <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

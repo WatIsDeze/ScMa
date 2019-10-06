@@ -70,12 +70,6 @@ SCRIPTEXPORT int getplayercolor(int team, int color)
 }
 
 
-
-
-
-
-
-
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
 #ifndef SCRIPTBIND_RUN
 COMMAND(getplayercolor, "ii", "");

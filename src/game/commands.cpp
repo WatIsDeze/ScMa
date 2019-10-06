@@ -75,66 +75,6 @@ namespace game {
     };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
 #ifndef SCRIPTBIND_RUN
 ICOMMAND(ent_set_attr, "ss", (char * a, char * b), game::ent_set_attr(a, b), "---------------------------------------------------------------------------------------------// ENTITY COMMANDS. // ---------------------------------------------------------------------------------------------// ent_set_attr - Sets the value of the designated key property. args: (str)key (str)value.");

@@ -818,35 +818,5 @@ void genstainmmtri(stainrenderer *s, const vec v[3])
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
 // <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //
