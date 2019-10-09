@@ -10,6 +10,10 @@ namespace classes {
 
 
 Door::Door() :  entities::classes::BaseMapModel("world/door") {
+    // Reset.
+    setName("Door");
+
+    // Setup the door its states.
     state = CS_ALIVE;
     et_type = ET_GAMESPECIFIC;
     ent_type = ENT_INANIMATE;
@@ -17,12 +21,11 @@ Door::Door() :  entities::classes::BaseMapModel("world/door") {
     collidetype = COLLIDE_OBB;
     physstate = PHYS_FLOOR;
 
-    // Reset.
-	setName("Door");
-	setClassName("door");
-
     // Doors animate, makes sense.
     flags |= entities::EntityFlags::EF_ANIM;
+    flags |= entities::EntityFlags::EF_SHADOWMESH;
+    flags |= entities::EntityFlags::EF_RENDER;
+    flags |= entities::EntityFlags::EF_SPAWNED;
 }
 
 Door::~Door() {
@@ -49,7 +52,7 @@ void Door::onAttributeSet(const std::string &key, const std::string &value) {
 }
 
 bool Door::onTrigger(entities::classes::BaseEntity *otherEnt, const vec &dir) {
-    if (otherEnt == NULL) {
+    if (otherEnt == nullptr) {
         return false;
     }
     conoutf("%s %s %s %f %f %f", "Door triggered by entity: ", otherEnt->classname.c_str(),
@@ -58,7 +61,7 @@ bool Door::onTrigger(entities::classes::BaseEntity *otherEnt, const vec &dir) {
 }
 
 bool Door::onTouch(entities::classes::BaseEntity *otherEnt, const vec &dir) {
-    if (otherEnt == NULL) {
+    if (otherEnt == nullptr) {
         return false;
     }
     conoutf("%s %s %s %f %f %f", "Door touched by entity: ", otherEnt->classname.c_str(),
@@ -70,7 +73,7 @@ CoreEntity* Door::factory(){
 	return new Door();
 }
 
-ENTITY_FACTORY(Door);
+LINK_ENTITY_TO_CLASS(Door, door);
 
 } // classes
 } // entities

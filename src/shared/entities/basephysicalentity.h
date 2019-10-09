@@ -1,5 +1,6 @@
 #ifndef BASEPHYSICALENTITY_H
 #define BASEPHYSICALENTITY_H
+
 #include "baseentity.h"
 
 namespace entities
@@ -47,8 +48,6 @@ namespace entities
             uchar collidetype;          // one of COLLIDE_* above
 
             bool blocked;               // used by physics to signal ai
-			
-			static CoreEntity* factory();
         };
     } // classes
 } // entities

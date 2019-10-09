@@ -10,9 +10,9 @@ PlayerStart::PlayerStart() : BaseEntity() {
 	reset();
 
 	// Setup specifics.
-	et_type = ET_GAMESPECIFIC;
+    et_type = ET_GAMESPECIFIC;
     ent_type = ENT_INANIMATE;
-	game_type = GAMEENTITY;
+    game_type = PLAYERSTART;
 }
 
 PlayerStart::~PlayerStart() {
@@ -36,15 +36,10 @@ void PlayerStart::reset() {
     BaseEntity::reset();
 
 	// Set names.
-	setName("PlayerStart");
-	setClassName("playerstart");
+    setName("PlayerStart");
 }
 
-CoreEntity* PlayerStart::factory(){
-	return new PlayerStart();
-}
-
-ENTITY_FACTORY(PlayerStart);
+LINK_ENTITY_TO_CLASS(PlayerStart, playerstart);
 
 } // classes
 } // entities

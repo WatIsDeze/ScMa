@@ -1037,10 +1037,10 @@ int main(int argc, char **argv)
     #endif
 
     // WatIsDeze: Debug log.
-    setlogfile("log.txt");
+    setlogfile(nullptr);
 
     int dedicated = 0;
-    char *load = NULL, *initscript = NULL;
+    char *load = nullptr, *initscript = NULL;
 
     initing = INIT_RESET;
     // set home dir first
@@ -1101,7 +1101,7 @@ int main(int argc, char **argv)
     logoutf("init: game");
     game::parseoptions(gameargs);
     initserver(dedicated>0, dedicated>1);  // never returns if dedicated
-    ASSERT(dedicated <= 1);
+    ASSERT(dedicated <= 1)
     game::initclient();
 
     logoutf("init: video");

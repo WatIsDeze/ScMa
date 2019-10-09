@@ -23,8 +23,6 @@ BasePhysicalEntity::BasePhysicalEntity() : BaseEntity(), deltapos(0, 0, 0), newp
            blocked(false)
 {
     ent_type = ENT_INANIMATE;
-    setName("basephysicalentity");
-    setClassName("BasePhysicalEntity");
 }
 
 BasePhysicalEntity::~BasePhysicalEntity() {
@@ -58,11 +56,7 @@ bool BasePhysicalEntity::crouched() const {
     return fabs(eyeheight - maxheight*CROUCHHEIGHT) < 1e-4f;
 }
 
-CoreEntity* BasePhysicalEntity::factory(){
-	return new BasePhysicalEntity();
-}
-
-ENTITY_FACTORY(BasePhysicalEntity);
+LINK_ENTITY_TO_CLASS(BasePhysicalEntity, base_physical_entity);
 
 } // classes
 } // entities

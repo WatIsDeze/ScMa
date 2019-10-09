@@ -1,5 +1,4 @@
-#ifndef __CUBE_H__
-#define __CUBE_H__
+#pragma once
 
 #define _FILE_OFFSET_BITS 64
 
@@ -58,6 +57,7 @@
 #include <iomanip>
 #include <string>
 #include <memory>
+#include <functional>
 
 // Libraries from the ext folder.
 #include "../ext/json-develop/single_include/nlohmann/json.hpp"
@@ -75,5 +75,4 @@
 #include "iengine.h"
 #include "igame.h"
 
-#endif
 

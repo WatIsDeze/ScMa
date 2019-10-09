@@ -564,13 +564,13 @@ undoblock *copyundoents(undoblock *u)
     return c;
 }
 
-void pasteundoent(int idx, const entities::classes::CoreEntity* ue)
+void pasteundoent(int idx,  entities::classes::CoreEntity* ue)
 {
     if(idx < 0 || idx >= MAXENTS) return;
     vector<entities::classes::BaseEntity *> &ents = entities::getents();
-    while(ents.length() < idx) ents.add((entities::classes::BaseEntity*)entities::newgameentity(""))->et_type = ET_EMPTY;
+    while(ents.length() < idx) ents.add(dynamic_cast<entities::classes::BaseEntity*>(entities::newgameentity("")))->et_type = ET_EMPTY;
     int efocus = -1;
-	entedit(idx, e = (entities::classes::BaseEntity*)ue);
+    entedit(idx, e = dynamic_cast<entities::classes::BaseEntity*>(ue))
 }
 
 void pasteundoents(undoblock *u)

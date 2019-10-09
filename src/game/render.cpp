@@ -7,7 +7,7 @@ namespace game
     __attribute__((optimize("O0"))) void RenderGameEntities()
     {
         loopv(entities::g_ents) {
-            entities::classes::BaseEntity *ent = entities::g_ents[i];
+            entities::classes::BaseEntity *ent = dynamic_cast<entities::classes::BaseEntity*>(entities::g_ents[i]);
             //if (ent->et_type != ET_PLAYERSTART && ent->et_type != ET_EMPTY && ent->et_type != ET_LIGHT && ent->et_type != ET_SPOTLIGHT && ent->et_type != ET_SOUND)
 
             // Ensure we only render player entities if it isn't our own player 1 entity. (Otherwise we'd render it double.)

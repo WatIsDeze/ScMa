@@ -30,7 +30,7 @@ CoreEntity* BaseMonster::factory(){
 	return new BaseMonster();
 }
 
-ENTITY_FACTORY(BaseMonster);
+LINK_ENTITY_TO_CLASS(BaseMonster, base_monster);
 
 } // classes
 } // entities

@@ -1,6 +1,8 @@
 #include "cube.h"
+#include "ents.h"
 #include "game.h"
 #include "ents.h"
+#include "baseentity.h"
 #include "coreentity.h"
 #include "entityfactory.h"
 
@@ -9,10 +11,15 @@ namespace classes {
 
 CoreEntity::CoreEntity() {
 }
+CoreEntity::CoreEntity(const std::string &strClassName) {
+    classname = strClassName;
+}
 CoreEntity::~CoreEntity() {
 }
 
-
+//
+// Spawned set get clear functions.
+//
 bool CoreEntity::spawned() const {
     return (flags&entities::EntityFlags::EF_SPAWNED) != 0;
 }
@@ -52,7 +59,6 @@ bool CoreEntity::setAttribute(const std::string &key, const std::string &value, 
 }
 
 std::string CoreEntity::getAttribute(const std::string &key) {
-
     if (attributes.find(key) != attributes.end()) {
         return attributes[key];
     } else {
@@ -62,7 +68,7 @@ std::string CoreEntity::getAttribute(const std::string &key) {
 
 void CoreEntity::reset() {
     o = vec(0, 0, 0);
-    attr1 = attr2 = attr3 = attr4 = attr5 = 0;;
+    attr1 = attr2 = attr3 = attr4 = attr5 = 0;
     et_type = ET_EMPTY;
     ent_type = ENT_INANIMATE;
     game_type = GAMEENTITY;
@@ -75,7 +81,7 @@ void CoreEntity::reset() {
 
 void CoreEntity::resetExt(bool clearName, bool clearClassname, bool clearAttributes) {
     o = vec(0, 0, 0);
-    attr1 = attr2 = attr3 = attr4 = attr5 = 0;;
+    attr1 = attr2 = attr3 = attr4 = attr5 = 0;
     et_type = ET_EMPTY;
     ent_type = ENT_INANIMATE;
     game_type = GAMEENTITY;
@@ -88,15 +94,15 @@ void CoreEntity::resetExt(bool clearName, bool clearClassname, bool clearAttribu
         attributes.clear();
     if (clearName == true)
         name.clear();
+
+    // To remove.
     if (clearClassname == true)
         classname.clear();
 }
 
-CoreEntity* CoreEntity::factory(){
-	return new CoreEntity();
+void CoreEntity::setName(const std::string &str) {
+    name = str;
 }
-
-ENTITY_FACTORY(CoreEntity)
 
 } // classes
 } // entities

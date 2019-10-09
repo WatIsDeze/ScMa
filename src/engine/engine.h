@@ -385,7 +385,7 @@ extern void cleanupaa();
 extern char *entname(entities::classes::BaseEntity *e);
 extern bool haveselent();
 extern undoblock *copyundoents(undoblock *u);
-extern void pasteundoent(int idx, const entities::classes::CoreEntity *ue);
+extern void pasteundoent(int idx, entities::classes::CoreEntity *ue);
 extern void pasteundoents(undoblock *u);
 
 // octaedit

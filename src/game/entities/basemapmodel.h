@@ -24,13 +24,18 @@ namespace entities
 
         public:
             void preloadMapModel(const std::string &filename);
-        	static CoreEntity* factory();
 
         private:
             void loadModelAttributes();
 
         private:
             mapmodelinfo mmi;
+
+        public:
+        //
+        // Entity Factory functions.
+        //
+        static CoreEntity* factory();
         };
 		
     } // classes

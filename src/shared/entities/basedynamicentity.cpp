@@ -10,11 +10,10 @@ namespace classes {
 
 
 // WatIsDeze: TODO: Maybe remove the physent constructor from here.
-BaseDynamicEntity::BaseDynamicEntity() : BasePhysicalEntity(), ragdoll(NULL), query(NULL), lastrendered(0)
+BaseDynamicEntity::BaseDynamicEntity() : BasePhysicalEntity(), ragdoll(nullptr), query(nullptr), lastrendered(0)
 {
     reset();
-    setName("basedynamicentity");
-    setClassName("BaseDynamicEntity");
+    setName("BaseDynamicEntity");
 }
 
 BaseDynamicEntity::~BaseDynamicEntity()
@@ -37,6 +36,8 @@ void BaseDynamicEntity::reset() {
     // Reset base physical values.
     BasePhysicalEntity::reset();
 
+    setName("BaseDynamicEntity");
+
     // Stop moving.
     stopmoving();
 
@@ -49,11 +50,7 @@ vec BaseDynamicEntity::abovehead() {
     return vec(o).addz(aboveeye+4);
 }
 
-CoreEntity* BaseDynamicEntity::factory() {
-	return new BaseDynamicEntity();
-}
-
-ENTITY_FACTORY(BaseDynamicEntity);
+LINK_ENTITY_TO_CLASS(BaseDynamicEntity, base_dynamic_entity);
 
 } // classes
 } // entities

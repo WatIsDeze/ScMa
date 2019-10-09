@@ -13,8 +13,6 @@
 #include "entities/player.h"
 #include "shared/entities/entityfactory.h"
 
-
-
 namespace entities
 {
     using namespace game;
@@ -64,9 +62,9 @@ namespace entities
         // Execute preload actions for entities.
         loopv(entities::g_ents)
         {
-            if (g_ents.inrange(i) && g_ents[i] != NULL) {
+            if (g_ents.inrange(i) && g_ents[i] != nullptr) {
                 // Let's go at it!
-                entities::classes::BaseEntity *e = entities::g_ents[i];
+                entities::classes::BaseEntity *e = dynamic_cast<entities::classes::BaseEntity*>(entities::g_ents[i]);
 
                 // Ensure that they don't get preloaded in preload, should be done in the constructor of ET_MAPMODEL entities.
                 //if (e->et_type != ET_MAPMODEL)
@@ -75,48 +73,45 @@ namespace entities
         }
 
         // Specifically load in the client player model.
-        if (game::player1 != NULL) {
+        if (game::player1 != nullptr) {
             game::player1->preload();
         }
     }
 
     void resetspawns() {
         loopv(entities::g_ents)
-            if (entities::g_ents.inrange(i) && entities::g_ents[i] != NULL)
+            if (entities::g_ents.inrange(i) && entities::g_ents[i] != nullptr)
                 entities::g_ents[i]->clearspawned();
 
-        if (game::player1 != NULL)
+        if (game::player1 != nullptr)
             game::player1->clearspawned();
     }
 
-    void setspawn(int i, bool on) { if(entities::g_ents.inrange(i) && entities::g_ents[i] != NULL) entities::g_ents[i]->setspawned(on); }
+    void setspawn(int i, bool on) { if(entities::g_ents.inrange(i) && entities::g_ents[i] != nullptr) entities::g_ents[i]->setspawned(on); }
 
     // Returns the entity class respectively according to its registered name.
     entities::classes::BaseEntity *newgameentity(const char *strclass) {
-    		auto entity = EntityFactory::ConstructEntity(std::string(strclass));
-			entities::classes::BaseEntity *ent = dynamic_cast<entities::classes::BaseEntity *>(entity);
+    /*        if (!strclass) {
+                return new entities::classes::BaseEntity();
+            }*/
+            auto e = entities::factory::constructEntity(std::string(strclass));
+            entities::classes::BaseEntity *ent = dynamic_cast<entities::classes::BaseEntity *>(e);
 
-			if (ent)
-			{
-				conoutf("Returned entities::classes::%s", ent->classname.c_str());
-			}
-			else
-			{
-				delete entity;
-				ent = new entities::classes::BaseEntity();
-			}
-		
-            // No entity was found, so we'll return base entity for now.
-            // TODO: Should we do this at all? I guess returning NULL is fine too and warning our user instead.
+            if (ent) {
+                conoutf("Returned entities::classes::%s", ent->classname.c_str());
+            } else {
+                delete e;
+                ent = new entities::classes::BaseEntity();
+            }
 
-			return ent;
+            return ent;
     }
     // Deletes the entity class in specific.
     void deletegameentity(entities::classes::BaseEntity *e) {
         if (!e)
             return;
 
-        delete (entities::classes::BaseEntity *)e;
+        delete dynamic_cast<entities::classes::BaseEntity *>(e);
     }
 
     // Deletes all game entities in the stack.
