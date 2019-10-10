@@ -39,7 +39,7 @@ void PlayerStart::reset() {
     setName("PlayerStart");
 }
 
-LINK_ENTITY_TO_CLASS(PlayerStart, playerstart);
+ADD_ENTITY_TO_FACTORY(PlayerStart, playerstart);
 
 } // classes
 } // entities

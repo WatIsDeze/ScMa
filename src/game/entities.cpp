@@ -91,10 +91,7 @@ namespace entities
 
     // Returns the entity class respectively according to its registered name.
     entities::classes::BaseEntity *newgameentity(const char *strclass) {
-    /*        if (!strclass) {
-                return new entities::classes::BaseEntity();
-            }*/
-            auto e = entities::factory::constructEntity(std::string(strclass));
+            auto e = entities::g_entFactory.constructEntity(std::string(strclass));
             entities::classes::BaseEntity *ent = dynamic_cast<entities::classes::BaseEntity *>(e);
 
             if (ent) {

@@ -73,7 +73,7 @@ CoreEntity* Door::factory(){
 	return new Door();
 }
 
-LINK_ENTITY_TO_CLASS(Door, door);
+ADD_ENTITY_TO_FACTORY(Door, door);
 
 } // classes
 } // entities

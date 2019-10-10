@@ -85,7 +85,7 @@ CoreEntity* BaseMapModel::factory(){
 	return new BaseMapModel();
 }
 
-LINK_ENTITY_TO_CLASS(BaseMapModel, base_map_model);
+ADD_ENTITY_TO_FACTORY(BaseMapModel, base_map_model);
 
 } // classes
 } // entities

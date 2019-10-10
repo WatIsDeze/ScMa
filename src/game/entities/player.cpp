@@ -116,7 +116,7 @@ CoreEntity* Player::factory(){
 }
 
 // Link entity class to the factory.
-LINK_ENTITY_TO_CLASS(Player, player);
+ADD_ENTITY_TO_FACTORY(Player, player);
 
 } // classes
 } // entities

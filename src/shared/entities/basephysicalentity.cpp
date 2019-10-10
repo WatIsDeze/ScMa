@@ -56,7 +56,7 @@ bool BasePhysicalEntity::crouched() const {
     return fabs(eyeheight - maxheight*CROUCHHEIGHT) < 1e-4f;
 }
 
-LINK_ENTITY_TO_CLASS(BasePhysicalEntity, base_physical_entity);
+ADD_ENTITY_TO_FACTORY(BasePhysicalEntity, base_physical_entity);
 
 } // classes
 } // entities

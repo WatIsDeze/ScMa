@@ -6,7 +6,8 @@
 #include "entityfactory.h"
 
 namespace entities {
-    namespace factory {
-        std::map<std::string, std::function<entities::classes::CoreEntity*()> > factoryList;
-    } // factory.
+    //
+    //
+    //
+    EntityFactory g_entFactory;
 } // entities.
