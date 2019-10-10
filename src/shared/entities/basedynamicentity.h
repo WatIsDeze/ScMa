@@ -1,5 +1,6 @@
 #ifndef BASEDYNAMICENTITY_H
 #define BASEDYNAMICENTITY_H
+
 #include "animinfo.h"
 #include "basephysicalentity.h"
 
@@ -42,8 +43,6 @@ namespace entities
             ragdolldata *ragdoll;
             occludequery *query;
             int lastrendered;
-			
-			static CoreEntity* factory();
         };
     } // classes
 } // entities

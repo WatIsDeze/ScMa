@@ -15,7 +15,11 @@ namespace entities {
 
             void reset();
 
-			static CoreEntity* factory();
+            //
+            // Entity Factory functions.
+            //
+            static CoreEntity* factory();
+
         private:
 
         };

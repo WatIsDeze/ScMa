@@ -3,16 +3,17 @@
 
 // This file defines static map entities ("entity") and includes the basic entities:
 // (dynamic entities (players/monsters, "dynent"), and static(No AI, or Input) entities(barrels, etc, "physent")
-// the gamecode extends from the BaseEntity class type.
+// the gamecode extends from the BaseEntity class type (Which extends from the CoreEntity type.)
+// NOTE: dynent and physent are old Tesseract names for what now are, BaseDynamicEntity and BasePhysicalEntity
 
 // ET_*: The internal engine entity type.
 // (ent->et_type = ..)
 
 // Include our base entity types.
-
+//#include "entities/coreentity.h"
+//#include "entities/baseentity.h"
 //#include "entities/basephysicalentity.h"    // Include the physical entity, for objects such as crates etc.
 //#include "entities/basedynamicentity.h"     // Include the dynamical entity, for objects that can move as if it were players.
-
 
 enum {
     ET_EMPTY=0,         // Empty entities. Not in use. (No functionality, usually removed, or yet to be replaced.)

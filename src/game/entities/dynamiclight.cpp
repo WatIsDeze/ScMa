@@ -7,7 +7,12 @@ namespace entities {
 namespace classes {
 
 DynamicLight::DynamicLight() : BasePhysicalEntity() {
-    et_type = ET_LIGHT;
+
+    ent_type = ENT_INANIMATE;
+    et_type = ET_GAMESPECIFIC;
+    game_type = GAMEENTITY;
+
+    setName("DynamicLight");
 }
 
 DynamicLight::~DynamicLight() {
@@ -15,7 +20,7 @@ DynamicLight::~DynamicLight() {
 }
 
 void DynamicLight::preload() {
-    //conoutf("%s", "Preloading dynamiclight entity");
+    conoutf("%s", "Preloading dynamiclight entity");
 }
 
 void DynamicLight::think() {
@@ -33,20 +38,20 @@ void DynamicLight::render() {
     if (attributes.find("b") != attributes.end()) {
         color[2] = std::atof(attributes["b"].c_str());
     }
-    adddynlight(o, 90, color, 2, 50);
+    adddynlight(o, 45, color, 0, 0);
 }
 
 // TODO: Add other optional arguments, so all can be done in 1 command. Kindly using other method functions such as fade time or flicker style, or even interval speeds.
-void DynamicLight::setState(const DYNAMIC_LIGHT_STATE &state) {
+void DynamicLight::setState(DYNAMIC_LIGHT_STATE &_lightState) {
     // Change the state.
-    lightState = state;
+    lightState = _lightState;
 }
 
 CoreEntity* DynamicLight::factory(){
 	return new DynamicLight();
 }
 
-ENTITY_FACTORY(DynamicLight);
+ADD_ENTITY_TO_FACTORY(DynamicLight, dynamic_light);
 
 } // classes
 } // entities

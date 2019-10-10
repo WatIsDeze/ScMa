@@ -1,16 +1,15 @@
-#include "baseentity.h"
 #include "cube.h"
 #include "game.h"
 #include "ents.h"
+#include "baseentity.h"
+#include "coreentity.h"
 #include "entityfactory.h"
 
 namespace entities {
 namespace classes {
 
 BaseEntity::BaseEntity() {
-    // Reset.
-    setName("baseentity");
-    setClassName("BaseEntity");
+
 }
 BaseEntity::~BaseEntity() {
 
@@ -22,22 +21,17 @@ void BaseEntity::render() {}
 
 void BaseEntity::reset() {
     CoreEntity::reset();
-    setName("baseentity");
-    setClassName("BaseEntity");
+    //setName("base_entity");
 }
 
 //
 // OnEvent callbacks.
 //
 void BaseEntity::onAttributeSet(const std::string &key, const std::string &value) {}
-bool BaseEntity::onTrigger(entities::classes::BaseEntity *otherEnt, const vec &dir) {}
-bool BaseEntity::onTouch(entities::classes::BaseEntity *otherEnt, const vec &dir) {}
+bool BaseEntity::onTrigger(entities::classes::BaseEntity *otherEnt, const vec &dir) { return false; }
+bool BaseEntity::onTouch(entities::classes::BaseEntity *otherEnt, const vec &dir) { return false; }
 
-CoreEntity* BaseEntity::factory(){
-	return new BaseEntity();
-}
-
-ENTITY_FACTORY(BaseEntity);
+ADD_ENTITY_TO_FACTORY(BaseEntity, base_entity);
 
 } // classes
 } // entities

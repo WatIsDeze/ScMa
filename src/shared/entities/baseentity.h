@@ -1,5 +1,6 @@
 #ifndef BASEENTITY_H
 #define BASEENTITY_H
+
 #include "coreentity.h"
 
 // Defined here, for several reasons, since it has to replace good ol' extentity.
@@ -18,11 +19,6 @@ namespace entities
             //
             BaseEntity();
             virtual ~BaseEntity();
-//            BaseEntity(const CoreEntity& e);
-//            BaseEntity(const BaseEntity& e);
-//            BaseEntity(const BasePhysicalEntity *e);
-//            BaseEntity(const BaseDynamicEntity *e);
-//            virtual ~BaseEntity();
 
             // Called every time a map is being loaded.
             virtual void preload();
@@ -42,8 +38,6 @@ namespace entities
             virtual bool onTrigger(BaseEntity *otherEnt, const vec &dir);
             // otherEnt = the entity which has touched you.
             virtual bool onTouch(BaseEntity *otherEnt, const vec &dir);
-			
-            static CoreEntity* factory();
         };
     } // classes
 } // entities

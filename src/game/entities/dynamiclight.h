@@ -20,15 +20,21 @@ namespace entities {
                 FADING
             };
 
-            void setState(const DynamicLight::DYNAMIC_LIGHT_STATE &state);
+            void setState(DynamicLight::DYNAMIC_LIGHT_STATE &state);
 
         public:
+            //
+            // Light states.
+            //
             // Stores the current state of the dynamic light.
             DynamicLight::DYNAMIC_LIGHT_STATE lightState;
 
             // Obviously speaks for itself, the color.
             vec4 lightColor;
 			
+            //
+            // Entity Factory functions.
+            //
             static CoreEntity* factory();
         };
     } // classes

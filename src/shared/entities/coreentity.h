@@ -1,5 +1,4 @@
-#ifndef COREENTITY_H
-#define COREENTITY_H
+#pragma once
 
 #include "cube.h"
 #include "ents.h"
@@ -7,7 +6,6 @@
 namespace entities {
     // Classes.
     namespace classes {
-        class BaseEntity;
     //        // Entity
     //        o(0, 0, 0), attr1(0), attr2(0), attr3(0), attr4(0), attr5(0), et_type(ET_EMPTY), ent_type(ENT_INANIMATE), game_type(GAMEENTITY), reserved(0), model_idx(0),
 
@@ -25,6 +23,7 @@ namespace entities {
         {
         public:
             CoreEntity();
+            CoreEntity(const std::string &strClassName);
             virtual ~CoreEntity();
 
             //
@@ -72,8 +71,11 @@ namespace entities {
             //
             virtual void reset();
             virtual void resetExt(bool clearName = true, bool clearClassname = true, bool clearAttributes = true);
-			
-			static entities::classes::CoreEntity* factory();
+
+            //
+            // CoreEntity factory functions.
+            //
+            static entities::classes::CoreEntity* factory();
 
         public:
             //
@@ -90,20 +92,8 @@ namespace entities {
             //
             // CoreEntity utility functions.
             //
-            void setName(const std::string &str = "coreentity") {
-                name = str + "_" + std::to_string(entities::getents().length());
-
-				// Do not forget to store it in our attributes list, so it can be saved to disk.
-				setAttribute("name", name, false);
-			}
-            void setClassName(const std::string &str = "CoreEntity") {
-				// Store classname.
-
-				// Do not forget to store it in our attributes list, so it can be saved to disk.
-				setAttribute("classname", classname, false);
-            }
+            // Sets the name of the entity.
+            void setName(const std::string &str = "coreentity");
         };
     } // classes
 } // entities
-
-#endif

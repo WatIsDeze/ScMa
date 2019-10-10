@@ -859,7 +859,7 @@ bool load_world(const char *mname, const char *cname)        // Does not support
             int game_type = element["game_type"];
 
             // Have to do this here to ensure that classname can be passed to newgameentity.
-            classname = element["game"]["classname"];
+            classname = element["game"]["attributes"]["classname"];
 
             // Allocate our entity.
             entities::classes::BaseEntity *e = entities::newgameentity(classname.c_str());

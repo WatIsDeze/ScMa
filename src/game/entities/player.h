@@ -38,7 +38,11 @@ namespace entities {
 			//
             entities::classes::BasePhysicalEntity *camera;
 			
+            //
+            // Entity Factory functions.
+            //
             static CoreEntity* factory();
+
         private:
 
         };

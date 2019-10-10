@@ -16,8 +16,7 @@ Player::Player() : BaseDynamicEntity() {
 	physstate = PHYS_FALL;
 
 	// Reset.
-	setName("Player");
-	setClassName("player");
+    setName("Player");
 
     // Camera.
     camera = new entities::classes::BasePhysicalEntity();
@@ -75,7 +74,7 @@ void Player::render() {
 }
 
 bool Player::onTrigger(entities::classes::BaseEntity *otherEnt, const vec &dir) {
-    if (otherEnt != NULL) {
+    if (otherEnt != nullptr) {
         conoutf("%s '%s' %s %s %s %f %f %f", "Player: ", name.c_str(), " triggered by entity: ", otherEnt->classname.c_str(),
             "from Vector Direction: ", dir.x, dir.y, dir.z);
             return true;
@@ -85,7 +84,7 @@ bool Player::onTrigger(entities::classes::BaseEntity *otherEnt, const vec &dir) 
 }
 
 bool Player::onTouch(entities::classes::BaseEntity *otherEnt, const vec &dir) {
-     if (otherEnt != NULL) {
+     if (otherEnt != nullptr) {
         conoutf("%s %s %s %f %f %f", "Player touched by entity: ", otherEnt->classname.c_str(),
             "from Vector Direction: ", dir.x, dir.y, dir.z);
         return true;
@@ -95,14 +94,12 @@ bool Player::onTouch(entities::classes::BaseEntity *otherEnt, const vec &dir) {
 }
 
 void Player::reset() {
-    // Reset.
-    setName("player");
-	setClassName("playerentity");
+
 }
 
 void Player::respawn() {
     // First respawn base entity.
-    //BaseDynamicEntity::reset();
+    BaseDynamicEntity::reset();
 
     // Set spawned state.
     setspawned(true);
@@ -118,7 +115,8 @@ CoreEntity* Player::factory(){
 	return new Player();
 }
 
-ENTITY_FACTORY(Player);
+// Link entity class to the factory.
+ADD_ENTITY_TO_FACTORY(Player, player);
 
 } // classes
 } // entities
