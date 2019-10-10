@@ -618,7 +618,7 @@ bool save_world(const char *mname, bool nolms)
     hdr.headersize = sizeof(hdr);
     hdr.worldsize = worldsize;
     hdr.numents = 0;
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    const auto &ents = entities::getents();
     loopv(ents) if(ents[i]->et_type!=ET_EMPTY || nolms) hdr.numents++;
     hdr.numpvs = nolms ? 0 : getnumviewcells();
     hdr.blendmap = shouldsaveblendmap();
@@ -677,7 +677,7 @@ bool save_world(const char *mname, bool nolms)
     {
         if(ents[i]->et_type!=ET_EMPTY || nolms)
         {
-            entities::classes::BaseEntity tmp = *ents[i];
+            entities::classes::CoreEntity tmp = *ents[i];
             lilswap(&tmp.o.x, 3);
             lilswap(&tmp.attr1, 5);
 
@@ -845,7 +845,7 @@ bool load_world(const char *mname, const char *cname)        // Does not support
     i >> j;
 
     // Reference to our entities vector list stored in the entities namespace.
-    vector<entities::classes::BaseEntity*> &ents = entities::getents();
+    vector<entities::classes::CoreEntity*> &ents = entities::getents();
 
     // TODO: Ensure that our data is valid, do not access invalid or nonexistent elements.
     // Parse entities and allocate them, or rather, add them to the list! ;-)
@@ -862,7 +862,7 @@ bool load_world(const char *mname, const char *cname)        // Does not support
             classname = element["game"]["attributes"]["classname"];
 
             // Allocate our entity.
-            entities::classes::BaseEntity *e = entities::newgameentity(classname.c_str());
+            entities::classes::CoreEntity *e = entities::newgameentity(classname.c_str());
 
             // Fetch base entity data. (Old ancient entity info.)
 			e->classname = classname;
@@ -898,7 +898,7 @@ bool load_world(const char *mname, const char *cname)        // Does not support
     {
         conoutf(CON_WARN, "warning: map has %d entities", hdr.numents);
         // TODO: What to do here?
-        //f->seek((hdr.numents-MAXENTS)*(samegame ? sizeof(entities::classes::BaseEntity) + einfosize : eif), SEEK_CUR);
+        //f->seek((hdr.numents-MAXENTS)*(samegame ? sizeof(entities::classes::CoreEntity) + einfosize : eif), SEEK_CUR);
     }
 
     renderprogress(0, "loading slots...");
@@ -1073,18 +1073,18 @@ void writecollideobj(char *name)
         conoutf(CON_ERROR, "geometry for collide model not selected");
         return;
     }
-    vector<entities::classes::BaseEntity *> &ents = entities::getents();
-    entities::classes::BaseEntity *mm = NULL;
+    auto &ents = entities::getents();
+    entities::classes::CoreEntity *mm = NULL;
     loopv(entgroup)
     {
-        entities::classes::BaseEntity *e = ents[entgroup[i]];
+        auto e = ents[entgroup[i]];
 		if(e->et_type != ET_MAPMODEL || !pointinsel(sel, e->o)) continue;
 		mm = e;
         break;
     }
     if(!mm) loopv(ents)
     {
-        entities::classes::BaseEntity *e = ents[i];
+        auto e = ents[i];
 		if(e->et_type != ET_MAPMODEL || !pointinsel(sel, e->o)) continue;
 		mm = e;
         break;

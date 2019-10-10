@@ -45,15 +45,15 @@ namespace game
         bool ragdoll;
     };
 
-    extern void saveragdoll(entities::classes::BaseEntity *d);
+    extern void saveragdoll(entities::classes::CoreEntity *d);
     extern void clearragdolls();
     extern void moveragdolls();
-    extern const playermodelinfo &getplayermodelinfo(entities::classes::BaseEntity *d);
-    extern int getplayercolor(entities::classes::BaseEntity *d, int team);
+    extern const playermodelinfo &getplayermodelinfo(entities::classes::CoreEntity *d);
+    extern int getplayercolor(entities::classes::CoreEntity *d, int team);
     extern int chooserandomplayermodel(int seed);
     extern void syncplayer();
     extern void swayhudgun(int curtime);
-    extern vec hudgunorigin(int gun, const vec &from, const vec &to, entities::classes::BaseEntity *d);
+    extern vec hudgunorigin(int gun, const vec &from, const vec &to, entities::classes::CoreEntity *d);
 }
 
 #endif

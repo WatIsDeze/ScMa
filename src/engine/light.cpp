@@ -278,7 +278,10 @@ void clearlightcache(int id)
 {
     if(id >= 0)
     {
-        const entities::classes::BaseEntity *light = entities::getents()[id];
+        const auto light = dynamic_cast<entities::classes::BaseEntity *>(entities::getents()[id]);
+        if (!light)
+			return;
+        
 		int radius = light->attr1;
         if(radius <= 0) return;
 		for(int x = int(max(light->o.x-radius, 0.0f))>>lightcachesize, ex = int(min(light->o.x+radius, worldsize-1.0f))>>lightcachesize; x <= ex; x++)
@@ -310,7 +313,7 @@ const vector<int> &checklightcache(int x, int y)
 
     lce.lights.setsize(0);
     int csize = 1<<lightcachesize, cx = x<<lightcachesize, cy = y<<lightcachesize;
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    auto &ents = entities::getents();
     loopv(ents)
     {
         const entities::classes::BasePhysicalEntity *light = (entities::classes::BasePhysicalEntity*)ents[i];
@@ -644,11 +647,14 @@ void lightreaching(const vec &target, vec &color, vec &dir, bool fast, entities:
     }
 
     color = dir = vec(0, 0, 0);
-    vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    const auto& ents = entities::getents();
     const vector<int> &lights = checklightcache(int(target.x), int(target.y));
     loopv(lights)
     {
-        entities::classes::BasePhysicalEntity *e = (entities::classes::BasePhysicalEntity*)ents[lights[i]];
+        entities::classes::BasePhysicalEntity *e = dynamic_cast<entities::classes::BasePhysicalEntity*>(ents[lights[i]]);
+        if (!e)
+			continue;
+			
 		if(e->et_type != ET_LIGHT || e->attr1 <= 0)
             continue;
 

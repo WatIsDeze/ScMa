@@ -51,7 +51,7 @@ struct soundchannel
     bool inuse;
     vec loc;
     soundslot *slot;
-    entities::classes::BaseEntity *ent;
+    entities::classes::CoreEntity *ent;
     int radius, volume, pan, flags;
     bool dirty;
 
@@ -76,7 +76,7 @@ struct soundchannel
 vector<soundchannel> channels;
 int maxchannels = 0;
 
-soundchannel &newchannel(int n, soundslot *slot, const vec *loc = NULL, entities::classes::BaseEntity *ent = NULL, int flags = 0, int radius = 0)
+soundchannel &newchannel(int n, soundslot *slot, const vec *loc = NULL, entities::classes::CoreEntity *ent = NULL, int flags = 0, int radius = 0)
 {
     if(ent)
     {
@@ -447,7 +447,7 @@ void clearmapsounds()
     mapsounds.clear();
 }
 
-void stopmapsound(entities::classes::BaseEntity *e)
+void stopmapsound(entities::classes::CoreEntity *e)
 {
     loopv(channels)
     {
@@ -462,11 +462,14 @@ void stopmapsound(entities::classes::BaseEntity *e)
 
 void checkmapsounds()
 {
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    const auto& ents = entities::getents();
     loopv(ents)
     {
-        entities::classes::BaseEntity *e = ents[i];
-		if(e->et_type!=ET_SOUND) continue;
+        auto e = dynamic_cast<entities::classes::BaseEntity *>(ents[i]);
+        if (!e)
+			continue;
+		if(e->et_type != ET_SOUND)
+			continue;
 		if(camera1->o.dist(e->o) < e->attr2)
         {
 			if(!(e->flags&entities::EntityFlags::EF_SOUND)) playsound(e->attr1, NULL, e, SND_MAP, -1);
@@ -567,15 +570,18 @@ void preloadmapsound(int n)
 
 void preloadmapsounds()
 {
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    const auto& ents = entities::getents();
     loopv(ents)
     {
-        entities::classes::BaseEntity *e = ents[i];
+        auto e = dynamic_cast<entities::classes::BaseEntity *>(ents[i]);
+        if (!e)
+			continue;
+			
 		if(e->et_type==ET_SOUND) mapsounds.preloadsound(e->attr1);
     }
 }
 
-int playsound(int n, const vec *loc, entities::classes::BaseEntity *ent, int flags, int loops, int fade, int chanid, int radius, int expire)
+int playsound(int n, const vec *loc, entities::classes::CoreEntity *ent, int flags, int loops, int fade, int chanid, int radius, int expire)
 {
     if(nosound || !soundvol || minimized) return -1;
 

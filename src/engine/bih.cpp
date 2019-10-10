@@ -310,7 +310,7 @@ BIH::~BIH()
     delete[] tribbs;
 }
 
-bool BIH::mmintersect(entities::classes::BaseEntity *e, const vec &o, const vec &ray, float maxdist, int mode, float &dist)
+bool BIH::mmintersect(entities::classes::CoreEntity *e, const vec &o, const vec &ray, float maxdist, int mode, float &dist)
 {
 	const std::string mdlname = e->getAttribute("model");
     model *m = loadmapmodel(mdlname.c_str());

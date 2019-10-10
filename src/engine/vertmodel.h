@@ -368,7 +368,7 @@ struct vertmodel : animmodel
             if(!vbocache->vbuf) genvbo(*vbocache);
         }
 
-        void render(const animstate *as, float pitch, const vec &axis, const vec &forward, entities::classes::BaseEntity *d, part *p)
+        void render(const animstate *as, float pitch, const vec &axis, const vec &forward, entities::classes::CoreEntity *d, part *p)
         {
             if(as->cur.anim&ANIM_NORENDER)
             {

@@ -6,8 +6,8 @@ namespace game
 {
     __attribute__((optimize("O0"))) void RenderGameEntities()
     {
-        loopv(entities::g_ents) {
-            entities::classes::BaseEntity *ent = dynamic_cast<entities::classes::BaseEntity*>(entities::g_ents[i]);
+        loopv(entities::getents()) {
+            entities::classes::BaseEntity *ent = dynamic_cast<entities::classes::BaseEntity*>(entities::getents()[i]);
             //if (ent->et_type != ET_PLAYERSTART && ent->et_type != ET_EMPTY && ent->et_type != ET_LIGHT && ent->et_type != ET_SPOTLIGHT && ent->et_type != ET_SOUND)
 
             // Ensure we only render player entities if it isn't our own player 1 entity. (Otherwise we'd render it double.)
@@ -35,7 +35,7 @@ namespace game
     }
 
 
-    void drawhudmodel(entities::classes::BaseEntity *d, int anim, int basetime) {
+    void drawhudmodel(entities::classes::CoreEntity *d, int anim, int basetime) {
 
     }
 
@@ -47,7 +47,7 @@ namespace game
 
     }
 
-    vec hudgunorigin(int gun, const vec &from, const vec &to, entities::classes::BaseEntity *d) {
+    vec hudgunorigin(int gun, const vec &from, const vec &to, entities::classes::CoreEntity *d) {
         vec offset(from);
 
         return offset;

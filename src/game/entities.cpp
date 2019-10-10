@@ -18,14 +18,15 @@ namespace entities
     using namespace game;
 
 #ifndef STANDALONE
-    vector<entities::classes::BaseEntity *> g_ents;
-    vector<entities::classes::BaseEntity *> g_lightEnts;
 
-    vector<entities::classes::BaseEntity *> &getents() { return g_ents; }
+    vector<entities::classes::CoreEntity *> &getents() {
+		static vector<entities::classes::CoreEntity *> g_ents;
+		return g_ents;
+	}
 
     bool mayattach(entities::classes::BasePhysicalEntity *e) { return false; }
-    bool mayattach(entities::classes::BaseEntity *e) { return false; }
-    bool attachent(entities::classes::BaseEntity *e, entities::classes::BaseEntity *a) { return false; }
+    bool mayattach(entities::classes::CoreEntity *e) { return false; }
+    bool attachent(entities::classes::CoreEntity *e, entities::classes::CoreEntity *a) { return false; }
 
     const char *itemname(int i)
     {
@@ -52,7 +53,7 @@ namespace entities
         return "";
     }
 
-    const char *entmodel(const entities::classes::BaseEntity *e)
+    const char *entmodel(const entities::classes::CoreEntity *e)
     {
         return NULL;
     }
@@ -60,11 +61,11 @@ namespace entities
     void preloadentities()
     {
         // Execute preload actions for entities.
-        loopv(entities::g_ents)
+        loopv(entities::getents())
         {
-            if (g_ents.inrange(i) && g_ents[i] != nullptr) {
+            if (getents().inrange(i) && getents()[i] != nullptr) {
                 // Let's go at it!
-                entities::classes::BaseEntity *e = dynamic_cast<entities::classes::BaseEntity*>(entities::g_ents[i]);
+                entities::classes::BaseEntity *e = dynamic_cast<entities::classes::BaseEntity*>(entities::getents()[i]);
 
                 // Ensure that they don't get preloaded in preload, should be done in the constructor of ET_MAPMODEL entities.
                 //if (e->et_type != ET_MAPMODEL)
@@ -79,46 +80,44 @@ namespace entities
     }
 
     void resetspawns() {
-        loopv(entities::g_ents)
-            if (entities::g_ents.inrange(i) && entities::g_ents[i] != nullptr)
-                entities::g_ents[i]->clearspawned();
+        loopv(entities::getents())
+            if (entities::getents().inrange(i) && entities::getents()[i] != nullptr)
+                entities::getents()[i]->clearspawned();
 
         if (game::player1 != nullptr)
             game::player1->clearspawned();
     }
 
-    void setspawn(int i, bool on) { if(entities::g_ents.inrange(i) && entities::g_ents[i] != nullptr) entities::g_ents[i]->setspawned(on); }
+    void setspawn(int i, bool on) { if(entities::getents().inrange(i) && entities::getents()[i] != nullptr) entities::getents()[i]->setspawned(on); }
 
     // Returns the entity class respectively according to its registered name.
-    entities::classes::BaseEntity *newgameentity(const char *strclass) {
-            auto e = entities::g_entFactory.constructEntity(std::string(strclass));
-            entities::classes::BaseEntity *ent = dynamic_cast<entities::classes::BaseEntity *>(e);
+    entities::classes::CoreEntity *newgameentity(const char *strclass) {
+            auto e = entities::EntityFactory::constructEntity(std::string(strclass));
 
-            if (ent) {
-                conoutf("Returned entities::classes::%s", ent->classname.c_str());
+            if (e) {
+                conoutf("Returned %s", strclass);
             } else {
-                delete e;
-                ent = new entities::classes::BaseEntity();
+                conoutf("Failed to create %s", strclass);
             }
 
-            return ent;
+            return e;
     }
     // Deletes the entity class in specific.
-    void deletegameentity(entities::classes::BaseEntity *e) {
+    void deletegameentity(entities::classes::CoreEntity *e) {
         if (!e)
             return;
 
-        delete dynamic_cast<entities::classes::BaseEntity *>(e);
+        delete e;
     }
 
     // Deletes all game entities in the stack.
     void clearents()
     {
         // Delete stack entities.
-        while(entities::g_ents.length()) deletegameentity(entities::g_ents.pop());
+        while(entities::getents().length()) deletegameentity(entities::getents().pop());
     }
 
-    void animatemapmodel(const entities::classes::BaseEntity *e, int &anim, int &basetime)
+    void animatemapmodel(const entities::classes::CoreEntity *e, int &anim, int &basetime)
     {/*        const fpsentity &f = (const fpsentity &)e;
         if(validtrigger(f.attr3)) switch(f.triggerstate)
         {
@@ -134,14 +133,14 @@ namespace entities
 
     }
 
-    void entradius(entities::classes::BaseEntity *e, bool color)
+    void entradius(entities::classes::CoreEntity *e, bool color)
     {
 /*		switch(e->game_type)
         {
             case TELEPORT:
-				loopv(entities::g_ents) if(entities::g_ents[i]->game_type == TELEDEST && e->attr1==entities::g_ents[i]->attr2)
+				loopv(entities::getents()) if(entities::getents()[i]->game_type == TELEDEST && e->attr1==entities::getents()[i]->attr2)
                 {
-					renderentarrow(e, vec(entities::g_ents[i]->o).sub(e->o).normalize(), e->o.dist(entities::g_ents[i]->o));
+					renderentarrow(e, vec(entities::getents()[i]->o).sub(e->o).normalize(), e->o.dist(entities::getents()[i]->o));
                     break;
                 }
                 break;
@@ -161,12 +160,12 @@ namespace entities
 		}*/
     }
 
-    bool printent(entities::classes::BaseEntity *e, char *buf, int len)
+    bool printent(entities::classes::CoreEntity *e, char *buf, int len)
     {
         return false;
     }
 
-    const char *entnameinfo(entities::classes::BaseEntity *e) {
+    const char *entnameinfo(entities::classes::CoreEntity *e) {
         std::string str;
 		str = e->classname + ":" + e->name;
         // TODO: List attributes here? Maybe...
@@ -185,7 +184,7 @@ namespace entities
 
     void editent(int i, bool local)
     {
-//        entities::classes::BaseEntity *e = ents[i];
+//        entities::classes::CoreEntity *e = ents[i];
         extern int edit_entity;
         edit_entity = i;
         //conoutf("%i", i);
@@ -194,7 +193,7 @@ namespace entities
         //if(local) addmsg(N_EDITENT, "rii3ii5", i, (int)(e.o.x*DMF), (int)(e.o.y*DMF), (int)(e.o.z*DMF), e.et_type, e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
     }
 
-    float dropheight(entities::classes::BaseEntity *e)
+    float dropheight(entities::classes::CoreEntity *e)
     {
 //		if(e->game_type==FLAG) return 0.0f;
         return 4.0f;

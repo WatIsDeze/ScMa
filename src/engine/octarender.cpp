@@ -338,7 +338,7 @@ struct vacollect : verthash
         GENVERTS(vertex, buf, { *f = v; f->norm.flip(); f->tangent.flip(); });
     }
 
-    void gendecal(const entities::classes::BaseEntity *e, DecalSlot &s, const decalkey &key)
+    void gendecal(const entities::classes::CoreEntity *e, DecalSlot &s, const decalkey &key)
     {
         matrix3 orient;
         orient.identity();
@@ -420,13 +420,16 @@ struct vacollect : verthash
     {
         if(decals.length()) extdecals.put(decals.getbuf(), decals.length());
         if(extdecals.empty()) return;
-        vector<entities::classes::BaseEntity *> &ents = entities::getents();
+        const auto& ents = entities::getents();
         loopv(extdecals)
         {
             octaentities *oe = extdecals[i];
             loopvj(oe->decals)
             {
-                entities::classes::BaseEntity *e = ents[oe->decals[j]];
+                auto e = dynamic_cast<entities::classes::BaseEntity *>(ents[oe->decals[j]]);
+                if (!e)
+					continue;
+					
 				if(e->flags & entities::EntityFlags::EF_RENDER) continue;
 				e->flags |= (int)entities::EntityFlags::EF_RENDER;
 				DecalSlot &s = lookupdecalslot(e->attr1, true);
@@ -441,7 +444,10 @@ struct vacollect : verthash
             octaentities *oe = extdecals[i];
             loopvj(oe->decals)
             {
-                entities::classes::BaseEntity *e = ents[oe->decals[j]];
+                auto e = dynamic_cast<entities::classes::BaseEntity *>(ents[oe->decals[j]]);
+                if (!e)
+					continue;
+
 				if(e->flags& entities::EntityFlags::EF_RENDER) e->flags &= (int)~entities::EntityFlags::EF_RENDER;
             }
         }

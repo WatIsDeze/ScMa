@@ -686,10 +686,12 @@ struct stainrenderer
 
     void genmmtris(octaentities &oe)
     {
-        const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+        const auto &ents = entities::getents();
         loopv(oe.mapmodels)
         {
-            entities::classes::BaseEntity *e = ents[oe.mapmodels[i]];
+            auto e = dynamic_cast<entities::classes::BaseEntity *>(ents[oe.mapmodels[i]]);
+            if (!e) continue;
+            
 			model *m = loadmapmodel(e->model_idx);
             if(!m) continue;
 

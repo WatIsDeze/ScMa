@@ -224,7 +224,7 @@ struct editinfo
     editinfo() : copy(NULL) {}
 };
 
-struct undoent   { int i; entities::classes::BaseEntity* e; };
+struct undoent   { int i; entities::classes::CoreEntity* e; };
 struct undoblock // undo header, all data sits in payload
 {
     undoblock *prev, *next;

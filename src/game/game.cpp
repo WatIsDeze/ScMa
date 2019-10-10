@@ -52,11 +52,11 @@ namespace game
 
     void updateentities() {
         // Execute think actions for entities.
-        loopv(entities::g_ents)
+        loopv(entities::getents())
         {
             // Let's go at it!
-            if (entities::g_ents.inrange(i)) {
-                entities::classes::BaseEntity *e = entities::g_ents[i];
+            if (entities::getents().inrange(i)) {
+                entities::classes::BaseEntity *e = dynamic_cast<entities::classes::BaseEntity *>(entities::getents()[i]);
                 if (e != NULL && e->ent_type != ENT_PLAYER)
                     e->think();
             }
@@ -108,7 +108,7 @@ namespace game
         conoutf("dynentcollide D et_type: %i ent_type: %i game_type: %i --- O et_type: %i ent_type: %i game_type %i", d->et_type, d->ent_type, d->game_type, o->et_type, o->ent_type, o->game_type);
     }
 
-    void mapmodelcollide(entities::classes::BaseEntity *d, entities::classes::BaseEntity *o, const vec &dir) {
+    void mapmodelcollide(entities::classes::CoreEntity *d, entities::classes::CoreEntity *o, const vec &dir) {
         conoutf("mmcollide D et_type: %i ent_type: %i game_type: %i --- O et_type: %i ent_type: %i game_type %i", d->et_type, d->ent_type, d->game_type, o->et_type, o->ent_type, o->game_type);
     }
 
@@ -134,7 +134,7 @@ namespace game
         //clearprojectiles();
         //clearbouncers();
     }
-    void suicide(entities::classes::BaseEntity *d) {
+    void suicide(entities::classes::CoreEntity *d) {
 
     }
     void newmap(int size) {
@@ -220,12 +220,12 @@ namespace game
         //return !d->ms_lastaction || lastmillis-d->ms_lastaction>=1000;
     }
 
-    entities::classes::BaseEntity *iterdynents(int i) {
+    entities::classes::CoreEntity *iterdynents(int i) {
         if (i == 0) {
             return player1;
         } else {
-            if (i < entities::g_ents.length()) {
-                return entities::g_ents[i];
+            if (i < entities::getents().length()) {
+                return dynamic_cast<entities::classes::BaseEntity *>(entities::getents()[i]);
             } else {
                 return nullptr;
             }
@@ -237,7 +237,7 @@ namespace game
     }
     // int numdynents() { return players.length()+monsters.length()+movables.length(); }
     int numdynents() {
-        return entities::g_ents.length() + 1; // + 1 is for the player.
+        return entities::getents().length() + 1; // + 1 is for the player.
     }
 
     // This function should be used to render HUD View stuff etc.
@@ -280,23 +280,26 @@ namespace game
         return player1->state!=CS_EDITING;
     }
 
-    void lighteffects(entities::classes::BaseEntity *e, vec&color, vec &dir) {
+    void lighteffects(entities::classes::CoreEntity *e, vec&color, vec &dir) {
     }
 
     void renderDynamicLights() {
         // Loop through our light entities and render them all.
-        loopv(entities::g_lightEnts)
+        auto &ents = entities::getents();
+        loopv(ents)
         {
             // Let's go at it!
-            entities::classes::BaseEntity *e = entities::g_lightEnts[i];
+            auto e = dynamic_cast<entities::classes::BaseEntity *>(ents[i]);
+            if (e->et_type != ET_LIGHT) continue;
+            
             e->render();
         }
     }
 
-    void dynlighttrack(entities::classes::BaseEntity *owner, vec &o, vec &hud) {
+    void dynlighttrack(entities::classes::CoreEntity *owner, vec &o, vec &hud) {
     }
 
-    void particletrack(entities::classes::BaseEntity *owner, vec &o, vec &d) {
+    void particletrack(entities::classes::CoreEntity *owner, vec &o, vec &d) {
     }
 
     void writegamedata(vector<char> &extras) {

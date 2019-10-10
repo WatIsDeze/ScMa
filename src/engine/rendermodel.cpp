@@ -369,11 +369,11 @@ void flushpreloadedmodels(bool msg)
 
 void preloadusedmapmodels(bool msg, bool bih)
 {
-    vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    auto &ents = entities::getents();
     vector<int> used;
     loopv(ents)
     {
-        entities::classes::BaseEntity *e = ents[i];
+        auto e = ents[i];
 		if(e->et_type==ET_MAPMODEL && e->et_type >= 0 && used.find(e->et_type) < 0) used.add(e->model_idx);
     }
 
@@ -448,7 +448,7 @@ model *loadmodel(const char *name, int i, bool msg)
     return m;
 }
 
-mapmodelinfo loadmodelinfo(const char *name, entities::classes::BaseEntity *ent) {
+mapmodelinfo loadmodelinfo(const char *name, entities::classes::CoreEntity *ent) {
     mapmodelinfo &mmi = mapmodels.add();
 
     // Preload first.

@@ -26,7 +26,7 @@ static inline clipplanes &getclipbounds(const cube &c, const ivec &o, int size, 
     return p;
 }
 
-static inline clipplanes &getclipbounds(const cube &c, const ivec &o, int size, entities::classes::BaseEntity *d)
+static inline clipplanes &getclipbounds(const cube &c, const ivec &o, int size, entities::classes::CoreEntity *d)
 {
     int offset = !(c.visible&0x80) || d->ent_type==ENT_PLAYER ? 0 : 1;
     return getclipbounds(c, o, size, offset);
@@ -131,19 +131,19 @@ float hitentdist;
 int hitent, hitorient;
 
 
-extern void entselectionbox(const entities::classes::BaseEntity *e, vec &eo, vec &es);
+extern void entselectionbox(const entities::classes::CoreEntity *e, vec &eo, vec &es);
 
-static float disttoent(octaentities *oc, const vec &o, const vec &ray, float radius, int mode, entities::classes::BaseEntity *t)
+static float disttoent(octaentities *oc, const vec &o, const vec &ray, float radius, int mode, entities::classes::CoreEntity *t)
 {
     vec eo, es;
     int orient = -1;
     float dist = radius, f = 0.0f;
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    const auto &ents = entities::getents();
 
     #define entintersect(type, func) do { \
         loopv(oc->type) \
         { \
-            entities::classes::BaseEntity *e = ents[oc->type[i]]; \
+            entities::classes::CoreEntity *e = ents[oc->type[i]]; \
             if(!(e->flags&entities::EntityFlags::EF_OCTA) || e==t) continue; \
             func; \
             if(f<dist && f>0 && vec(ray).mul(f).add(o).insidebb(oc->o, oc->size)) \
@@ -181,10 +181,13 @@ static float disttooutsideent(const vec &o, const vec &ray, float radius, int mo
     vec eo, es;
     int orient;
     float dist = radius, f = 0.0f;
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    const auto &ents = entities::getents();
     loopv(outsideents)
     {
-        entities::classes::BaseEntity *e = ents[outsideents[i]];
+        auto e = dynamic_cast<entities::classes::BaseEntity *>(ents[outsideents[i]]);
+        if (!e)
+			continue;
+			
         if(!(e->flags&entities::EntityFlags::EF_OCTA) || e == t) continue;
         entselectionbox(e, eo, es);
         if(!rayboxintersect(eo, es, o, ray, f, orient)) continue;
@@ -202,10 +205,11 @@ static float disttooutsideent(const vec &o, const vec &ray, float radius, int mo
 static float shadowent(octaentities *oc, const vec &o, const vec &ray, float radius, int mode, entities::classes::BasePhysicalEntity *t)
 {
     float dist = radius, f = 0.0f;
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    const auto &ents = entities::getents();
     loopv(oc->mapmodels)
     {
-        entities::classes::BasePhysicalEntity *e = (entities::classes::BasePhysicalEntity*)ents[oc->mapmodels[i]];
+        auto e = dynamic_cast<entities::classes::BasePhysicalEntity*>(ents[oc->mapmodels[i]]);
+        if (!e) continue;
         if(!(e->flags&entities::EntityFlags::EF_OCTA) || e==t) continue;
         if(!BIH::mmintersect((e), o, ray, radius, mode, f)) continue;
         if(f>0 && f<dist) dist = f;
@@ -427,7 +431,7 @@ float rayfloor(const vec &o, vec &floor, int mode, float radius)
 
 // info about collisions
 int collideinside; // whether an internal collision happened
-entities::classes::BaseEntity *collideplayer; // whether the collection hit a player
+entities::classes::CoreEntity *collideplayer; // whether the collection hit a player
 vec collidewall; // just the normal vectors.
 
 const float STAIRHEIGHT = 4.1f; // Original was 4.1, let's change this to the new player radius which was 4.1 also.
@@ -638,7 +642,7 @@ bool plcollide(entities::classes::BasePhysicalEntity *d, const vec &dir, bool in
 {
     if(d->ent_type==ENT_CAMERA || d->state!=CS_ALIVE) return false;
     int lastinside = collideinside;
-    entities::classes::BaseEntity *insideplayer = NULL;
+    entities::classes::CoreEntity *insideplayer = NULL;
     loopdynentcache(x, y, d->o, d->radius)
     {
         const vector<entities::classes::BasePhysicalEntity*> &dynents = checkdynentcache(x, y);
@@ -696,7 +700,7 @@ static inline bool mmcollide(entities::classes::BasePhysicalEntity *d, const vec
         //if(!collidewall.iszero()) return true;
         if(!collidewall.iszero()) {
             //game::mapmodelcollide(d, (entities::classes::BaseEntity*)&e, collidewall);
-            ((entities::classes::BaseEntity*)d)->onTouch((entities::classes::BaseEntity*)&e, collidewall);
+            ((entities::classes::BaseEntity*)d)->onTouch((entities::classes::CoreEntity*)&e, collidewall);
             return true;
         }
         collideinside++;
@@ -818,10 +822,10 @@ VAR(testtricol, 0, 0, 2);
 
 bool mmcollide(entities::classes::BasePhysicalEntity *d, const vec &dir, float cutoff, octaentities &oc) // collide with a mapmodel
 {
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    const auto &ents = entities::getents();
     loopv(oc.mapmodels)
     {
-        entities::classes::BaseEntity *e = ents[oc.mapmodels[i]];
+        auto e = dynamic_cast<entities::classes::BaseEntity *>(ents[oc.mapmodels[i]]);
         if (!e) continue;
         if(e->flags&entities::EntityFlags::EF_NOCOLLIDE || !mapmodels.inrange(e->model_idx)) continue;
         mapmodelinfo &mmi = mapmodels[e->model_idx];
@@ -1689,7 +1693,7 @@ bool droptofloor(vec &o, float radius, float height)
     return false;
 }
 
-float dropheight(entities::classes::BaseEntity *e)
+float dropheight(entities::classes::CoreEntity *e)
 {
 	switch(e->et_type)
     {
@@ -1701,7 +1705,7 @@ float dropheight(entities::classes::BaseEntity *e)
     }
 }
 
-void dropenttofloor(entities::classes::BaseEntity *e)
+void dropenttofloor(entities::classes::CoreEntity *e)
 {
 	droptofloor(e->o, 1.0f, dropheight(e));
 }

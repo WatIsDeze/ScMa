@@ -30,8 +30,6 @@ enum {
 
 #define MAXENTS 10000
 
-//extern vector<entities::classes::BaseEntity *> ents;                // map entities
-
 
 // Client/Server entity states. (ent->state, ent->editstate).
 enum { CS_ALIVE = 0, CS_DEAD, CS_SPAWNING, CS_LAGGED, CS_EDITING, CS_SPECTATOR };

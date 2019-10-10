@@ -50,7 +50,7 @@ vec BaseDynamicEntity::abovehead() {
     return vec(o).addz(aboveeye+4);
 }
 
-ADD_ENTITY_TO_FACTORY(BaseDynamicEntity, base_dynamic_entity);
+ADD_ENTITY_TO_FACTORY(BaseDynamicEntity, "base_dynamic_entity");
 
 } // classes
 } // entities

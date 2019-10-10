@@ -26,10 +26,10 @@ namespace game {
     ICOMMAND(ent_set_attr, "ss", (char *s1, char *s2),
     {
         // TODO: Fix the namespace variable issues.
-        //extern vector<entities::classes::BaseEntity *> entities::ents;
+        //extern vector<entities::classes::CoreEntity *> entities::ents;
 
-        if (entities::edit_entity > -1 && entities::edit_entity < entities::g_ents.length()) {
-            entities::classes::BaseEntity *ent = (entities::classes::BaseEntity*)entities::g_ents[entities::edit_entity];
+        if (entities::edit_entity > -1 && entities::edit_entity < entities::getents().length()) {
+            entities::classes::CoreEntity *ent = (entities::classes::CoreEntity*)entities::getents()[entities::edit_entity];
 
             // Ensure both string lengths are > 0
             if (strlen(s1) > 0 && strlen(s2) > 0) {
@@ -52,10 +52,10 @@ namespace game {
     // args: (str)key
     ICOMMAND(ent_get_attr, "s", (char *s1), {
         // TODO: Fix the namespace variable issues.
-        //extern vector<entities::classes::BaseEntity *> entities::ents;
+        //extern vector<entities::classes::CoreEntity *> entities::ents;
 
-        if (entities::edit_entity > -1 && entities::edit_entity < entities::g_ents.length()) {
-            entities::classes::BaseEntity *ent = (entities::classes::BaseEntity*)entities::g_ents[entities::edit_entity];
+        if (entities::edit_entity > -1 && entities::edit_entity < entities::getents().length()) {
+            entities::classes::CoreEntity *ent = (entities::classes::CoreEntity*)entities::getents()[entities::edit_entity];
 
             if (ent->attributes.find(s1) != ent->attributes.end()) {
                 conoutf("%s : %s", s1, ent->attributes[s1].c_str());
@@ -68,10 +68,10 @@ namespace game {
     // ent_list_attr - Lists all the properties of the given entity.
     ICOMMAND(ent_list_attr, "", (), {
         // TODO: Fix the namespace variable issues.
-        //extern vector<entities::classes::BaseEntity *> entities::ents;
+        //extern vector<entities::classes::CoreEntity *> entities::ents;
 
-        if (entities::edit_entity > -1 && entities::edit_entity < entities::g_ents.length()) {
-            entities::classes::BaseEntity *ent = (entities::classes::BaseEntity*)entities::g_ents[entities::edit_entity];
+        if (entities::edit_entity > -1 && entities::edit_entity < entities::getents().length()) {
+            entities::classes::CoreEntity *ent = (entities::classes::CoreEntity*)entities::getents()[entities::edit_entity];
 
             for(std::map<std::string, std::string>::iterator i = ent->attributes.begin(); i != ent->attributes.end(); ++i) {
                 conoutf("%s : %s", i->first.c_str(), i->second.c_str());

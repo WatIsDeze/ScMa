@@ -73,7 +73,7 @@ void Player::render() {
     }
 }
 
-bool Player::onTrigger(entities::classes::BaseEntity *otherEnt, const vec &dir) {
+bool Player::onTrigger(entities::classes::CoreEntity *otherEnt, const vec &dir) {
     if (otherEnt != nullptr) {
         conoutf("%s '%s' %s %s %s %f %f %f", "Player: ", name.c_str(), " triggered by entity: ", otherEnt->classname.c_str(),
             "from Vector Direction: ", dir.x, dir.y, dir.z);
@@ -83,7 +83,7 @@ bool Player::onTrigger(entities::classes::BaseEntity *otherEnt, const vec &dir) 
     }
 }
 
-bool Player::onTouch(entities::classes::BaseEntity *otherEnt, const vec &dir) {
+bool Player::onTouch(entities::classes::CoreEntity *otherEnt, const vec &dir) {
      if (otherEnt != nullptr) {
         conoutf("%s %s %s %f %f %f", "Player touched by entity: ", otherEnt->classname.c_str(),
             "from Vector Direction: ", dir.x, dir.y, dir.z);
@@ -116,7 +116,7 @@ CoreEntity* Player::factory(){
 }
 
 // Link entity class to the factory.
-ADD_ENTITY_TO_FACTORY(Player, player);
+ADD_ENTITY_TO_FACTORY(Player, "player");
 
 } // classes
 } // entities

@@ -294,7 +294,7 @@ extern void cleanupvolumetric();
 extern void findshadowvas();
 extern void findshadowmms();
 
-extern int calcshadowinfo(const entities::classes::BaseEntity *e, vec &origin, float &radius, vec &spotloc, int &spotangle, float &bias);
+extern int calcshadowinfo(const entities::classes::CoreEntity *e, vec &origin, float &radius, vec &spotloc, int &spotangle, float &bias);
 extern int dynamicshadowvabounds(int mask, vec &bbmin, vec &bbmax);
 extern void rendershadowmapworld();
 extern void batchshadowmapmodels(bool skipmesh = false);
@@ -382,7 +382,7 @@ extern bool debugaa();
 extern void cleanupaa();
 
 // ents
-extern char *entname(entities::classes::BaseEntity *e);
+extern char *entname(entities::classes::CoreEntity *e);
 extern bool haveselent();
 extern undoblock *copyundoents(undoblock *u);
 extern void pasteundoent(int idx, entities::classes::CoreEntity *ue);
@@ -460,7 +460,7 @@ extern void renderdecals();
 struct shadowmesh;
 extern void clearshadowmeshes();
 extern void genshadowmeshes();
-extern shadowmesh *findshadowmesh(int idx, entities::classes::BaseEntity *e);
+extern shadowmesh *findshadowmesh(int idx, entities::classes::CoreEntity *e);
 extern void rendershadowmesh(shadowmesh *m);
 
 // dynlight
@@ -708,7 +708,7 @@ static inline model *loadmapmodel(const char *filename)
 
 
 // WatIsDeze: Added so we can load mapmodels by string filename
-/*static inline int loadmapmodel(const char *filename, entities::classes::BaseEntity *ent)
+/*static inline int loadmapmodel(const char *filename, entities::classes::CoreEntity *ent)
 {
     int idx = -1;
 
@@ -767,7 +767,7 @@ extern void seedparticles();
 extern void updateparticles();
 extern void debugparticles();
 extern void renderparticles(int layer = PL_ALL);
-extern bool printparticles(entities::classes::BaseEntity *e, char *buf, int len);
+extern bool printparticles(entities::classes::CoreEntity *e, char *buf, int len);
 extern void cleanupparticles();
 
 // stain

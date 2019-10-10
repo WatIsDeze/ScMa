@@ -51,7 +51,7 @@ void Door::onAttributeSet(const std::string &key, const std::string &value) {
     BaseMapModel::onAttributeSet(key, value);
 }
 
-bool Door::onTrigger(entities::classes::BaseEntity *otherEnt, const vec &dir) {
+bool Door::onTrigger(entities::classes::CoreEntity *otherEnt, const vec &dir) {
     if (otherEnt == nullptr) {
         return false;
     }
@@ -60,7 +60,7 @@ bool Door::onTrigger(entities::classes::BaseEntity *otherEnt, const vec &dir) {
     return true;
 }
 
-bool Door::onTouch(entities::classes::BaseEntity *otherEnt, const vec &dir) {
+bool Door::onTouch(entities::classes::CoreEntity *otherEnt, const vec &dir) {
     if (otherEnt == nullptr) {
         return false;
     }
@@ -73,7 +73,7 @@ CoreEntity* Door::factory(){
 	return new Door();
 }
 
-ADD_ENTITY_TO_FACTORY(Door, door);
+ADD_ENTITY_TO_FACTORY(Door, "door");
 
 } // classes
 } // entities

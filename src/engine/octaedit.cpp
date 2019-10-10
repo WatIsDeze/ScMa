@@ -1080,7 +1080,7 @@ bool packundo(undoblock *u, int &inlen, uchar *&outbuf, int &outlen)
         loopi(u->numents)
         {
             *(ushort *)buf.pad(2) = lilswap(ushort(ue[i].i));
-            entities::classes::BaseEntity* e = (entities::classes::BaseEntity *)buf.pad(sizeof(entities::classes::BaseEntity));
+            entities::classes::CoreEntity* e = (entities::classes::CoreEntity *)buf.pad(sizeof(entities::classes::CoreEntity));
             e = ue[i].e;
             lilswap(&e->o.x, 3);
             lilswap(&e->attr1, 5); 
@@ -1110,7 +1110,7 @@ bool unpackundo(const uchar *inbuf, int inlen, int outlen)
     int numents = lilswap(*(const ushort *)buf.pad(2));
     if(numents)
     {
-        if(buf.remaining() < numents*int(2 + sizeof(entities::classes::BaseEntity)))
+        if(buf.remaining() < numents*int(2 + sizeof(entities::classes::CoreEntity)))
         {
             delete[] outbuf;
             return false;
@@ -1118,7 +1118,7 @@ bool unpackundo(const uchar *inbuf, int inlen, int outlen)
         loopi(numents)
         {
             int idx = lilswap(*(const ushort *)buf.pad(2));
-            entities::classes::BaseEntity *e = (entities::classes::BaseEntity *)buf.pad(sizeof(entities::classes::BaseEntity));
+            entities::classes::CoreEntity *e = (entities::classes::CoreEntity *)buf.pad(sizeof(entities::classes::CoreEntity));
             lilswap(&e->o.x, 3);
             lilswap(&e->attr1, 5);
             pasteundoent(idx, e);
