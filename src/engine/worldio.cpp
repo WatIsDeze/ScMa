@@ -1174,20 +1174,7 @@ SCRIPTEXPORT void writecollideobj(char *name)
 
 
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
-#ifndef SCRIPTBIND_RUN
-COMMAND(fixmapname, "s", "Make the name of the map great again (tm)");
-
-COMMAND(mapcfgname, "", "");
-
-COMMAND(savecurrentmap, "", "");
-
-COMMAND(savemap, "s", "");
-
-ICOMMAND(map, "s", (char * a), loadmap(a), "");
-
-COMMAND(writeobj, "s", "");
-
-COMMAND(writecollideobj, "s", "");
-
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+worldio.binding.cpp"
 #endif
 // <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

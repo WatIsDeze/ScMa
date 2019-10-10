@@ -1172,10 +1172,7 @@ SCRIPTEXPORT void movierecording()
 
 
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
-#ifndef SCRIPTBIND_RUN
-COMMAND(movie, "s", "");
-
-COMMAND(movierecording, "", "");
-
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+movie.binding.cpp"
 #endif
 // <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

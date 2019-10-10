@@ -3911,56 +3911,7 @@ SCRIPTEXPORT void removealphachannel(char *destfile, char *rgbafile)
 
 
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
-#ifndef SCRIPTBIND_RUN
-COMMAND(texturereset, "i", "");
-
-COMMAND(materialreset, "", "");
-
-COMMAND(decalreset, "i", "");
-
-ICOMMAND(compactvslots, "i", (int * a), compactvslots_scriptimpl(a), "");
-
-ICOMMAND(fixinsidefaces, "i", (int * a), fixinsidefaces_scriptimpl(a), "");
-
-COMMAND(texture, "ssiiif", "");
-
-COMMAND(texgrass, "s", "");
-
-COMMAND(texscroll, "ff", "");
-
-ICOMMAND(texoffset, "ii", (int * a, int * b), texoffset_scriptimpl(a, b), "");
-
-ICOMMAND(texrotate, "i", (int * a), texrotate_scriptimpl(a), "");
-
-COMMAND(texscale, "f", "");
-
-COMMAND(texlayer, "i", "");
-
-COMMAND(texdetail, "i", "");
-
-COMMAND(texalpha, "ff", "");
-
-COMMAND(texcolor, "fff", "");
-
-COMMAND(texrefract, "ffff", "");
-
-COMMAND(texsmooth, "ii", "");
-
-COMMAND(decaldepth, "ff", "");
-
-COMMAND(reloadtex, "s", "");
-
-COMMAND(gendds, "ss", "");
-
-COMMAND(screenshot, "s", "");
-
-COMMAND(flipnormalmapy, "ss", "");
-
-COMMAND(mergenormalmaps, "ss", "");
-
-COMMAND(normalizenormalmap, "ss", "");
-
-COMMAND(removealphachannel, "ss", "");
-
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+texture.binding.cpp"
 #endif
 // <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

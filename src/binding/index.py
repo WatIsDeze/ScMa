@@ -1,6 +1,7 @@
 from autobind.fileiterator import ForEachTranslationUnitInDirectory
 from autobind.compileflags import CompileFlagsFor, ForEachCompileFile
 from autobind.parsecpp import CppParser 
+from autobind.generator import CubeScriptBinding
 import sys
 import os
 
@@ -26,9 +27,16 @@ def file_get_contents_from(file, token):
                 return "".join(lines[idx+1:])
     return ""
 
+def compare_file_with_data(file, data):
+    with open(file, "r") as handle:
+        filedata = handle.read()
+        return filedata == data
+    return False
+
 def file_write_data(file, data):
-    with open(file, "w+") as handle:
-        handle.write(data)
+    if not compare_file_with_data(file, data):
+        with open(file, "w+") as handle:
+            handle.write(data)
 
 
 def debug_dump(file):
@@ -43,23 +51,26 @@ def debug_cppmodel(file):
     parser.cppmodel_generate()
     parser.dump_cppmodel()
 
-def generate_code(file):
+def generate_code(file, outputfile):
     parser = CppParser(file)
     parser.start()
     parser.cppmodel_generate()
+    fileMid = CubeScriptBinding.Generate(parser.cppmodel())
+
     token_in = "// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //"
     token_out = "// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //"
     fileTop = file_get_contents_upto(file, token_in)
     fileBottom = file_get_contents_from(file, token_out)
-    fileMid = parser.dump_code()
+
     if fileTop and fileTop != "\n":
         if fileMid:
-            file_write_data(file, fileTop + "\n\n" + token_in + "\n#ifndef SCRIPTBIND_RUN\n" + fileMid +"\n#endif\n" + token_out + "\n" + fileBottom)
+            file_write_data(file, fileTop + "\n\n" + token_in + "\n#if 0\n#include \"" + outputfile + "\"\n#endif\n" + token_out + "\n" + fileBottom)
         else:
             file_write_data(file, fileTop + "\n\n" + token_in + "\n" + token_out + "\n" + fileBottom)
-        print ("// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //\n// //{}\n// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //\n".format(file))
+
+        file_write_data(outputfile, fileMid)
     else:
-        print ("// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //\n// #error |{}|\n// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //\n".format(fileTop))
+        file_write_data(outputfile, "// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //\n// #error |{}|\n// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //\n".format(fileTop))
 
 def find_deps(file, commonRoot):
     parser = CppParser(file, skipComments = True)
@@ -108,14 +119,16 @@ if __name__ == "__main__":
     #     print ("{}\n\t{}".format(file, " ".join(flags)))
 
     args = sys.argv[1:]
-
-    if len(args) == 2:
+    if len(args) == 3:
+        if args[0] == "gen":
+            generate_code(args[1], args[2])
+        else:
+            usage()
+    elif len(args) == 2:
         if args[0] == "dump":
             debug_dump(args[1])
         elif args[0] == "cppmodel":
             debug_cppmodel(args[1])
-        elif args[0] == "gen":
-            generate_code(args[1])
         elif args[0] == "deps":
             find_deps(args[1], "..")
         elif args[0] == "genlist":

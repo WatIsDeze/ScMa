@@ -71,8 +71,7 @@ SCRIPTEXPORT int getplayercolor(int team, int color)
 
 
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
-#ifndef SCRIPTBIND_RUN
-COMMAND(getplayercolor, "ii", "");
-
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+game+render.binding.cpp"
 #endif
 // <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

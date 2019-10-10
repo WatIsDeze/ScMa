@@ -4363,8 +4363,7 @@ COMMANDN(clearsleep, clearsleep_, "i", "builtin");
 
 
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
-#ifndef SCRIPTBIND_RUN
-ICOMMAND(nodebug, "e", (CommandTypes::Expression a), nodebug_imp(a), "");
-
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+command.binding.cpp"
 #endif
 // <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

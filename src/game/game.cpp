@@ -299,9 +299,8 @@ namespace game
 
 
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
-#ifndef SCRIPTBIND_RUN
-ICOMMAND(changemap, "s", (const char * a), game::changemap(a), "");
-
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+game+game.binding.cpp"
 #endif
 // <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //
 

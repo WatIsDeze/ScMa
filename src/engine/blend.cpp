@@ -1158,40 +1158,7 @@ uchar shouldsaveblendmap()
 
 
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
-#ifndef SCRIPTBIND_RUN
-ICOMMAND(optimizeblendmap, "", (), optimizeblendmap_scriptimpl(), "");
-
-COMMAND(dumpblendtexs, "", "");
-
-COMMAND(clearblendbrushes, "", "");
-
-COMMAND(delblendbrush, "s", "");
-
-COMMAND(addblendbrush, "ss", "");
-
-COMMAND(nextblendbrush, "i", "");
-
-COMMAND(setblendbrush, "s", "");
-
-COMMAND(getblendbrushname, "i", "");
-
-COMMAND(curblendbrush, "", "");
-
-COMMAND(rotateblendbrush, "i", "");
-
-ICOMMAND(paintblendmap, "i", (int * a), paintblendmap_scriptimpl(a), "");
-
-COMMAND(clearblendmapsel, "", "");
-
-COMMAND(invertblendmapsel, "", "");
-
-ICOMMAND(invertblendmap, "", (), invertblendmap_scriptimpl(), "");
-
-COMMAND(showblendmap, "", "");
-
-COMMAND(clearblendmap, "", "");
-
-ICOMMAND(moveblendmap, "ii", (int * a, int * b), moveblendmap_scriptimpl(a, b), "");
-
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+blend.binding.cpp"
 #endif
 // <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

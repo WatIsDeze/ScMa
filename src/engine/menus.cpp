@@ -87,10 +87,7 @@ void clearmainmenu()
 
 
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
-#ifndef SCRIPTBIND_RUN
-COMMAND(applychanges, "", "");
-
-COMMAND(pendingchanges, "i", "");
-
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+menus.binding.cpp"
 #endif
 // <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

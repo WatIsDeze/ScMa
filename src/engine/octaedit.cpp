@@ -190,7 +190,7 @@ bool noedit(bool view, bool msg)
     vec o(sel.o), s(sel.s);
     s.mul(sel.grid / 2.0f);
     o.add(s);
-    float r = max(s.x, s.y, s.z);
+    float r = max(s.x, max(s.y, s.z));
     bool viewable = (isvisiblesphere(r, o) != VFC_NOT_VISIBLE);
     if(!viewable && msg) conoutf(CON_ERROR, "selection not in view");
     return !viewable;
@@ -2903,122 +2903,7 @@ EDITSTAT(pvs, int, getnumviewcells());
 
 
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
-#ifndef SCRIPTBIND_RUN
-ICOMMAND(moving, "i", (int * a), moving_scriptimpl(a), "");
-
-COMMAND(cubecancel, "", "");
-
-COMMAND(cancelsel, "", "octaedit");
-
-COMMAND(reorient, "", "");
-
-COMMAND(selextend, "", "");
-
-COMMAND(edittoggle, "", "");
-
-COMMAND(selmoved, "", "");
-
-COMMAND(selsave, "", "");
-
-COMMAND(selrestore, "", "");
-
-COMMAND(selswap, "", "");
-
-ICOMMAND(havesel, "", (), havesel_scriptimpl(), "");
-
-ICOMMAND(selchildcount, "", (), selchildcount_scriptimpl(), "");
-
-ICOMMAND(selchildmat, "s", (char * a), selchildmat_scriptimpl(a), "");
-
-COMMAND(clearundos, "", "");
-
-ICOMMAND(undo, "", (), editundo(), "");
-
-ICOMMAND(redo, "", (), editredo(), "");
-
-COMMAND(delprefab, "s", "");
-
-COMMAND(saveprefab, "s", "");
-
-COMMAND(pasteprefab, "s", "");
-
-COMMAND(copy, "", "");
-
-COMMAND(pastehilite, "", "");
-
-COMMAND(paste, "", "");
-
-ICOMMAND(cancel, "", (), hmap::cancel(), "");
-
-ICOMMAND(select, "", (), hmap::select(), "");
-
-ICOMMAND(clearhbrush, "", (), hmap::clearhbrush(), "");
-
-ICOMMAND(hbrushvert, "iii", (int * a, int * b, int * c), hmap::hbrushvert(a, b, c), "");
-
-COMMAND(editface, "ii", "");
-
-COMMAND(pushsel, "i", "");
-
-COMMAND(delcube, "", "");
-
-COMMAND(vdelta, "e", "");
-
-COMMAND(vrotate, "i", "");
-
-COMMAND(voffset, "ii", "");
-
-COMMAND(vscroll, "ff", "");
-
-COMMAND(vscale, "f", "");
-
-COMMAND(vlayer, "i", "");
-
-COMMAND(vdetail, "i", "");
-
-COMMAND(valpha, "ff", "");
-
-COMMAND(vcolor, "fff", "");
-
-COMMAND(vrefract, "ffff", "");
-
-COMMAND(vreset, "", "");
-
-COMMAND(vshaderparam, "sffff", "");
-
-ICOMMAND(edittext, "i", (int * a), edittex_(a), "");
-
-COMMAND(gettex, "", "");
-
-COMMAND(getcurtex, "", "");
-
-COMMAND(getseltex, "", "");
-
-COMMAND(gettexname, "ii", "");
-
-COMMAND(getslottex, "i", "");
-
-COMMAND(settex, "i", "");
-
-COMMAND(getreptex, "", "");
-
-ICOMMAND(texmru, "i", (int * a), texmru_scriptimpl(a), "");
-
-COMMAND(looptexmru, "$e", "");
-
-COMMAND(numvslots, "", "");
-
-COMMAND(numslots, "", "");
-
-ICOMMAND(replace, "", (), replace_scriptimpl(), "");
-
-COMMAND(replacesel, "", "");
-
-COMMAND(flip, "", "");
-
-COMMAND(rotate, "i", "");
-
-COMMAND(editmat, "ss", "");
-
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+octaedit.binding.cpp"
 #endif
 // <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

@@ -285,8 +285,7 @@ SCRIPTEXPORT_AS(smoothangle) void smoothangle_scriptimpl(int *id, int *angle)
 
 
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
-#ifndef SCRIPTBIND_RUN
-ICOMMAND(smoothangle, "ii", (int * a, int * b), smoothangle_scriptimpl(a, b), "");
-
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+normal.binding.cpp"
 #endif
 // <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

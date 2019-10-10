@@ -296,24 +296,7 @@ void gets2c()           // get updates from the server
 
 
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
-#ifndef SCRIPTBIND_RUN
-ICOMMAND(isconnected, "bb", (CommandTypes::Boolean a, CommandTypes::Boolean b), isconnected_scriptimpl(a, b), "");
-
-COMMAND(connectedip, "", "");
-
-COMMAND(connectedport, "", "");
-
-ICOMMAND(connect, "sis", (const char * a, int b, const char * c), connectserv(a, b, c), "");
-
-COMMAND(reconnect, "s", "");
-
-COMMAND(lanconnect, "is", "");
-
-ICOMMAND(disconnect, "i", (int * a), disconnect_scriptimpl(a), "");
-
-ICOMMAND(localconnect, "", (), localconnect_scriptimpl(), "");
-
-ICOMMAND(localdisconnect, "", (), localdisconnect_scriptimpl(), "");
-
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+client.binding.cpp"
 #endif
 // <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

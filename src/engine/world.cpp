@@ -1731,66 +1731,7 @@ int getmapversion() { return mapversion; }
 
 
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
-#ifndef SCRIPTBIND_RUN
-COMMAND(entcancel, "", "");
-
-COMMAND(entflip, "", "");
-
-COMMAND(entrotate, "i", "");
-
-ICOMMAND(entadd, "", (), entadd_scriptimpl(), "");
-
-ICOMMAND(enttoggle, "", (), enttoggle_scriptimpl(), "");
-
-ICOMMAND(entmoving, "i", (int * a), entmoving_scriptimpl(a), "");
-
-COMMAND(entpush, "i", "");
-
-COMMAND(entautoview, "i", "");
-
-COMMAND(delent, "", "");
-
-COMMAND(dropent, "", "");
-
-COMMAND(attachent, "", "");
-
-COMMAND(newent, "siiiii", "");
-
-COMMAND(newgent, "sssssssss", "");
-
-COMMAND(entcopy, "", "");
-
-COMMAND(entpaste, "", "");
-
-COMMAND(entreplace, "", "");
-
-COMMAND(entset, "siiiii", "");
-
-COMMAND(nearestent, "", "");
-
-COMMAND(enthavesel, "", "");
-
-COMMAND(entselect, "e", "");
-
-COMMAND(entloop, "e", "");
-
-COMMAND(insel, "", "");
-
-COMMAND(entget, "", "");
-
-COMMAND(entindex, "", "");
-
-COMMAND(enttype, "sN", "");
-
-COMMAND(entattr, "iiN", "");
-
-COMMAND(shrinkmap, "", "");
-
-COMMAND(newmap, "i", "");
-
-COMMAND(mapenlarge, "", "");
-
-COMMAND(mapname, "", "");
-
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+world.binding.cpp"
 #endif
 // <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

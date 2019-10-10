@@ -2836,20 +2836,7 @@ void cleanupgl()
 
 
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
-#ifndef SCRIPTBIND_RUN
-COMMAND(glext, "s", "");
-
-COMMAND(getcamyaw, "", "");
-
-COMMAND(getcampitch, "", "");
-
-COMMAND(getcamroll, "", "");
-
-COMMAND(getcampos, "", "");
-
-ICOMMAND(loadcrosshair, "si", (const char * a, int * b), loadcrosshair_(a, b), "");
-
-COMMAND(getcrosshair, "i", "");
-
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+rendergl.binding.cpp"
 #endif
 // <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

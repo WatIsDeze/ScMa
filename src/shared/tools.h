@@ -3,13 +3,6 @@
 #ifndef _TOOLS_H
 #define _TOOLS_H
 
-#include "cube.h"
-
-#ifdef NULL
-#undef NULL
-#endif
-#define NULL 0
-
 typedef unsigned char uchar;
 typedef unsigned short ushort;
 typedef unsigned int uint;
@@ -44,42 +37,10 @@ inline void operator delete(void *, void *) {}
 inline void operator delete[](void *, void *) {}
 #endif
 
-#ifdef swap
-#undef swap
-#endif
-template<class T>
-static inline void swap(T &a, T &b)
-{
-    T t = a;
-    a = b;
-    b = t;
-}
-#ifdef max
-#undef max
-#endif
-#ifdef min
-#undef min
-#endif
-template<class T>
-static inline T max(T a, T b)
-{
-    return a > b ? a : b;
-}
-template<class T>
-static inline T max(T a, T b, T c)
-{
-    return max(max(a, b), c);
-}
-template<class T>
-static inline T min(T a, T b)
-{
-    return a < b ? a : b;
-}
-template<class T>
-static inline T min(T a, T b, T c)
-{
-    return min(min(a, b), c);
-}
+using std::min;
+using std::max;
+using std::swap;
+
 template<class T, class U>
 static inline T clamp(T a, U b, U c)
 {
@@ -176,7 +137,7 @@ template<size_t N> inline void vformatcubestr(char (&d)[N], const char *fmt, va_
 
 inline char *copycubestr(char *d, const char *s, size_t len)
 {
-    size_t slen = min(strlen(s), len-1);
+    size_t slen = std::min(strlen(s), len-1);
     memcpy(d, s, slen);
     d[slen] = 0;
     return d;
@@ -617,7 +578,7 @@ static inline bool htcmp(GLuint x, GLuint y)
 
 template <class T> struct vector
 {
-    static const int MINSIZE = 8;
+    static const int MINSIZE {8};
 
     T *buf;
     int alen, ulen;
@@ -920,6 +881,7 @@ template <class T> struct vector
     }
     #undef UNIQUE
 };
+template <class T> const int vector<T>::MINSIZE;
 
 template<class H, class E, class K, class T> struct hashbase
 {

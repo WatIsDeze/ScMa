@@ -97,13 +97,20 @@ class CppParser:
     def dump_cppmodel(self):
         print (self.model.dump())
 
+    def cppmodel(self):
+        return self.model
+
     def dump_code(self):
-        template = """{}"""
+        template = """#include "shared/cube.h"
+{}"""
         generated_funcs = []
         for node in self.model.forEachChild():
             if type(node) is CxxFunction:
                 generated_funcs.append(node.generate())
-        return template.format("\n".join(generated_funcs))
+        if len(generated_funcs) == 0:
+            return ""
+        return self.model
+        template.format("\n".join(generated_funcs))
 
     def dump_includes(self):
         includes = set()

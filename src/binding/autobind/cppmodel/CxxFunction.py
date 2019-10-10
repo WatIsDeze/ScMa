@@ -2,6 +2,7 @@ from .CxxNode import CxxNode
 import json
 from clang import cindex
 from .. import parsecpp
+from ..generator import CubeScriptBinding
 
 class CxxFunction(CxxNode):
     def __init__(self, sourceObject, parent = None):
@@ -53,94 +54,3 @@ class CxxFunction(CxxNode):
             functionName = namespace + "::" +functionName
         returntype = self.sourceObject.result_type.spelling
         return returntype + " " + functionName + "(" + (", ".join(args)) + ")"
-
-    def generate(self):
-        template = """COMMAND({functionname}, "{proto}", {doc});
-"""
-        template_custom = """ICOMMAND({functionname}, "{proto}", ({argdecl}), {realfunctionname}({arguse}), {doc});
-"""
-
-#         template = """extern {returnt} {functionname}({argdecl});
-# COMMAND({functionname}, "{proto}", {doc});
-# """
-#         template_custom = """extern {returnt} {realfunctionname}({argdecl});
-# ICOMMAND({functionname}, "{proto}", ({argdecl}), {realfunctionname}({arguse}), {doc});
-# """
-
-        spelling2proto  = {
-            "int": "i",
-            "int *": "i",
-            "float": "f",
-            "float *": "f",
-            "bool": "b",
-            "const char *": "s",
-            "char *": "s",
-            "CommandTypes::KeyPress": "D",
-            "CommandTypes::Boolean": "b",
-            "ident *": "$",
-            "CommandTypes::ArgLen": "N",
-            "CommandTypes::Expression": "e",
-            "CommandTypes::OptionalFloat": "F",
-            "tagval *": "t",
-        }
-
-        proto = ""
-        cppargs = []
-        argname = []
-        argnameitr = 0
-        for arg in self.forEachArgument():
-            if (arg.spelling in spelling2proto):
-                proto = proto + spelling2proto[arg.spelling]
-                cppargs.append(arg.spelling)
-                argname.append(chr(97 + argnameitr))
-                argnameitr = argnameitr + 1
-            else:
-                raise ValueError("Function argument type not implemented", arg.spelling, self.sourceObject.spelling)
-            # for typedef in arg.get_children():
-            #     if typedef.kind.name == "TYPE_REF":
-            #         if (typedef.spelling in spelling2proto):
-            #             proto = proto + spelling2proto[typedef.spelling]
-            #         else:
-            #             raise ValueError("Function argument type not implemented", typedef.spelling, self.sourceObject.spelling)
-
-        arguselst = []
-        for [a, b] in zip(cppargs, argname):
-            arguselst.append(a + " " + b)
-
-        argdecl = ", ".join(cppargs)
-        argusedecl = ", ".join(arguselst)
-        arguse = ", ".join(argname)
-        functionName = self.sourceObject.spelling
-        returntype = self.sourceObject.result_type.spelling
-        namespace = "::".join(self.getContainingNamespaces(self.sourceObject, []))
-        realFunctionName = ""
-        if namespace:
-            namespace = namespace + "::"
-            realFunctionName = namespace
-
-        realFunctionName = realFunctionName + functionName
-
-        if self.customFuctionName or namespace:
-            if self.customFuctionName:
-                functionName = self.customFuctionName
-            
-            return template_custom.format(
-                argdecl = argusedecl,
-                arguse = arguse,
-                realfunctionname = realFunctionName,
-                functionname = functionName,
-                namespace = namespace,
-                proto = proto,
-                returnt = returntype,
-                doc = json.dumps(str(self.comment()))
-            )            
-        else:
-            return template.format(
-                argdecl = argdecl,
-                functionname = functionName,
-                realfunctionname = realFunctionName,
-                namespace = namespace,
-                proto = proto,
-                returnt = returntype,
-                doc = json.dumps(str(self.comment()))
-            )

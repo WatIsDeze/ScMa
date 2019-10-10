@@ -5001,8 +5001,7 @@ void cleanuplights()
 
 
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
-#ifndef SCRIPTBIND_RUN
-ICOMMAND(usepacknorm, "", (), usepacknorm_scriptimpl(), "");
-
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+renderlights.binding.cpp"
 #endif
 // <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

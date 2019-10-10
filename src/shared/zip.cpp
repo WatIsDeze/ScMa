@@ -596,10 +596,7 @@ int listzipfiles(const char *dir, const char *ext, vector<char *> &files)
 
 
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
-#ifndef SCRIPTBIND_RUN
-COMMAND(addzip, "sss", "");
-
-COMMAND(removezip, "s", "");
-
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+shared+zip.binding.cpp"
 #endif
 // <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

@@ -1232,16 +1232,7 @@ SCRIPTEXPORT void testlog(char * text)
 
 
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
-#ifndef SCRIPTBIND_RUN
-COMMAND(quit, "", "");
-
-COMMAND(screenres, "ii", "");
-
-COMMAND(resetgl, "", "");
-
-ICOMMAND(getfps, "i", (int * a), getfps_scriptimpl(a), "");
-
-COMMAND(testlog, "s", "");
-
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+main.binding.cpp"
 #endif
 // <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

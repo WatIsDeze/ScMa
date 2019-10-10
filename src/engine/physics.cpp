@@ -2080,20 +2080,7 @@ bool entinmap(dynent *d, bool avoidplayers)        // brute force but effective 
 
 
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
-#ifndef SCRIPTBIND_RUN
-COMMAND(phystest, "", "");
-
-COMMAND(backward, "D", "");
-
-COMMAND(forward, "D", "");
-
-COMMAND(left, "D", "");
-
-COMMAND(right, "D", "");
-
-COMMAND(jump, "D", "");
-
-COMMAND(crouch, "D", "");
-
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+physics.binding.cpp"
 #endif
 // <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

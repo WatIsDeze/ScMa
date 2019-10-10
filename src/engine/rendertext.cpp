@@ -423,26 +423,7 @@ void reloadfonts()
 
 
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
-#ifndef SCRIPTBIND_RUN
-ICOMMAND(font, "ssiii", (char * a, char * b, int * c, int * d, int * e), newfont(a, b, c, d, e), "");
-
-COMMAND(fontborder, "ff", "");
-
-COMMAND(fontoutline, "ff", "");
-
-COMMAND(fontoffset, "s", "");
-
-COMMAND(fontscale, "i", "");
-
-COMMAND(fonttex, "s", "");
-
-COMMAND(fontchar, "fffffff", "");
-
-COMMAND(fontskip, "i", "");
-
-COMMAND(fontalias, "ss", "");
-
-COMMAND(tabify, "si", "");
-
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+rendertext.binding.cpp"
 #endif
 // <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

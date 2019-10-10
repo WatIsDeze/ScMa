@@ -882,56 +882,7 @@ void writecompletions(stream *f)
 
 
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
-#ifndef SCRIPTBIND_RUN
-COMMAND(fullconsole, "iN$", "");
-
-COMMAND(toggleconsole, "", "");
-
-ICOMMAND(conskip, "i", (int * a), conskip_scriptimpl(a), "");
-
-ICOMMAND(miniconskip, "i", (int * a), miniconskip_scriptimpl(a), "");
-
-COMMAND(clearconsole, "", "");
-
-COMMAND(keymap, "is", "");
-
-ICOMMAND(bind, "ss", (char * a, char * b), bind_scriptimpl(a, b), "");
-
-COMMAND(specbind, "ss", "");
-
-COMMAND(editbind, "ss", "");
-
-ICOMMAND(getbind, "s", (char * a), getbind_scriptimpl(a), "");
-
-COMMAND(getspecbind, "s", "");
-
-COMMAND(geteditbind, "s", "");
-
-ICOMMAND(searchbinds, "s", (char * a), searchbinds_scriptimpl(a), "");
-
-COMMAND(searchspecbinds, "s", "");
-
-COMMAND(searcheditbinds, "s", "");
-
-COMMAND(clearbinds, "", "");
-
-COMMAND(clearspecbinds, "", "");
-
-COMMAND(cleareditbinds, "", "");
-
-COMMAND(clearallbinds, "", "");
-
-COMMAND(inputcommand, "ssss", "");
-
-COMMAND(saycommand, "s", "");
-
-ICOMMAND(history, "i", (int * a), history_(a), "");
-
-COMMAND(onrelease, "s", "");
-
-ICOMMAND(complete, "sss", (char * a, char * b, char * c), addfilecomplete(a, b, c), "");
-
-ICOMMAND(listcomplete, "ss", (char * a, char * b), addlistcomplete(a, b), "");
-
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+console.binding.cpp"
 #endif
 // <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

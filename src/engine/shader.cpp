@@ -1627,36 +1627,7 @@ void setblurshader(int pass, int size, int radius, float *weights, float *offset
 
 
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
-#ifndef SCRIPTBIND_RUN
-COMMAND(defershader, "iss", "");
-
-COMMAND(forceshader, "s", "");
-
-COMMAND(shader, "isss", "");
-
-COMMAND(variantshader, "isissi", "");
-
-COMMAND(setshader, "s", "");
-
-COMMAND(dumpshader, "sii", "");
-
-COMMAND(isshaderdefined, "s", "");
-
-COMMAND(setuniformparam, "sfFFf", "");
-
-COMMAND(setshaderparam, "sfFFf", "");
-
-COMMAND(defuniformparam, "sfFFf", "");
-
-COMMAND(reuseuniformparam, "sfFFf", "");
-
-COMMAND(clearpostfx, "", "");
-
-ICOMMAND(addpostfx, "siisffff", (char * a, int * b, int * c, char * d, float * e, float * f, float * g, float * h), addpostfx_scriptimpl(a, b, c, d, e, f, g, h), "");
-
-COMMAND(setpostfx, "sffff", "");
-
-COMMAND(resetshaders, "", "");
-
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+shader.binding.cpp"
 #endif
 // <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

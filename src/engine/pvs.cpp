@@ -1308,14 +1308,7 @@ int getnumviewcells() { return pvs.length(); }
 
 
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
-#ifndef SCRIPTBIND_RUN
-COMMAND(clearpvs, "", "pvs");
-
-COMMAND(testpvs, "i", "");
-
-COMMAND(genpvs, "i", "");
-
-COMMAND(pvsstats, "", "");
-
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+pvs.binding.cpp"
 #endif
 // <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

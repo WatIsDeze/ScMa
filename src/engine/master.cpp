@@ -740,18 +740,7 @@ int main(int argc, char **argv)
 
 
 // >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
-#ifndef SCRIPTBIND_RUN
-COMMAND(adduser, "ss", "");
-
-COMMAND(clearusers, "", "");
-
-COMMAND(clearbans, "", "");
-
-COMMAND(ban, "s", "");
-
-COMMAND(servban, "s", "");
-
-COMMAND(gban, "s", "");
-
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+master.binding.cpp"
 #endif
 // <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //
