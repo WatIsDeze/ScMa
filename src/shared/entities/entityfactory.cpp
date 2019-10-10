@@ -6,7 +6,7 @@
 #include "entityfactory.h"
 
 namespace {
-	const std::string fallbackEntityType = "core_entity";
+	const std::string fallbackEntityType = "base_entity";
 }
 
 std::map<std::string, entities::EntityFactory::EntityFactoryConstructor>& entities::EntityFactory::getFactories()
