@@ -1,6 +1,4 @@
-#include "../game.h"
 #include "playerstart.h"
-#include "shared/entities/entityfactory.h"
 
 namespace entities {
 namespace classes {
@@ -13,6 +11,8 @@ PlayerStart::PlayerStart() : BaseEntity() {
     et_type = ET_GAMESPECIFIC;
     ent_type = ENT_INANIMATE;
     game_type = PLAYERSTART;
+    
+    conoutf("PlayerStart constructed.");
 }
 
 PlayerStart::~PlayerStart() {
@@ -39,7 +39,8 @@ void PlayerStart::reset() {
     setName("PlayerStart");
 }
 
-ADD_ENTITY_TO_FACTORY(PlayerStart, "playerstart");
 
 } // classes
 } // entities
+
+ADD_ENTITY_TO_FACTORY(PlayerStart, "playerstart");

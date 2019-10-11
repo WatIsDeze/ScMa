@@ -1,6 +1,4 @@
 #include "basemonster.h"
-#include "../game.h"
-#include "shared/entities/entityfactory.h"
 
 namespace entities {
 namespace classes {
@@ -30,7 +28,8 @@ CoreEntity* BaseMonster::factory(){
 	return new BaseMonster();
 }
 
-ADD_ENTITY_TO_FACTORY(BaseMonster, "base_monster");
 
 } // classes
 } // entities
+
+ADD_ENTITY_TO_FACTORY(BaseMonster, "base_monster");

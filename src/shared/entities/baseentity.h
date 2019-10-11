@@ -1,18 +1,15 @@
-#ifndef BASEENTITY_H
-#define BASEENTITY_H
-
+#pragma once
 #include "coreentity.h"
 
 // Defined here, for several reasons, since it has to replace good ol' extentity.
 namespace entities
 {
-    namespace classes {
-        // Predefined.
-        class BasePhysicalEntity;
-        class BaseDynamicEntity;
+    namespace classes
+    {
 
         class BaseEntity : public CoreEntity
         {
+			ENTITY_FACTORY_IMPL(BaseEntity);
         public:
             //
             // Base functions.
@@ -41,5 +38,3 @@ namespace entities
         };
     } // classes
 } // entities
-
-#endif // BASEENTITY_H

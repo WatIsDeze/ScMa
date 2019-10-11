@@ -1,5 +1,5 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#pragma once
+
 #include "shared/entities/basedynamicentity.h"
 
 struct vec;
@@ -7,6 +7,7 @@ struct vec;
 namespace entities {
     namespace classes {
         class Player : public BaseDynamicEntity {
+			ENTITY_FACTORY_IMPL(Player);
         public:
 			//
 			// Constructors/Destructor.
@@ -49,4 +50,3 @@ namespace entities {
     } // classes
 } // entities
 
-#endif // PLAYER_H

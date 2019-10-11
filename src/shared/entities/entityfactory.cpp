@@ -1,9 +1,9 @@
+#include "entityfactory.h"
 #include "cube.h"
 #include "game.h"
 #include "ents.h"
 #include "coreentity.h"
 #include "baseentity.h"
-#include "entityfactory.h"
 
 namespace {
 	const std::string fallbackEntityType = "base_entity";

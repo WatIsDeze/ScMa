@@ -1,9 +1,4 @@
-#include "cube.h"
-#include "ents.h"
-#include "game.h"
-#include "basephysicalentity.h"
 #include "basedynamicentity.h"
-#include "entityfactory.h"
 
 namespace entities {
 namespace classes {
@@ -50,7 +45,8 @@ vec BaseDynamicEntity::abovehead() {
     return vec(o).addz(aboveeye+4);
 }
 
-ADD_ENTITY_TO_FACTORY(BaseDynamicEntity, "base_dynamic_entity");
 
 } // classes
 } // entities
+
+ADD_ENTITY_TO_FACTORY(BaseDynamicEntity, "base_dynamic_entity");

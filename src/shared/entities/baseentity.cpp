@@ -1,9 +1,4 @@
-#include "cube.h"
-#include "game.h"
-#include "ents.h"
 #include "baseentity.h"
-#include "coreentity.h"
-#include "entityfactory.h"
 
 namespace entities {
 namespace classes {
@@ -31,7 +26,8 @@ void BaseEntity::onAttributeSet(const std::string &key, const std::string &value
 bool BaseEntity::onTrigger(entities::classes::CoreEntity *otherEnt, const vec &dir) { return false; }
 bool BaseEntity::onTouch(entities::classes::CoreEntity *otherEnt, const vec &dir) { return false; }
 
-ADD_ENTITY_TO_FACTORY(BaseEntity, "base_entity");
 
 } // classes
 } // entities
+
+ADD_ENTITY_TO_FACTORY(BaseEntity, "base_entity");

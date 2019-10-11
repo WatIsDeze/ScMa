@@ -2,6 +2,7 @@
 
 #include "cube.h"
 #include "ents.h"
+#include "entityfactory.h"
 
 namespace entities {
     // Classes.
@@ -21,6 +22,9 @@ namespace entities {
         // Core legacy entity class.
         class CoreEntity
         {
+			ENTITY_FACTORY_IMPL(CoreEntity);
+			//friend class CoreEntityIntializer; private: static CoreEntity *Construct();;
+
         public:
             CoreEntity();
             CoreEntity(const std::string &strClassName);

@@ -1,10 +1,10 @@
-#ifndef PLAYERSTART_H
-#define PLAYERSTART_H
+#pragma once
 #include "shared/entities/baseentity.h"
 
 namespace entities {
     namespace classes {
         class PlayerStart : public BaseEntity {
+			ENTITY_FACTORY_IMPL(PlayerStart);
         public:
             PlayerStart();
             virtual ~PlayerStart();
@@ -26,4 +26,3 @@ namespace entities {
     } // classes
 } // entities
 
-#endif // PLAYERSTART_H

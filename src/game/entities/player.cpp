@@ -1,8 +1,6 @@
 #include "player.h"
 #include "cube.h"
 #include "game.h"
-#include "ents.h"
-#include "shared/entities/entityfactory.h"
 
 namespace entities {
 namespace classes {
@@ -116,7 +114,8 @@ CoreEntity* Player::factory(){
 }
 
 // Link entity class to the factory.
-ADD_ENTITY_TO_FACTORY(Player, "player");
 
 } // classes
 } // entities
+
+ADD_ENTITY_TO_FACTORY(Player, "player");

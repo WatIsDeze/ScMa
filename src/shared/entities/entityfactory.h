@@ -1,11 +1,13 @@
 #pragma once
-
-#include "cube.h"
-#include "ents.h"
-#include "coreentity.h"
-#include "baseentity.h"
+#include <string>
+#include <map>
 
 namespace entities {
+
+	namespace classes
+	{
+		class CoreEntity;
+	}
 
     //
     // EntityFactory class used to manage entities. Entities are linked to it by the macro:
@@ -24,7 +26,13 @@ namespace entities {
         // Factory functions storage
         static std::map<std::string, EntityFactoryConstructor>& getFactories();
 
-    public:
+    public:        
+        template<class ET>
+        static entities::classes::CoreEntity* constructor()
+        {
+			return static_cast<entities::classes::CoreEntity*>(new ET());
+		}
+
         static void addEntityFactory(const std::string &classname, EntityFactoryConstructor constructor);
         static entities::classes::CoreEntity* constructEntity(const std::string &classname);
     };
@@ -41,14 +49,20 @@ namespace entities {
     // From here on it'll be spawnable by the NewEntity function.
     //
 #define ADD_ENTITY_TO_FACTORY(LOCALNAME, CLASSNAME) \
-	entities::classes::CoreEntity *LOCALNAME##Construct()\
+	entities::classes::CoreEntity *entities::classes::LOCALNAME::Construct()\
 	{\
-		return static_cast<entities::classes::CoreEntity*>(new entities::classes::LOCALNAME()); \
+		return entities::EntityFactory::constructor<entities::classes::LOCALNAME>(); \
 	}\
-	struct LOCALNAME##Intializer\
+	class LOCALNAME##Intializer\
 	{\
+	public:\
 		LOCALNAME##Intializer()\
 		{\
-            entities::EntityFactory::addEntityFactory(CLASSNAME, LOCALNAME##Construct);\
+            entities::EntityFactory::addEntityFactory(CLASSNAME, &entities::classes::LOCALNAME::Construct);\
 		}\
     } LOCALNAME##IntializerInstance;
+
+#define ENTITY_FACTORY_IMPL(LOCALNAME) \
+	public:\
+	friend class LOCALNAME##Intializer;\
+	static CoreEntity *Construct();

@@ -1,8 +1,4 @@
 #include "basephysicalentity.h"
-#include "cube.h"
-#include "game.h"
-#include "ents.h"
-#include "shared/entities/entityfactory.h"
 
 namespace entities
 {
@@ -56,7 +52,8 @@ bool BasePhysicalEntity::crouched() const {
     return fabs(eyeheight - maxheight*CROUCHHEIGHT) < 1e-4f;
 }
 
-ADD_ENTITY_TO_FACTORY(BasePhysicalEntity, "base_physical_entity");
 
 } // classes
 } // entities
+
+ADD_ENTITY_TO_FACTORY(BasePhysicalEntity, "base_physical_entity");

@@ -1,10 +1,10 @@
-#ifndef DYNAMICLIGHTX_H
-#define DYNAMICLIGHTX_H
+#pragma once
 #include "shared/entities/basephysicalentity.h"
 
 namespace entities {
     namespace classes {
         class DynamicLight : public BasePhysicalEntity {
+			ENTITY_FACTORY_IMPL(DynamicLight);
         public:
             DynamicLight();
             virtual ~DynamicLight();
@@ -40,4 +40,3 @@ namespace entities {
     } // classes
 } // entities
 
-#endif // DYNAMICLIGHT_H

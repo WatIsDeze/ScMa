@@ -1,6 +1,4 @@
-#ifndef BASEDYNAMICENTITY_H
-#define BASEDYNAMICENTITY_H
-
+#pragma once
 #include "animinfo.h"
 #include "basephysicalentity.h"
 
@@ -14,6 +12,7 @@ namespace entities
         // Animated Characters, which can possibly receive input
         class BaseDynamicEntity : public BasePhysicalEntity
         {
+			ENTITY_FACTORY_IMPL(BaseDynamicEntity);
         public:
             //
             // Core dynent functions.
@@ -46,5 +45,3 @@ namespace entities
         };
     } // classes
 } // entities
-
-#endif // BASEDYNAMICENTITY_H

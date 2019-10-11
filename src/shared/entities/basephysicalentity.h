@@ -1,6 +1,4 @@
-#ifndef BASEPHYSICALENTITY_H
-#define BASEPHYSICALENTITY_H
-
+#pragma once
 #include "baseentity.h"
 
 namespace entities
@@ -9,6 +7,7 @@ namespace entities
         // PhysicalEntity: Used for objects such as crates, etc.
         class BasePhysicalEntity : public BaseEntity
         {
+			ENTITY_FACTORY_IMPL(BasePhysicalEntity);
         public:
             //
             // Core physent functions.
@@ -52,4 +51,3 @@ namespace entities
     } // classes
 } // entities
 
-#endif // BASEPHYSICALENTITY_H

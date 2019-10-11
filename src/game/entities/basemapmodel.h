@@ -1,5 +1,4 @@
-#ifndef BASEMAPMODEL_H
-#define BASEMAPMODEL_H
+#pragma once
 #include "shared/entities/basedynamicentity.h"
 
 namespace entities
@@ -10,6 +9,7 @@ namespace entities
         // The base entity class for any model. (This could be a tree, or even doors and other interactive items.)
         // NOTE: Never change its type, it is MAPMODEL for a reason.
         class BaseMapModel : public BaseDynamicEntity {
+			ENTITY_FACTORY_IMPL(BaseMapModel);
         public:
             BaseMapModel();
             BaseMapModel(const std::string &filename);
@@ -40,5 +40,3 @@ namespace entities
 		
     } // classes
 } // entities
-
-#endif // BASEMAPMODEL_H

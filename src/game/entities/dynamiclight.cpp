@@ -51,7 +51,7 @@ CoreEntity* DynamicLight::factory(){
 	return new DynamicLight();
 }
 
-ADD_ENTITY_TO_FACTORY(DynamicLight, "dynamic_light");
-
 } // classes
 } // entities
+
+ADD_ENTITY_TO_FACTORY(DynamicLight, "dynamic_light");
