@@ -64,6 +64,9 @@ endif()
 #defines, project wide
 #Silence OpenGL deprecations .. yes Apple, you like Metal and you can't shutup about it .. :rolleyes:
 add_definitions("-DGL_SILENCE_DEPRECATION")
+include_directories(
+    ext/json-develop/single_include
+)
 
 #The engine, server and shared sub projects
 add_subdirectory(enet)

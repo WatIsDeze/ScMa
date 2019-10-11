@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <map>
+#include <functional>
 
 namespace entities {
 
@@ -49,6 +50,8 @@ namespace entities {
     // From here on it'll be spawnable by the NewEntity function.
     //
 #define ADD_ENTITY_TO_FACTORY(LOCALNAME, CLASSNAME) \
+	const std::string entities::classes::LOCALNAME::classname = CLASSNAME;\
+	std::string entities::classes::LOCALNAME::currentClassname() { return CLASSNAME; }\
 	entities::classes::CoreEntity *entities::classes::LOCALNAME::Construct()\
 	{\
 		return entities::EntityFactory::constructor<entities::classes::LOCALNAME>(); \
@@ -65,4 +68,6 @@ namespace entities {
 #define ENTITY_FACTORY_IMPL(LOCALNAME) \
 	public:\
 	friend class LOCALNAME##Intializer;\
+	static const std::string classname;\
+	virtual std::string currentClassname();\
 	static CoreEntity *Construct();

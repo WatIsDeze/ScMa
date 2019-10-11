@@ -290,7 +290,7 @@ namespace game
         {
             // Let's go at it!
             auto e = dynamic_cast<entities::classes::BaseEntity *>(ents[i]);
-            if (e->et_type != ET_LIGHT) continue;
+            if (!e || e->et_type != ET_LIGHT) continue;
             
             e->render();
         }

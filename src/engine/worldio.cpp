@@ -671,35 +671,15 @@ bool save_world(const char *mname, bool nolms)
     loopv(texmru) f->putlil<ushort>(texmru[i]);
 
     // JSON Entity storage.
-    json j;
+    json document;
 
     loopv(ents)
     {
         if(ents[i]->et_type!=ET_EMPTY || nolms)
         {
-            entities::classes::CoreEntity tmp = *ents[i];
-            lilswap(&tmp.o.x, 3);
-            lilswap(&tmp.attr1, 5);
-
-            // These are the default attributes, the old-school ones which are still used here and there in the engine.
-            j[i]["et_type"] = tmp.et_type;
-            j[i]["ent_type"] = tmp.ent_type;
-            j[i]["game_type"] = tmp.game_type;
-            j[i]["o"]["x"] = tmp.o.x;
-            j[i]["o"]["y"] = tmp.o.y;
-            j[i]["o"]["z"] = tmp.o.z;
-            j[i]["int_attr1"] = tmp.attr1;
-            j[i]["int_attr2"] = tmp.attr2;
-            j[i]["int_attr3"] = tmp.attr3;
-            j[i]["int_attr4"] = tmp.attr4;
-            j[i]["int_attr5"] = tmp.attr5;
-            j[i]["int_reserved"] = tmp.reserved;
-            j[i]["model_idx"] = tmp.model_idx;
-
-            // Store game related attributes.
-            j[i]["game"]["name"]        = tmp.name;
-            j[i]["game"]["classname"]   = tmp.classname;
-            j[i]["game"]["attributes"]  = json(tmp.attributes);
+			json eleDoc {};
+			ents[i]->toJson(eleDoc);
+			document[i] = eleDoc;
         }
     }
 
@@ -709,7 +689,7 @@ bool save_world(const char *mname, bool nolms)
     // Save JSON to file.
     // TODO: Use the streams that the engine provides instead.
     std::ofstream o(jsonname);
-    o << std::setw(4) << j << std::endl;
+    o << std::setw(4) << document << std::endl;
 
     savevslots(f, numvslots);
 
@@ -840,60 +820,39 @@ bool load_world(const char *mname, const char *cname)        // Does not support
 
     // TODO: Use the engine stream.
     // Load in the stream.
-    std::ifstream i(jsonname);
-    json j;
-    i >> j;
 
-    // Reference to our entities vector list stored in the entities namespace.
-    vector<entities::classes::CoreEntity*> &ents = entities::getents();
+    auto &ents = entities::getents();
+	
+	try
+	{
+	    json document;
+		std::ifstream(jsonname) >> document;
 
-    // TODO: Ensure that our data is valid, do not access invalid or nonexistent elements.
-    // Parse entities and allocate them, or rather, add them to the list! ;-)
-    for (auto& element : j) {
-        // For now only proceed if a type is available.
-        if (element.find("et_type") != element.end()) {
-            // Classname and type, used to determine what to load in and allocate the precise class firsthand.
-            std::string classname;
-            int et_type = element["et_type"];
-            int ent_type = element["ent_type"];
-            int game_type = element["game_type"];
+		for (auto& element : document)
+		{
+			std::string classname = "core_entity";
+			
+			if (element["class"].is_string())
+			{
+				classname = element["class"];
+			}
+			else
+			{
+				conoutf(CON_WARN, "Parsing %s: Missing class, falling back to core_entity", jsonname);
+			}
 
-            // Have to do this here to ensure that classname can be passed to newgameentity.
-            classname = element["game"]["attributes"]["classname"];
+			entities::classes::CoreEntity *e = entities::newgameentity(classname.c_str());
+			e->fromJson(element);
 
-            // Allocate our entity.
-            entities::classes::CoreEntity *e = entities::newgameentity(classname.c_str());
-
-            // Fetch base entity data. (Old ancient entity info.)
-			e->classname = classname;
-			e->et_type = element["et_type"];
-			e->ent_type = element["ent_type"];
-			e->game_type = element["game_type"];
-			e->o.x = element["o"]["x"];
-			e->o.y = element["o"]["y"];
-			e->o.z = element["o"]["z"];
-			e->attr1 = element["int_attr1"];
-			e->attr2 = element["int_attr2"];
-			e->attr3 = element["int_attr3"];
-			e->attr4 = element["int_attr4"];
-			e->attr5 = element["int_attr5"];
-			e->reserved = element["int_reserved"];
-			e->model_idx = element["model_idx"];
-
-            // Fetch a reference to the game attributes json element.
-            const json& attributes_element = element["game"]["attributes"];
-			e->attributes = attributes_element.get<std::map<std::string, std::string>>();
-
-            // All went well, so lets add our entity to the list.
-            ents.add(e);
-
-            // Remove it again in case the entity was > ET_GAMESPECIFIC
-			//if (e.et_type >= ET_GAMESPECIFIC) {
-			//    entities::deletegameentity(e);
-			//}
-        }
-    }
-
+			ents.add(e);
+		}
+	}
+	catch (json::type_error& e)
+	{
+		conoutf(CON_ERROR, "Unable to load map %s: %s", jsonname, e.what());
+		return false;
+	}
+	
     if(hdr.numents > MAXENTS)
     {
         conoutf(CON_WARN, "warning: map has %d entities", hdr.numents);

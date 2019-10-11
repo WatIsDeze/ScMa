@@ -60,7 +60,7 @@
 #include <functional>
 
 // Libraries from the ext folder.
-#include "../ext/json-develop/single_include/nlohmann/json.hpp"
+#include <nlohmann/json.hpp>
 
 // Engine and game related includes.
 #include "tools.h"

@@ -3,6 +3,7 @@
 #include "engine.h"
 #include "../shared/ents.h"
 #include "../game/entities/player.h"
+#include "../game/entities/playerstart.h"
 #include <cassert>
 
 VARR(mapversion, 1, MAPVERSION, 0);
@@ -1257,7 +1258,6 @@ void new_game_entity(char *strclass, char *a1, char *a2, char *a3, char *a4, cha
 
     // Copy string attributes.
 	t->name = std::string(strclass) + "_" + std::to_string(idx);
-    t->classname = std::string(strclass);
 
     enttoggle(idx);
     makeundoent();
@@ -1330,7 +1330,6 @@ void entreplace()
             e->attr5 = c->attr5;
             e->model_idx = c->model_idx;
             e->name = c->name;
-            e->classname = c->classname;
             e->attributes = c->attributes;
         });
     }
@@ -1478,13 +1477,11 @@ int findentity_byclass(const std::string &classname)
 	const auto &ents = entities::getents();
 	for(int i = 0; i <ents.length(); i++)
 	{
-		entities::classes::CoreEntity *e = ents[i];
+		auto e = dynamic_cast<entities::classes::PlayerStart *>(ents[i]);
 
 		if (!e) continue;
-		if(!e->classname.compare(classname)) {
-			conoutf("Found Entity '%s' by Class: '%s'", e->name.c_str(), classname.c_str());
-			return i;
-		}
+		
+		return i;
 	}
 
 	return -1;

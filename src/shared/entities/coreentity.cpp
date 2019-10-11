@@ -9,14 +9,6 @@
 namespace entities {
 namespace classes {
 
-CoreEntity::CoreEntity() {
-}
-CoreEntity::CoreEntity(const std::string &strClassName) {
-    classname = strClassName;
-}
-CoreEntity::~CoreEntity() {
-}
-
 //
 // Spawned set get clear functions.
 //
@@ -94,16 +86,82 @@ void CoreEntity::resetExt(bool clearName, bool clearClassname, bool clearAttribu
         attributes.clear();
     if (clearName == true)
         name.clear();
-
-    // To remove.
-    if (clearClassname == true)
-        classname.clear();
 }
 
 void CoreEntity::setName(const std::string &str) {
     name = str;
 }
 
+void CoreEntity::toJson(nlohmann::json& document)
+{
+	document = {
+		{"class", currentClassname()},
+		{"et_type", et_type},
+		{"ent_type", ent_type},
+		{"game_type", game_type}
+	};
+	document[classname] = {
+		{"name", name},
+		{"o", {
+			{"x", o.x},
+			{"y", o.y},
+			{"z", o.z},
+		}},
+		{"attr1", attr1},
+		{"attr2", attr2},
+		{"attr3", attr3},
+		{"attr4", attr4},
+		{"attr5", attr5},
+		{"reserved", reserved},
+		{"model_idx", model_idx}
+	};
+}
+
+void CoreEntity::fromJson(const nlohmann::json& document)
+{
+	try {
+		et_type = document["et_type"];
+		ent_type = document["ent_type"];
+		game_type = document["game_type"];
+		
+		if (document.find(classname) != document.end())
+		{
+			auto& subDoc = document.at(classname);
+			
+			if (subDoc.find("name") != subDoc.end())
+			{
+				name = subDoc.at("name");
+			}
+			else
+			{
+				name = "-- unset --";
+			}
+				
+			o.x = subDoc["o"]["x"];
+			o.y = subDoc["o"]["y"];
+			o.z = subDoc["o"]["z"];
+			
+			attr1 = subDoc["attr1"];
+			attr2 = subDoc["attr2"];
+			attr3 = subDoc["attr3"];
+			attr4 = subDoc["attr4"];
+			attr5 = subDoc["attr5"];
+			
+			reserved = subDoc["reserved"];
+			model_idx = subDoc["model_idx"];
+		}
+	}
+	catch(nlohmann::json::type_error& e)
+	{
+		conoutf(CON_ERROR, "Unable to parse json into CoreEntity: %s", e.what());
+	}
+	catch(nlohmann::json::out_of_range& e)
+	{
+		conoutf(CON_ERROR, "Unable to parse json into CoreEntity: %s", e.what());
+	}
+}
+
 } // classes
 } // entities
 
+ADD_ENTITY_TO_FACTORY(CoreEntity, "core_entity");

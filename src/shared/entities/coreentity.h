@@ -3,6 +3,7 @@
 #include "cube.h"
 #include "ents.h"
 #include "entityfactory.h"
+#include <nlohmann/json.hpp>
 
 namespace entities {
     // Classes.
@@ -26,9 +27,10 @@ namespace entities {
 			//friend class CoreEntityIntializer; private: static CoreEntity *Construct();;
 
         public:
-            CoreEntity();
-            CoreEntity(const std::string &strClassName);
-            virtual ~CoreEntity();
+
+			//Serialization
+			virtual void toJson(nlohmann::json& document);
+			virtual void fromJson(const nlohmann::json& document);
 
             //
             // Legacy Core Entity data.
@@ -88,7 +90,6 @@ namespace entities {
             // Entity Name. (Used for trigger events.)
             std::string name = "coreentity_unnamed";
             // Entity class name. (Used to spawn the proper inheritance class instance.)
-            std::string classname = "CoreEntity";
             // Contains the json attributes.
             std::map<std::string, std::string> attributes = {};
 

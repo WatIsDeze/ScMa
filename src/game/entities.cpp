@@ -66,7 +66,8 @@ namespace entities
             if (getents().inrange(i) && getents()[i] != nullptr) {
                 // Let's go at it!
                 entities::classes::BaseEntity *e = dynamic_cast<entities::classes::BaseEntity*>(entities::getents()[i]);
-
+				if (!e)
+					continue;
                 // Ensure that they don't get preloaded in preload, should be done in the constructor of ET_MAPMODEL entities.
                 //if (e->et_type != ET_MAPMODEL)
                 e->preload();
