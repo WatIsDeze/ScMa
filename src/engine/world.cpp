@@ -1491,20 +1491,25 @@ int findentity_byclass(const std::string &classname)
 // We do not need forceent = -1 anymore atm, neither do we need tag = 0 for now. But it's here for backwards reasons.
 void findplayerspawn(entities::classes::Player *d, int forceent, int tag) // Place at spawn (some day, random spawn).
 {
-		int idx = findentity_byclass("playerstart");
+	auto startEntity = getentitybytype<entities::classes::PlayerStart>();
 
-		if (entities::getents().inrange(idx) && entities::getents()[idx] != NULL) {
-			vec o = entities::getents()[idx]->o;
-			d->o = o;
-			d->o.z += 1;
-			d->resetinterp();
-			entinmap(d);
-		} else {
-			d->o.x = d->o.y = d->o.z = 0.5f*worldsize;
-			d->o.z += 1;
-			d->resetinterp();
-			entinmap(d);
-		}
+	if (startEntity)
+	{
+		d->o = startEntity->o;
+		d->o.z += 1;
+		d->yaw = startEntity->yaw;
+	}
+	else
+	{
+		conoutf(CON_WARN, "Unable to find a PlayerStart, defaulting to mapcenter.. ");
+		
+		d->o.x = d->o.y = d->o.z = 0.5f*worldsize;
+		d->o.z += 1;
+		d->yaw = 0.0f;
+	}
+	
+	d->resetinterp();
+	entinmap(d);
 }
 
 //=====================

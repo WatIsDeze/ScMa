@@ -52,3 +52,16 @@ enum
 
 struct vertex { vec pos; bvec4 norm; vec tc; bvec4 tangent; };
 
+template <class ET>
+ET* getentitybytype(int searchStartIndex = 0)
+{
+	const auto &ents = entities::getents();
+	for(int i = searchStartIndex; i < ents.length(); i++)
+	{
+		auto e = dynamic_cast<ET*>(ents[i]);
+
+		if (e) return e;
+	}
+
+	return nullptr;
+}

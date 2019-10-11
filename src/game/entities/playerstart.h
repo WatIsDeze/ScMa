@@ -20,8 +20,12 @@ namespace entities {
             //
             static CoreEntity* factory();
 
-        private:
+			//Serialization
+			virtual void toJson(nlohmann::json& document);
+			virtual void fromJson(const nlohmann::json& document);
 
+			float yaw;
+        private:
         };
     } // classes
 } // entities
