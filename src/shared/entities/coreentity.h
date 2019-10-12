@@ -23,10 +23,10 @@ namespace entities {
         // Core legacy entity class.
         class CoreEntity
         {
-			ENTITY_FACTORY_IMPL(CoreEntity);
-			//friend class CoreEntityIntializer; private: static CoreEntity *Construct();;
-
+            ENTITY_FACTORY_IMPL(CoreEntity)
         public:
+            // Virtual destructor.
+            virtual ~CoreEntity() {}
 
 			//Serialization
 			virtual void toJson(nlohmann::json& document);
