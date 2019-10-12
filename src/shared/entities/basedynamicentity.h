@@ -38,10 +38,10 @@ namespace entities
             //
             // Rendering data.
             //
-            animinterpinfo animinterp[MAXANIMPARTS];
-            ragdolldata *ragdoll;
-            occludequery *query;
-            int lastrendered;
+            animinterpinfo animinterp[MAXANIMPARTS]; // Contains the animation interpretation(state) data for each body part that can animate.
+            ragdolldata *ragdoll; // Speaks for itself, contains ragdoll data.
+            occludequery *query; // OpenGL related Occlusion Culling Query data.
+            int lastrendered; // Lastrendered,
         };
     } // classes
 } // entities

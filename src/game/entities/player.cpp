@@ -109,6 +109,10 @@ void Player::respawn() {
         state = CS_ALIVE;
 }
 
+CoreEntity* Player::factory(){
+	return new Player();
+}
+
 // Link entity class to the factory.
 
 } // classes

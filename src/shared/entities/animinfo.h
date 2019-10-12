@@ -1,8 +1,12 @@
-#ifndef ANIMINFO_H
-#define ANIMINFO_H
+#pragma once
+
+// Include tools header.
 #include "shared/tools.h"
+
+//
 // Settings
-#define MAXANIMPARTS 3
+//
+#define MAXANIMPARTS 3 // Defines the maximum amount of animation body parts.
 
 // Animation specific flags, game animations, or mapmodel.
 enum
@@ -11,6 +15,9 @@ enum
     ANIM_GAMESPECIFIC
 };
 
+//
+// Animation settings flags.
+//
 #define ANIM_ALL         0x1FF
 #define ANIM_INDEX       0x1FF
 #define ANIM_LOOP        (1<<9)
@@ -30,6 +37,9 @@ enum
 #define ANIM_NOPITCH     (1<<30)
 #define ANIM_FLAGS       0xFF000000
 
+//
+// Animation Info structures.
+//
 // Description of a characters animation.
 class animinfo
 {
@@ -52,11 +62,9 @@ public:
     int lastswitch;
     void *lastmodel;
 
-    animinterpinfo() : lastswitch(-1), lastmodel(NULL) {}
+    animinterpinfo() : lastswitch(-1), lastmodel(nullptr) {}
 
     void reset() {
         lastswitch = -1;
     }
 };
-
-#endif // ANIMINFO_H
