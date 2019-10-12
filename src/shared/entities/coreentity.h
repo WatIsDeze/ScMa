@@ -78,11 +78,6 @@ namespace entities {
             virtual void reset();
             virtual void resetExt(bool clearName = true, bool clearClassname = true, bool clearAttributes = true);
 
-            //
-            // CoreEntity factory functions.
-            //
-            static entities::classes::CoreEntity* factory();
-
         public:
             //
             // CoreEntity data.
