@@ -32,10 +32,6 @@ namespace entities {
             // Obviously speaks for itself, the color.
             vec4 lightColor;
 			
-            //
-            // Entity Factory functions.
-            //
-            static CoreEntity* factory();
         };
     } // classes
 } // entities

@@ -24,11 +24,6 @@ void BaseMonster::render() {
     //if(isthirdperson()) renderclient(player1, "ogro", NULL, 0, ANIM_ATTACK1, 300, player1->lastaction, player1->lastpain);
 }
 
-CoreEntity* BaseMonster::factory(){
-	return new BaseMonster();
-}
-
-
 } // classes
 } // entities
 

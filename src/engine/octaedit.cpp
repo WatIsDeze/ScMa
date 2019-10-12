@@ -156,6 +156,7 @@ void cancelsel()
     entcancel();
 }
 
+
 void toggleedit(bool force)
 {
     if(!force)

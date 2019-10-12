@@ -19,11 +19,6 @@ namespace entities {
             void onAttributeSet(const std::string &key, const std::string &value);
             void onAnimate(int &anim, int &basetime);
 
-            //
-            // Entity Factory functions.
-            //
-            static CoreEntity* factory();
-
         private:
 
         };

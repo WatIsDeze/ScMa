@@ -69,10 +69,6 @@ bool Door::onTouch(entities::classes::CoreEntity *otherEnt, const vec &dir) {
     return true;
 }
 
-CoreEntity* Door::factory(){
-	return new Door();
-}
-
 
 } // classes
 } // entities

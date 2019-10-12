@@ -15,11 +15,6 @@ namespace entities {
 
             void reset();
 
-            //
-            // Entity Factory functions.
-            //
-            static CoreEntity* factory();
-
 			//Serialization
 			virtual void toJson(nlohmann::json& document);
 			virtual void fromJson(const nlohmann::json& document);

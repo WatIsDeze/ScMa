@@ -13,11 +13,6 @@ namespace entities {
             void think();
             void render();
 
-            //
-            // Entity Factory functions.
-            //
-            static CoreEntity* factory();
-
         private:
 
         };

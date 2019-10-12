@@ -47,10 +47,6 @@ void DynamicLight::setState(DYNAMIC_LIGHT_STATE &_lightState) {
     lightState = _lightState;
 }
 
-CoreEntity* DynamicLight::factory(){
-	return new DynamicLight();
-}
-
 } // classes
 } // entities
 

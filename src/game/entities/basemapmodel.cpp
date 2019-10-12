@@ -81,11 +81,6 @@ void BaseMapModel::preloadMapModel(const std::string &filename) {
     }
 }
 
-CoreEntity* BaseMapModel::factory(){
-	return new BaseMapModel();
-}
-
-
 } // classes
 } // entities
 

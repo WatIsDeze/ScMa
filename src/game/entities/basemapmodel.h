@@ -35,7 +35,6 @@ namespace entities
         //
         // Entity Factory functions.
         //
-        static CoreEntity* factory();
         };
 		
     } // classes
