@@ -12,7 +12,7 @@ namespace entities
         // Animated Characters, which can possibly receive input
         class BaseDynamicEntity : public BasePhysicalEntity
         {
-			ENTITY_FACTORY_IMPL(BaseDynamicEntity);
+            ENTITY_FACTORY_IMPL(BaseDynamicEntity)
         public:
             //
             // Core dynent functions.

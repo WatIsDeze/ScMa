@@ -92,11 +92,21 @@ bool Player::onTouch(entities::classes::CoreEntity *otherEnt, const vec &dir) {
 }
 
 void Player::reset() {
+    // Reset the CoreEntity first.
+    CoreEntity::reset();
 
+    // Reset the BaseDynamicEntity entity after.
+    BaseDynamicEntity::reset();
+
+    // Last but not least, set our name.
+    setName("Player");
+
+    // Set spawned state.
+    setspawned(false);
 }
 
 void Player::respawn() {
-    // First respawn base entity.
+    // First respawn BaseDynamicEntity.
     BaseDynamicEntity::reset();
 
     // Set spawned state.
@@ -114,4 +124,4 @@ void Player::respawn() {
 } // classes
 } // entities
 
-ADD_ENTITY_TO_FACTORY(Player, "player");
+ADD_ENTITY_TO_FACTORY(Player, "player")

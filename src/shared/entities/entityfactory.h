@@ -49,8 +49,10 @@ namespace entities {
     //
     // From here on it'll be spawnable by the NewEntity function.
     //
+
+// Removed the const from the classname string so we can actually set its value (Otherwise it'd always be core_entity).
 #define ADD_ENTITY_TO_FACTORY(LOCALNAME, CLASSNAME) \
-	const std::string entities::classes::LOCALNAME::classname = CLASSNAME;\
+    const std::string entities::classes::LOCALNAME::classname = CLASSNAME;\
 	std::string entities::classes::LOCALNAME::currentClassname() { return CLASSNAME; }\
 	entities::classes::CoreEntity *entities::classes::LOCALNAME::Construct()\
 	{\
@@ -65,9 +67,10 @@ namespace entities {
 		}\
     } LOCALNAME##IntializerInstance;
 
+// Removed the const from the classname string so we can actually set its value (Otherwise it'd always be core_entity).
 #define ENTITY_FACTORY_IMPL(LOCALNAME) \
 	public:\
 	friend class LOCALNAME##Intializer;\
-	static const std::string classname;\
+    static const std::string classname;\
 	virtual std::string currentClassname();\
 	static CoreEntity *Construct();

@@ -1,5 +1,4 @@
 // world.cpp: core map management stuff
-
 #include "engine.h"
 #include "../shared/ents.h"
 #include "../game/entities/player.h"
@@ -1188,8 +1187,9 @@ void newent(char *what, int *a1, int *a2, int *a3, int *a4, int *a5)
 // WatIs: Game entity creation.
 #include "../game/game.h"
 
-entities::classes::CoreEntity *new_game_entity(bool local, const vec &o, int &idx, bool fix = true, char *strclass = NULL)
+entities::classes::CoreEntity *new_game_entity(bool local, const vec &o, int &idx, char *strclass = nullptr)
 {
+    // Retreive the list of entities.
     auto &ents = entities::getents();
 
     // If local, we ensure it is not out of bounds, if it is, we return NULL and warn our player.
@@ -1207,7 +1207,7 @@ entities::classes::CoreEntity *new_game_entity(bool local, const vec &o, int &id
         }
         if(idx < 0 && ents.length() >= MAXENTS)
         {
-            conoutf("too many entities"); return NULL;
+            conoutf("too many entities"); return nullptr;
         }
     } else {
         while(ents.length() < idx) {
@@ -1217,35 +1217,35 @@ entities::classes::CoreEntity *new_game_entity(bool local, const vec &o, int &id
     }
 
 	// Allocate the entity according to its class.
-    entities::classes::CoreEntity *e = entities::newgameentity(strclass);
+    entities::classes::CoreEntity *ent = entities::newgameentity(strclass);
 
 	// Set origin.
-	e->o = o;
+    ent->o = o;
 
 	// Set entity type, it is now aware that it is a game specific entity. (Thus based on class name.)
-    e->et_type = ET_GAMESPECIFIC;
+    ent->et_type = ET_GAMESPECIFIC;
 
 	// Set internal engine entity type, ENT_PLAYER, ENT_INANIMATE, ENT_AI etc.
-    e->ent_type = ENT_INANIMATE;
+    ent->ent_type = ENT_INANIMATE;
 
 	// This one is a bit of a....
-    e->game_type = GAMEENTITY;
+    ent->game_type = GAMEENTITY;
 
 	if(ents.inrange(idx)) {
 		entities::deletegameentity(ents[idx]);
-		ents[idx] = e;
+        ents[idx] = ent;
 	} else {
 		idx = ents.length();
-		ents.add(e);
+        ents.add(ent);
 	}
-    return e;
+    return ent;
 }
 
 // Start of new game entity.
 void new_game_entity(char *strclass, char *a1, char *a2, char *a3, char *a4, char *a5, char *a6, char *a7, char *a8, bool fix = true)
 {
     int idx;
-    entities::classes::CoreEntity *t = new_game_entity(true, player->o, idx, fix, strclass);
+    entities::classes::CoreEntity *t = new_game_entity(true, player->o, idx, strclass);
     if(!t) return;
     dropentity(t);
     //t->et_type = ET_EMPTY; // Why would we want this here if we set e->type later
@@ -1430,7 +1430,7 @@ void entattr(int *attr, int *val, int *numargs)
                     case 3: e->attr4 = *val; break;
                     case 4: e->attr5 = *val; break;
                 }
-            );
+            )
     }
     else entfocus(efocus,
     {
@@ -1442,7 +1442,7 @@ void entattr(int *attr, int *val, int *numargs)
             case 3: intret(e->attr4); break;
             case 4: intret(e->attr5); break;
         }
-    });
+    })
 }
 
 COMMAND(enttype, "sN");

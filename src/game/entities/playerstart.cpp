@@ -63,7 +63,7 @@ void PlayerStart::fromJson(const nlohmann::json& document)
 		}
 		else
 		{
-			name = 0.0f;
+            yaw = 0.0f;
 		}
 	}
 }

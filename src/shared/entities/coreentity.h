@@ -84,7 +84,7 @@ namespace entities {
             //
             // Entity Name. (Used for trigger events.)
             std::string name = "coreentity_unnamed";
-            // Entity class name. (Used to spawn the proper inheritance class instance.)
+
             // Contains the json attributes.
             std::map<std::string, std::string> attributes = {};
 

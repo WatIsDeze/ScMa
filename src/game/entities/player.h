@@ -7,7 +7,7 @@ struct vec;
 namespace entities {
     namespace classes {
         class Player : public BaseDynamicEntity {
-			ENTITY_FACTORY_IMPL(Player);
+            ENTITY_FACTORY_IMPL(Player)
         public:
 			//
 			// Constructors/Destructor.

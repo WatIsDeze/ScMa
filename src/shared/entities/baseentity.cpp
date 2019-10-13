@@ -15,8 +15,11 @@ void BaseEntity::think() {}
 void BaseEntity::render() {}
 
 void BaseEntity::reset() {
+    // Reset CoreEntity data.
     CoreEntity::reset();
-    //setName("base_entity");
+
+    // Set the name back to its original entity name.
+    setName("BaseEntity");
 }
 
 //

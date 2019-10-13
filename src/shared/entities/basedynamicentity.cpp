@@ -28,9 +28,14 @@ void BaseDynamicEntity::stopmoving()
 
 // Reset to basic state values.
 void BaseDynamicEntity::reset() {
+    // Reset our inheritance object based values per type. (This isn't favorable, but works.)
+    CoreEntity::reset();
+    BaseEntity::reset();
+
     // Reset base physical values.
     BasePhysicalEntity::reset();
 
+    // Set our name.
     setName("BaseDynamicEntity");
 
     // Stop moving.
@@ -44,7 +49,6 @@ vec BaseDynamicEntity::abovehead() {
     // WatIsDeze: Seems to determine to which lengths the camera and the character are allowed to go when jumping or crouching through a tunnel etc.
     return vec(o).addz(aboveeye+4);
 }
-
 
 } // classes
 } // entities

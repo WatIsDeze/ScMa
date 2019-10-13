@@ -117,30 +117,41 @@ void CoreEntity::toJson(nlohmann::json& document)
 	};
 }
 
-void CoreEntity::fromJson(const nlohmann::json& document)
-{
+void CoreEntity::fromJson(const nlohmann::json& document) {
 	try {
-		et_type = document["et_type"];
+        if (document.contains("et_type"))
+            et_type = document["et_type"];
+        else
+            conoutf(CON_ERROR, "Failed to load JSON element et_type in class %s and map %s", classname.c_str(), game::getclientmap());
+
 		ent_type = document["ent_type"];
 		game_type = document["game_type"];
 		
-		if (document.find(classname) != document.end())
+        if (document.contains(classname) && document[classname].is_string())
 		{
-			auto& subDoc = document.at(classname);
+            std::string json_name = "-- unset --";
+
+            // Fetch our sub document for this specific classname.
+            auto &subDoc = document[classname];
+
+            // Determine whether it contains a name value, if so, assign it.
+            if (subDoc.contains("name")) {
+                name = subDoc["name"];
+            } else {
+                conoutf(CON_WARN, "Entity %s : %s in map %s is lacking member 'name", classname.c_str(), name.c_str(), game::getclientmap());
+            }
+
+            // Load in the origin.
+            if (subDoc.contains("o")) {
+                auto &oDoc = subDoc["o"];
+                o.x = oDoc["x"];
+                o.y = oDoc["y"];
+                o.z = oDoc["z"];
+            } else {
+                conoutf(CON_WARN, "Entity %s : %s in map %s is lacking member 'o'", classname.c_str(), name.c_str(), game::getclientmap());
+            }
 			
-			if (subDoc.find("name") != subDoc.end())
-			{
-				name = subDoc.at("name");
-			}
-			else
-			{
-				name = "-- unset --";
-			}
-				
-			o.x = subDoc["o"]["x"];
-			o.y = subDoc["o"]["y"];
-			o.z = subDoc["o"]["z"];
-			
+            // Load in the attributes.
 			attr1 = subDoc["attr1"];
 			attr2 = subDoc["attr2"];
 			attr3 = subDoc["attr3"];

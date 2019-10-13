@@ -30,7 +30,7 @@ namespace entities
 
     const char *itemname(int i)
     {
-        return NULL;
+        return nullptr;
 #if 0
         int t = ents[i]->type;
         if(!validitem(t)) return NULL;
@@ -55,7 +55,7 @@ namespace entities
 
     const char *entmodel(const entities::classes::CoreEntity *e)
     {
-        return NULL;
+        return nullptr;
     }
 
     void preloadentities()

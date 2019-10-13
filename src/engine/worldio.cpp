@@ -815,41 +815,48 @@ bool load_world(const char *mname, const char *cname)        // Does not support
 
     renderprogress(0, "loading entities...");
 
-    // Read our entity JSON file
+    // Define the path to our JSON file.
     defformatcubestr(jsonname, "media/map/%s.json", mname);
 
-    // TODO: Use the engine stream.
-    // Load in the stream.
-
+    // Get a reference to the entities array.
     auto &ents = entities::getents();
-	
-	try
-	{
-	    json document;
+
+    // One of the only few places where we'll use exceptions. We hate them.
+    try	{
+        // TODO: Use internal engine streaming functions so path handling (packages etc) is handled properly as well.
+        json document; // JSON Entity document.
+
+        // Try to load in the JSON Document.
 		std::ifstream(jsonname) >> document;
 
-		for (auto& element : document)
-		{
+        for (auto& element : document) {
 			std::string classname = "core_entity";
 			
-			if (element["class"].is_string())
-			{
-				classname = element["class"];
-			}
-			else
-			{
-				conoutf(CON_WARN, "Parsing %s: Missing class, falling back to core_entity", jsonname);
-			}
+            // Determine if it has the class element, requirement is for it to be a string.
+            if (element.contains("class") && element["class"].is_string()) {
+                // Setup the classname variable to be passed on to the newgameentity function.
+                classname = element["class"];
+            } else {
+                conoutf(CON_WARN, "Parsing %s: Missing 'class' entry, falling back to default class: '%s'", jsonname, classname.c_str());
+            }
 
-			entities::classes::CoreEntity *e = entities::newgameentity(classname.c_str());
-			e->fromJson(element);
+            // Allocate our entity with the new found classname. (This should likely never be core_entity).
+            entities::classes::CoreEntity *ent = entities::newgameentity(classname.c_str());
 
-			ents.add(e);
+            // Load in all the specific entity attributes from the json data.
+            if (element.contains(classname)) {
+                // Retreive entity data from JSON to the instance of this classname.
+                ent->fromJson(element[classname]);
+
+                // Add the entity in case all went well.
+                ents.add(ent);
+            } else {
+                // TODO: Fill in default info here for a useless entity, or just warn and do not add it to the list.
+            }
 		}
 	}
-	catch (json::type_error& e)
-	{
-		conoutf(CON_ERROR, "Unable to load map %s: %s", jsonname, e.what());
+    catch (json::type_error& e)	{
+        conoutf(CON_ERROR, "Unable to load entity json for map %s:%sent", mname, e.what());
 		return false;
 	}
 	

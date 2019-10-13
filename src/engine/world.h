@@ -23,11 +23,11 @@ struct octaheader
     int numvslots;
 };
 
-#define MAPVERSION 1            // bump if map format changes, see worldio.cpp
+#define MAPVERSION 2            // bump if map format changes, see worldio.cpp
 
 struct mapheader
 {
-    char magic[4];              // "TMAP"
+    char magic[4];              // "SCMA"
     int version;                // any >8bit quantity is little endian
     int headersize;             // sizeof(header)
     int worldsize;

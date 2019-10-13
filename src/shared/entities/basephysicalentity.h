@@ -15,12 +15,23 @@ namespace entities
             BasePhysicalEntity();
             ~BasePhysicalEntity();
 
-            void resetinterp();
-            void reset();
 
+            //
+            // Core BasePhysicalEntity functions.
+            //
+            // Resets the interpolation of the physical entity. (Ensures it is at the proper position in the next frame.)
+            void resetinterp();
+
+            // Reset the entity to its basic states. Keep in mind that BaseEntity::reset or CoreEntity::reset
+            // need to be called by yourself if you wish to reset their state variables as well.
+            virtual void reset();
+
+            // Returns a feet position vector of the feet, with an offset.
             vec feetpos(float offset) const;
+            // Returns a head position vector of the feet, with an offset.
             vec headpos(float offset) const;
 
+            // Returns true while crouched, false if not.
             bool crouched() const;
 
             //
