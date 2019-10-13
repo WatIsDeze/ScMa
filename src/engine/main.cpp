@@ -163,7 +163,6 @@ void renderbackgroundview(int w, int h, const char *caption, Texture *mapshot, c
         backgroundv = rndscale(1);
     }
     else if(lastupdate != lastmillis) lastupdate = lastmillis;
-
     hudmatrix.ortho(0, w, h, 0, -1, 1);
     resethudmatrix();
     resethudshader();
@@ -408,9 +407,9 @@ void inputgrab(bool on)
     if(on)
     {
 #ifndef NDEBUG
-        SDL_ShowCursor(SDL_FALSE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
-#else
         SDL_ShowCursor(SDL_TRUE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
+#else
+        SDL_ShowCursor(SDL_FALSE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
 #endif
         if(canrelativemouse && userelativemouse)
         {
@@ -430,9 +429,9 @@ void inputgrab(bool on)
     else
     {
 #ifndef NDEBUG
-        SDL_ShowCursor(SDL_FALSE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
-#else
         SDL_ShowCursor(SDL_TRUE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
+#else
+        SDL_ShowCursor(SDL_FALSE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
 #endif
         if(relativemouse)
         {
@@ -1039,13 +1038,19 @@ int main(int argc, char **argv)
     // WatIsDeze: Debug log.
     setlogfile(nullptr);
 
+    // Dedicated server?
     int dedicated = 0;
-    char *load = nullptr, *initscript = NULL;
 
+    // Dedicated, what to load, and what script to initialize pointers.
+    char *load = nullptr, *initscript = nullptr;
+
+    // Setup the initialization stage.
     initing = INIT_RESET;
-    // set home dir first
+
+    // First scan for the home directory. It'll store custom configurations, and maps inside there.
     for(int i = 1; i<argc; i++) if(argv[i][0]=='-' && argv[i][1] == 'u') { sethomedir(&argv[i][2]); break; }
-    // set log after home dir, but before anything else
+
+    // Set log after homed directory, and before anything else.
     for(int i = 1; i<argc; i++) if(argv[i][0]=='-' && argv[i][1] == 'g')
     {
         const char *file = argv[i][2] ? &argv[i][2] : "log.txt";
@@ -1053,7 +1058,11 @@ int main(int argc, char **argv)
         logoutf("Setting log file: %s", file);
         break;
     }
+
+    // Execute initialization configuration file.
     execfile("config/init.cfg", false);
+
+    // Parse out all other arguments.
     for(int i = 1; i<argc; i++)
     {
         if(argv[i][0]=='-') switch(argv[i][1])
@@ -1084,63 +1093,90 @@ int main(int argc, char **argv)
         else gameargs.add(argv[i]);
     }
 
+    // Fetch the amount of CPU's the hardware has.
+    // Used for calculating PVS and doing a benchmark.
     numcpus = clamp(SDL_GetCPUCount(), 1, 16);
 
+    // If it isnt a dedicated server run, initialize SDL.
     if(dedicated <= 1)
     {
         logoutf("init: sdl");
-
-        if(SDL_Init(SDL_INIT_TIMER|SDL_INIT_VIDEO|SDL_INIT_AUDIO)<0) fatal("Unable to initialize SDL: %s", SDL_GetError());
+        if(SDL_Init(SDL_INIT_TIMER|SDL_INIT_VIDEO|SDL_INIT_AUDIO)<0)
+            fatal("Unable to initialize SDL: %s", SDL_GetError());
     }
 
+    // Initialize the enet networking module.
     logoutf("init: net");
     if(enet_initialize()<0) fatal("Unable to initialise network module");
     atexit(enet_deinitialize);
     enet_time_set(0);
 
+    // Last but not least, we can now initialize the game itself.
     logoutf("init: game");
+
+    // Parse the game options(Although there are none atm to my knowledge.) And initialize the local server.
     game::parseoptions(gameargs);
     initserver(dedicated>0, dedicated>1);  // never returns if dedicated
     ASSERT(dedicated <= 1)
+
+    // Last but not least, initialize our own client.
     game::initclient();
 
+    // Initialize the SDL Video, with certain specific settings.
     logoutf("init: video");
     SDL_SetHint(SDL_HINT_GRAB_KEYBOARD, "0");
     #if !defined(WIN32) && !defined(__APPLE__)
     SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
     #endif
+
+    // Setup the basic OpenGL Screen, fullscreen, etc.
     setupscreen();
 #ifndef NDEBUG
-        SDL_ShowCursor(SDL_FALSE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
-#else
         SDL_ShowCursor(SDL_TRUE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
+#else
+        SDL_ShowCursor(SDL_FALSE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
 #endif
     SDL_StopTextInput(); // workaround for spurious text-input events getting sent on first text input toggle?
 
-    logoutf("init: gl");
+    // Legitly initialize the OpenGL extensions.
+    logoutf("init: gl_checkextensions");
     gl_checkextensions();
+
+    // Initialize the default settings of the OpenGL renderer.
+    logoutf("init: gl_init");
     gl_init();
+
+    // Very important: notexture is required to load, if it fails, all fails.
     notexture = textureload("media/texture/game/notexture.png");
     if(!notexture) fatal("could not find core textures");
 
+    // Initialize our console and execute the stdlib.cfg, and font.cfg files.
     logoutf("init: console");
     if(!execfile("config/stdlib.cfg", false)) fatal("cannot find data files (you are running from the wrong folder, try .bat file in the main folder)");   // this is the first file we load.
     if(!execfile("config/font.cfg", false)) fatal("cannot find font definitions");
     if(!setfont("default")) fatal("no default font specified");
 
+    // Setup the User Interface.
     UI::setup();
 
+    // Currently in between frames.
     inbetweenframes = true;
+
+    // Render the background letting the user know it is Initializing.
     renderbackground("initializing...");
 
+    // Initialize our world, this'll be the mainmenu map.
     logoutf("init: world");
     player = dynamic_cast<entities::classes::Player*>(game::iterdynents(0));
     camera1 = player->camera;
-    emptymap(0, true, NULL, false);
+    //emptymap(0, true, NULL, false); // This is the old original variant.
+    emptymap(false, false, "mainmenu.ogz");
 
+    // Initialize the sound system.
     logoutf("init: sound");
     initsound();
 
+    // Load in all configuration files, such as our keymap, game config, the UI etc.
     logoutf("init: cfg");
     initing = INIT_LOAD;
     execfile("config/keymap.cfg");
@@ -1152,22 +1188,30 @@ int main(int argc, char **argv)
     execfile("config/blendbrush.cfg");
     if(game::savedservers()) execfile(game::savedservers(), false);
 
+    // Ensure it is persistent.
     identflags |= IDF_PERSIST;
 
+    // No custom saved config file? Then not.
     if(!execfile(game::savedconfig(), false))
     {
         execfile(game::defaultconfig());
         writecfg(game::restoreconfig());
     }
+
+    // Execute the autoexec.cfg file(At least, it is what it returns atm.)
     execfile(game::autoexec(), false);
 
+    // And we remove persistency again.
     identflags &= ~IDF_PERSIST;
 
+    // Set the state to initializing the game, and allow it to load in its own custom .cfg files.
     initing = INIT_GAME;
     game::loadconfigs();
 
+    // We are DONE initializing.
     initing = NOT_INITING;
 
+    // Time to initialize the rest of our rendering data. Speaks for itself.
     logoutf("init: render");
     restoregamma();
     restorevsync();
@@ -1176,21 +1220,26 @@ int main(int argc, char **argv)
     initparticles();
     initstains();
 
+    // Ensure persistency is on again.
     identflags |= IDF_PERSIST;
 
+    // Initialize the main game loop.
     logoutf("init: mainloop");
 
-    if(execfile("once.cfg", false)) remove(findfile("once.cfg", "rb"));
-
+    // TODO: Not sure wtf this is for.
+    //if(execfile("once.cfg", false)) remove(findfile("once.cfg", "rb"));
     if(load)
     {
+        // Since we are loading a map as a background, we best start doing a local connect.
         logoutf("init: localconnect");
         //localconnect();
         game::changemap(load);
     }
 
+    // Somehow another init script.
     if(initscript) execute(initscript);
 
+    // Initmumble, reset fpshistory, grab user inpt
     initmumble();
     resetfpshistory();
 

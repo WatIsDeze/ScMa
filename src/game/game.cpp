@@ -320,7 +320,9 @@ namespace game
         execfile("config/auth.cfg", false);
     }
 
-    void parseoptions(vector<const char *> &args) {}
+    void parseoptions(vector<const char *> &args) {
+        conoutf(CON_WARN, "game::parseoption is empty");
+    }
     void connectattempt(const char *name, const char *password, const ENetAddress &address) {
         // Will need this to even join a game.
         //copycubestr(connectpass, password);

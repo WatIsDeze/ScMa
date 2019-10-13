@@ -1312,5 +1312,5 @@ void loadpvs(stream *f, int numpvs)
     viewcells = loadviewcells(f);
 }
 
-int getnumviewcells() { return pvs.length(); }
+int getnumviewcells() { conoutf("pvs %i", pvs.length());return pvs.length(); }
 

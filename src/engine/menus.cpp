@@ -72,7 +72,7 @@ void clearmainmenu()
     if(mainmenu && isconnected())
     {
         mainmenu = 0;
-        UI::hideui(NULL);
+        UI::hideui(nullptr);
     }
 }
 

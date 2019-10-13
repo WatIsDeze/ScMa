@@ -2906,7 +2906,7 @@ namespace UI
                 m->boundbox(center, radius);
                 float yaw;
                 vec o = calcmodelpreviewpos(radius, yaw).sub(center);
-                //rendermodel(name, anim, o, yaw, 0, 0, 0, NULL, NULL, 0);
+                rendermodel(name, anim, o, yaw, 0, 0, 0, NULL, NULL, 0);
             }
             if(clipstack.length()) clipstack.last().scissor();
             modelpreview::end();
