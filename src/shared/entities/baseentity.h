@@ -35,6 +35,9 @@ namespace entities
             virtual bool onTrigger(CoreEntity *otherEnt, const vec &dir);
             // otherEnt = the entity which has touched you.
             virtual bool onTouch(CoreEntity *otherEnt, const vec &dir);
+            
+		protected:
+			nlohmann::json toJson();
         };
     } // classes
 } // entities

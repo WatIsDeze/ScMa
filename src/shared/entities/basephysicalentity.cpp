@@ -56,4 +56,4 @@ bool BasePhysicalEntity::crouched() const {
 } // classes
 } // entities
 
-ADD_ENTITY_TO_FACTORY(BasePhysicalEntity, "base_physical_entity");
+ADD_ENTITY_TO_FACTORY_SERIALIZED(BasePhysicalEntity, "base_physical_entity", BaseEntity);

@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "../../cmake"
+		},
+		{
+			"path": "/Users/micha/dev/ScMaMike/media"
 		}
 	],
 	"settings": {}

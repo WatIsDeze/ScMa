@@ -678,7 +678,7 @@ bool save_world(const char *mname, bool nolms)
         if(ents[i]->et_type!=ET_EMPTY || nolms)
         {
 			json eleDoc {};
-			ents[i]->toJson(eleDoc);
+			ents[i]->saveToJson(eleDoc);
 			document[i] = eleDoc;
         }
     }
@@ -823,40 +823,26 @@ bool load_world(const char *mname, const char *cname)        // Does not support
 
     // One of the only few places where we'll use exceptions. We hate them.
     try	{
-        // TODO: Use internal engine streaming functions so path handling (packages etc) is handled properly as well.
-        json document; // JSON Entity document.
-
-        // Try to load in the JSON Document.
+        json document;
 		std::ifstream(jsonname) >> document;
 
         for (auto& element : document) {
 			std::string classname = "core_entity";
 			
-            // Determine if it has the class element, requirement is for it to be a string.
             if (element.contains("class") && element["class"].is_string()) {
-                // Setup the classname variable to be passed on to the newgameentity function.
                 classname = element["class"];
             } else {
                 conoutf(CON_WARN, "Parsing %s: Missing 'class' entry, falling back to default class: '%s'", jsonname, classname.c_str());
             }
 
-            // Allocate our entity with the new found classname. (This should likely never be core_entity).
             entities::classes::CoreEntity *ent = entities::newgameentity(classname.c_str());
-
-            // Load in all the specific entity attributes from the json data.
-            if (element.contains(classname)) {
-                // Retreive entity data from JSON to the instance of this classname.
-                ent->fromJson(element[classname]);
-
-                // Add the entity in case all went well.
-                ents.add(ent);
-            } else {
-                // TODO: Fill in default info here for a useless entity, or just warn and do not add it to the list.
-            }
+			ent->loadFromJson(element);
+			
+			ents.add(ent);
 		}
 	}
     catch (json::type_error& e)	{
-        conoutf(CON_ERROR, "Unable to load entity json for map %s:%sent", mname, e.what());
+        conoutf(CON_ERROR, "Unable to load entity json for map %s: %sent", mname, e.what());
 		return false;
 	}
 	

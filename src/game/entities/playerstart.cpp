@@ -40,35 +40,19 @@ void PlayerStart::reset() {
     setName("PlayerStart");
 }
 
-void PlayerStart::toJson(nlohmann::json& document)
+nlohmann::json PlayerStart::toJson()
 {
-	BaseEntity::toJson(document);
-	
-	document[classname] = {
+	return {
 		{"yaw", yaw}
 	};
 }
 
 void PlayerStart::fromJson(const nlohmann::json& document)
 {
-	BaseEntity::fromJson(document);
-
-	if (document.find(classname) != document.end())
-	{
-		auto& subDoc = document.at(classname);
-		
-		if (subDoc.find("yaw") != subDoc.end())
-		{
-			yaw = subDoc.at("yaw");
-		}
-		else
-		{
-            yaw = 0.0f;
-		}
-	}
+	json_utils::tryQueryJsonVar(document, "yaw", yaw);
 }
 
 } // classes
 } // entities
 
-ADD_ENTITY_TO_FACTORY(PlayerStart, "playerstart");
+ADD_ENTITY_TO_FACTORY_SERIALIZED(PlayerStart, "playerstart", BaseEntity);

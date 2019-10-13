@@ -53,4 +53,4 @@ vec BaseDynamicEntity::abovehead() {
 } // classes
 } // entities
 
-ADD_ENTITY_TO_FACTORY(BaseDynamicEntity, "base_dynamic_entity");
+ADD_ENTITY_TO_FACTORY_SERIALIZED(BaseDynamicEntity, "base_dynamic_entity", BasePhysicalEntity);

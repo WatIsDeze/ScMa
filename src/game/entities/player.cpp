@@ -124,4 +124,4 @@ void Player::respawn() {
 } // classes
 } // entities
 
-ADD_ENTITY_TO_FACTORY(Player, "player")
+ADD_ENTITY_TO_FACTORY_SERIALIZED(Player, "player", BaseDynamicEntity)

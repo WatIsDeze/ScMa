@@ -6,6 +6,42 @@
 #include "coreentity.h"
 #include "entityfactory.h"
 
+const nlohmann::json json_utils::getSubobject(const nlohmann::json& document, const std::string& key)
+{
+	if (document.find(key) != document.end()){
+		const auto& subObject = document.at(key);
+		if (subObject.is_object())
+		{
+			return subObject;
+		}
+	}
+	
+	return NULL;
+}
+
+template<>
+bool json_utils::tryQueryJsonVar(const nlohmann::json& document, const std::string& key, vec& value)
+{
+	if (document.find(key) != document.end()) {
+		try {
+			auto obj = document.at(key);
+			
+			if (obj.is_object())
+			{
+				json_utils::tryQueryJsonVar(obj, "x", value.x);
+				json_utils::tryQueryJsonVar(obj, "y", value.y);
+				json_utils::tryQueryJsonVar(obj, "z", value.z);
+			}
+			
+			return true;
+		}
+		catch(nlohmann::json::type_error& e) {
+		}
+	}
+	
+	return false;
+}
+
 namespace entities {
 namespace classes {
 
@@ -92,15 +128,10 @@ void CoreEntity::setName(const std::string &str) {
     name = str;
 }
 
-void CoreEntity::toJson(nlohmann::json& document)
+
+nlohmann::json CoreEntity::toJson()
 {
-	document = {
-		{"class", currentClassname()},
-		{"et_type", et_type},
-		{"ent_type", ent_type},
-		{"game_type", game_type}
-	};
-	document[classname] = {
+	return {
 		{"name", name},
 		{"o", {
 			{"x", o.x},
@@ -117,59 +148,55 @@ void CoreEntity::toJson(nlohmann::json& document)
 	};
 }
 
-void CoreEntity::fromJson(const nlohmann::json& document) {
-	try {
-        if (document.contains("et_type"))
-            et_type = document["et_type"];
-        else
-            conoutf(CON_ERROR, "Failed to load JSON element et_type in class %s and map %s", classname.c_str(), game::getclientmap());
+void CoreEntity::saveToJsonImpl(nlohmann::json& document)
+{
+	document[classname] = toJson();
+}
 
-		ent_type = document["ent_type"];
-		game_type = document["game_type"];
-		
-        if (document.contains(classname) && document[classname].is_string())
-		{
-            std::string json_name = "-- unset --";
 
-            // Fetch our sub document for this specific classname.
-            auto &subDoc = document[classname];
+void CoreEntity::saveToJson(nlohmann::json& document)
+{
+	document = {
+		{"class", currentClassname()},
+		{"et_type", et_type},
+		{"ent_type", ent_type},
+		{"game_type", game_type}
+	};
+	
+	saveToJsonImpl(document);
+}
 
-            // Determine whether it contains a name value, if so, assign it.
-            if (subDoc.contains("name")) {
-                name = subDoc["name"];
-            } else {
-                conoutf(CON_WARN, "Entity %s : %s in map %s is lacking member 'name", classname.c_str(), name.c_str(), game::getclientmap());
-            }
+void CoreEntity::fromJson(const nlohmann::json& document)
+{
+	json_utils::tryQueryJsonVar(document, "name", name);
+	json_utils::tryQueryJsonVar(document, "o", o);
+	json_utils::tryQueryJsonVar(document, "attr1", attr1);
+	json_utils::tryQueryJsonVar(document, "attr2", attr2);
+	json_utils::tryQueryJsonVar(document, "attr3", attr3);
+	json_utils::tryQueryJsonVar(document, "attr4", attr4);
+	json_utils::tryQueryJsonVar(document, "attr5", attr5);
+	json_utils::tryQueryJsonVar(document, "reserved", reserved);
+	json_utils::tryQueryJsonVar(document, "model_idx", model_idx);
+}
 
-            // Load in the origin.
-            if (subDoc.contains("o")) {
-                auto &oDoc = subDoc["o"];
-                o.x = oDoc["x"];
-                o.y = oDoc["y"];
-                o.z = oDoc["z"];
-            } else {
-                conoutf(CON_WARN, "Entity %s : %s in map %s is lacking member 'o'", classname.c_str(), name.c_str(), game::getclientmap());
-            }
-			
-            // Load in the attributes.
-			attr1 = subDoc["attr1"];
-			attr2 = subDoc["attr2"];
-			attr3 = subDoc["attr3"];
-			attr4 = subDoc["attr4"];
-			attr5 = subDoc["attr5"];
-			
-			reserved = subDoc["reserved"];
-			model_idx = subDoc["model_idx"];
-		}
-	}
-	catch(nlohmann::json::type_error& e)
+//NOTE: Only CoreEntity needs to implement this
+void CoreEntity::fromJsonImpl(const nlohmann::json& document)
+{
+	auto subdoc = json_utils::getSubobject(document, classname);
+	if (subdoc.is_object())
 	{
-		conoutf(CON_ERROR, "Unable to parse json into CoreEntity: %s", e.what());
+		fromJson(subdoc);
 	}
-	catch(nlohmann::json::out_of_range& e)
-	{
-		conoutf(CON_ERROR, "Unable to parse json into CoreEntity: %s", e.what());
-	}
+}
+
+void CoreEntity::loadFromJson(const nlohmann::json& document) {
+	if (!json_utils::tryQueryJsonVar(document, "et_type", et_type))
+		conoutf(CON_ERROR, "Failed to load JSON element et_type in class %s and map %s", classname.c_str(), game::getclientmap());
+
+	json_utils::tryQueryJsonVar(document, "ent_type", ent_type);
+	json_utils::tryQueryJsonVar(document, "game_type", game_type);
+
+	fromJsonImpl(document);
 }
 
 } // classes

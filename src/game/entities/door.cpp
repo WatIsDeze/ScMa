@@ -73,4 +73,4 @@ bool Door::onTouch(entities::classes::CoreEntity *otherEnt, const vec &dir) {
 } // classes
 } // entities
 
-ADD_ENTITY_TO_FACTORY(Door, "door");
+ADD_ENTITY_TO_FACTORY_SERIALIZED(Door, "door", BaseMapModel);

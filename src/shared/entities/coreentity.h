@@ -5,6 +5,32 @@
 #include "entityfactory.h"
 #include <nlohmann/json.hpp>
 
+namespace json_utils
+{
+	const nlohmann::json getSubobject(const nlohmann::json& document, const std::string& key);
+	
+	template<typename T>
+	bool tryQueryJsonVar(const nlohmann::json& document, const std::string& key, T& value)
+	{
+		if (document.find(key) != document.end()) {
+			try {
+				auto jsonValue = document.at(key).get<T>();
+				value = jsonValue;
+				
+				return true;
+			}
+			catch(nlohmann::json::type_error& e) {
+			}
+		}
+		
+		return false;
+	}
+	
+	template<>
+	bool tryQueryJsonVar(const nlohmann::json& document, const std::string& key, vec& value);
+}
+
+
 namespace entities {
     // Classes.
     namespace classes {
@@ -29,9 +55,8 @@ namespace entities {
             virtual ~CoreEntity() {}
 
 			//Serialization
-			virtual void toJson(nlohmann::json& document);
-			virtual void fromJson(const nlohmann::json& document);
-
+			void saveToJson(nlohmann::json& document);
+			void loadFromJson(const nlohmann::json& document);
             //
             // Legacy Core Entity data.
             //
@@ -89,6 +114,9 @@ namespace entities {
             std::map<std::string, std::string> attributes = {};
 
         protected:
+			void fromJson(const nlohmann::json& document);
+			nlohmann::json toJson();
+
             //
             // CoreEntity utility functions.
             //

@@ -84,4 +84,4 @@ void BaseMapModel::preloadMapModel(const std::string &filename) {
 } // classes
 } // entities
 
-ADD_ENTITY_TO_FACTORY(BaseMapModel, "base_map_model");
+ADD_ENTITY_TO_FACTORY_SERIALIZED(BaseMapModel, "base_map_model", BaseDynamicEntity);

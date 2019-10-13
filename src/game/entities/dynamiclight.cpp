@@ -50,4 +50,4 @@ void DynamicLight::setState(DYNAMIC_LIGHT_STATE &_lightState) {
 } // classes
 } // entities
 
-ADD_ENTITY_TO_FACTORY(DynamicLight, "dynamic_light");
+ADD_ENTITY_TO_FACTORY_SERIALIZED(DynamicLight, "dynamic_light", BasePhysicalEntity);

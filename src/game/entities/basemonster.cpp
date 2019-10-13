@@ -27,4 +27,4 @@ void BaseMonster::render() {
 } // classes
 } // entities
 
-ADD_ENTITY_TO_FACTORY(BaseMonster, "base_monster");
+ADD_ENTITY_TO_FACTORY_SERIALIZED(BaseMonster, "base_monster", BaseEntity);
