@@ -1,6 +1,8 @@
 #include "game.h"
 #include "engine/scriptexport.h"
 
+#include "entities.h"
+#include "entities/player.h"
 
 // This file its soul purpose is to have all CubeScript COMMAND definitions located in a single file.
 //---------------------------------------------------------------------------------------------//
@@ -20,16 +22,15 @@ namespace game {
     SCRIPTEXPORT void ent_set_attr(char *s1, char *s2)
     {
         // TODO: Fix the namespace variable issues.
-        //extern vector<entities::classes::BaseEntity *> entities::ents;
+        //extern vector<entities::classes::CoreEntity *> entities::ents;
 
-        if (entities::edit_entity > -1 && entities::edit_entity < entities::ents.length()) {
-            entities::classes::BaseEntity *ent = (entities::classes::BaseEntity*)entities::ents[entities::edit_entity];
+        if (entities::edit_entity > -1 && entities::edit_entity < entities::getents().length()) {
+            entities::classes::CoreEntity *ent = (entities::classes::CoreEntity*)entities::getents()[entities::edit_entity];
 
             // Ensure both string lengths are > 0
             if (strlen(s1) > 0 && strlen(s2) > 0) {
-                // Set the attribute value.
-                // TODO: Check if it already exists or not? Maybe just ignore that.
-                ent->attributes[s1] = s2;
+                // Update our entity about the changes.
+                ent->onAttributeSet(s1, s2);
             } else {
                 // Inform the user.
                 conoutf("%s", "No key:value string has been passed.");
@@ -49,8 +50,9 @@ namespace game {
         if (entities::edit_entity > -1 && entities::edit_entity < entities::ents.length()) {
             entities::classes::BaseEntity *ent = (entities::classes::BaseEntity*)entities::ents[entities::edit_entity];
 
-            if (ent->attributes.find(s1) != ent->attributes.end()) {
-                conoutf("%s : %s", s1, ent->attributes[s1].c_str());
+			auto attributeValue = ent->onAttributeGet(s1);
+            if (!attributeValue.empty()) {
+                conoutf("%s : %s", s1, attributeValue.c_str());
             }
         } else {
             conoutf("%s", "No valid entity selected to fetch an attribute from.");
@@ -60,24 +62,26 @@ namespace game {
     // ent_list_attr - Lists all the properties of the given entity.
     SCRIPTEXPORT void ent_list_attr()
     {
-        // TODO: Fix the namespace variable issues.
-        //extern vector<entities::classes::BaseEntity *> entities::ents;
+        if (entities::edit_entity > -1 && entities::edit_entity < entities::getents().length()) {
+            entities::classes::CoreEntity *ent = entities::getents()[entities::edit_entity];
 
-        if (entities::edit_entity > -1 && entities::edit_entity < entities::ents.length()) {
-            entities::classes::BaseEntity *ent = (entities::classes::BaseEntity*)entities::ents[entities::edit_entity];
-
-            for(std::map<std::string, std::string>::iterator i = ent->attributes.begin(); i != ent->attributes.end(); ++i) {
-                conoutf("%s : %s", i->first.c_str(), i->second.c_str());
+			auto attributeList = ent->onAttributeList();
+            for(auto key : attributeList) {
+				auto value = ent->onAttributeGet(key);
+                conoutf("%s : %s", key.c_str(), value.c_str());
             }
         } else {
             conoutf("%s", "No valid entity selected to fetch an attribute from.");
         }
-    };
+    });
 
-
-// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
-#if 0
-#include "/Users/micha/dev/ScMaMike/src/build/binding/..+game+commands.binding.cpp"
-#endif
-// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //
+    SCRIPTEXPORT void gotosel()
+    {
+        if(player1->state!=CS_EDITING) return;
+        player1->o = getselpos();
+        vec dir;
+        vecfromyawpitch(player1->yaw, player1->pitch, 1, 0, dir);
+        player1->o.add(dir.mul(-32));
+        player1->resetinterp();
+    }
 }

@@ -1,11 +1,24 @@
 #include "game.h"
 #include "engine/scriptexport.h"
+#include "entities.h"
+#include "entities/player.h"
 
 namespace game
 {
-    __attribute__((optimize("O0"))) void rendergame()
+    __attribute__((optimize("O0"))) void RenderGameEntities()
     {
+        loopv(entities::getents()) {
+            entities::classes::BaseEntity *ent = dynamic_cast<entities::classes::BaseEntity*>(entities::getents()[i]);
+            //if (ent->et_type != ET_PLAYERSTART && ent->et_type != ET_EMPTY && ent->et_type != ET_LIGHT && ent->et_type != ET_SPOTLIGHT && ent->et_type != ET_SOUND)
 
+            // Ensure we only render player entities if it isn't our own player 1 entity. (Otherwise we'd render it double.)
+            if (ent != nullptr && (ent != game::player1))
+                ent->render();
+        }
+
+        // Render our client player.
+        if (game::player1 != nullptr)
+            game::player1->render();
     }
 
     VARP(hudgun, 0, 1, 1);
@@ -22,7 +35,8 @@ namespace game
 
     }
 
-    void drawhudmodel(entities::classes::BaseEntity *d, int anim, int basetime) {
+
+    void drawhudmodel(entities::classes::CoreEntity *d, int anim, int basetime) {
 
     }
 
@@ -34,7 +48,7 @@ namespace game
 
     }
 
-    vec hudgunorigin(int gun, const vec &from, const vec &to, entities::classes::BaseEntity *d) {
+    vec hudgunorigin(int gun, const vec &from, const vec &to, entities::classes::CoreEntity *d) {
         vec offset(from);
 
         return offset;

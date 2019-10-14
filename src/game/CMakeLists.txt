@@ -9,7 +9,10 @@ add_library(SchizoMania_Game_Client STATIC
     server.cpp
     commands.cpp
 
-    entities/baseentity.cpp
+    entities/basemapmodel.cpp
+    entities/basemapmodel.h
+    entities/door.cpp
+    entities/door.h
     entities/dynamiclight.cpp
     entities/dynamiclight.h
 	entities/basemonster.cpp
@@ -27,8 +30,13 @@ target_include_directories(SchizoMania_Game_Client
     PUBLIC 
         ${CMAKE_SOURCE_DIR}
     PRIVATE
-        ../shared
-        entities/
+		../
+		../engine/
+		../game/
+		../shared/
+        ../shared/entities/
+		entities/
+        
 )
 
 #set(OS_LIBS "")
@@ -41,7 +49,8 @@ target_link_libraries(SchizoMania_Game_Client
         SchizoMania_Shared_Client
     PRIVATE
        SchizoMania_Binding
-    #${OS_LIBS}
+       SchizoMania_Shared_Entities
+       #${OS_LIBS}
 )
 # target_compile_definitions(SchizoMania_Game_Server PUBLIC -DSTANDALONE)
 

@@ -1,15 +1,10 @@
-#include "../game.h"
 #include "basemonster.h"
 
 namespace entities {
 namespace classes {
 
-BaseMonster::BaseMonster() : BaseEntity() {
-    //type = ENT_AI;
-}
-
-BaseMonster::~BaseMonster() {
-
+BaseMonster::BaseMonster() {
+    ent_type = ENT_AI;
 }
 
 void BaseMonster::preload() {
@@ -28,6 +23,4 @@ void BaseMonster::render() {
 } // classes
 } // entities
 
-
-// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
-// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //
+ADD_ENTITY_TO_FACTORY_SERIALIZED(BaseMonster, "base_monster", BaseEntity);

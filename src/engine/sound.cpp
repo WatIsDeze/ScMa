@@ -1,6 +1,7 @@
 // sound.cpp: basic positional sound using sdl_mixer
 
 #include "engine.h"
+#include "../game/entities/player.h"
 
 #ifdef __APPLE__
   #include "SDL_mixer.h"
@@ -50,7 +51,7 @@ struct soundchannel
     bool inuse;
     vec loc;
     soundslot *slot;
-    entities::classes::BaseEntity *ent;
+    entities::classes::CoreEntity *ent;
     int radius, volume, pan, flags;
     bool dirty;
 
@@ -75,12 +76,12 @@ struct soundchannel
 vector<soundchannel> channels;
 int maxchannels = 0;
 
-soundchannel &newchannel(int n, soundslot *slot, const vec *loc = NULL, entities::classes::BaseEntity *ent = NULL, int flags = 0, int radius = 0)
+soundchannel &newchannel(int n, soundslot *slot, const vec *loc = NULL, entities::classes::CoreEntity *ent = NULL, int flags = 0, int radius = 0)
 {
     if(ent)
     {
         loc = &ent->o;
-        ent->flags |= EF_SOUND;
+        ent->flags |= entities::EntityFlags::EF_SOUND;
     }
     while(!channels.inrange(n)) channels.add(channels.length());
     soundchannel &chan = channels[n];
@@ -99,7 +100,7 @@ void freechannel(int n)
     if(!channels.inrange(n) || !channels[n].inuse) return;
     soundchannel &chan = channels[n];
     chan.inuse = false;
-    if(chan.ent) chan.ent->flags &= ~EF_SOUND;
+    if(chan.ent) chan.ent->flags &= ~entities::EntityFlags::EF_SOUND;
 }
 
 void syncchannel(soundchannel &chan)
@@ -446,7 +447,7 @@ void clearmapsounds()
     mapsounds.clear();
 }
 
-void stopmapsound(entities::classes::BaseEntity *e)
+void stopmapsound(entities::classes::CoreEntity *e)
 {
     loopv(channels)
     {
@@ -461,16 +462,19 @@ void stopmapsound(entities::classes::BaseEntity *e)
 
 void checkmapsounds()
 {
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    const auto& ents = entities::getents();
     loopv(ents)
     {
-        entities::classes::BaseEntity &e = *ents[i];
-        if(e.type!=ET_SOUND) continue;
-        if(camera1->o.dist(e.o) < e.attr2)
+        auto e = dynamic_cast<entities::classes::BaseEntity *>(ents[i]);
+        if (!e)
+			continue;
+		if(e->et_type != ET_SOUND)
+			continue;
+		if(camera1->o.dist(e->o) < e->attr2)
         {
-            if(!(e.flags&EF_SOUND)) playsound(e.attr1, NULL, &e, SND_MAP, -1);
+			if(!(e->flags&entities::EntityFlags::EF_SOUND)) playsound(e->attr1, NULL, e, SND_MAP, -1);
         }
-        else if(e.flags&EF_SOUND) stopmapsound(&e);
+		else if(e->flags&entities::EntityFlags::EF_SOUND) stopmapsound(e);
     }
 }
 
@@ -566,15 +570,18 @@ void preloadmapsound(int n)
 
 void preloadmapsounds()
 {
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    const auto& ents = entities::getents();
     loopv(ents)
     {
-        entities::classes::BaseEntity &e = *ents[i];
-        if(e.type==ET_SOUND) mapsounds.preloadsound(e.attr1);
+        auto e = dynamic_cast<entities::classes::BaseEntity *>(ents[i]);
+        if (!e)
+			continue;
+			
+		if(e->et_type==ET_SOUND) mapsounds.preloadsound(e->attr1);
     }
 }
 
-int playsound(int n, const vec *loc, entities::classes::BaseEntity *ent, int flags, int loops, int fade, int chanid, int radius, int expire)
+int playsound(int n, const vec *loc, entities::classes::CoreEntity *ent, int flags, int loops, int fade, int chanid, int radius, int expire)
 {
     if(nosound || !soundvol || minimized) return -1;
 
@@ -775,7 +782,7 @@ void initmumble()
         if(mumblelink)
         {
             mumbleinfo = (MumbleInfo *)MapViewOfFile(mumblelink, FILE_MAP_ALL_ACCESS, 0, 0, sizeof(MumbleInfo));
-            if(mumbleinfo) wcsncpy(mumbleinfo->name, L"Tesseract", 256);
+            if(mumbleinfo) wcsncpy(mumbleinfo->name, L"SchizoMania", 256);
         }
     #elif defined(_POSIX_SHARED_MEMORY_OBJECTS)
         defformatcubestr(shmname, "/MumbleLink.%d", getuid());
@@ -783,7 +790,7 @@ void initmumble()
         if(mumblelink >= 0)
         {
             mumbleinfo = (MumbleInfo *)mmap(NULL, sizeof(MumbleInfo), PROT_READ|PROT_WRITE, MAP_SHARED, mumblelink, 0);
-            if(mumbleinfo != (MumbleInfo *)-1) wcsncpy(mumbleinfo->name, L"Tesseract", 256);
+            if(mumbleinfo != (MumbleInfo *)-1) wcsncpy(mumbleinfo->name, L"SchizoMania", 256);
         }
     #endif
     if(!VALID_MUMBLELINK) closemumble();

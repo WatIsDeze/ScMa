@@ -7,10 +7,14 @@
 			"path": "../../cmake"
 		},
 		{
+<<<<<<< HEAD
 			"path": "../../media"
 		},
 		{
 			"path": "../../config"
+=======
+			"path": "/Users/micha/dev/ScMaMike/media"
+>>>>>>> entity_new
 		}
 	],
 	"settings": {}

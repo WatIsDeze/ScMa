@@ -1,6 +1,8 @@
 // renderparticles.cpp
 
 #include "engine.h"
+#include "shared/entities/basephysicalentity.h"
+
 
 Shader *particleshader = NULL, *particlenotextureshader = NULL, *particlesoftshader = NULL, *particletextshader = NULL;
 
@@ -31,14 +33,14 @@ VAR(dbgpseed, 0, 0, 1);
 
 struct particleemitter
 {
-    entities::classes::BaseEntity *ent;
+    entities::classes::CoreEntity *ent;
     vec bbmin, bbmax;
     vec center;
     float radius;
     ivec cullmin, cullmax;
     int maxfade, lastemit, lastcull;
 
-    particleemitter(entities::classes::BaseEntity *ent)
+    particleemitter(entities::classes::CoreEntity *ent)
         : ent(ent), bbmin(ent->o), bbmax(ent->o), maxfade(-1), lastemit(0), lastcull(0)
     {}
 
@@ -80,12 +82,17 @@ void clearparticleemitters()
 void addparticleemitters()
 {
     emitters.setsize(0);
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    const auto& ents = entities::getents();
     loopv(ents)
     {
-        entities::classes::BaseEntity &e = *ents[i];
-        if(e.type != ET_PARTICLES) continue;
-        emitters.add(particleemitter(&e));
+        auto e = dynamic_cast<entities::classes::BaseEntity *>(ents[i]);
+        if (!e)
+			continue;
+			
+		if(e->et_type != ET_PARTICLES)
+			continue;
+			
+		emitters.add(particleemitter(e));
     }
     regenemitters = false;
 }
@@ -135,7 +142,7 @@ struct particle
     {
         const char *text;
         float val;
-        physent *owner;
+        entities::classes::CoreEntity *owner;
         struct
         {
             uchar color2[3];
@@ -177,7 +184,7 @@ struct partrenderer
 
     virtual void init(int n) { }
     virtual void reset() = 0;
-    virtual void resettracked(physent *owner) { }
+    virtual void resettracked(entities::classes::CoreEntity *owner) { }
     virtual particle *addpart(const vec &o, const vec &d, int fade, int color, float size, int gravity = 0) = 0;
     virtual void update() { }
     virtual void render() = 0;
@@ -299,7 +306,7 @@ struct listrenderer : partrenderer
         list = NULL;
     }
 
-    void resettracked(physent *owner)
+    void resettracked(entities::classes::CoreEntity *owner)
     {
         if(!(type&PT_TRACK)) return;
         for(listparticle **prev = &list, *cur = list; cur; cur = *prev)
@@ -650,7 +657,7 @@ struct varenderer : partrenderer
         lastupdate = -1;
     }
 
-    void resettracked(physent *owner)
+    void resettracked(entities::classes::CoreEntity *owner)
     {
         if(!(type&PT_TRACK)) return;
         loopi(numparts)
@@ -894,7 +901,7 @@ void cleanupparticles()
     loopi(sizeof(parts)/sizeof(parts[0])) parts[i]->cleanup();
 }
 
-void removetrackedparticles(physent *owner)
+void removetrackedparticles(entities::classes::CoreEntity *owner)
 {
     loopi(sizeof(parts)/sizeof(parts[0])) parts[i]->resettracked(owner);
 }
@@ -1102,7 +1109,7 @@ void particle_meter(const vec &s, float val, int type, int fade, int color, int 
     p->progress = clamp(int(val*100), 0, 100);
 }
 
-void particle_flare(const vec &p, const vec &dest, int fade, int type, int color, float size, physent *owner)
+void particle_flare(const vec &p, const vec &dest, int fade, int type, int color, float size, entities::classes::CoreEntity *owner)
 {
     if(!canaddparticles()) return;
     newparticle(p, dest, fade, type, color, size)->owner = owner;
@@ -1260,36 +1267,36 @@ void regular_particle_flame(int type, const vec &p, float radius, float height, 
     regularflame(type, p, radius, height, color, density, scale, speed, fade, gravity);
 }
 
-static void makeparticles(entity &e)
+static void makeparticles(entities::classes::CoreEntity *e)
 {
-    switch(e.attr1)
+	switch(e->attr1)
     {
         case 0: //fire and smoke -  <radius> <height> <rgb> - 0 values default to compat for old maps
         {
-            float radius = e.attr2 ? float(e.attr2)/100.0f : 1.5f,
-                  height = e.attr3 ? float(e.attr3)/100.0f : radius/3;
-            regularflame(PART_FLAME, e.o, radius, height, e.attr4 ? colorfromattr(e.attr4) : 0x903020, 3, 2.0f);
-            regularflame(PART_SMOKE, vec(e.o.x, e.o.y, e.o.z + 4.0f*min(radius, height)), radius, height, 0x303020, 1, 4.0f, 100.0f, 2000.0f, -20);
+			float radius = e->attr2 ? float(e->attr2)/100.0f : 1.5f,
+			height = e->attr3 ? float(e->attr3)/100.0f : radius/3;
+			regularflame(PART_FLAME, e->o, radius, height, e->attr4 ? colorfromattr(e->attr4) : 0x903020, 3, 2.0f);
+			regularflame(PART_SMOKE, vec(e->o.x, e->o.y, e->o.z + 4.0f*min(radius, height)), radius, height, 0x303020, 1, 4.0f, 100.0f, 2000.0f, -20);
             break;
         }
         case 1: //steam vent - <dir>
-            regularsplash(PART_STEAM, 0x897661, 50, 1, 200, offsetvec(e.o, e.attr2, rnd(10)), 2.4f, -20);
+			regularsplash(PART_STEAM, 0x897661, 50, 1, 200, offsetvec(e->o, e->attr2, rnd(10)), 2.4f, -20);
             break;
         case 2: //water fountain - <dir>
         {
             int color;
-            if(e.attr3 > 0) color = colorfromattr(e.attr3);
+			if(e->attr3 > 0) color = colorfromattr(e->attr3);
             else
             {
-                int mat = MAT_WATER + clamp(-e.attr3, 0, 3);
+				int mat = MAT_WATER + clamp(-e->attr3, 0, 3);
                 color = getwaterfallcolour(mat).tohexcolor();
                 if(!color) color = getwatercolour(mat).tohexcolor();
             }
-            regularsplash(PART_WATER, color, 150, 4, 200, offsetvec(e.o, e.attr2, rnd(10)), 0.6f, 2);
+			regularsplash(PART_WATER, color, 150, 4, 200, offsetvec(e->o, e->attr2, rnd(10)), 0.6f, 2);
             break;
         }
         case 3: //fire ball - <size> <rgb>
-            newparticle(e.o, vec(0, 0, 1), 1, PART_EXPLOSION, colorfromattr(e.attr3), 4.0f)->val = 1+e.attr2;
+			newparticle(e->o, vec(0, 0, 1), 1, PART_EXPLOSION, colorfromattr(e->attr3), 4.0f)->val = 1+e->attr2;
             break;
         case 4:  //tape - <dir> <length> <rgb>
         case 7:  //lightning
@@ -1300,58 +1307,58 @@ static void makeparticles(entity &e)
             static const int typemap[]   = { PART_STREAK, -1, -1, PART_LIGHTNING, -1, PART_STEAM, PART_WATER, -1, -1, PART_SNOW };
             static const float sizemap[] = { 0.28f, 0.0f, 0.0f, 1.0f, 0.0f, 2.4f, 0.60f, 0.0f, 0.0f, 0.5f };
             static const int gravmap[] = { 0, 0, 0, 0, 0, -20, 2, 0, 0, 20 };
-            int type = typemap[e.attr1-4];
-            float size = sizemap[e.attr1-4];
-            int gravity = gravmap[e.attr1-4];
-            if(e.attr2 >= 256) regularshape(type, max(1+e.attr3, 1), colorfromattr(e.attr4), e.attr2-256, 5, e.attr5 > 0 ? min(int(e.attr5), 10000) : 200, e.o, size, gravity);
-            else newparticle(e.o, offsetvec(e.o, e.attr2, max(1+e.attr3, 0)), 1, type, colorfromattr(e.attr4), size, gravity);
+			int type = typemap[e->attr1-4];
+			float size = sizemap[e->attr1-4];
+			int gravity = gravmap[e->attr1-4];
+			if(e->attr2 >= 256) regularshape(type, max(1+e->attr3, 1), colorfromattr(e->attr4), e->attr2-256, 5, e->attr5 > 0 ? min(int(e->attr5), 10000) : 200, e->o, size, gravity);
+			else newparticle(e->o, offsetvec(e->o, e->attr2, max(1+e->attr3, 0)), 1, type, colorfromattr(e->attr4), size, gravity);
             break;
         }
         case 5: //meter, metervs - <percent> <rgb> <rgb2>
         case 6:
         {
-            particle *p = newparticle(e.o, vec(0, 0, 1), 1, e.attr1==5 ? PART_METER : PART_METER_VS, colorfromattr(e.attr3), 2.0f);
-            int color2 = colorfromattr(e.attr4);
+			particle *p = newparticle(e->o, vec(0, 0, 1), 1, e->attr1==5 ? PART_METER : PART_METER_VS, colorfromattr(e->attr3), 2.0f);
+			int color2 = colorfromattr(e->attr4);
             p->color2[0] = color2>>16;
             p->color2[1] = (color2>>8)&0xFF;
             p->color2[2] = color2&0xFF;
-            p->progress = clamp(int(e.attr2), 0, 100);
+			p->progress = clamp(int(e->attr2), 0, 100);
             break;
         }
         case 11: // flame <radius> <height> <rgb> - radius=100, height=100 is the classic size
-            regularflame(PART_FLAME, e.o, float(e.attr2)/100.0f, float(e.attr3)/100.0f, colorfromattr(e.attr4), 3, 2.0f);
+			regularflame(PART_FLAME, e->o, float(e->attr2)/100.0f, float(e->attr3)/100.0f, colorfromattr(e->attr4), 3, 2.0f);
             break;
         case 12: // smoke plume <radius> <height> <rgb>
-            regularflame(PART_SMOKE, e.o, float(e.attr2)/100.0f, float(e.attr3)/100.0f, colorfromattr(e.attr4), 1, 4.0f, 100.0f, 2000.0f, -20);
+			regularflame(PART_SMOKE, e->o, float(e->attr2)/100.0f, float(e->attr3)/100.0f, colorfromattr(e->attr4), 1, 4.0f, 100.0f, 2000.0f, -20);
             break;
         case 32: //lens flares - plain/sparkle/sun/sparklesun <red> <green> <blue>
         case 33:
         case 34:
         case 35:
-            flares.addflare(e.o, e.attr2, e.attr3, e.attr4, (e.attr1&0x02)!=0, (e.attr1&0x01)!=0);
+			flares.addflare(e->o, e->attr2, e->attr3, e->attr4, (e->attr1&0x02)!=0, (e->attr1&0x01)!=0);
             break;
         default:
             if(!editmode)
             {
-                defformatcubestr(ds, "particles %d?", e.attr1);
-                particle_textcopy(e.o, ds, PART_TEXT, 1, 0x6496FF, 2.0f);
+				defformatcubestr(ds, "particles %d?", e->attr1);
+				particle_textcopy(e->o, ds, PART_TEXT, 1, 0x6496FF, 2.0f);
             }
             break;
     }
 }
 
-bool printparticles(entities::classes::BaseEntity &e, char *buf, int len)
+bool printparticles(entities::classes::CoreEntity *e, char *buf, int len)
 {
-    switch(e.attr1)
+	switch(e->attr1)
     {
         case 0: case 4: case 7: case 8: case 9: case 10: case 11: case 12: case 13:
-            nformatcubestr(buf, len, "%s %d %d %d 0x%.3hX %d", entities::entname(e.type), e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
+			nformatcubestr(buf, len, "%s %d %d %d 0x%.3hX %d", entities::entname(e->et_type), e->attr1, e->attr2, e->attr3, e->attr4, e->attr5);
             return true;
         case 3:
-            nformatcubestr(buf, len, "%s %d %d 0x%.3hX %d %d", entities::entname(e.type), e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
+			nformatcubestr(buf, len, "%s %d %d 0x%.3hX %d %d", entities::entname(e->et_type), e->attr1, e->attr2, e->attr3, e->attr4, e->attr5);
             return true;
         case 5: case 6:
-            nformatcubestr(buf, len, "%s %d %d 0x%.3hX 0x%.3hX %d", entities::entname(e.type), e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
+			nformatcubestr(buf, len, "%s %d %d 0x%.3hX 0x%.3hX %d", entities::entname(e->et_type), e->attr1, e->attr2, e->attr3, e->attr4, e->attr5);
             return true;
     }
     return false;
@@ -1365,10 +1372,10 @@ void seedparticles()
     loopv(emitters)
     {
         particleemitter &pe = emitters[i];
-        entities::classes::BaseEntity &e = *pe.ent;
+        entities::classes::CoreEntity *e = pe.ent;
         seedemitter = &pe;
         for(int millis = 0; millis < seedmillis; millis += min(emitmillis, seedmillis/10))
-            makeparticles(e);
+			makeparticles(e);
         seedemitter = NULL;
         pe.lastemit = -seedmillis;
         pe.finalize();
@@ -1400,20 +1407,20 @@ void updateparticles()
         loopv(emitters)
         {
             particleemitter &pe = emitters[i];
-            entities::classes::BaseEntity &e = *pe.ent;
-            if(e.o.dist(camera1->o) > maxparticledistance) { pe.lastemit = lastmillis; continue; }
+            entities::classes::CoreEntity *e = pe.ent;
+			if(e->o.dist(camera1->o) > maxparticledistance) { pe.lastemit = lastmillis; continue; }
             if(cullparticles && pe.maxfade >= 0)
             {
                 if(isfoggedsphere(pe.radius, pe.center)) { pe.lastcull = lastmillis; continue; }
                 if(pvsoccluded(pe.cullmin, pe.cullmax)) { pe.lastcull = lastmillis; continue; }
             }
-            makeparticles(e);
+			makeparticles(e);
             emitted++;
             if(replayparticles && pe.maxfade > 5 && pe.lastcull > pe.lastemit)
             {
                 for(emitoffset = max(pe.lastemit + emitmillis - lastmillis, -pe.maxfade); emitoffset < 0; emitoffset += emitmillis)
                 {
-                    makeparticles(e);
+					makeparticles(e);
                     replayed++;
                 }
                 emitoffset = 0;
@@ -1424,19 +1431,26 @@ void updateparticles()
     }
     if(editmode) // show sparkly thingies for map entities in edit mode
     {
-        const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+        const auto& ents = entities::getents();
         // note: order matters in this case as particles of the same type are drawn in the reverse order that they are added
         loopv(entgroup)
         {
-            entity &e = *ents[entgroup[i]];
-            particle_textcopy(e.o, entname(e), PART_TEXT, 1, 0xFF4B19, 2.0f);
+            auto e = dynamic_cast<entities::classes::BaseEntity *>(ents[entgroup[i]]);
+            if (!e)
+				continue;
+				
+			particle_textcopy(e->o, entname(e), PART_TEXT, 1, 0xFF4B19, 2.0f);
         }
         loopv(ents)
         {
-            entity &e = *ents[i];
-            if(e.type==ET_EMPTY) continue;
-            particle_textcopy(e.o, entname(e), PART_TEXT, 1, 0x1EC850, 2.0f);
-            regular_particle_splash(PART_EDIT, 2, 40, e.o, 0x3232FF, 0.32f*particlesize/100.0f);
+            auto e = dynamic_cast<entities::classes::BaseEntity *>(ents[i]);
+            if (!e)
+				continue;
+			if(e->et_type == ET_EMPTY)
+				continue;
+				
+			particle_textcopy(e->o, entname(e), PART_TEXT, 1, 0x1EC850, 2.0f);
+			regular_particle_splash(PART_EDIT, 2, 40, e->o, 0x3232FF, 0.32f*particlesize/100.0f);
         }
     }
 }

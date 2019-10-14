@@ -2,6 +2,19 @@
 
 #ifndef _TOOLS_H
 #define _TOOLS_H
+#include <cstdarg>
+#include <cstdio>
+#include <cstring>
+#include <utility>
+#include <enet/enet.h>
+
+#include <SDL.h>
+#ifdef __APPLE__
+#include <OpenGL/opengl.h>
+#else
+#include <SDL_opengl.h>
+#endif
+#include "zlib.h"
 
 typedef unsigned char uchar;
 typedef unsigned short ushort;

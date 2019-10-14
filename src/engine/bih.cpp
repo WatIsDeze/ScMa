@@ -1,4 +1,6 @@
 #include "engine.h"
+#include "ents.h"
+#include "shared/entities/basephysicalentity.h"
 
 extern vec hitsurface;
 
@@ -308,21 +310,22 @@ BIH::~BIH()
     delete[] tribbs;
 }
 
-bool mmintersect(const entities::classes::BaseEntity &e, const vec &o, const vec &ray, float maxdist, int mode, float &dist)
+bool BIH::mmintersect(entities::classes::CoreEntity *e, const vec &o, const vec &ray, float maxdist, int mode, float &dist)
 {
-    model *m = loadmapmodel(e.attr1);
+	const std::string mdlname = e->onAttributeGet("model");
+    model *m = loadmapmodel(mdlname.c_str());
     if(!m) return false;
     if(mode&RAY_SHADOW)
     {
-        if(!m->shadow || e.flags&EF_NOSHADOW) return false;
+		if(!m->shadow || e->flags & entities::EntityFlags::EF_NOSHADOW) return false;
     }
-    else if((mode&RAY_ENTS)!=RAY_ENTS && (!m->collide || e.flags&EF_NOCOLLIDE)) return false;
+	else if((mode&RAY_ENTS)!=RAY_ENTS && (!m->collide || (e->flags & entities::EntityFlags::EF_NOCOLLIDE))) return false;
     if(!m->bih && !m->setBIH()) return false;
-    float scale = e.attr5 ? 100.0f/e.attr5 : 1.0f;
-    vec mo = vec(o).sub(e.o).mul(scale), mray(ray);
+	float scale = e->attr5 ? 100.0f/e->attr5 : 1.0f;
+	vec mo = vec(o).sub(e->o).mul(scale), mray(ray);
     float v = mo.dot(mray), inside = m->bih->entradius - mo.squaredlen();
     if((inside < 0 && v > 0) || inside + v*v < 0) return false;
-    int yaw = e.attr2, pitch = e.attr3, roll = e.attr4;
+	int yaw = e->attr2, pitch = e->attr3, roll = e->attr4;
     if(yaw != 0)
     {
         const vec2 &rot = sincosmod360(-yaw);
@@ -490,9 +493,9 @@ static inline bool triboxoverlap(const vec &radius, const vec &a, const vec &b, 
 }
 
 template<>
-inline void BIH::tricollide<COLLIDE_ELLIPSE>(const mesh &m, int tidx, physent *d, const vec &dir, float cutoff, const vec &center, const vec &radius, const matrix4x3 &orient, float &dist, const ivec &bo, const ivec &br)
+inline void BIH::tricollide<COLLIDE_ELLIPSE>(const mesh &m, int tidx, entities::classes::BasePhysicalEntity *d, const vec &dir, float cutoff, const vec &center, const vec &radius, const matrix4x3 &orient, float &dist, const ivec &bo, const ivec &br)
 {
-    if(m.tribbs[tidx].outside(bo, br)) return; 
+    if(m.tribbs[tidx].outside(bo, br)) return;
 
     const tri &t = m.tris[tidx];
     vec a = m.getpos(t.vert[0]), b = m.getpos(t.vert[1]), c = m.getpos(t.vert[2]),
@@ -511,7 +514,7 @@ inline void BIH::tricollide<COLLIDE_ELLIPSE>(const mesh &m, int tidx, physent *d
     if(!dir.iszero())
     {
         if(n.dot(dir) >= -cutoff*dir.magnitude()) return;
-        if(d->type==ENT_PLAYER &&
+        if(d->ent_type==ENT_PLAYER &&
             pdist < (dir.z*n.z < 0 ?
                2*radius.z*(d->zmargin/(d->aboveeye+d->eyeheight)-(dir.z < 0 ? 1/3.0f : 1/4.0f)) :
                (dir.x*n.x < 0 || dir.y*n.y < 0 ? -radius.x : 0)))
@@ -523,7 +526,7 @@ inline void BIH::tricollide<COLLIDE_ELLIPSE>(const mesh &m, int tidx, physent *d
 }
 
 template<>
-inline void BIH::tricollide<COLLIDE_OBB>(const mesh &m, int tidx, physent *d, const vec &dir, float cutoff, const vec &center, const vec &radius, const matrix4x3 &orient, float &dist, const ivec &bo, const ivec &br)
+inline void BIH::tricollide<COLLIDE_OBB>(const mesh &m, int tidx, entities::classes::BasePhysicalEntity *d, const vec &dir, float cutoff, const vec &center, const vec &radius, const matrix4x3 &orient, float &dist, const ivec &bo, const ivec &br)
 {
     if(m.tribbs[tidx].outside(bo, br)) return;
 
@@ -544,7 +547,7 @@ inline void BIH::tricollide<COLLIDE_OBB>(const mesh &m, int tidx, physent *d, co
     if(!dir.iszero())
     {
         if(n.dot(dir) >= -cutoff*dir.magnitude()) return;
-        if(d->type==ENT_PLAYER &&
+        if(d->ent_type==ENT_PLAYER &&
             pdist < (dir.z*n.z < 0 ?
                2*radius.z*(d->zmargin/(d->aboveeye+d->eyeheight)-(dir.z < 0 ? 1/3.0f : 1/4.0f)) :
                (dir.x*n.x < 0 || dir.y*n.y < 0 ? -max(radius.x, radius.y) : 0)))
@@ -556,7 +559,7 @@ inline void BIH::tricollide<COLLIDE_OBB>(const mesh &m, int tidx, physent *d, co
 }
 
 template<int C>
-inline void BIH::collide(const mesh &m, physent *d, const vec &dir, float cutoff, const vec &center, const vec &radius, const matrix4x3 &orient, float &dist, node *curnode, const ivec &bo, const ivec &br)
+inline void BIH::collide(const mesh &m, entities::classes::BasePhysicalEntity *d, const vec &dir, float cutoff, const vec &center, const vec &radius, const matrix4x3 &orient, float &dist, node *curnode, const ivec &bo, const ivec &br)
 {
     node *stack[128];
     int stacksize = 0;
@@ -621,7 +624,7 @@ inline void BIH::collide(const mesh &m, physent *d, const vec &dir, float cutoff
 }
 
 
-bool BIH::ellipsecollide(physent *d, const vec &dir, float cutoff, const vec &o, int yaw, int pitch, int roll, float scale)
+bool BIH::ellipsecollide(entities::classes::BasePhysicalEntity *d, const vec &dir, float cutoff, const vec &o, int yaw, int pitch, int roll, float scale)
 {
     if(!numnodes) return false;
 
@@ -657,7 +660,7 @@ bool BIH::ellipsecollide(physent *d, const vec &dir, float cutoff, const vec &o,
     return dist > -1e9f;
 }
 
-bool BIH::boxcollide(physent *d, const vec &dir, float cutoff, const vec &o, int yaw, int pitch, int roll, float scale)
+bool BIH::boxcollide(entities::classes::BasePhysicalEntity *d, const vec &dir, float cutoff, const vec &o, int yaw, int pitch, int roll, float scale)
 {
     if(!numnodes) return false;
 

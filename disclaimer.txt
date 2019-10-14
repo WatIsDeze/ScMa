@@ -1,0 +1,1 @@
+If you don't specify a license, one will be picked for you, this is the SchizoMania general license and is CC-BY-SA 3.0

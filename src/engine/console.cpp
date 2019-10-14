@@ -2,6 +2,9 @@
 
 #include "engine.h"
 
+// WatIsDeze: Required.... sadly.
+#include "../game/entities/player.h"
+
 #define MAXCONLINES 1000
 struct cline { char *line; int type, outtime; };
 reversequeue<cline, MAXCONLINES> conlines;

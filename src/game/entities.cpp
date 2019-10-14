@@ -1,23 +1,36 @@
+#include "engine.h"
 #include "game.h"
-#include "entities/playerstart.h"
+#include "entities.h"
+
+// Base entities.
 #include "entities/basemonster.h"
+#include "entities/basemapmodel.h"
+
+// Game entities.
+#include "entities/door.h"
+#include "entities/dynamiclight.h"
+#include "entities/playerstart.h"
 #include "entities/player.h"
+#include "shared/entities/entityfactory.h"
 
 namespace entities
 {
     using namespace game;
 
 #ifndef STANDALONE
-    vector<classes::BaseEntity *> ents;
 
-    vector<classes::BaseEntity *> &getents() { return ents; }
+    vector<entities::classes::CoreEntity *> &getents() {
+		static vector<entities::classes::CoreEntity *> g_ents;
+		return g_ents;
+	}
 
-    bool mayattach(classes::BaseEntity &e) { return false; }
-    bool attachent(classes::BaseEntity &e, classes::BaseEntity &a) { return false; }
+    bool mayattach(entities::classes::BasePhysicalEntity *e) { return false; }
+    bool mayattach(entities::classes::CoreEntity *e) { return false; }
+    bool attachent(entities::classes::CoreEntity *e, entities::classes::CoreEntity *a) { return false; }
 
     const char *itemname(int i)
     {
-        return NULL;
+        return nullptr;
 #if 0
         int t = ents[i]->type;
         if(!validitem(t)) return NULL;
@@ -37,169 +50,125 @@ namespace entities
 
     const char *entmdlname(int type)
     {
-        static const char * const entmdlnames[MAXENTTYPES] =
-        {
-            NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-            "game/teleport", NULL, NULL,
-            NULL, NULL
-        };
-        return entmdlnames[type];
+        return "";
     }
 
-    const char *entmodel(const entity &e)
+    const char *entmodel(const entities::classes::CoreEntity *e)
     {
-        if(e.type == TELEPORT)
-        {
-            if(e.attr2 > 0) return mapmodelname(e.attr2);
-            if(e.attr2 < 0) return NULL;
-        }
-        return e.type < MAXENTTYPES ? entmdlname(e.type) : NULL;
+        return nullptr;
     }
 
     void preloadentities()
     {
         // Execute preload actions for entities.
-        loopv(ents)
+        loopv(entities::getents())
         {
-            // Let's go at it!
-            entities::classes::BaseEntity *e = ents[i];
-            e->preload();
+            if (getents().inrange(i) && getents()[i] != nullptr) {
+                // Let's go at it!
+                entities::classes::BaseEntity *e = dynamic_cast<entities::classes::BaseEntity*>(entities::getents()[i]);
+				if (!e)
+					continue;
+                // Ensure that they don't get preloaded in preload, should be done in the constructor of ET_MAPMODEL entities.
+                //if (e->et_type != ET_MAPMODEL)
+                e->preload();
+             }
         }
-        // TODO: If stuff suddenly starts failing it is likely cuz of this being commented.
-/*
-        loopi(MAXENTTYPES)
-        {
-            const char *mdl = entmdlname(i);
-            if(!mdl) continue;
-            preloadmodel(mdl);
-        }*/
-//        loopv(ents)
-//        {
-//            switch(e.type)
-//            {
-//                case TELEPORT:
-//                    if(e.attr2 > 0) preloadmodel(mapmodelname(e.attr2));
-//                case JUMPPAD:
-//                    if(e.attr4 > 0) preloadmapsound(e.attr4);
-//                    break;
-//                //case ET_GAMESPECIFIC:
-//                //	conoutf("%s", "Found a gamespecific entity");
-//            }
-//        }
-    }
 
-    void renderentities()
-    {
-        loopv(ents)
-        {
-            entities::classes::BaseEntity &e = *ents[i];
-            int revs = 10;
-            switch(e.type)
-            {
-                case TELEPORT:
-                    if(e.attr2 < 0) continue;
-                    break;
-                default:
-                    if(!e.spawned()) continue;
-                    break;
-            }
-            const char *mdlname = entmodel(e);
-            if(mdlname)
-            {
-                vec p = e.o;
-                p.z += 1+sinf(lastmillis/100.0+e.o.x+e.o.y)/20;
-                rendermodel(mdlname, ANIM_MAPMODEL|ANIM_LOOP, p, lastmillis/(float)revs, 0, 0, MDL_CULL_VFC | MDL_CULL_DIST | MDL_CULL_OCCLUDED);
-            }
+        // Specifically load in the client player model.
+        if (game::player1 != nullptr) {
+            game::player1->preload();
         }
     }
 
     void resetspawns() {
-        loopv(ents)
-                ents[i]->clearspawned();
+        loopv(entities::getents())
+            if (entities::getents().inrange(i) && entities::getents()[i] != nullptr)
+                entities::getents()[i]->clearspawned();
+
+        if (game::player1 != nullptr)
+            game::player1->clearspawned();
     }
 
-    void setspawn(int i, bool on) { if(ents.inrange(i)) ents[i]->setspawned(on); }
+    void setspawn(int i, bool on) { if(entities::getents().inrange(i) && entities::getents()[i] != nullptr) entities::getents()[i]->setspawned(on); }
 
     // Returns the entity class respectively according to its registered name.
-    entities::classes::BaseEntity *newgameentity(char *strclass) {
-        if (strclass != NULL && strcmp(strclass, "playerstart") == 0) {
-            conoutf("%s", "Found Playerstart");
-            return new entities::classes::PlayerStart();
-        } else {
-            if (strclass != NULL && strcmp(strclass, "basemonster") == 0) {
-                return new entities::classes::BaseMonster();
+    entities::classes::CoreEntity *newgameentity(const char *strclass) {
+            auto e = entities::EntityFactory::constructEntity(std::string(strclass));
+
+            if (e) {
+                conoutf("Returned %s", strclass);
+            } else {
+                conoutf("Failed to create %s", strclass);
             }
-            return new entities::classes::BaseEntity();
-        }
+
+            return e;
     }
     // Deletes the entity class in specific.
-    void deletegameentity(entities::classes::BaseEntity *e) {
-        delete (entities::classes::BaseEntity *)e;
+    void deletegameentity(entities::classes::CoreEntity *e) {
+        if (!e)
+            return;
+
+        delete e;
     }
 
     // Deletes all game entities in the stack.
     void clearents()
     {
-        while(ents.length()) deletegameentity(ents.pop());
+        // Delete stack entities.
+        while(entities::getents().length()) deletegameentity(entities::getents().pop());
     }
 
-    void animatemapmodel(const entities::classes::BaseEntity &e, int &anim, int &basetime)
-    {
-    }
-
-    // Fixes entities, which mainly just mangles the attributes. I see little reason to keep this around...
-    // TODO: Do we need this? Remove it?
-    void fixentity(entities::classes::BaseEntity &e)
-    {
-        switch(e.type)
+    void animatemapmodel(const entities::classes::CoreEntity *e, int &anim, int &basetime)
+    {/*        const fpsentity &f = (const fpsentity &)e;
+        if(validtrigger(f.attr3)) switch(f.triggerstate)
         {
-            case FLAG:
-                e.attr5 = e.attr4;
-                e.attr4 = e.attr3;
-            case TELEDEST:
-                e.attr3 = e.attr2;
-                e.attr2 = e.attr1;
-                e.attr1 = (int)player1->yaw;
-                break;
-        }
+            case TRIGGER_RESET: anim = ANIM_TRIGGER|ANIM_START; break;
+            case TRIGGERING: anim = ANIM_TRIGGER; basetime = f.lasttrigger; break;
+            case TRIGGERED: anim = ANIM_TRIGGER|ANIM_END; break;
+            case TRIGGER_RESETTING: anim = ANIM_TRIGGER|ANIM_REVERSE; basetime = f.lasttrigger; break;
+        }*/
+        //const entities::classes::BaseMapModelEntity *ent = (const entities::classes::BaseMapModelEntity&)e;
+        //anim = ANIM_MAPMODEL | ANIM_START | ANIM_LOOP;
+        //basetime = SDL_GetTicks() - e.reserved;
+        //e.reserved = SDL_GetTicks();
+
     }
 
-    void entradius(entities::classes::BaseEntity &e, bool color)
+    void entradius(entities::classes::CoreEntity *e, bool color)
     {
-        switch(e.type)
+/*		switch(e->game_type)
         {
             case TELEPORT:
-                loopv(ents) if(ents[i]->type == TELEDEST && e.attr1==ents[i]->attr2)
+				loopv(entities::getents()) if(entities::getents()[i]->game_type == TELEDEST && e->attr1==entities::getents()[i]->attr2)
                 {
-                    renderentarrow(e, vec(ents[i]->o).sub(e.o).normalize(), e.o.dist(ents[i]->o));
+					renderentarrow(e, vec(entities::getents()[i]->o).sub(e->o).normalize(), e->o.dist(entities::getents()[i]->o));
                     break;
                 }
                 break;
 
             case JUMPPAD:
-                renderentarrow(e, vec((int)(char)e.attr3*10.0f, (int)(char)e.attr2*10.0f, e.attr1*12.5f).normalize(), 4);
+				renderentarrow(e, vec((int)(char)e->attr3*10.0f, (int)(char)e->attr2*10.0f, e->attr1*12.5f).normalize(), 4);
                 break;
 
             case FLAG:
             case TELEDEST:
             {
                 vec dir;
-                vecfromyawpitch(e.attr1, 0, 1, 0, dir);
+				vecfromyawpitch(e->attr1, 0, 1, 0, dir);
                 renderentarrow(e, dir, 4);
                 break;
             }
-        }
+		}*/
     }
 
-    bool printent(entities::classes::BaseEntity &e, char *buf, int len)
+    bool printent(entities::classes::CoreEntity *e, char *buf, int len)
     {
         return false;
     }
 
-    const char *entnameinfo(entity &e) {
-        entities::classes::BaseEntity  *ptr_e = (entities::classes::BaseEntity *)&e;
+    const char *entnameinfo(entities::classes::CoreEntity *e) {
         std::string str;
-        str = ptr_e->classname;
+		str = e->classname + ":" + e->name;
         // TODO: List attributes here? Maybe...
         return str.c_str();
     }
@@ -216,23 +185,19 @@ namespace entities
 
     void editent(int i, bool local)
     {
-//        entities::classes::BaseEntity &e = *ents[i];
+//        entities::classes::CoreEntity *e = ents[i];
         extern int edit_entity;
         edit_entity = i;
         //conoutf("%i", i);
 
         //e.flags = 0;
-        //if(local) addmsg(N_EDITENT, "rii3ii5", i, (int)(e.o.x*DMF), (int)(e.o.y*DMF), (int)(e.o.z*DMF), e.type, e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
+        //if(local) addmsg(N_EDITENT, "rii3ii5", i, (int)(e.o.x*DMF), (int)(e.o.y*DMF), (int)(e.o.z*DMF), e.et_type, e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
     }
 
-    float dropheight(entity &e)
+    float dropheight(entities::classes::CoreEntity *e)
     {
-        if(e.type==FLAG) return 0.0f;
+//		if(e->game_type==FLAG) return 0.0f;
         return 4.0f;
     }
 #endif
 }
-
-
-// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
-// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

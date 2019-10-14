@@ -1,5 +1,7 @@
+#include "cube.h"
 #include "engine.h"
 #include "textedit.h"
+#include "shared/entities/animinfo.h"
 
 namespace UI
 {
@@ -192,7 +194,7 @@ namespace UI
         void reset()
         {
             resetlayout();
-            parent = NULL;
+            parent = nullptr;
             adjust = ALIGN_HCENTER | ALIGN_VCENTER;
         }
 
@@ -570,13 +572,13 @@ namespace UI
         if(drawing)
         {
             drawing->enddraw(0);
-            drawing = NULL;
+            drawing = nullptr;
         }
     }
 
     struct Window;
 
-    static Window *window = NULL;
+    static Window *window = nullptr;
 
     struct Window : Object
     {
@@ -589,8 +591,8 @@ namespace UI
         Window(const char *name, const char *contents, const char *onshow, const char *onhide) :
             name(newcubestr(name)),
             contents(compilecode(contents)),
-            onshow(onshow && onshow[0] ? compilecode(onshow) : NULL),
-            onhide(onhide && onhide[0] ? compilecode(onhide) : NULL),
+            onshow(onshow && onshow[0] ? compilecode(onshow) : nullptr),
+            onhide(onhide && onhide[0] ? compilecode(onhide) : nullptr),
             allowinput(true), eschide(true), abovehud(false),
             px(0), py(0), pw(0), ph(0),
             sscale(1, 1), soffset(0, 0)
@@ -635,7 +637,7 @@ namespace UI
             if(state&STATE_HIDDEN) { w = h = 0; return; }
             window = this;
             Object::layout();
-            window = NULL;
+            window = nullptr;
         }
 
         void draw(float sx, float sy)
@@ -652,7 +654,7 @@ namespace UI
             gle::colorf(1, 1, 1);
 
             changed = 0;
-            drawing = NULL;
+            drawing = nullptr;
 
             Object::draw(sx, sy);
 
@@ -660,7 +662,7 @@ namespace UI
 
             glDisable(GL_BLEND);
 
-            window = NULL;
+            window = nullptr;
         }
 
         void draw()
@@ -673,7 +675,7 @@ namespace UI
             if(state&STATE_HIDDEN) return;
             window = this;
             Object::adjustchildren();
-            window = NULL;
+            window = nullptr;
         }
 
         void adjustlayout()
@@ -852,7 +854,7 @@ namespace UI
         }
     };
 
-    static World *world = NULL;
+    static World *world = nullptr;
 
     void Window::escrelease(float cx, float cy)
     {
@@ -865,7 +867,7 @@ namespace UI
         setup();
         window = this;
         buildchildren(contents);
-        window = NULL;
+        window = nullptr;
     }
 
     struct HorizontalList : Object

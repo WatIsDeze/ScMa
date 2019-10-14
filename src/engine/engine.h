@@ -13,9 +13,10 @@
 #include "texture.h"
 #include "bih.h"
 #include "model.h"
+#include "ents.h"
 
-extern dynent *player;
-extern physent *camera1;                // special ent that acts as camera, same object as player1 in FPS mode
+extern entities::classes::Player *player;
+extern entities::classes::BasePhysicalEntity *camera1;                // special ent that acts as camera, same object as player in FPS mode
 
 extern int worldscale, worldsize;
 extern int mapversion;
@@ -294,7 +295,7 @@ extern void cleanupvolumetric();
 extern void findshadowvas();
 extern void findshadowmms();
 
-extern int calcshadowinfo(const entities::classes::BaseEntity &e, vec &origin, float &radius, vec &spotloc, int &spotangle, float &bias);
+extern int calcshadowinfo(const entities::classes::CoreEntity *e, vec &origin, float &radius, vec &spotloc, int &spotangle, float &bias);
 extern int dynamicshadowvabounds(int mask, vec &bbmin, vec &bbmax);
 extern void rendershadowmapworld();
 extern void batchshadowmapmodels(bool skipmesh = false);
@@ -382,10 +383,10 @@ extern bool debugaa();
 extern void cleanupaa();
 
 // ents
-extern char *entname(entity &e);
+extern char *entname(entities::classes::CoreEntity *e);
 extern bool haveselent();
 extern undoblock *copyundoents(undoblock *u);
-extern void pasteundoent(int idx, const entity &ue);
+extern void pasteundoent(int idx, entities::classes::CoreEntity *ue);
 extern void pasteundoents(undoblock *u);
 
 // octaedit
@@ -460,7 +461,7 @@ extern void renderdecals();
 struct shadowmesh;
 extern void clearshadowmeshes();
 extern void genshadowmeshes();
-extern shadowmesh *findshadowmesh(int idx, entities::classes::BaseEntity &e);
+extern shadowmesh *findshadowmesh(int idx, entities::classes::CoreEntity *e);
 extern void rendershadowmesh(shadowmesh *m);
 
 // dynlight
@@ -641,7 +642,7 @@ extern void modifyorient(float yaw, float pitch);
 extern void mousemove(int dx, int dy);
 extern bool overlapsdynent(const vec &o, float radius);
 extern void rotatebb(vec &center, vec &radius, int yaw, int pitch, int roll = 0);
-extern float shadowray(const vec &o, const vec &ray, float radius, int mode, entities::classes::BaseEntity *t = NULL);
+extern float shadowray(const vec &o, const vec &ray, float radius, int mode, entities::classes::BasePhysicalEntity *t = NULL);
 
 // world
 
@@ -690,6 +691,69 @@ static inline model *loadmapmodel(int n)
     return NULL;
 }
 
+static inline model *loadmapmodel(const char *filename)
+{
+    loopv(mapmodels)
+    {
+        // Compare if the mapmodel's values equal each other.
+        model *m = mapmodels[i].m;
+
+        if (strcmp(m->name, filename) == 0)
+            // If they equal each other, it means we don't have to load it in again. Just return the pointer.
+            return m ? m : loadmodel(filename);
+        else
+            return NULL;
+    }
+    return NULL;
+}
+
+
+// WatIsDeze: Added so we can load mapmodels by string filename
+/*static inline int loadmapmodel(const char *filename, entities::classes::CoreEntity *ent)
+{
+    int idx = -1;
+
+    // Check if it already exists.
+    if (ent == NULL) {
+        return -1;
+    }
+
+    // WatIsDeze: TODO: Check if this is actually... smart.
+    if (ent->model_idx != -1) {
+        loopv(mapmodels) if(!strcmp(mapmodels[i].name, filename)) {
+            ent->model_idx = i;
+        }
+    } else {
+        //loopv(mapmodels)
+        if (mapmodels.inrange(e->model_idx))
+            return e->model_idx;
+        else
+            return -1;
+    }
+
+    // MapModelInfo struct.
+    mapmodelinfo &mmi = mapmodels.add();
+    mmi.m = NULL;
+    mmi.collide = NULL;
+
+    // Setup the name.
+    if(filename[0])
+        copycubestr(mmi.name, filename);
+    else
+        mmi.name[0] = '\0';
+
+    // Try and load the model.
+    model *mdl = loadmodel(filename);
+
+    if (mdl) {
+        conoutf("%s %s %i", "Succesfully loaded MapModel: ", filename, mapmodels.length() - 1);
+        return mapmodels.length() - 1;
+    } else {
+        conoutf("%s %s", "Failed to load MapModel: ", filename);
+        return -1;
+    }
+}*/
+
 static inline mapmodelinfo *getmminfo(int n) { return mapmodels.inrange(n) ? &mapmodels[n] : NULL; }
 
 // renderparticles
@@ -704,7 +768,7 @@ extern void seedparticles();
 extern void updateparticles();
 extern void debugparticles();
 extern void renderparticles(int layer = PL_ALL);
-extern bool printparticles(entities::classes::BaseEntity &e, char *buf, int len);
+extern bool printparticles(entities::classes::CoreEntity *e, char *buf, int len);
 extern void cleanupparticles();
 
 // stain

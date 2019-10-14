@@ -1,4 +1,7 @@
+#include "cube.h"
 #include "engine.h"
+#include "shared/entities/baseentity.h"
+#include "shared/entities/basephysicalentity.h"
 
 CVAR1R(ambient, 0x191919);
 FVARR(ambientscale, 0, 1, 16);
@@ -275,11 +278,14 @@ void clearlightcache(int id)
 {
     if(id >= 0)
     {
-        const entities::classes::BaseEntity &light = *entities::getents()[id];
-        int radius = light.attr1;
+        const auto light = dynamic_cast<entities::classes::BaseEntity *>(entities::getents()[id]);
+        if (!light)
+			return;
+        
+		int radius = light->attr1;
         if(radius <= 0) return;
-        for(int x = int(max(light.o.x-radius, 0.0f))>>lightcachesize, ex = int(min(light.o.x+radius, worldsize-1.0f))>>lightcachesize; x <= ex; x++)
-        for(int y = int(max(light.o.y-radius, 0.0f))>>lightcachesize, ey = int(min(light.o.y+radius, worldsize-1.0f))>>lightcachesize; y <= ey; y++)
+		for(int x = int(max(light->o.x-radius, 0.0f))>>lightcachesize, ex = int(min(light->o.x+radius, worldsize-1.0f))>>lightcachesize; x <= ex; x++)
+			for(int y = int(max(light->o.y-radius, 0.0f))>>lightcachesize, ey = int(min(light->o.y+radius, worldsize-1.0f))>>lightcachesize; y <= ey; y++)
         {
             lightcacheentry &lce = lightcache[LIGHTCACHEHASH(x, y)];
             if(lce.x != x || lce.y != y) continue;
@@ -298,6 +304,8 @@ void clearlightcache(int id)
 
 const vector<int> &checklightcache(int x, int y)
 {
+    using namespace entities;
+
     x >>= lightcachesize;
     y >>= lightcachesize;
     lightcacheentry &lce = lightcache[LIGHTCACHEHASH(x, y)];
@@ -305,18 +313,18 @@ const vector<int> &checklightcache(int x, int y)
 
     lce.lights.setsize(0);
     int csize = 1<<lightcachesize, cx = x<<lightcachesize, cy = y<<lightcachesize;
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    auto &ents = entities::getents();
     loopv(ents)
     {
-        const entities::classes::BaseEntity &light = *ents[i];
-        switch(light.type)
+        const entities::classes::BasePhysicalEntity *light = (entities::classes::BasePhysicalEntity*)ents[i];
+		switch(light->et_type)
         {
             case ET_LIGHT:
             {
-                int radius = light.attr1;
+				int radius = light->attr1;
                 if(radius <= 0 ||
-                   light.o.x + radius < cx || light.o.x - radius > cx + csize ||
-                   light.o.y + radius < cy || light.o.y - radius > cy + csize)
+				   light->o.x + radius < cx || light->o.x - radius > cx + csize ||
+				   light->o.y + radius < cy || light->o.y - radius > cy + csize)
                     continue;
                 break;
             }
@@ -632,7 +640,7 @@ void initlights()
     loaddeferredlightshaders();
 }
 
-void lightreaching(const vec &target, vec &color, vec &dir, bool fast, entities::classes::BaseEntity *t, float minambient)
+void lightreaching(const vec &target, vec &color, vec &dir, bool fast, entities::classes::BasePhysicalEntity *t, float minambient)
 {
     if(fullbright && editmode)
     {
@@ -642,33 +650,36 @@ void lightreaching(const vec &target, vec &color, vec &dir, bool fast, entities:
     }
 
     color = dir = vec(0, 0, 0);
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    const auto& ents = entities::getents();
     const vector<int> &lights = checklightcache(int(target.x), int(target.y));
     loopv(lights)
     {
-        entities::classes::BaseEntity &e = *ents[lights[i]];
-        if(e.type != ET_LIGHT || e.attr1 <= 0)
+        entities::classes::BasePhysicalEntity *e = dynamic_cast<entities::classes::BasePhysicalEntity*>(ents[lights[i]]);
+        if (!e)
+			continue;
+			
+		if(e->et_type != ET_LIGHT || e->attr1 <= 0)
             continue;
 
         vec ray(target);
-        ray.sub(e.o);
+		ray.sub(e->o);
         float mag = ray.magnitude();
-        if(mag >= float(e.attr1))
+		if(mag >= float(e->attr1))
             continue;
 
         if(mag < 1e-4f) ray = vec(0, 0, -1);
         else
         {
             ray.div(mag);
-            if(shadowray(e.o, ray, mag, RAY_SHADOW | RAY_POLY, t) < mag)
+			if(shadowray(e->o, ray, mag, RAY_SHADOW | RAY_POLY, t) < mag)
                 continue;
         }
 
-        float intensity = 1 - mag / float(e.attr1);
-        if(e.attached && e.attached->type==ET_SPOTLIGHT)
+		float intensity = 1 - mag / float(e->attr1);
+		if(e->attached && e->attached->et_type==ET_SPOTLIGHT)
         {
-            vec spot = vec(e.attached->o).sub(e.o).normalize();
-            float spotatten = 1 - (1 - ray.dot(spot)) / (1 - cos360(clamp(int(e.attached->attr1), 1, 89)));
+			vec spot = vec(e->attached->o).sub(e->o).normalize();
+			float spotatten = 1 - (1 - ray.dot(spot)) / (1 - cos360(clamp(int(e->attached->attr1), 1, 89)));
             if(spotatten <= 0) continue;
             intensity *= spotatten;
         }
@@ -678,7 +689,7 @@ void lightreaching(const vec &target, vec &color, vec &dir, bool fast, entities:
         //    conoutf(CON_DEBUG, "%d - %f %f", i, intensity, mag);
         //}
 
-        vec lightcol = vec(e.attr2, e.attr3, e.attr4).mul(1.0f/255).max(0);
+		vec lightcol = vec(e->attr2, e->attr3, e->attr4).mul(1.0f/255).max(0);
         color.add(vec(lightcol).mul(intensity));
         dir.add(vec(ray).mul(-intensity*lightcol.x*lightcol.y*lightcol.z));
     }

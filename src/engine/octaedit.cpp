@@ -1,4 +1,5 @@
 #include "engine.h"
+#include "../game/entities/player.h"
 
 extern int outline;
 
@@ -154,6 +155,7 @@ SCRIPTEXPORT void cancelsel()
     cubecancel();
     entcancel();
 }
+
 
 void toggleedit(bool force)
 {
@@ -1115,10 +1117,10 @@ bool packundo(undoblock *u, int &inlen, uchar *&outbuf, int &outlen)
         loopi(u->numents)
         {
             *(ushort *)buf.pad(2) = lilswap(ushort(ue[i].i));
-            entity &e = *(entity *)buf.pad(sizeof(entity));
+            entities::classes::CoreEntity* e = (entities::classes::CoreEntity *)buf.pad(sizeof(entities::classes::CoreEntity));
             e = ue[i].e;
-            lilswap(&e.o.x, 3);
-            lilswap(&e.attr1, 5); 
+            lilswap(&e->o.x, 3);
+            lilswap(&e->attr1, 5); 
         }
     }
     else
@@ -1145,7 +1147,7 @@ bool unpackundo(const uchar *inbuf, int inlen, int outlen)
     int numents = lilswap(*(const ushort *)buf.pad(2));
     if(numents)
     {
-        if(buf.remaining() < numents*int(2 + sizeof(entity)))
+        if(buf.remaining() < numents*int(2 + sizeof(entities::classes::CoreEntity)))
         {
             delete[] outbuf;
             return false;
@@ -1153,9 +1155,9 @@ bool unpackundo(const uchar *inbuf, int inlen, int outlen)
         loopi(numents)
         {
             int idx = lilswap(*(const ushort *)buf.pad(2));
-            entity &e = *(entity *)buf.pad(sizeof(entity));
-            lilswap(&e.o.x, 3);
-            lilswap(&e.attr1, 5);
+            entities::classes::CoreEntity *e = (entities::classes::CoreEntity *)buf.pad(sizeof(entities::classes::CoreEntity));
+            lilswap(&e->o.x, 3);
+            lilswap(&e->attr1, 5);
             pasteundoent(idx, e);
         }
     }
