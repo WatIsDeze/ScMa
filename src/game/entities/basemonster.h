@@ -7,7 +7,6 @@ namespace entities {
 			ENTITY_FACTORY_IMPL(BaseMonster);
         public:
             BaseMonster();
-            virtual ~BaseMonster();
 
             void preload();
             void think();

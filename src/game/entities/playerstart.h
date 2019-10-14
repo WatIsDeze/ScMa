@@ -7,7 +7,6 @@ namespace entities {
 			ENTITY_FACTORY_IMPL(PlayerStart);
         public:
             PlayerStart();
-            virtual ~PlayerStart();
 
             void preload();
             void think();
@@ -15,7 +14,7 @@ namespace entities {
 
             void reset();
 
-			float yaw;
+			float yaw = 0.0f;
 		protected:
 			//Serialization
 			nlohmann::json toJson();

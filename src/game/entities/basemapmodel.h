@@ -13,7 +13,6 @@ namespace entities
         public:
             BaseMapModel();
             BaseMapModel(const std::string &filename);
-            virtual ~BaseMapModel();
 
             virtual void preload();
             virtual void think();
@@ -30,6 +29,7 @@ namespace entities
 
         private:
             mapmodelinfo mmi;
+            std::string filename;
 
         public:
         //

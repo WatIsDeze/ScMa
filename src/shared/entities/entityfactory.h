@@ -31,7 +31,7 @@ namespace entities {
         template<class ET>
         static entities::classes::CoreEntity* constructor()
         {
-			return static_cast<entities::classes::CoreEntity*>(new ET());
+			return static_cast<entities::classes::CoreEntity*>(new ET);
 		}
 
         static void addEntityFactory(const std::string &classname, EntityFactoryConstructor constructor);
@@ -78,7 +78,6 @@ namespace entities {
 		}\
 	}\
 	void entities::classes::LOCALNAME::saveToJsonImpl(nlohmann::json& document) {\
-		conoutf("saveToJsonImpl: %s => %s", #LOCALNAME, #DERIVED);\
 		DERIVED::saveToJsonImpl(document);\
 		document[CLASSNAME] = toJson();\
 	}

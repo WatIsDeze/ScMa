@@ -1457,7 +1457,6 @@ void recomputecamera()
 
             detachedcamera = shoulddetach;
         }
-        prepCamera1->reset();
         prepCamera1->ent_type = ENT_CAMERA;
         prepCamera1->move = -1;
         prepCamera1->eyeheight = prepCamera1->aboveeye = prepCamera1->radius = prepCamera1->xradius = prepCamera1->yradius = 2;
@@ -2102,7 +2101,6 @@ void drawminimap()
     entities::classes::BasePhysicalEntity *oldcamera = camera1;
     static entities::classes::BaseDynamicEntity cmcamera;
     cmcamera = *player;
-    cmcamera.reset();
     cmcamera.ent_type = ENT_CAMERA;
     cmcamera.o = vec(minimapcenter.x, minimapcenter.y, minimapheight > 0 ? minimapheight : minimapcenter.z + minimapradius.z + 1);
     cmcamera.yaw = 0;
@@ -2184,7 +2182,6 @@ void drawcubemap(int size, const vec &o, float yaw, float pitch, const cubemapsi
     entities::classes::BasePhysicalEntity *oldcamera = camera1;
     static entities::classes::BaseDynamicEntity cmcamera;
     cmcamera = *player;
-    cmcamera.reset();
     cmcamera.ent_type = ENT_CAMERA;
     cmcamera.o = o;
     cmcamera.yaw = yaw;
@@ -2310,7 +2307,6 @@ namespace modelpreview
 
         oldcamera = camera1;
         camera = *camera1;
-        camera.reset();
         camera.et_type = ET_GAMESPECIFIC;
         camera.ent_type = ENT_CAMERA;
         camera.game_type = GAMEENTITY;

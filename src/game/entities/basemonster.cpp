@@ -3,12 +3,8 @@
 namespace entities {
 namespace classes {
 
-BaseMonster::BaseMonster() : BaseEntity() {
+BaseMonster::BaseMonster() {
     ent_type = ENT_AI;
-}
-
-BaseMonster::~BaseMonster() {
-
 }
 
 void BaseMonster::preload() {

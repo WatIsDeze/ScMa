@@ -3,24 +3,9 @@
 namespace entities {
 namespace classes {
 
-BaseEntity::BaseEntity() {
-
-}
-BaseEntity::~BaseEntity() {
-
-}
-
 void BaseEntity::preload() {}
 void BaseEntity::think() {}
 void BaseEntity::render() {}
-
-void BaseEntity::reset() {
-    // Reset CoreEntity data.
-    CoreEntity::reset();
-
-    // Set the name back to its original entity name.
-    setName("BaseEntity");
-}
 
 //
 // OnEvent callbacks.

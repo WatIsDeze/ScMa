@@ -9,39 +9,21 @@ namespace entities
 {
     namespace classes {
 
-        // Animated Characters, which can possibly receive input
         class BaseDynamicEntity : public BasePhysicalEntity
         {
             ENTITY_FACTORY_IMPL(BaseDynamicEntity)
         public:
-            //
-            // Core dynent functions.
-            //
-            BaseDynamicEntity();
-            BaseDynamicEntity(const BaseDynamicEntity&) = default;
-            virtual ~BaseDynamicEntity();
-
-            // Reset to basic state values.
-            virtual void reset();
-
-            // Stop moving.
             void stopmoving();
-
-            // Returns above head fv
             vec abovehead();
-
-            //
-            // Key input states.
-            //
-            bool k_left, k_right, k_up, k_down;         // see input code - I think they meant, determine which key is pressed lolol.
-
-            //
-            // Rendering data.
-            //
-            animinterpinfo animinterp[MAXANIMPARTS]; // Contains the animation interpretation(state) data for each body part that can animate.
-            ragdolldata *ragdoll; // Speaks for itself, contains ragdoll data.
-            occludequery *query; // OpenGL related Occlusion Culling Query data.
-            int lastrendered; // Lastrendered,
+            
+            bool k_left = false;
+            bool k_right = false;
+            bool k_up = false;
+            bool k_down = false;
+            animinterpinfo animinterp[MAXANIMPARTS] { 0 };
+            ragdolldata *ragdoll = nullptr;
+            occludequery *query = nullptr;
+            int lastrendered = -1;
         };
     } // classes
 } // entities

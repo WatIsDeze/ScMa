@@ -7,43 +7,25 @@
 namespace entities {
 namespace classes {
 
-BaseMapModel::BaseMapModel() : BaseDynamicEntity() {
-    // State (Alive)
-    state = CS_ALIVE;
-
-    // Internal engine type.
+BaseMapModel::BaseMapModel()
+{
 	et_type = MAPMODEL;
-
-    // Internal engine entity type.
     ent_type = ENT_INANIMATE;
-
-    // And our game entity type.
     game_type = GAMEENTITY;
-
-    // Ensure it has a physstate, think this is the best.
     physstate = PHYS_FALL;
-
-    // Last but not least, set our collide method.
     collidetype = COLLIDE_TRI;
 
     setName("model");
 }
 
 BaseMapModel::BaseMapModel(const std::string &filename) : BaseMapModel() {
-    // Load it in here.
-    if (filename.empty())
-        preloadMapModel(getAttribute("model"));
-    else
-        preloadMapModel(filename);
+	this->filename = filename;
+	preloadMapModel(filename);
 }
 
-BaseMapModel::~BaseMapModel() {
-
-}
 
 void BaseMapModel::preload() {
-    if (attributes.find("model") != attributes.end())
-        preloadMapModel(getAttribute("model"));
+	preloadMapModel(filename);
 }
 
 void BaseMapModel::think() {
@@ -55,8 +37,9 @@ void BaseMapModel::render() {
 }
 
 void BaseMapModel::onAttributeSet(const std::string &key, const std::string &value) {
-    if (key == "model") {
-        preloadMapModel(value);
+    if (key == "model" && filename != value) {
+		filename = value;
+        preload();
     }
 }
 

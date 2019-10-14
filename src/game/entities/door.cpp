@@ -46,10 +46,6 @@ void Door::render() {
 void Door::onAnimate(int &anim, int &basetime) {
     conoutf("OnAnimate: %i %i", anim, basetime);
 }
-void Door::onAttributeSet(const std::string &key, const std::string &value) {
-    // Call parent class onattributeset so it'll take its keys into consideration.
-    BaseMapModel::onAttributeSet(key, value);
-}
 
 bool Door::onTrigger(entities::classes::CoreEntity *otherEnt, const vec &dir) {
     if (otherEnt == nullptr) {

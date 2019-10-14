@@ -1330,7 +1330,6 @@ void entreplace()
             e->attr5 = c->attr5;
             e->model_idx = c->model_idx;
             e->name = c->name;
-            e->attributes = c->attributes;
         });
     }
     else

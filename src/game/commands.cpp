@@ -33,10 +33,6 @@ namespace game {
 
             // Ensure both string lengths are > 0
             if (strlen(s1) > 0 && strlen(s2) > 0) {
-                // Set the attribute value.
-                // TODO: Check if it already exists or not? Maybe just ignore that.
-                ent->attributes[s1] = s2;
-
                 // Update our entity about the changes.
                 ent->onAttributeSet(s1, s2);
             } else {
@@ -51,14 +47,12 @@ namespace game {
     // ent_get_attr - Retreives the value of the designated key property.
     // args: (str)key
     ICOMMAND(ent_get_attr, "s", (char *s1), {
-        // TODO: Fix the namespace variable issues.
-        //extern vector<entities::classes::CoreEntity *> entities::ents;
-
         if (entities::edit_entity > -1 && entities::edit_entity < entities::getents().length()) {
             entities::classes::CoreEntity *ent = (entities::classes::CoreEntity*)entities::getents()[entities::edit_entity];
 
-            if (ent->attributes.find(s1) != ent->attributes.end()) {
-                conoutf("%s : %s", s1, ent->attributes[s1].c_str());
+			auto attributeValue = ent->onAttributeGet(s1);
+            if (!attributeValue.empty()) {
+                conoutf("%s : %s", s1, attributeValue.c_str());
             }
         } else {
             conoutf("%s", "No valid entity selected to fetch an attribute from.");
@@ -67,14 +61,13 @@ namespace game {
 
     // ent_list_attr - Lists all the properties of the given entity.
     ICOMMAND(ent_list_attr, "", (), {
-        // TODO: Fix the namespace variable issues.
-        //extern vector<entities::classes::CoreEntity *> entities::ents;
-
         if (entities::edit_entity > -1 && entities::edit_entity < entities::getents().length()) {
-            entities::classes::CoreEntity *ent = (entities::classes::CoreEntity*)entities::getents()[entities::edit_entity];
+            entities::classes::CoreEntity *ent = entities::getents()[entities::edit_entity];
 
-            for(std::map<std::string, std::string>::iterator i = ent->attributes.begin(); i != ent->attributes.end(); ++i) {
-                conoutf("%s : %s", i->first.c_str(), i->second.c_str());
+			auto attributeList = ent->onAttributeList();
+            for(auto key : attributeList) {
+				auto value = ent->onAttributeGet(key);
+                conoutf("%s : %s", key.c_str(), value.c_str());
             }
         } else {
             conoutf("%s", "No valid entity selected to fetch an attribute from.");

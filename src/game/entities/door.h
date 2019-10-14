@@ -16,7 +16,6 @@ namespace entities {
             bool onTrigger(entities::classes::CoreEntity *otherEnt, const vec &dir);
             bool onTouch(entities::classes::CoreEntity *otherEnt, const vec &dir);
 
-            void onAttributeSet(const std::string &key, const std::string &value);
             void onAnimate(int &anim, int &basetime);
 
         private:

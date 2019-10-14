@@ -1,23 +1,12 @@
 #include "basedynamicentity.h"
 
+namespace {
+	float aboveeye = 1.0f;
+}
+
 namespace entities {
 namespace classes {
 
-
-// WatIsDeze: TODO: Maybe remove the physent constructor from here.
-BaseDynamicEntity::BaseDynamicEntity() : BasePhysicalEntity(), ragdoll(nullptr), query(nullptr), lastrendered(0)
-{
-    reset();
-    setName("BaseDynamicEntity");
-}
-
-BaseDynamicEntity::~BaseDynamicEntity()
-{
-    #ifndef STANDALONE
-        //extern void cleanragdoll(BaseDynamicEntity *d);
-        //if(ragdoll) cleanragdoll(this);
-    #endif
-}
 
 // Stop movement.
 void BaseDynamicEntity::stopmoving()
@@ -26,24 +15,6 @@ void BaseDynamicEntity::stopmoving()
     move = strafe = crouching = 0;
 }
 
-// Reset to basic state values.
-void BaseDynamicEntity::reset() {
-    // Reset our inheritance object based values per type. (This isn't favorable, but works.)
-    CoreEntity::reset();
-    BaseEntity::reset();
-
-    // Reset base physical values.
-    BasePhysicalEntity::reset();
-
-    // Set our name.
-    setName("BaseDynamicEntity");
-
-    // Stop moving.
-    stopmoving();
-
-    // Reset all animations.
-    loopi(MAXANIMPARTS) animinterp[i].reset();
-}
 
 vec BaseDynamicEntity::abovehead() {
     // WatIsDeze: Seems to determine to which lengths the camera and the character are allowed to go when jumping or crouching through a tunnel etc.

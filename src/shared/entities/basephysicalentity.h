@@ -9,55 +9,43 @@ namespace entities
         {
 			ENTITY_FACTORY_IMPL(BasePhysicalEntity);
         public:
-            //
-            // Core physent functions.
-            //
-            BasePhysicalEntity();
-            ~BasePhysicalEntity();
 
-
-            //
-            // Core BasePhysicalEntity functions.
-            //
-            // Resets the interpolation of the physical entity. (Ensures it is at the proper position in the next frame.)
             void resetinterp();
 
-            // Reset the entity to its basic states. Keep in mind that BaseEntity::reset or CoreEntity::reset
-            // need to be called by yourself if you wish to reset their state variables as well.
-            virtual void reset();
-
-            // Returns a feet position vector of the feet, with an offset.
             vec feetpos(float offset) const;
-            // Returns a head position vector of the feet, with an offset.
             vec headpos(float offset) const;
 
-            // Returns true while crouched, false if not.
             bool crouched() const;
 
-            //
-            // Physics variables.
-            //
-            vec vel, falling;                               // velocity, falling
-            vec deltapos, newpos;                           // movement interpolation
-            float yaw, pitch, roll;
-            float maxspeed;                                 // cubes per second, 100 for player
-            int timeinair;
-            float radius, eyeheight, maxheight, aboveeye;   // bounding box size
-            float xradius, yradius, zmargin;
-            vec floor;                                      // the normal of floor the dynent is on
+            vec deltapos = vec(0, 0, 0);
+            vec newpos = vec(0, 0, 0);
+            float yaw = 0.0f;
+            float pitch = 0.0f;
+            float roll = 0.0f;
+            float maxspeed = 25.0f;
+            float radius = 2.4;
+            float eyeheight = 7.0f;
+            float maxheight = 8.0f;
+            float aboveeye = 2.0f;
+            float xradius = 1.67;
+            float yradius = 1.67;
+            float zmargin = 0;
+            
+			int inwater = 0;
+			int timeinair = 0;
+			bool jumping = false;
+			char strafe = 0;
+			char move = 0;
+			char crouching = 0;
+			uchar physstate = PHYS_FALL;
+			vec vel = vec(0, 0, 0);
+			vec falling = vec(0, 0, 0);
+			vec floor = vec(0, 0, 1);
+            uchar state = CS_ALIVE;
+            uchar editstate = CS_ALIVE;
+            uchar collidetype = COLLIDE_ELLIPSE;
 
-            //
-            // Physical state values.
-            //
-            int inwater;
-            bool jumping;
-            char move, strafe, crouching;
-
-            uchar physstate;            // one of PHYS_* above
-            uchar state, editstate;     // one of CS_* above
-            uchar collidetype;          // one of COLLIDE_* above
-
-            bool blocked;               // used by physics to signal ai
+            bool blocked = false;
         };
     } // classes
 } // entities

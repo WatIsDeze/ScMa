@@ -51,9 +51,6 @@ namespace entities {
         {
             ENTITY_FACTORY_IMPL(CoreEntity)
         public:
-            // Virtual destructor.
-            virtual ~CoreEntity() {}
-
 			//Serialization
 			void saveToJson(nlohmann::json& document);
 			void loadFromJson(const nlohmann::json& document);
@@ -83,35 +80,15 @@ namespace entities {
             void setspawned();
             void clearspawned();
 
-            //
-            // onEvent functions.
-            //
-            // Can be overloaded to execute certain actions when the key/value of an attribute is changed.
             virtual void onAttributeSet(const std::string &key, const std::string &value) {}
-
-            //
-            // Attributes set and get.
-            //
-            // Sets the key its value in the attributes list, also determines whether to automatically call onAttributeSet.
-            bool setAttribute(const std::string &key, const std::string &value, bool callOnAttrSet);
-            // Returns the value of the attribute key.
-            std::string getAttribute(const std::string &key);
-
-            //
-            // CoreEntity virtual functions.
-            //
-            virtual void reset();
-            virtual void resetExt(bool clearName = true, bool clearClassname = true, bool clearAttributes = true);
-
+            virtual std::string onAttributeGet(const std::string &key) { return ""; }
+            virtual std::vector<std::string> onAttributeList() { return {}; }
         public:
             //
             // CoreEntity data.
             //
             // Entity Name. (Used for trigger events.)
             std::string name = "coreentity_unnamed";
-
-            // Contains the json attributes.
-            std::map<std::string, std::string> attributes = {};
 
         protected:
 			void fromJson(const nlohmann::json& document);

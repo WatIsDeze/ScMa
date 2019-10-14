@@ -28,17 +28,6 @@ void DynamicLight::think() {
 }
 
 void DynamicLight::render() {
-    vec color;
-    if (attributes.find("r") != attributes.end()) {
-        color[0] = std::atof(attributes["r"].c_str());
-    }
-    if (attributes.find("g") != attributes.end()) {
-        color[1] = std::atof(attributes["g"].c_str());
-    }
-    if (attributes.find("b") != attributes.end()) {
-        color[2] = std::atof(attributes["b"].c_str());
-    }
-    adddynlight(o, 45, color, 0, 0);
 }
 
 // TODO: Add other optional arguments, so all can be done in 1 command. Kindly using other method functions such as fade time or flicker style, or even interval speeds.

@@ -11,20 +11,12 @@ namespace entities
         {
 			ENTITY_FACTORY_IMPL(BaseEntity);
         public:
-            //
-            // Base functions.
-            //
-            BaseEntity();
-            virtual ~BaseEntity();
-
             // Called every time a map is being loaded.
             virtual void preload();
             // Called each frame, to "think", AI logic should go here.
             virtual void think();
             // Called each frame to render.
             virtual void render();
-            // Reset the entity to its basic states.
-            virtual void reset();
 
             //
             // OnEvent callbacks.

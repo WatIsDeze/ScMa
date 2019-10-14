@@ -44,11 +44,12 @@ enum
 class animinfo
 {
 public:
-    int anim, frame, range, basetime;
-    float speed;
-    uint varseed;
-
-    animinfo() : anim(0), frame(0), range(0), basetime(0), speed(100.0f), varseed(0) { }
+    int anim = 0;
+    int frame = 0;
+    int range = 0;
+    int basetime = 0;
+    float speed = 100.0f;
+    uint varseed = 0;
 
     bool operator==(const animinfo &o) const { return frame==o.frame && range==o.range && (anim&(ANIM_SETTIME|ANIM_DIR))==(o.anim&(ANIM_SETTIME|ANIM_DIR)) && (anim&ANIM_SETTIME || basetime==o.basetime) && speed==o.speed; }
     bool operator!=(const animinfo &o) const { return frame!=o.frame || range!=o.range || (anim&(ANIM_SETTIME|ANIM_DIR))!=(o.anim&(ANIM_SETTIME|ANIM_DIR)) || (!(anim&ANIM_SETTIME) && basetime!=o.basetime) || speed!=o.speed; }
@@ -58,12 +59,11 @@ public:
 class animinterpinfo
 {
 public:
-    animinfo prev, cur;
-    int lastswitch;
-    void *lastmodel;
-
-    animinterpinfo() : lastswitch(-1), lastmodel(nullptr) {}
-
+    animinfo prev;
+    animinfo cur;
+    int lastswitch = -1;
+    void* lastmodel = nullptr;
+    
     void reset() {
         lastswitch = -1;
     }

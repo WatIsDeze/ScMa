@@ -458,7 +458,7 @@ mapmodelinfo loadmodelinfo(const char *name, entities::classes::CoreEntity *ent)
     mmi.m = loadmodel(name, -1, true);
     if (mmi.m != NULL) {
         copycubestr(mmi.name, name, strlen(name));
-        ent->setAttribute("model", std::string(mmi.name), false);
+        ent->onAttributeSet("model", mmi.name);
     }
 
     return mmi;

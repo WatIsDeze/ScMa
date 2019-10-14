@@ -92,31 +92,19 @@ bool Player::onTouch(entities::classes::CoreEntity *otherEnt, const vec &dir) {
 }
 
 void Player::reset() {
-    // Reset the CoreEntity first.
-    CoreEntity::reset();
-
-    // Reset the BaseDynamicEntity entity after.
-    BaseDynamicEntity::reset();
-
-    // Last but not least, set our name.
     setName("Player");
 
-    // Set spawned state.
     setspawned(false);
 }
 
 void Player::respawn() {
-    // First respawn BaseDynamicEntity.
-    BaseDynamicEntity::reset();
-
-    // Set spawned state.
     setspawned(true);
 
-    // Edit mode or in-game?
-    if(editmode)
+    if(editmode) {
         state = CS_EDITING;
-    else
+    } else {
         state = CS_ALIVE;
+	}
 }
 
 // Link entity class to the factory.
