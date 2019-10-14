@@ -1,6 +1,5 @@
 from clang import cindex
 from .compileflags import CompileFlagsFor
-import asciitree
 import os
 import json
 import sys
