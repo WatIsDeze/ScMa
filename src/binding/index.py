@@ -63,10 +63,10 @@ def generate_code(file, outputfile):
     fileBottom = file_get_contents_from(file, token_out)
 
     if fileTop and fileTop != "\n":
-        if fileMid:
-            file_write_data(file, fileTop + "\n\n" + token_in + "\n#if 0\n#include \"" + outputfile + "\"\n#endif\n" + token_out + "\n" + fileBottom)
-        else:
-            file_write_data(file, fileTop + "\n\n" + token_in + "\n" + token_out + "\n" + fileBottom)
+        # if fileMid:
+        #     file_write_data(file, fileTop + "\n\n" + token_in + "\n#if 0\n#include \"" + outputfile + "\"\n#endif\n" + token_out + "\n" + fileBottom)
+        # else:
+        #     file_write_data(file, fileTop + "\n\n" + token_in + "\n" + token_out + "\n" + fileBottom)
 
         file_write_data(outputfile, fileMid)
     else:
