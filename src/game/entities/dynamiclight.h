@@ -7,7 +7,6 @@ namespace entities {
 			ENTITY_FACTORY_IMPL(DynamicLight);
         public:
             DynamicLight();
-            virtual ~DynamicLight();
 
             void preload();
             void think();

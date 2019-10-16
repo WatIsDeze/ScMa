@@ -7,7 +7,6 @@ namespace entities {
 			ENTITY_FACTORY_IMPL(Door);
         public:
             Door();
-            virtual ~Door();
 
             void preload();
             void think();

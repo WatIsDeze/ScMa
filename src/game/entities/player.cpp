@@ -9,9 +9,9 @@ Player::Player() : BaseDynamicEntity() {
     state = CS_ALIVE;
     et_type = ET_GAMESPECIFIC;
     ent_type = ENT_PLAYER;
-	game_type = PLAYER;
+    game_type = PLAYER;
     collidetype = COLLIDE_OBB;
-	physstate = PHYS_FALL;
+    physstate = PHYS_FALL;
 
 	// Reset.
     setName("Player");
@@ -20,9 +20,9 @@ Player::Player() : BaseDynamicEntity() {
     camera = new entities::classes::BasePhysicalEntity();
 }
 
-Player::~Player() {
-    delete camera;
-}
+//Player::~Player() {
+    //delete camera;
+//}
 
 void Player::preload() {
     // Load in our player entity model.
@@ -32,9 +32,9 @@ void Player::preload() {
     state = CS_ALIVE;
     et_type = ET_GAMESPECIFIC;
     ent_type = ENT_PLAYER;
-	game_type = PLAYER;
+    game_type = PLAYER;
     collidetype = COLLIDE_OBB;
-	physstate = PHYS_FALL;
+    physstate = PHYS_FALL;
 }
 
 void Player::think() {

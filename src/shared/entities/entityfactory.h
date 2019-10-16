@@ -40,15 +40,15 @@ namespace entities {
 }
 
 
-    //
-    // Use ADD_ENTITY_TO_FACTORY at the bottom of your entityname.cpp file to hook it up to a
-    // string name. For example: ADD_ENTITY_TO_FACTORY(GarageDoor, "door_garage");
-    //
-    // LOCALNAME: The class name in the C++ code.
-    // CLASSNAME: The string class name used by map editing.
-    //
-    // From here on it'll be spawnable by the NewEntity function.
-    //
+//
+// Use ADD_ENTITY_TO_FACTORY at the bottom of your entityname.cpp file to hook it up to a
+// string name. For example: ADD_ENTITY_TO_FACTORY(GarageDoor, "door_garage");
+//
+// LOCALNAME: The class name in the C++ code.
+// CLASSNAME: The string class name used by map editing.
+//
+// From here on it'll be spawnable by the NewEntity function.
+//
 
 // Removed the const from the classname string so we can actually set its value (Otherwise it'd always be core_entity).
 #define ADD_ENTITY_TO_FACTORY(LOCALNAME, CLASSNAME) \
@@ -81,7 +81,15 @@ namespace entities {
 		DERIVED::saveToJsonImpl(document);\
 		document[CLASSNAME] = toJson();\
 	}
-// Removed the const from the classname string so we can actually set its value (Otherwise it'd always be core_entity).
+
+//
+// Prepares a class capable of being spawned by the entity factory by adding the
+// required members and functions. NOTE: Always ensure you add this at the top
+// of your class, per example:
+//
+// class BoringTree : public ModelEntity {
+// ENTITY_FACTORY_IMPL(ModelEntity);
+//
 #define ENTITY_FACTORY_IMPL(LOCALNAME) \
 	public:\
 	friend class LOCALNAME##Intializer;\
@@ -89,4 +97,5 @@ namespace entities {
 	virtual std::string currentClassname();\
 	static CoreEntity *Construct();\
 	virtual void fromJsonImpl(const nlohmann::json& document);\
-	virtual void saveToJsonImpl(nlohmann::json& document);\
+    virtual void saveToJsonImpl(nlohmann::json& document); \
+    virtual ~LOCALNAME() {};

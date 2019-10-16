@@ -13,7 +13,6 @@ namespace entities {
 			// Constructors/Destructor.
 			//
             Player();
-            virtual ~Player();
 
 			//
 			// Base/Core entity functions.

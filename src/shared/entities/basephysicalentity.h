@@ -37,7 +37,7 @@ namespace entities
 			char strafe = 0;
 			char move = 0;
 			char crouching = 0;
-			uchar physstate = PHYS_FALL;
+            uchar physstate = PHYS_FLOOR;
 			vec vel = vec(0, 0, 0);
 			vec falling = vec(0, 0, 0);
 			vec floor = vec(0, 0, 1);
