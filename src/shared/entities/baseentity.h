@@ -9,7 +9,7 @@ namespace entities
 
         class BaseEntity : public CoreEntity
         {
-			ENTITY_FACTORY_IMPL(BaseEntity);
+            ENTITY_FACTORY_IMPL(BaseEntity);
         public:
             // Called every time a map is being loaded.
             virtual void preload();
@@ -29,9 +29,9 @@ namespace entities
             virtual bool onTouch(CoreEntity *otherEnt, const vec &dir);
             // otherEnt = the entity which has used you. (Like, hit a button.)
             virtual bool onUse(CoreEntity *otherEnt, const vec &dir);
-            
-		protected:
-			nlohmann::json toJson();
+
+        protected:
+            nlohmann::json toJson();
         };
     } // classes
 } // entities
