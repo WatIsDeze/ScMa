@@ -1109,7 +1109,7 @@ int main(int argc, char **argv)
 
     // Parse the game options(Although there are none atm to my knowledge.) And initialize the local server.
     game::parseoptions(gameargs);
-    initserver(dedicated>0, dedicated>1);  // never returns if dedicated
+    // initserver(dedicated>0, dedicated>1);  // never returns if dedicated
     ASSERT(dedicated <= 1)
 
     // Last but not least, initialize our own client.

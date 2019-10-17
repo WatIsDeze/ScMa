@@ -47,7 +47,7 @@ void Door::onAnimate(int &anim, int &basetime) {
     conoutf("OnAnimate: %i %i", anim, basetime);
 }
 
-bool Door::onTrigger(entities::classes::CoreEntity *otherEnt, const vec &dir) {
+bool Door::onTrigger(const entities::classes::CoreEntity *otherEnt, const vec &dir) {
     if (otherEnt == nullptr) {
         return false;
     }
@@ -56,7 +56,7 @@ bool Door::onTrigger(entities::classes::CoreEntity *otherEnt, const vec &dir) {
     return true;
 }
 
-bool Door::onTouch(entities::classes::CoreEntity *otherEnt, const vec &dir) {
+bool Door::onTouch(const entities::classes::CoreEntity *otherEnt, const vec &dir) {
     if (otherEnt == nullptr) {
         return false;
     }

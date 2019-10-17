@@ -31,8 +31,8 @@ namespace entities {
 			//
 			// onEvent functions.
 			//
-            bool onTrigger(entities::classes::CoreEntity *otherEnt, const vec &dir);
-            bool onTouch(entities::classes::CoreEntity *otherEnt, const vec &dir);
+            bool onTrigger(const entities::classes::CoreEntity *otherEnt, const vec &dir);
+            bool onTouch(const entities::classes::CoreEntity *otherEnt, const vec &dir);
 
 			//
 			// Entity member variables.

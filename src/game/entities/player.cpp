@@ -71,7 +71,7 @@ void Player::render() {
     }
 }
 
-bool Player::onTrigger(entities::classes::CoreEntity *otherEnt, const vec &dir) {
+bool Player::onTrigger(const entities::classes::CoreEntity *otherEnt, const vec &dir) {
     if (otherEnt != nullptr) {
         conoutf("%s '%s' %s %s %s %f %f %f", "Player: ", name.c_str(), " triggered by entity: ", otherEnt->classname.c_str(),
             "from Vector Direction: ", dir.x, dir.y, dir.z);
@@ -81,7 +81,7 @@ bool Player::onTrigger(entities::classes::CoreEntity *otherEnt, const vec &dir) 
     }
 }
 
-bool Player::onTouch(entities::classes::CoreEntity *otherEnt, const vec &dir) {
+bool Player::onTouch(const entities::classes::CoreEntity *otherEnt, const vec &dir) {
      if (otherEnt != nullptr) {
         conoutf("%s %s %s %f %f %f", "Player touched by entity: ", otherEnt->classname.c_str(),
             "from Vector Direction: ", dir.x, dir.y, dir.z);

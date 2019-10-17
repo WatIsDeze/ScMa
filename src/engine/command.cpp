@@ -814,6 +814,16 @@ void setsvarchecked(ident *id, const char *val)
 
 bool addcommand(const char *name, identfun fun, const char *args, int type, const char* doc)
 {
+	if (name == std::string("push"))
+	{
+		
+	}
+	
+	if (name == std::string("font"))
+	{
+	
+	}
+	
     uint argmask = 0;
     int numargs = 0;
     bool limit = true;

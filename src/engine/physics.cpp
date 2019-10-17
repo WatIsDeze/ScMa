@@ -648,8 +648,8 @@ bool plcollide(entities::classes::BasePhysicalEntity *d, const vec &dir, bool in
         const vector<entities::classes::BasePhysicalEntity*> &dynents = checkdynentcache(x, y);
         loopv(dynents)
         {
-           entities::classes::BasePhysicalEntity *o = (entities::classes::BasePhysicalEntity*)dynents[i];
-            if(o==d || d->o.reject(o->o, d->radius+o->radius)) continue;
+           auto o = dynamic_cast<entities::classes::BasePhysicalEntity*>(dynents[i]);
+            if(!o || o==d || d->o.reject(o->o, d->radius+o->radius)) continue;
             if(plcollide(d, dir, o))
             {   
                 collideplayer = o;
@@ -700,8 +700,13 @@ static inline bool mmcollide(entities::classes::BasePhysicalEntity *d, const vec
         //if(!collidewall.iszero()) return true;
         if(!collidewall.iszero()) {
             //game::mapmodelcollide(d, (entities::classes::BaseEntity*)&e, collidewall);
-            ((entities::classes::BaseEntity*)d)->onTouch((entities::classes::CoreEntity*)&e, collidewall);
-            return true;
+            auto d_as_baseEnt = dynamic_cast<entities::classes::BaseEntity*>(d);
+            auto e_as_coreEnt = dynamic_cast<const entities::classes::CoreEntity*>(e);
+            if (d_as_baseEnt && e_as_coreEnt)
+            {
+                d_as_baseEnt->onTouch(e_as_coreEnt, collidewall);
+                return true;
+            }
         }
         collideinside++;
     }

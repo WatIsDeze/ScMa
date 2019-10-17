@@ -11,8 +11,8 @@ void BaseEntity::render() {}
 // OnEvent callbacks.
 //
 void BaseEntity::onAttributeSet(const std::string &key, const std::string &value) {}
-bool BaseEntity::onTrigger(entities::classes::CoreEntity *otherEnt, const vec &dir) { return false; }
-bool BaseEntity::onTouch(entities::classes::CoreEntity *otherEnt, const vec &dir) { return false; }
+bool BaseEntity::onTrigger(const entities::classes::CoreEntity *otherEnt, const vec &dir) { return false; }
+bool BaseEntity::onTouch(const entities::classes::CoreEntity *otherEnt, const vec &dir) { return false; }
 
 
 nlohmann::json BaseEntity::toJson()

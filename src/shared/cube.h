@@ -41,7 +41,7 @@
     #define GL_GLEXT_LEGACY
     #define __glext_h_
     #include <OpenGL/gl.h>
-    #define main SDL_main
+   #define main SDL_main
   #else
     #include <SDL2/SDL.h>
     #include <SDL2/SDL_opengl.h>

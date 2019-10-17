@@ -149,44 +149,47 @@ struct client
 
     client() : message(NULL), inputpos(0), outputpos(0), servport(-1), lastauth(0), shouldpurge(false), registeredserver(false) {}
 };
-vector<client *> clients;
+
+namespace {
+	vector<client *> clients;
+}
 
 ENetSocket serversocket = ENET_SOCKET_NULL;
 
 time_t starttime;
 enet_uint32 servtime = 0;
 
-void fatal(const char *fmt, ...)
-{
-    va_list args;
-    va_start(args, fmt);
-    vfprintf(logfile, fmt, args);
-    fputc('\n', logfile);
-    va_end(args);
-    exit(EXIT_FAILURE);
-}
-
-void conoutfv(int type, const char *fmt, va_list args)
-{
-    vfprintf(logfile, fmt, args);
-    fputc('\n', logfile);
-}
-
-void conoutf(const char *fmt, ...)
-{
-    va_list args;
-    va_start(args, fmt);
-    conoutfv(CON_INFO, fmt, args);
-    va_end(args);
-}
-
-void conoutf(int type, const char *fmt, ...)
-{
-    va_list args;
-    va_start(args, fmt);
-    conoutfv(type, fmt, args);
-    va_end(args);
-}
+//void fatal(const char *fmt, ...)
+//{
+//    va_list args;
+//    va_start(args, fmt);
+//    vfprintf(logfile, fmt, args);
+//    fputc('\n', logfile);
+//    va_end(args);
+//    exit(EXIT_FAILURE);
+//}
+//
+//void conoutfv(int type, const char *fmt, va_list args)
+//{
+//    vfprintf(logfile, fmt, args);
+//    fputc('\n', logfile);
+//}
+//
+//void conoutf(const char *fmt, ...)
+//{
+//    va_list args;
+//    va_start(args, fmt);
+//    conoutfv(CON_INFO, fmt, args);
+//    va_end(args);
+//}
+//
+//void conoutf(int type, const char *fmt, ...)
+//{
+//    va_list args;
+//    va_start(args, fmt);
+//    conoutfv(type, fmt, args);
+//    va_end(args);
+//}
 
 void purgeclient(int n)
 {

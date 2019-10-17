@@ -1386,7 +1386,7 @@ SCRIPTEXPORT void enthavesel()
 
 SCRIPTEXPORT void entselect(CommandTypes::Expression body)
 {
-    if(!noentedit()) addgroup(e.type != ET_EMPTY && entgroup.find(n)<0 && executebool(body));
+    if(!noentedit()) addgroup(e->et_type != ET_EMPTY && entgroup.find(n)<0 && executebool(body));
 }
 
 SCRIPTEXPORT void entloop(CommandTypes::Expression body)
@@ -1396,7 +1396,7 @@ SCRIPTEXPORT void entloop(CommandTypes::Expression body)
 
 SCRIPTEXPORT void insel()
 {
-    entfocus(efocus, intret(pointinsel(sel, e.o)));
+    entfocus(efocus, intret(pointinsel(sel, e->o)));
 }
 
 SCRIPTEXPORT void entget()
@@ -1480,9 +1480,7 @@ int findentity_byclass(const std::string &classname)
 	const auto &ents = entities::getents();
 	for(int i = 0; i <ents.length(); i++)
 	{
-		auto e = dynamic_cast<entities::classes::PlayerStart *>(ents[i]);
-
-		if (!e) continue;
+		if (ents[i]->classname != classname) continue;
 		
 		return i;
 	}

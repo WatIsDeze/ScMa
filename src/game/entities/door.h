@@ -13,8 +13,8 @@ namespace entities {
             void think();
             void render();
 
-            bool onTrigger(entities::classes::CoreEntity *otherEnt, const vec &dir);
-            bool onTouch(entities::classes::CoreEntity *otherEnt, const vec &dir);
+            bool onTrigger(const entities::classes::CoreEntity *otherEnt, const vec &dir);
+            bool onTouch(const entities::classes::CoreEntity *otherEnt, const vec &dir);
 
             void onAnimate(int &anim, int &basetime);
 

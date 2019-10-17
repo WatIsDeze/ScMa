@@ -23,9 +23,10 @@ namespace game {
     {
         // TODO: Fix the namespace variable issues.
         //extern vector<entities::classes::CoreEntity *> entities::ents;
+        auto& ents = entities::getents();
 
-        if (entities::edit_entity > -1 && entities::edit_entity < entities::getents().length()) {
-            entities::classes::CoreEntity *ent = (entities::classes::CoreEntity*)entities::getents()[entities::edit_entity];
+        if (entities::edit_entity > -1 && entities::edit_entity < ents.length()) {
+            auto ent = ents[entities::edit_entity];
 
             // Ensure both string lengths are > 0
             if (strlen(s1) > 0 && strlen(s2) > 0) {
@@ -44,11 +45,10 @@ namespace game {
     // args: (str)key
     SCRIPTEXPORT void ent_get_attr(char *s1)
     {
-        // TODO: Fix the namespace variable issues.
-        //extern vector<entities::classes::BaseEntity *> entities::ents;
+        auto& ents = entities::getents();
 
-        if (entities::edit_entity > -1 && entities::edit_entity < entities::ents.length()) {
-            entities::classes::BaseEntity *ent = (entities::classes::BaseEntity*)entities::ents[entities::edit_entity];
+        if (entities::edit_entity > -1 && entities::edit_entity < ents.length()) {
+            auto ent = ents[entities::edit_entity];
 
 			auto attributeValue = ent->onAttributeGet(s1);
             if (!attributeValue.empty()) {
@@ -57,13 +57,15 @@ namespace game {
         } else {
             conoutf("%s", "No valid entity selected to fetch an attribute from.");
         }
-    };
+    }
 
     // ent_list_attr - Lists all the properties of the given entity.
     SCRIPTEXPORT void ent_list_attr()
     {
-        if (entities::edit_entity > -1 && entities::edit_entity < entities::getents().length()) {
-            entities::classes::CoreEntity *ent = entities::getents()[entities::edit_entity];
+        auto& ents = entities::getents();
+
+        if (entities::edit_entity > -1 && entities::edit_entity < ents.length()) {
+            auto ent = ents[entities::edit_entity];
 
 			auto attributeList = ent->onAttributeList();
             for(auto key : attributeList) {
@@ -73,7 +75,7 @@ namespace game {
         } else {
             conoutf("%s", "No valid entity selected to fetch an attribute from.");
         }
-    });
+    }
 
     SCRIPTEXPORT void gotosel()
     {

@@ -15,7 +15,7 @@ add_library(SchizoMania_Shared_Client STATIC
     igame.h
     pch.cpp
     stream.cpp
-    tessfont.c
+    # tessfont.c
     tools.cpp
     tools.h
     zip.cpp

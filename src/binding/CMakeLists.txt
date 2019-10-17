@@ -1,4 +1,7 @@
 
+set(CMAKE_CXX_VISIBILITY_PRESET default)
+set(CMAKE_VISIBILITY_INLINES_HIDDEN 0)
+
 execute_process(
     COMMAND /usr/local/bin/python3 index.py binding
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
@@ -61,8 +64,28 @@ endforeach()
 # message("output_sources ${output_sources}")
 
 add_library(SchizoMania_Binding
-    ${output_sources}
+    STATIC
+        ${output_sources}
 )
+set(SchizoMania_Binding_Binary /Users/micha/dev/ScMaMike/bscriptbinding/binding/Debug/libSchizoMania_Binding.a)
+# get_property(SchizoMania_Binding_Binary TARGET SchizoMania_Binding PROPERTY LOCATION)
+
+set_target_properties(SchizoMania_Binding PROPERTIES LINKER_LANGUAGE CXX)
+
+if (APPLE)
+    target_link_options(SchizoMania_Binding PUBLIC
+        SHELL:-Wl,-all_load $<TARGET_FILE:SchizoMania_Binding>
+    )
+elseif(LINUX)
+    target_link_options(SchizoMania_Binding PUBLIC
+        SHELL:-Wl,--whole-archive $<TARGET_FILE:SchizoMania_Binding> -Wl,--no-whole-archive
+    )
+elseif(WIN32)
+    target_link_options(SchizoMania_Binding PUBLIC
+        /WHOLEARCHIVE:$<TARGET_FILE:SchizoMania_Binding>
+    )
+endif()
+
 
 target_include_directories(SchizoMania_Binding
     PRIVATE

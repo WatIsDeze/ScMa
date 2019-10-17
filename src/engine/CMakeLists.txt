@@ -22,8 +22,10 @@ add_library(SchizoMania_Engine_Client STATIC
     light.cpp
     light.h
     lightning.h
+    log.h
+    log.cpp
     # main.cpp
-    master.cpp
+    # master.cpp
     material.cpp
     md2.h
     md3.h
@@ -50,6 +52,7 @@ add_library(SchizoMania_Engine_Client STATIC
     rendertext.cpp
     renderva.cpp
     scriptexport.h
+    scriptexport.cpp
     server.cpp
     serverbrowser.cpp
     shader.cpp

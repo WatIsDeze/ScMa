@@ -28,9 +28,10 @@ def file_get_contents_from(file, token):
     return ""
 
 def compare_file_with_data(file, data):
-    with open(file, "r") as handle:
-        filedata = handle.read()
-        return filedata == data
+    if os.path.exists(file):
+        with open(file, "r") as handle:
+            filedata = handle.read()
+            return filedata == data
     return False
 
 def file_write_data(file, data):
@@ -55,7 +56,7 @@ def generate_code(file, outputfile):
     parser = CppParser(file)
     parser.start()
     parser.cppmodel_generate()
-    fileMid = CubeScriptBinding.Generate(parser.cppmodel())
+    fileMid = CubeScriptBinding.GenerateWithoutMacros(parser.cppmodel())
 
     token_in = "// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //"
     token_out = "// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //"

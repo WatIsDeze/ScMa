@@ -6,6 +6,7 @@
 #include <cstdio>
 #include <cstring>
 #include <utility>
+#include <algorithm>
 #include <enet/enet.h>
 
 #include <SDL.h>
