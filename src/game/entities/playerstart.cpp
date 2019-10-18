@@ -4,9 +4,9 @@ namespace entities {
 namespace classes {
 
 PlayerStart::PlayerStart() {
-    et_type = ET_GAMESPECIFIC;
-    ent_type = ENT_INANIMATE;
-    game_type = PLAYERSTART;
+	et_type = ET_GAMESPECIFIC;
+	ent_type = ENT_INANIMATE;
+	game_type = PLAYERSTART;
 }
 
 void PlayerStart::preload() {
@@ -22,8 +22,7 @@ void PlayerStart::render() {
 }
 
 void PlayerStart::reset() {
-	// Set names.
-    setName("PlayerStart");
+
 }
 
 nlohmann::json PlayerStart::toJson()

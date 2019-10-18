@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="enet"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\cmake\;CMake Files\enet\;CMake Files\shared\;CMake Files\shared\entities\;CMake Files\game\;CMake Files\engine\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="enet">
+				<Option output="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/libenet.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DGL_SILENCE_DEPRECATION"/>
+					<Add option="-DHAS_FCNTL=1"/>
+					<Add option="-DHAS_POLL=1"/>
+					<Add option="-DHAS_GETNAMEINFO=1"/>
+					<Add option="-DHAS_GETADDRINFO=1"/>
+					<Add option="-DHAS_GETHOSTBYNAME_R=1"/>
+					<Add option="-DHAS_GETHOSTBYADDR_R=1"/>
+					<Add option="-DHAS_INET_PTON=1"/>
+					<Add option="-DHAS_INET_NTOP=1"/>
+					<Add option="-DHAS_MSGHDR_FLAGS=1"/>
+					<Add option="-DHAS_SOCKLEN_T=1"/>
+					<Add directory="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/ext/json-develop/single_include"/>
+					<Add directory="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/Makefile&quot;  VERBOSE=1 enet"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="enet/fast">
+				<Option output="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/libenet.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DGL_SILENCE_DEPRECATION"/>
+					<Add option="-DHAS_FCNTL=1"/>
+					<Add option="-DHAS_POLL=1"/>
+					<Add option="-DHAS_GETNAMEINFO=1"/>
+					<Add option="-DHAS_GETADDRINFO=1"/>
+					<Add option="-DHAS_GETHOSTBYNAME_R=1"/>
+					<Add option="-DHAS_GETHOSTBYADDR_R=1"/>
+					<Add option="-DHAS_INET_PTON=1"/>
+					<Add option="-DHAS_INET_NTOP=1"/>
+					<Add option="-DHAS_MSGHDR_FLAGS=1"/>
+					<Add option="-DHAS_SOCKLEN_T=1"/>
+					<Add directory="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/ext/json-develop/single_include"/>
+					<Add directory="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/Makefile&quot;  VERBOSE=1 enet/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/callbacks.c">
+			<Option target="enet"/>
+		</Unit>
+		<Unit filename="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/compress.c">
+			<Option target="enet"/>
+		</Unit>
+		<Unit filename="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/host.c">
+			<Option target="enet"/>
+		</Unit>
+		<Unit filename="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/include/enet/callbacks.h">
+			<Option target="enet"/>
+		</Unit>
+		<Unit filename="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/include/enet/enet.h">
+			<Option target="enet"/>
+		</Unit>
+		<Unit filename="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/include/enet/enettime.h">
+			<Option target="enet"/>
+		</Unit>
+		<Unit filename="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/include/enet/list.h">
+			<Option target="enet"/>
+		</Unit>
+		<Unit filename="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/include/enet/protocol.h">
+			<Option target="enet"/>
+		</Unit>
+		<Unit filename="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/include/enet/types.h">
+			<Option target="enet"/>
+		</Unit>
+		<Unit filename="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/include/enet/unix.h">
+			<Option target="enet"/>
+		</Unit>
+		<Unit filename="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/include/enet/utility.h">
+			<Option target="enet"/>
+		</Unit>
+		<Unit filename="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/include/enet/win32.h">
+			<Option target="enet"/>
+		</Unit>
+		<Unit filename="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/list.c">
+			<Option target="enet"/>
+		</Unit>
+		<Unit filename="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/packet.c">
+			<Option target="enet"/>
+		</Unit>
+		<Unit filename="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/peer.c">
+			<Option target="enet"/>
+		</Unit>
+		<Unit filename="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/protocol.c">
+			<Option target="enet"/>
+		</Unit>
+		<Unit filename="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/unix.c">
+			<Option target="enet"/>
+		</Unit>
+		<Unit filename="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/win32.c">
+			<Option target="enet"/>
+		</Unit>
+		<Unit filename="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/../cmake/FindSDL2.cmake">
+			<Option virtualFolder="CMake Files\..\cmake\"/>
+		</Unit>
+		<Unit filename="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/../cmake/FindSDL2_image.cmake">
+			<Option virtualFolder="CMake Files\..\cmake\"/>
+		</Unit>
+		<Unit filename="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/../cmake/FindSDL2_mixer.cmake">
+			<Option virtualFolder="CMake Files\..\cmake\"/>
+		</Unit>
+		<Unit filename="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/../cmake/FindWEBP.cmake">
+			<Option virtualFolder="CMake Files\..\cmake\"/>
+		</Unit>
+		<Unit filename="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/enet/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\enet\"/>
+		</Unit>
+		<Unit filename="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/shared/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\shared\"/>
+		</Unit>
+		<Unit filename="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/shared/entities/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\shared\entities\"/>
+		</Unit>
+		<Unit filename="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/game/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\game\"/>
+		</Unit>
+		<Unit filename="/home/watisdeze/Development/Projects/SchizoMania/Clones/ScMa/src/engine/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\engine\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

@@ -146,3 +146,4 @@ if (APPLE)
         MACOSX_PACKAGE_LOCATION Resources/MainMenu.nib
     )
 endif()
+

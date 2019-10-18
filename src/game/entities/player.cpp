@@ -12,10 +12,12 @@ Player::Player() : BaseDynamicEntity() {
 	game_type = PLAYER;
 	collidetype = COLLIDE_OBB;
 	physstate = PHYS_FALL;
-
+	// Load in our player entity model.
+	conoutf("%s", "Preloading player entity");
+	preloadmodel("actors/player/male");
 	// Reset.
 	setName("Player");
-
+//preloadmodel("player/female");
 	// Camera.
 	camera = new entities::classes::BasePhysicalEntity();
 }
@@ -27,7 +29,7 @@ Player::Player() : BaseDynamicEntity() {
 void Player::preload() {
 	// Load in our player entity model.
 	conoutf("%s", "Preloading player entity");
-	preloadmodel("player/character");
+	preloadmodel("actors/player/male");
 
 	state = CS_ALIVE;
 	et_type = ET_GAMESPECIFIC;
@@ -63,11 +65,7 @@ void Player::render() {
 		// Calculate the position.
 		vec pos = o;
 		pos.z -= eyeheight;
-		//rendermodel("player/bones", ANIM_IDLE, pos, yaw, pitch, roll, MDL_CULL_VFC | MDL_CULL_DIST | MDL_CULL_OCCLUDED, NULL, NULL, 1, 1, 1, vec4(1, 1, 1, 1));
-		/*vec4 color (0.5f, 0.5f, 0.5f, 1.0f);
-		float fade = 1;
-		int basetime = 1;*/
-		rendermodel("player/character", ANIM_RAGDOLL | ANIM_LOOP, pos, yaw, pitch, 0, MDL_CULL_VFC | MDL_CULL_DIST | MDL_CULL_OCCLUDED);
+		rendermodel("actors/player/male", ANIM_JUMP, pos, yaw, pitch, 0, MDL_CULL_VFC | MDL_CULL_DIST | MDL_CULL_OCCLUDED);
 	}
 }
 
@@ -92,7 +90,7 @@ bool Player::onTouch(entities::classes::CoreEntity *otherEnt, const vec &dir) {
 }
 
 void Player::reset() {
-	setName("Player");
+	setName("PlayerStart");
 
 	setspawned(false);
 }
