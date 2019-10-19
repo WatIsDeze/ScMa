@@ -11,7 +11,6 @@ namespace entities
 
         class BaseDynamicEntity : public BasePhysicalEntity
         {
-            ENTITY_FACTORY_IMPL(BaseDynamicEntity)
         public:
             void stopmoving();
             vec abovehead();

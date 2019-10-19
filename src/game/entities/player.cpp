@@ -14,7 +14,7 @@ Player::Player() : BaseDynamicEntity() {
 	physstate = PHYS_FALL;
 	// Load in our player entity model.
 	conoutf("%s", "Preloading player entity");
-	preloadmodel("actors/player/male");
+	preloadmodel("player/male");
 	// Reset.
 	setName("Player");
 //preloadmodel("player/female");
@@ -29,7 +29,7 @@ Player::Player() : BaseDynamicEntity() {
 void Player::preload() {
 	// Load in our player entity model.
 	conoutf("%s", "Preloading player entity");
-	preloadmodel("actors/player/male");
+	preloadmodel("player/male");
 
 	state = CS_ALIVE;
 	et_type = ET_GAMESPECIFIC;
@@ -65,14 +65,15 @@ void Player::render() {
 		// Calculate the position.
 		vec pos = o;
 		pos.z -= eyeheight;
-		rendermodel("actors/player/male", ANIM_JUMP, pos, yaw, pitch, 0, MDL_CULL_VFC | MDL_CULL_DIST | MDL_CULL_OCCLUDED);
+		rendermodel("player/male", ANIM_JUMP, pos, yaw, pitch, 0, MDL_CULL_VFC | MDL_CULL_DIST | MDL_CULL_OCCLUDED);
 	}
 }
 
 bool Player::onTrigger(entities::classes::CoreEntity *otherEnt, const vec &dir) {
-	if (otherEnt != nullptr) {
-		conoutf("%s '%s' %s %s %s %f %f %f", "Player: ", name.c_str(), " triggered by entity: ", otherEnt->classname.c_str(),
-			"from Vector Direction: ", dir.x, dir.y, dir.z);
+	
+		if (otherEnt	 != nullptr) \{
+				conoutf("%s '%s' %s %s %s %f %f %f", "Player: ", name.c_str(), " triggered by entity: ", otherEnt->classname.c_str(),
+					"from Vector Direction: ", dir.x, dir.y, dir.z);
 			return true;
 	} else {
 		return false;
