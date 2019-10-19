@@ -11,7 +11,8 @@ from .cppmodel.CxxInclude import CxxInclude
 
 libclang_paths = [
     "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib",
-    "/usr/local/lib/libclang.so"
+    "/usr/local/lib/libclang.so",
+    "/usr/lib/x86_64-linux-gnu/libclang-7.so"
 ]
 
 EXPORT_ANNOTATION = "scriptexport"

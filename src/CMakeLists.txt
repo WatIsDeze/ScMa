@@ -1,5 +1,5 @@
 #CMake Configuration for Tesseract "The Right Way (tm)"
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.13)
 project(SchizoMania)
 
 # Build options.

@@ -3,14 +3,14 @@ set(CMAKE_CXX_VISIBILITY_PRESET default)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN 0)
 
 execute_process(
-    COMMAND /usr/local/bin/python3 index.py binding
+    COMMAND python3 index.py binding
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
     OUTPUT_VARIABLE binding_sources
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 
 execute_process(
-    COMMAND /usr/local/bin/python3 index.py input
+    COMMAND python3 index.py input
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
     OUTPUT_VARIABLE input_sources
     OUTPUT_STRIP_TRAILING_WHITESPACE
@@ -21,14 +21,14 @@ set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
 )
 
 execute_process(
-    COMMAND /usr/local/bin/python3 index.py genlist ${sources_sources}
+    COMMAND python3 index.py genlist ${sources_sources}
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
 )
 
 
 foreach(input_file ${input_sources})
     execute_process(
-        COMMAND /usr/local/bin/python3 index.py cmake_output ${input_file}
+        COMMAND python3 index.py cmake_output ${input_file}
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         OUTPUT_VARIABLE input_file_target
         OUTPUT_STRIP_TRAILING_WHITESPACE
@@ -42,7 +42,7 @@ foreach(input_file ${input_sources})
         OUTPUT command_${input_file_target}
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMAND
-        /usr/local/bin/python3 index.py gen ${input_file} ${output_file_target}
+        python3 index.py gen ${input_file} ${output_file_target}
         COMMENT "Preprocessing ${input_file}"
     )
     add_custom_target(
@@ -76,7 +76,7 @@ if (APPLE)
     target_link_options(SchizoMania_Binding PUBLIC
         SHELL:-Wl,-all_load $<TARGET_FILE:SchizoMania_Binding>
     )
-elseif(LINUX)
+elseif(UNIX)
     target_link_options(SchizoMania_Binding PUBLIC
         SHELL:-Wl,--whole-archive $<TARGET_FILE:SchizoMania_Binding> -Wl,--no-whole-archive
     )
@@ -99,7 +99,7 @@ target_link_libraries(SchizoMania_Binding
 
 foreach(input_file ${input_sources})
     execute_process(
-        COMMAND /usr/local/bin/python3 index.py cmake_output ${input_file}
+        COMMAND python3 index.py cmake_output ${input_file}
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         OUTPUT_VARIABLE input_file_target
         OUTPUT_STRIP_TRAILING_WHITESPACE
