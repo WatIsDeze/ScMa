@@ -7,48 +7,76 @@ namespace game
     // Global player entity pointer.
     entities::classes::Player *player1 = NULL;
 
+    // List of connected players. (For future network usage.)
+    vector<entities::classes::Player*> players;
+
     // Networking State properties.
     bool connected = false;
 
     // Map Game State properties.
-    int maptime = 0;
-    cubestr mapname = "";
+    cubestr clientmap = "";     // Current map filename.
+    int maptime = 0;            // Frame time.
+    int maprealtime = 0;        // Total time.
 
     void updateworld() {
-        // Update the world time.
+        // Update the map time. (First frame since maptime = 0.
         if(!maptime) {
             maptime = lastmillis;
+            maprealtime = totalmillis;
             return;
         }
 
-        // Escape this function if there is no currenttime. (Meaning it is 0.)
-        if(!curtime) return;
+        // Escape this function if there is no currenttime yet from server to client. (Meaning it is 0.)
+        if(!curtime) return; //{ gets2c(); if (player1->) c2sinfo(); return; } //c2sinfo(); }///if(player1->clientnum>=0) c2sinfo(); return; }
+        //if(!curtime) return; //{ gets2c(); c2sinfo(); }///if(player1->clientnum>=0) c2sinfo(); return; }
 
         // Update the physics.
         physicsframe();
 
-        // Update all our objects.
+        // Update all our entity objects.
+       // gets2c();
         updateentities();
+
+        // Allow for crouching and moving.
+        if (connected) {
+            //crouchplayer(player1, 10, true);
+            moveplayer(player1, 10, true);
+        }
+
+       // if(player->clientnum >=0) c2sinfo();   // do this last, to reduce the effective frame lag
+    }
+
+    void SpawnPlayer()   // place at random spawn
+    {
+        player1 = new entities::classes::Player();
+        player1->respawn();
     }
 
     void updateentities() {
         // Execute think actions for entities.
-        loopv(entities::ents)
+        loopv(entities::g_ents)
         {
             // Let's go at it!
-            entities::classes::BaseEntity *e = entities::ents[i];
-            e->think();
-//          if(e.type == ENT_PLAYER) {}
+            if (entities::g_ents.inrange(i)) {
+                entities::classes::BaseEntity *e = entities::g_ents[i];
+                if (e != NULL && e->ent_type != ENT_PLAYER)
+                    e->think();
+            }
+
         }
 
-        // Player specific think action.
-        player1->think();
+        //if (game::player1)
+            //game::player1->think();
+
+        if (connected) {
+            conoutf("Connected: %i", connected);
+        }
     }
 
     void gameconnect(bool _remote)
     {
         // Store connection state.
-        connected = true;
+        connected = _remote;
 
         // Toggle edit mode if required.
         if(editmode)
@@ -73,6 +101,9 @@ namespace game
         // If world loading fails, start a new empty map instead.
         if(!load_world(name))
             emptymap(0, true, name);
+
+        // Add the player entity to index 0 of the entity list.
+
     }
 
     void forceedit(const char *name) {
@@ -81,10 +112,16 @@ namespace game
     }
 
     // Never seen an implementation of this function, should be part of BaseEntity.
-    void dynentcollide(physent *d, physent *o, const vec &dir) {}
+    void dynentcollide(entities::classes::BaseDynamicEntity *d, entities::classes::BaseDynamicEntity *o, const vec &dir) {
+        conoutf("dynentcollide D et_type: %i ent_type: %i game_type: %i --- O et_type: %i ent_type: %i game_type %i", d->et_type, d->ent_type, d->game_type, o->et_type, o->ent_type, o->game_type);
+    }
+
+    void mapmodelcollide(entities::classes::BaseEntity *d, entities::classes::BaseEntity *o, const vec &dir) {
+        conoutf("mmcollide D et_type: %i ent_type: %i game_type: %i --- O et_type: %i ent_type: %i game_type %i", d->et_type, d->ent_type, d->game_type, o->et_type, o->ent_type, o->game_type);
+    }
 
     // Never seen an implementation of this function, should be part of BaseEntity.
-    void bounced(physent *d, const vec &surface) {}
+    void bounced(entities::classes::BasePhysicalEntity *d, const vec &surface) {}
 
     // Unsure what to do with these yet.
     void edittrigger(const selinfo &sel, int op, int arg1, int arg2, int arg3, const VSlot *vs) {
@@ -96,31 +133,39 @@ namespace game
 
     // These speak for themselves.
     const char *getclientmap() {
-        return mapname;
+        return clientmap;
     }
     const char *getmapinfo() {
         return NULL;
     }
     void resetgamestate() {
-
+        //clearprojectiles();
+        //clearbouncers();
     }
-    void suicide(physent *d) {
+    void suicide(entities::classes::BaseEntity *d) {
 
     }
     void newmap(int size) {
+        // Copy into mapname and reset maptime.
+        maptime = 0;
 
+        // SpawnPlayer.
+        SpawnPlayer();
+
+        // Find our playerspawn.
+        findplayerspawn(player1, -1, 0);
     }
     void loadingmap(const char *name) {
+
     }
 
     void startmap(const char *name)
     {
-        // Copy into mapname and reset maptime.
-        copycubestr(mapname, name ? name : "");
-        maptime = 0;
-
-        // Find our playerspawn.
+        SpawnPlayer();
         findplayerspawn(player1);
+        entities::resetspawns();
+        copycubestr(clientmap, name ? name : "");
+        execident("mapstart");
     }
 
     bool needminimap() {
@@ -157,49 +202,48 @@ namespace game
 
     }
 
-    bool canjump() {
+    bool canjump()
+    {
+        //if(!intermission) respawn();
+        return player1->state!=CS_DEAD;// && !intermission;
+    }
+
+    bool cancrouch()
+    {
+        return player1->state!=CS_DEAD;// && !intermission;
+    }
+
+    bool allowmove(entities::classes::BasePhysicalEntity *d)
+    {
         return true;
-    }
-    bool cancrouch() {
-        if(!connected) return false;
-        return player1->state!=CS_DEAD;
+        //if(d->ent_type!=ENT_PLAYER) return true;
+        //return !d->ms_lastaction || lastmillis-d->ms_lastaction>=1000;
     }
 
-    bool allowmove(physent *d) {
-        return true;
-        //if(d->type!=ENT_PLAYER) return true;
-        //else return false;
-        //if(d->type!=ENT_PLAYER) return true;
+    entities::classes::BasePhysicalEntity *iterdynents(int i) {
+        if (i == 0) {
+            return (entities::classes::BasePhysicalEntity*)player1;
+        } else {
+            if (i < entities::g_ents.length()) {
+                return entities::g_ents[i];
+            } else {
+                return nullptr;
+            }
+        }
 
-        // Checks whether the entity(usually a client/player) has done anything that requires waiting time.
-        //return !((entities::classes::BaseEntity *)d)->lasttaunt || lastmillis-((entities::classes::BaseEntity *)d)->lasttaunt>=1000;
-    }
-
-    dynent *iterdynents(int i) {
-        // TODO: Fix this, objects should be the ents array I guess.
-        // Reference is found in fps code.
-//        dynent *iterdynents(int i)
-//        {
-//            if(i<players.length()) return players[i];
-//            i -= players.length();
-//            if(i<monsters.length()) return (dynent *)monsters[i];
-//            i -= monsters.length();
-//            if(i<movables.length()) return (dynent *)movables[i];
-//            return NULL;
-//        }
-        return player1;
+        //if (i < entities::g_lightEnts.length()) return (entities::classes::BaseEntity*)entities::g_lightEnts[i];
+        //    i -= entities::g_lightEnts.length();
+        //return NULL;
     }
     // int numdynents() { return players.length()+monsters.length()+movables.length(); }
     int numdynents() {
-        return 1;
+        return entities::g_ents.length() + 1; // + 1 is for the player.
     }
 
+    // This function should be used to render HUD View stuff etc.
     void rendergame(bool mainpass) {
-         // TODO: Fix this.
-        //if(isthirdperson()) renderclient(player1, "ogro", NULL, 0, ANIM_ATTACK1, 300, player1->lastaction, player1->lastpain);
-
-        // Loop through our entities and render them all.
-
+        // This function should be used to render HUD View stuff etc.
+//        game::RenderGameEntities();
     }
 
     const char *defaultcrosshair(int index) {
@@ -212,6 +256,7 @@ namespace game
     }
 
     void setupcamera() {
+
     }
 
     bool allowthirdperson() {
@@ -226,16 +271,23 @@ namespace game
         return player1->state!=CS_EDITING;
     }
 
-    void lighteffects(dynent *e, vec &color, vec &dir) {
+    void lighteffects(entities::classes::BaseEntity *e, vec &color, vec &dir) {
     }
 
-    void adddynlights() {
+    void renderDynamicLights() {
+        // Loop through our light entities and render them all.
+        loopv(entities::g_lightEnts)
+        {
+            // Let's go at it!
+            entities::classes::BaseEntity *e = entities::g_lightEnts[i];
+            e->render();
+        }
     }
 
-    void dynlighttrack(physent *owner, vec &o, vec &hud) {
+    void dynlighttrack(entities::classes::BaseEntity *owner, vec &o, vec &hud) {
     }
 
-    void particletrack(physent *owner, vec &o, vec &d) {
+    void particletrack(entities::classes::BaseEntity *owner, vec &o, vec &d) {
     }
 
     void writegamedata(vector<char> &extras) {
@@ -273,7 +325,7 @@ namespace game
 
     //---------------------------------------------------------------
 
-    void physicstrigger(physent *d, bool local, int floorlevel, int waterlevel, int material)
+    void physicstrigger(entities::classes::BasePhysicalEntity *d, bool local, int floorlevel, int waterlevel, int material)
     {
         // This function seems to be used for playing material audio. No worries about that atm.
 /*        if     (waterlevel>0) { if(material!=MAT_LAVA) playsound(S_SPLASHOUT, d==player1 ? NULL : &d->o); }
@@ -283,10 +335,9 @@ namespace game
     }
 
     void initclient() {
-        // This may work.
-        // TODO: It may fail lol.
-        player1 = new entities::classes::Player();
-        player1->setspawned(true);
+        // Setup the map time.
+        maptime = maprealtime = 0;
+        SpawnPlayer();
     }
 
     const char *gameident() {

@@ -8,19 +8,19 @@ namespace entities
     }
 
     extern void editent(int i, bool local);
-    extern const char *entnameinfo(entity &e);
+    extern const char *entnameinfo(entities::classes::BasePhysicalEntity &e);
     extern const char *entname(int i);
-    extern float dropheight(entity &e);
+    extern float dropheight(entities::classes::BaseEntity &e);
     extern void fixentity(entities::classes::BaseEntity &e);
-    extern void entradius(entities::classes::BaseEntity &e, bool color);
+    extern void entradius(entities::classes::BasePhysicalEntity &e, bool color);
     extern bool mayattach(entities::classes::BaseEntity &e);
     extern bool attachent(entities::classes::BaseEntity &e, entities::classes::BaseEntity &a);
-    extern bool printent(entities::classes::BaseEntity &e, char *buf, int len);
+    extern bool printent(entities::classes::BasePhysicalEntity &e, char *buf, int len);
     extern entities::classes::BaseEntity *newgameentity(char *strclass = NULL);
     extern void deletegameentity(entities::classes::BaseEntity *e);
     extern void clearents();
-    extern vector<classes::BaseEntity *> &getents();
-    extern const char *entmodel(const entity &e);
+    extern vector<entities::classes::BasePhysicalEntity *> &getents();
+    extern const char *entmodel(const entities::classes::BaseEntity &e);
     extern void animatemapmodel(const entities::classes::BaseEntity &e, int &anim, int &basetime);
 }
 
@@ -54,16 +54,19 @@ namespace game
 
     extern void updateworld();
     extern void initclient();
-    extern void physicstrigger(physent *d, bool local, int floorlevel, int waterlevel, int material = 0);
-    extern void bounced(physent *d, const vec &surface);
+    extern void physicstrigger(entities::classes::BasePhysicalEntity *d, bool local, int floorlevel, int waterlevel, int material = 0);
+    extern void bounced(entities::classes::BasePhysicalEntity *d, const vec &surface);
     extern void edittrigger(const selinfo &sel, int op, int arg1 = 0, int arg2 = 0, int arg3 = 0, const VSlot *vs = NULL);
     extern void vartrigger(ident *id);
-    extern void dynentcollide(physent *d, physent *o, const vec &dir);
+    extern void dynentcollide(entities::classes::BaseDynamicEntity *d, entities::classes::BaseDynamicEntity *o, const vec &dir);
+
+    // WatIsDeze: TODO: Maybe remove.
+    extern void mapmodelcollide(entities::classes::BaseEntity *d, entities::classes::BaseEntity *o, const vec &dir);
     extern const char *getclientmap();
     extern const char *getmapinfo();
     extern const char *getscreenshotinfo();
     extern void resetgamestate();
-    extern void suicide(physent *d);
+    extern void suicide(entities::classes::BaseEntity *d);
     extern void newmap(int size);
     extern void startmap(const char *name);
     extern void preload();
@@ -71,10 +74,10 @@ namespace game
     extern void gameplayhud(int w, int h);
     extern bool canjump();
     extern bool cancrouch();
-    extern bool allowmove(physent *d);
-    extern dynent *iterdynents(int i);
+    extern bool allowmove(entities::classes::BasePhysicalEntity *d);
+    extern entities::classes::BasePhysicalEntity *iterdynents(int i);
     extern int numdynents();
-    extern void rendergame();
+    extern void RenderGameEntities();
     extern void renderavatar();
     extern void renderplayerpreview(int model, int color, int team, int weap);
     extern int numanims();
@@ -87,9 +90,9 @@ namespace game
     extern void setupcamera();
     extern bool detachcamera();
     extern bool collidecamera();
-    extern void adddynlights();
-    extern void particletrack(physent *owner, vec &o, vec &d);
-    extern void dynlighttrack(physent *owner, vec &o, vec &hud);
+    extern void renderDynamicLights();
+    extern void particletrack(entities::classes::BaseEntity *owner, vec &o, vec &d);
+    extern void dynlighttrack(entities::classes::BaseEntity *owner, vec &o, vec &hud);
     extern bool needminimap();
 }
 

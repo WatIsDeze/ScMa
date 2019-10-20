@@ -27,11 +27,11 @@ void fixmapname(char *name)
     validmapname(name, name, NULL, "");
 }
 
-static void fixent(entity &e, int version)
+static void fixent(entities::classes::BasePhysicalEntity &e, int version)
 {
     if(version <= 0)
     {
-        if(e.type >= ET_DECAL) e.type++;
+        if(e.et_type >= ET_DECAL) e.et_type++;
     }
 }
 
@@ -42,7 +42,7 @@ static bool loadmapheader(stream *f, const char *ogzname, mapheader &hdr, octahe
 
     if(!memcmp(hdr.magic, "SCMA", 4))
     {
-        if(hdr.version>MAPVERSION) { conoutf(CON_ERROR, "map %s requires a newer version of Tesseract", ogzname); return false; }
+        if(hdr.version>MAPVERSION) { conoutf(CON_ERROR, "map %s requires a newer version of SchizoMania", ogzname); return false; }
         if(f->read(&hdr.worldsize, 6*sizeof(int)) != 6*sizeof(int)) { conoutf(CON_ERROR, "map %s has malformatted header", ogzname); return false; }
         lilswap(&hdr.worldsize, 6);
         if(hdr.worldsize <= 0|| hdr.numents < 0) { conoutf(CON_ERROR, "map %s has malformatted header", ogzname); return false; }
@@ -68,7 +68,7 @@ static bool loadmapheader(stream *f, const char *ogzname, mapheader &hdr, octahe
     return true;
 }
 
-bool loadents(const char *fname, vector<entity> &ents, uint *crc)
+bool loadents(const char *fname, vector<entities::classes::BasePhysicalEntity> &ents, uint *crc)
 {
 /*    cubestr name;
     validmapname(name, fname);
@@ -138,6 +138,7 @@ bool loadents(const char *fname, vector<entity> &ents, uint *crc)
     delete f;
 
     return true;*/
+    return false;
 }
 
 #ifndef STANDALONE
@@ -614,8 +615,8 @@ bool save_world(const char *mname, bool nolms)
     hdr.headersize = sizeof(hdr);
     hdr.worldsize = worldsize;
     hdr.numents = 0;
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
-    loopv(ents) if(ents[i]->type!=ET_EMPTY || nolms) hdr.numents++;
+    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
+    loopv(ents) if(ents[i]->et_type!=ET_EMPTY || nolms) hdr.numents++;
     hdr.numpvs = nolms ? 0 : getnumviewcells();
     hdr.blendmap = shouldsaveblendmap();
     hdr.numvars = 0;
@@ -671,14 +672,16 @@ bool save_world(const char *mname, bool nolms)
 
     loopv(ents)
     {
-        if(ents[i]->type!=ET_EMPTY || nolms)
+        if(ents[i]->et_type!=ET_EMPTY || nolms)
         {
-            entities::classes::BaseEntity tmp = *ents[i];
+            entities::classes::BasePhysicalEntity tmp = *ents[i];
             lilswap(&tmp.o.x, 3);
             lilswap(&tmp.attr1, 5);
 
             // These are the default attributes, the old-school ones which are still used here and there in the engine.
-            j[i]["type"] = tmp.type;
+            j[i]["et_type"] = tmp.et_type;
+            j[i]["ent_type"] = tmp.ent_type;
+            j[i]["game_type"] = tmp.game_type;
             j[i]["o"]["x"] = tmp.o.x;
             j[i]["o"]["y"] = tmp.o.y;
             j[i]["o"]["z"] = tmp.o.z;
@@ -688,17 +691,11 @@ bool save_world(const char *mname, bool nolms)
             j[i]["int_attr4"] = tmp.attr4;
             j[i]["int_attr5"] = tmp.attr5;
             j[i]["int_reserved"] = tmp.reserved;
+            j[i]["model_idx"] = tmp.model_idx;
 
-            // Now comes the good stuff, our own custom attributes.
-            if (tmp.type == GAMEENTITY) {
-                // Store classname.
-                j[i]["game"]["classname"] = tmp.classname;
-
-                // Store attributes.
-                for (std::map<std::string, std::string>::iterator k = tmp.attributes.begin(); k != tmp.attributes.end(); ++k) {
-                    j[i]["game"]["attributes"][k->first] = k->second;
-                }
-            }
+            // Store game related attributes.
+            j[i]["game"]["classname"] = tmp.classname;
+            j[i]["game"]["attributes"] = json(tmp.attributes);
         }
     }
 
@@ -731,7 +728,7 @@ static uint mapcrc = 0;
 uint getmapcrc() { return mapcrc; }
 void clearmapcrc() { mapcrc = 0; }
 
-bool load_world(const char *mname, const char *cname)        // still supports all map formats that have existed since the earliest cube betas!
+bool load_world(const char *mname, const char *cname)        // Does not support old map formats anymore.
 {
     int loadingstart = SDL_GetTicks();
     setmapfilenames(mname, cname);
@@ -843,28 +840,31 @@ bool load_world(const char *mname, const char *cname)        // still supports a
     json j;
     i >> j;
 
-    // Fetch the entities array, which, I suppose can be a BaseEntity from here on to begin with.
-    vector<entities::classes::BaseEntity*> &ents = entities::getents();
+    // Reference to our entities vector list stored in the entities namespace.
+    vector<entities::classes::BasePhysicalEntity*> &ents = entities::getents();
 
     // TODO: Ensure that our data is valid, do not access invalid or nonexistent elements.
     // Parse entities and allocate them, or rather, add them to the list! ;-)
     for (auto& element : j) {
         // For now only proceed if a type is available.
-        if (element.find("type") != element.end()) {
+        if (element.find("et_type") != element.end()) {
             // Classname and type, used to determine what to load in and allocate the precise class firsthand.
             std::string classname("");
-            int type = element["type"];
+            int et_type = element["et_type"];
+            int ent_type = element["ent_type"];
+            int game_type = element["game_type"];
 
             // Have to do this here to ensure that classname can be passed to newgameentity.
-            if (type == GAMEENTITY) {
-               classname = element["game"]["classname"];
-            }
+            classname = element["game"]["classname"];
 
             // Allocate our entity.
-            entities::classes::BaseEntity &e = *entities::newgameentity((char*)classname.c_str());
+            entities::classes::BasePhysicalEntity &e = *(entities::classes::BasePhysicalEntity*)entities::newgameentity((char*)classname.c_str());
 
             // Fetch base entity data. (Old ancient entity info.)
-            e.type = element["type"];
+            e.classname = classname;
+            e.et_type = element["et_type"];
+            e.ent_type = element["ent_type"];
+            e.game_type = element["game_type"];
             e.o.x = element["o"]["x"];
             e.o.y = element["o"]["y"];
             e.o.z = element["o"]["z"];
@@ -874,20 +874,19 @@ bool load_world(const char *mname, const char *cname)        // still supports a
             e.attr4 = element["int_attr4"];
             e.attr5 = element["int_attr5"];
             e.reserved = element["int_reserved"];
+            e.model_idx = element["model_idx"];
 
-            // Fetch ScMa entity info.
-            if (type == GAMEENTITY) {
-                // Store the classname.
-                e.classname = classname;
-                //e.attributes = element.at("game").at("attributes");
-                const json& rh = element["game"]["attributes"];
+            // Fetch a reference to the game attributes json element.
+            const json& attribute_element = element["game"]["attributes"];
+            e.attributes = attribute_element.get<std::map<std::string, std::string>>();
 
-                for (auto& element : json::iterator_wrapper(rh)) {
-                    e.attributes[element.key()] = element.value();
-                }
-            }
-
+            // All went well, so lets add our entity to the list.
             ents.add(&e);
+
+            // Remove it again in case the entity was > ET_GAMESPECIFIC
+            //if (e.et_type >= ET_GAMESPECIFIC) {
+            //    entities::deletegameentity(&e);
+            //}
         }
     }
 
@@ -895,7 +894,7 @@ bool load_world(const char *mname, const char *cname)        // still supports a
     {
         conoutf(CON_WARN, "warning: map has %d entities", hdr.numents);
         // TODO: What to do here?
-        //f->seek((hdr.numents-MAXENTS)*(samegame ? sizeof(entity) + einfosize : eif), SEEK_CUR);
+        //f->seek((hdr.numents-MAXENTS)*(samegame ? sizeof(entities::classes::BaseEntity) + einfosize : eif), SEEK_CUR);
     }
 
     renderprogress(0, "loading slots...");
@@ -941,7 +940,6 @@ bool load_world(const char *mname, const char *cname)        // still supports a
     identflags &= ~IDF_OVERRIDDEN;
 
     preloadusedmapmodels(true);
-
     game::preload();
     flushpreloadedmodels();
 
@@ -1071,19 +1069,19 @@ void writecollideobj(char *name)
         conoutf(CON_ERROR, "geometry for collide model not selected");
         return;
     }
-    vector<entities::classes::BaseEntity *> &ents = entities::getents();
-    entities::classes::BaseEntity *mm = NULL;
+    vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
+    entities::classes::BasePhysicalEntity *mm = NULL;
     loopv(entgroup)
     {
-        entities::classes::BaseEntity &e = *ents[entgroup[i]];
-        if(e.type != ET_MAPMODEL || !pointinsel(sel, e.o)) continue;
+        entities::classes::BasePhysicalEntity &e = *ents[entgroup[i]];
+        if(e.et_type != ET_MAPMODEL || !pointinsel(sel, e.o)) continue;
         mm = &e;
         break;
     }
     if(!mm) loopv(ents)
     {
-        entities::classes::BaseEntity &e = *ents[i];
-        if(e.type != ET_MAPMODEL || !pointinsel(sel, e.o)) continue;
+        entities::classes::BasePhysicalEntity &e = *ents[i];
+        if(e.et_type != ET_MAPMODEL || !pointinsel(sel, e.o)) continue;
         mm = &e;
         break;
     }
@@ -1092,12 +1090,12 @@ void writecollideobj(char *name)
         conoutf(CON_ERROR, "could not find map model in selection");
         return;
     }
-    model *m = loadmapmodel(mm->attr1);
+    model *m = loadmapmodel(mm->model_idx);
     if(!m)
     {
-        mapmodelinfo *mmi = getmminfo(mm->attr1);
+        mapmodelinfo *mmi = getmminfo(mm->model_idx);
         if(mmi) conoutf(CON_ERROR, "could not load map model: %s", mmi->name);
-        else conoutf(CON_ERROR, "could not find map model: %d", mm->attr1);
+        else conoutf(CON_ERROR, "could not find map model: %d", mm->model_idx);
         return;
     }
 

@@ -2048,7 +2048,9 @@ void packvslot(vector<uchar> &buf, const VSlot &src)
     if(src.changed & (1<<VSLOT_ROTATION))
     {
         buf.put(VSLOT_ROTATION);
-        putfloat(buf, src.rotation);
+        // WatIsDeze: Todo: Fetched from svn rev 2199/rev 2200 from Tesseract svn.
+        //putfloat(buf, src.rotation);
+        putint(buf, src.rotation);
     }
     if(src.changed & (1<<VSLOT_OFFSET))
     {
@@ -3030,11 +3032,11 @@ void initenvmaps()
 {
     clearenvmaps();
     envmaps.add().size = hasskybox() ? 0 : 1;
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
     loopv(ents)
     {
-        const entities::classes::BaseEntity &ent = *ents[i];
-        if(ent.type != ET_ENVMAP) continue;
+        const entities::classes::BasePhysicalEntity &ent = *ents[i];
+        if(ent.et_type != ET_ENVMAP) continue;
         envmap &em = envmaps.add();
         em.radius = ent.attr1 ? clamp(int(ent.attr1), 0, 10000) : envmapradius;
         em.size = ent.attr2 ? clamp(int(ent.attr2), 4, 9) : 0;

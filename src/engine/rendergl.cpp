@@ -1,6 +1,9 @@
 // rendergl.cpp: core opengl rendering stuff
 
 #include "engine.h"
+#include "../shared/ents.h"
+#include "../game/game.h"
+#include "../game/entities/player.h"
 
 bool hasVAO = false, hasTR = false, hasTSW = false, hasPBO = false, hasFBO = false, hasAFBO = false, hasDS = false, hasTF = false, hasCBF = false, hasS3TC = false, hasFXT1 = false, hasLATC = false, hasRGTC = false, hasAF = false, hasFBB = false, hasFBMS = false, hasTMS = false, hasMSS = false, hasFBMSBS = false, hasUBO = false, hasMBR = false, hasDB2 = false, hasDBB = false, hasTG = false, hasTQ = false, hasPF = false, hasTRG = false, hasTI = false, hasHFV = false, hasHFP = false, hasDBT = false, hasDC = false, hasDBGO = false, hasEGPU4 = false, hasGPU4 = false, hasGPU5 = false, hasBFE = false, hasEAL = false, hasCR = false, hasOQ2 = false, hasES3 = false, hasCB = false, hasCI = false;
 bool mesa = false, intel = false, amd = false, nvidia = false;
@@ -1364,11 +1367,17 @@ FVARP(sensitivityscale, 1e-4f, 100, 1e4f);
 VARP(invmouse, 0, 0, 1);
 FVARP(mouseaccel, 0, 0, 1000);
 
-VAR(thirdperson, 0, 0, 2);
+/*VAR(thirdperson, 0, 0, 2);
 FVAR(thirdpersondistance, 0, 30, 50);
 FVAR(thirdpersonup, -25, 0, 25);
 FVAR(thirdpersonside, -25, 0, 25);
-physent *camera1 = NULL;
+*/
+VAR(thirdperson, 0, 1, 2);
+FVAR(thirdpersondistance, 0, 10, 25);
+FVAR(thirdpersonup, -25, 0, 25);
+FVAR(thirdpersonside, -25, 0, 25);
+
+entities::classes::BasePhysicalEntity *camera1 = NULL;
 bool detachedcamera = false;
 bool isthirdperson() { return player!=camera1 || detachedcamera; }
 
@@ -1383,10 +1392,13 @@ void fixcamerarange()
 
 void modifyorient(float yaw, float pitch)
 {
+    // WatIsDeze: Dunno why nobody ever checked.
+    if (!camera1 || !player) return;
+
     camera1->yaw += yaw;
     camera1->pitch += pitch;
     fixcamerarange();
-    if(camera1!=player && !detachedcamera)
+    if(camera1!=((entities::classes::BasePhysicalEntity*)player) && !detachedcamera)
     {
         player->yaw = camera1->yaw;
         player->pitch = camera1->pitch;
@@ -1420,15 +1432,19 @@ void recomputecamera()
     game::setupcamera();
     computezoom();
 
-    bool shoulddetach = thirdperson > 1 || game::detachcamera();
-    if(!thirdperson && !shoulddetach)
+    bool allowthirdperson = true;
+    bool shoulddetach = (allowthirdperson && thirdperson > 1) || game::detachcamera();
+    if((!allowthirdperson || !thirdperson) && !shoulddetach)
     {
         camera1 = player;
         detachedcamera = false;
     }
     else
     {
-        static physent tempcamera;
+        static entities::classes::BasePhysicalEntity tempcamera;
+        tempcamera.et_type = ET_GAMESPECIFIC;
+        tempcamera.ent_type = ENT_CAMERA;
+        tempcamera.game_type = ET_GAMESPECIFIC;
         camera1 = &tempcamera;
         if(detachedcamera && shoulddetach) camera1->o = player->o;
         else
@@ -1436,8 +1452,10 @@ void recomputecamera()
             *camera1 = *player;
             detachedcamera = shoulddetach;
         }
-        camera1->reset();
-        camera1->type = ENT_CAMERA;
+        //camera1->reset();
+        camera1->et_type = ET_GAMESPECIFIC;
+        camera1->ent_type = ENT_CAMERA;
+        camera1->game_type = ET_GAMESPECIFIC;
         camera1->move = -1;
         camera1->eyeheight = camera1->aboveeye = camera1->radius = camera1->xradius = camera1->yradius = 2;
 
@@ -2079,11 +2097,13 @@ void drawminimap()
     minimapradius.x = minimapradius.y = max(minimapradius.x, minimapradius.y);
     minimapscale = vec((0.5f - 1.0f/size)/minimapradius.x, (0.5f - 1.0f/size)/minimapradius.y, 1.0f);
 
-    physent *oldcamera = camera1;
-    static physent cmcamera;
+    entities::classes::BasePhysicalEntity *oldcamera = camera1;
+    static entities::classes::BaseDynamicEntity cmcamera;
     cmcamera = *player;
     cmcamera.reset();
-    cmcamera.type = ENT_CAMERA;
+    cmcamera.et_type = ET_GAMESPECIFIC;
+    cmcamera.ent_type = ENT_CAMERA;
+    cmcamera.game_type = GAMEENTITY;
     cmcamera.o = vec(minimapcenter.x, minimapcenter.y, minimapheight > 0 ? minimapheight : minimapcenter.z + minimapradius.z + 1);
     cmcamera.yaw = 0;
     cmcamera.pitch = -90;
@@ -2161,11 +2181,13 @@ void drawcubemap(int size, const vec &o, float yaw, float pitch, const cubemapsi
 {
     drawtex = DRAWTEX_ENVMAP;
 
-    physent *oldcamera = camera1;
-    static physent cmcamera;
+    entities::classes::BasePhysicalEntity *oldcamera = camera1;
+    static entities::classes::BaseDynamicEntity cmcamera;
     cmcamera = *player;
-    cmcamera.reset();
-    cmcamera.type = ENT_CAMERA;
+    //cmcamera.reset();
+    cmcamera.et_type = ET_GAMESPECIFIC;
+    cmcamera.ent_type = ENT_CAMERA;
+    cmcamera.game_type = GAMEENTITY;
     cmcamera.o = o;
     cmcamera.yaw = yaw;
     cmcamera.pitch = pitch;
@@ -2264,8 +2286,8 @@ VAR(modelpreviewpitch, -90, -15, 90);
 
 namespace modelpreview
 {
-    physent *oldcamera;
-    physent camera;
+    entities::classes::BasePhysicalEntity *oldcamera;
+    entities::classes::BasePhysicalEntity camera;
 
     float oldaspect, oldfovy, oldfov, oldldrscale, oldldrscaleb;
     int oldfarplane, oldvieww, oldviewh;
@@ -2291,7 +2313,9 @@ namespace modelpreview
         oldcamera = camera1;
         camera = *camera1;
         camera.reset();
-        camera.type = ENT_CAMERA;
+        camera.et_type = ET_GAMESPECIFIC;
+        camera.ent_type = ENT_CAMERA;
+        camera.game_type = GAMEENTITY;
         camera.o = vec(0, 0, 0);
         camera.yaw = 0;
         camera.pitch = modelpreviewpitch;
@@ -2627,6 +2651,7 @@ void drawcrosshair(int w, int h)
     if(!windowhit && (hidehud || mainmenu)) return; //(hidehud || player->state==CS_SPECTATOR || player->state==CS_DEAD)) return;
 
     vec color(1, 1, 1);
+    // TODO: Change crosshair over here?
     float cx = 0.5f, cy = 0.5f, chsize;
     Texture *crosshair;
     if(windowhit)

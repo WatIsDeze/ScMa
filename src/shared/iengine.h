@@ -41,11 +41,11 @@ enum // cube empty-space materials
 #define isdeadly(mat) ((mat)==MAT_LAVA)
 
 extern void lightent(entities::classes::BaseEntity &e, float height = 8.0f);
-extern void lightreaching(const vec &target, vec &color, vec &dir, bool fast = false, entities::classes::BaseEntity *e = 0, float minambient = 0.4f);
+extern void lightreaching(const vec &target, vec &color, vec &dir, bool fast = false, entities::classes::BasePhysicalEntity *e = 0, float minambient = 0.4f);
 
 enum { RAY_BB = 1, RAY_POLY = 3, RAY_ALPHAPOLY = 7, RAY_ENTS = 9, RAY_CLIPMAT = 16, RAY_SKIPFIRST = 32, RAY_EDITMAT = 64, RAY_SHADOW = 128, RAY_PASS = 256, RAY_SKIPSKY = 512 };
 
-extern float raycube   (const vec &o, const vec &ray,     float radius = 0, int mode = RAY_CLIPMAT, int size = 0, entities::classes::BaseEntity *t = 0);
+extern float raycube   (const vec &o, const vec &ray,     float radius = 0, int mode = RAY_CLIPMAT, int size = 0, entities::classes::BasePhysicalEntity *t = 0);
 extern float raycubepos(const vec &o, const vec &ray, vec &hit, float radius = 0, int mode = RAY_CLIPMAT, int size = 0);
 extern float rayfloor  (const vec &o, vec &floor, int mode = 0, float radius = 0);
 extern bool  raycubelos(const vec &o, const vec &dest, vec &hitpos);
@@ -227,10 +227,10 @@ extern vec getselpos();
 extern int getworldsize();
 extern int getmapversion();
 extern void renderentcone(const entities::classes::BaseEntity &e, const vec &dir, float radius, float angle);
-extern void renderentarrow(const entities::classes::BaseEntity &e, const vec &dir, float radius);
+extern void renderentarrow(const entities::classes::BasePhysicalEntity &e, const vec &dir, float radius);
 extern void renderentattachment(const entities::classes::BaseEntity &e);
 extern void renderentsphere(const entities::classes::BaseEntity &e, float radius);
-extern void renderentring(const entities::classes::BaseEntity &e, float radius, int axis = 0);
+extern void renderentring(const entities::classes::BasePhysicalEntity &e, float radius, int axis = 0);
 
 // main
 extern void fatal(const char *s, ...) PRINTFARGS(1, 2);
@@ -287,12 +287,12 @@ enum
     DL_FLASH  = 1<<10
 };
 
-extern void adddynlight(const vec &o, float radius, const vec &color, int fade = 0, int peak = 0, int flags = 0, float initradius = 0, const vec &initcolor = vec(0, 0, 0), physent *owner = NULL, const vec &dir = vec(0, 0, 0), int spot = 0);
+extern void adddynlight(const vec &o, float radius, const vec &color, int fade = 0, int peak = 0, int flags = 0, float initradius = 0, const vec &initcolor = vec(0, 0, 0), entities::classes::BaseEntity *owner = NULL, const vec &dir = vec(0, 0, 0), int spot = 0);
 extern void dynlightreaching(const vec &target, vec &color, vec &dir, bool hud = false);
-extern void removetrackeddynlights(physent *owner = NULL);
+extern void removetrackeddynlights(entities::classes::BaseEntity *owner = NULL);
 
 // rendergl
-extern physent *camera1;
+extern entities::classes::BasePhysicalEntity *camera1;
 extern vec worldpos, camdir, camright, camup;
 extern float curfov, fovy, aspect;
 
@@ -347,9 +347,9 @@ extern void particle_text(const vec &s, const char *t, int type, int fade = 2000
 extern void particle_textcopy(const vec &s, const char *t, int type, int fade = 2000, int color = 0xFFFFFF, float size = 2.0f, int gravity = 0);
 extern void particle_icon(const vec &s, int ix, int iy, int type, int fade = 2000, int color = 0xFFFFFF, float size = 2.0f, int gravity = 0);
 extern void particle_meter(const vec &s, float val, int type, int fade = 1, int color = 0xFFFFFF, int color2 = 0xFFFFF, float size = 2.0f);
-extern void particle_flare(const vec &p, const vec &dest, int fade, int type, int color = 0xFFFFFF, float size = 0.28f, physent *owner = NULL);
+extern void particle_flare(const vec &p, const vec &dest, int fade, int type, int color = 0xFFFFFF, float size = 0.28f, entities::classes::BaseEntity *owner = NULL);
 extern void particle_fireball(const vec &dest, float max, int type, int fade = -1, int color = 0xFFFFFF, float size = 4.0f);
-extern void removetrackedparticles(physent *owner = NULL);
+extern void removetrackedparticles(entities::classes::BaseEntity *owner = NULL);
 
 // stain
 enum
@@ -374,33 +374,38 @@ extern bool save_world(const char *mname, bool nolms = false);
 extern void fixmapname(char *name);
 extern uint getmapcrc();
 extern void clearmapcrc();
-extern bool loadents(const char *fname, vector<entity> &ents, uint *crc = NULL);
+extern bool loadents(const char *fname, vector<entities::classes::BaseEntity> &ents, uint *crc = NULL);
 
 // physics
 extern vec collidewall;
 extern int collideinside;
-extern physent *collideplayer;
+extern entities::classes::BaseEntity *collideplayer;
 
-extern void moveplayer(physent *pl, int moveres, bool local);
-extern bool moveplayer(physent *pl, int moveres, bool local, int curtime);
-extern void crouchplayer(physent *pl, int moveres, bool local);
-extern bool collide(physent *d, const vec &dir = vec(0, 0, 0), float cutoff = 0.0f, bool playercol = true, bool insideplayercol = false);
-extern bool bounce(physent *d, float secs, float elasticity, float waterfric, float grav);
-extern bool bounce(physent *d, float elasticity, float waterfric, float grav);
-extern void avoidcollision(physent *d, const vec &dir, physent *obstacle, float space);
+extern void moveplayer(entities::classes::BaseDynamicEntity *pl, int moveres, bool local);
+extern bool moveplayer(entities::classes::BasePhysicalEntity *pl, int moveres, bool local, int curtime);
+extern void crouchplayer(entities::classes::BasePhysicalEntity *pl, int moveres, bool local);
+extern bool collide(entities::classes::BasePhysicalEntity *d, const vec &dir = vec(0, 0, 0), float cutoff = 0.0f, bool playercol = true, bool insideplayercol = false);
+extern bool bounce(entities::classes::BasePhysicalEntity *d, float secs, float elasticity, float waterfric, float grav);
+extern bool bounce(entities::classes::BasePhysicalEntity *d, float elasticity, float waterfric, float grav);
+extern void avoidcollision(entities::classes::BasePhysicalEntity *d, const vec &dir, entities::classes::BasePhysicalEntity *obstacle, float space);
 extern bool overlapsdynent(const vec &o, float radius);
-extern bool movecamera(physent *pl, const vec &dir, float dist, float stepdist);
+extern bool movecamera(entities::classes::BasePhysicalEntity *pl, const vec &dir, float dist, float stepdist);
 extern void physicsframe();
-extern void dropenttofloor(entity *e);
+extern void dropenttofloor(entities::classes::BasePhysicalEntity *e);
 extern bool droptofloor(vec &o, float radius, float height);
 
 extern void vecfromyawpitch(float yaw, float pitch, int move, int strafe, vec &m);
 extern void vectoyawpitch(const vec &v, float &yaw, float &pitch);
-extern void updatephysstate(physent *d);
+extern void updatephysstate(entities::classes::BasePhysicalEntity *d);
 extern void cleardynentcache();
-extern void updatedynentcache(physent *d);
-extern bool entinmap(dynent *d, bool avoidplayers = false);
-extern void findplayerspawn(dynent *d, int forceent = -1, int tag = 0);
+extern void updatedynentcache(entities::classes::BaseEntity *d);
+extern bool entinmap(entities::classes::BasePhysicalEntity *d, bool avoidplayers = false);
+namespace entities {
+namespace classes {
+class Player;
+}
+}
+extern void findplayerspawn(entities::classes::Player *d, int forceent = -1, int tag = 0);
 
 // sound
 enum
@@ -420,6 +425,8 @@ extern void initsound();
 enum { MDL_CULL_VFC = 1<<0, MDL_CULL_DIST = 1<<1, MDL_CULL_OCCLUDED = 1<<2, MDL_CULL_QUERY = 1<<3, MDL_FULLBRIGHT = 1<<4, MDL_NORENDER = 1<<5, MDL_MAPMODEL = 1<<6, MDL_NOBATCH = 1<<7, MDL_ONLYSHADOW = 1<<8, MDL_NOSHADOW = 1<<9, MDL_FORCESHADOW = 1<<10, MDL_FORCETRANSPARENT = 1<<11 };
 
 struct model;
+struct mapmodelinfo;
+namespace entities { namespace classes { class BaseEntity; } }
 struct modelattach
 {
     const char *tag, *name;
@@ -432,15 +439,16 @@ struct modelattach
     modelattach(const char *tag, vec *pos) : tag(tag), name(NULL), anim(-1), basetime(0), pos(pos), m(NULL) {}
 };
 
-extern void rendermodel(const char *mdl, int anim, const vec &o, float yaw = 0, float pitch = 0, float roll = 0, int cull = MDL_CULL_VFC | MDL_CULL_DIST | MDL_CULL_OCCLUDED, dynent *d = NULL, modelattach *a = NULL, int basetime = 0, int basetime2 = 0, float size = 1, const vec4 &color = vec4(1, 1, 1, 1));
-extern int intersectmodel(const char *mdl, int anim, const vec &pos, float yaw, float pitch, float roll, const vec &o, const vec &ray, float &dist, int mode = 0, dynent *d = NULL, modelattach *a = NULL, int basetime = 0, int basetime2 = 0, float size = 1);
-extern void abovemodel(vec &o, const char *mdl);
-extern void renderclient(dynent *d, const char *mdlname, modelattach *attachments, int hold, int attack, int attackdelay, int lastaction, int lastpain, float scale = 1, bool ragdoll = false, float trans = 1);
-extern void interpolateorientation(dynent *d, float &interpyaw, float &interppitch);
-extern void setbbfrommodel(dynent *d, const char *mdl);
+extern void rendermodel(const char *mdl, int anim, const vec &o, float yaw = 0, float pitch = 0, float roll = 0, int cull = MDL_CULL_VFC | MDL_CULL_DIST | MDL_CULL_OCCLUDED, entities::classes::BaseEntity *d = NULL, modelattach *a = NULL, int basetime = 0, int basetime2 = 0, float size = 1, const vec4 &color = vec4(1, 1, 1, 1));
+extern int intersectmodel(const char *mdl, int anim, const vec &pos, float yaw, float pitch, float roll, const vec &o, const vec &ray, float &dist, int mode = 0, entities::classes::BaseEntity *d = NULL, modelattach *a = NULL, int basetime = 0, int basetime2 = 0, float size = 1);
+extern void abovemodel(vec &o, const std::string &mdl);
+extern void renderclient(entities::classes::BaseEntity *d, const std::string &mdlname, modelattach *attachments, int hold, int attack, int attackdelay, int lastaction, int lastpain, float scale = 1, bool ragdoll = false, float trans = 1);
+extern void interpolateorientation(entities::classes::BaseEntity *d, float &interpyaw, float &interppitch);
+extern void setbbfrommodel(entities::classes::BasePhysicalEntity *d, const std::string &mdl);
 extern const char *mapmodelname(int i);
 extern model *loadmodel(const char *name, int i = -1, bool msg = false);
 extern void preloadmodel(const char *name);
+extern mapmodelinfo loadmodelinfo(const char *name, entities::classes::BaseEntity *ent);
 extern void flushpreloadedmodels(bool msg = true);
 extern bool matchanim(const char *name, const char *pattern);
 
@@ -457,8 +465,8 @@ namespace UI
 
 // ragdoll
 
-extern void moveragdoll(dynent *d);
-extern void cleanragdoll(dynent *d);
+extern void moveragdoll(entities::classes::BaseDynamicEntity *d);
+extern void cleanragdoll(entities::classes::BaseDynamicEntity *d);
 
 // server
 #define MAXCLIENTS 128                 // DO NOT set this any higher

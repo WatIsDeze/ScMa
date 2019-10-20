@@ -1,6 +1,7 @@
 // main.cpp: initialisation & main loop
 
 #include "engine.h"
+#include "../game/entities/player.h"
 
 extern void cleargamma();
 
@@ -53,7 +54,11 @@ void fatal(const char *s, ...)    // failure exit
         {
             if(SDL_WasInit(SDL_INIT_VIDEO))
             {
-                SDL_ShowCursor(SDL_TRUE);
+#ifndef NDEBUG
+        SDL_ShowCursor(SDL_TRUE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
+#else
+        SDL_ShowCursor(SDL_FALSE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
+#endif
                 SDL_SetRelativeMouseMode(SDL_FALSE);
                 if(screen) SDL_SetWindowGrab(screen, SDL_FALSE);
                 cleargamma();
@@ -62,7 +67,7 @@ void fatal(const char *s, ...)    // failure exit
                 #endif
             }
             SDL_Quit();
-            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Tesseract fatal error", msg, NULL);
+            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "SchizoMania fatal error", msg, NULL);
         }
     }
 
@@ -77,7 +82,7 @@ SDL_GLContext glcontext = NULL;
 
 int curtime = 0, lastmillis = 1, elapsedtime = 0, totalmillis = 1;
 
-dynent *player = NULL;
+entities::classes::Player *player = NULL;
 
 int initing = NOT_INITING;
 
@@ -402,7 +407,11 @@ void inputgrab(bool on)
 {
     if(on)
     {
-        SDL_ShowCursor(SDL_FALSE);
+#ifndef NDEBUG
+        SDL_ShowCursor(SDL_TRUE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
+#else
+        SDL_ShowCursor(SDL_FALSE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
+#endif
         if(canrelativemouse && userelativemouse)
         {
             if(SDL_SetRelativeMouseMode(SDL_TRUE) >= 0)
@@ -420,7 +429,11 @@ void inputgrab(bool on)
     }
     else
     {
-        SDL_ShowCursor(SDL_TRUE);
+#ifndef NDEBUG
+        SDL_ShowCursor(SDL_TRUE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
+#else
+        SDL_ShowCursor(SDL_FALSE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
+#endif
         if(relativemouse)
         {
             SDL_SetRelativeMouseMode(SDL_FALSE);
@@ -550,7 +563,7 @@ void setupscreen()
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 0);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 0);
-    screen = SDL_CreateWindow("Tesseract", winx, winy, winw, winh, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_MOUSE_FOCUS | flags);
+    screen = SDL_CreateWindow("SchizoMania", winx, winy, winw, winh, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_MOUSE_FOCUS | flags);
     if(!screen) fatal("failed to create OpenGL window: %s", SDL_GetError());
 
     SDL_SetWindowMinimumSize(screen, SCR_MINW, SCR_MINH);
@@ -893,7 +906,7 @@ void stackdumper(unsigned int type, EXCEPTION_POINTERS *ep)
     EXCEPTION_RECORD *er = ep->ExceptionRecord;
     CONTEXT *context = ep->ContextRecord;
     char out[512];
-    formatcubestr(out, "Tesseract Win32 Exception: 0x%x [0x%x]\n\n", er->ExceptionCode, er->ExceptionCode==EXCEPTION_ACCESS_VIOLATION ? er->ExceptionInformation[1] : -1);
+    formatcubestr(out, "SchizoMania Win32 Exception: 0x%x [0x%x]\n\n", er->ExceptionCode, er->ExceptionCode==EXCEPTION_ACCESS_VIOLATION ? er->ExceptionInformation[1] : -1);
     SymInitialize(GetCurrentProcess(), NULL, TRUE);
 #ifdef _AMD64_
     STACKFRAME64 sf = {{context->Rip, 0, AddrModeFlat}, {}, {context->Rbp, 0, AddrModeFlat}, {context->Rsp, 0, AddrModeFlat}, 0};
@@ -1023,7 +1036,8 @@ int main(int argc, char **argv)
     #endif
     #endif
 
-    setlogfile(NULL);
+    // WatIsDeze: Debug log.
+    setlogfile("log.txt");
 
     int dedicated = 0;
     char *load = NULL, *initscript = NULL;
@@ -1096,7 +1110,11 @@ int main(int argc, char **argv)
     SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
     #endif
     setupscreen();
-    SDL_ShowCursor(SDL_FALSE);
+#ifndef NDEBUG
+        SDL_ShowCursor(SDL_TRUE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
+#else
+        SDL_ShowCursor(SDL_FALSE); // WatIsDeze: Set to true to hide system cursor. (Otherwise debugging is a bitch on Linux)
+#endif
     SDL_StopTextInput(); // workaround for spurious text-input events getting sent on first text input toggle?
 
     logoutf("init: gl");
@@ -1116,8 +1134,12 @@ int main(int argc, char **argv)
     renderbackground("initializing...");
 
     logoutf("init: world");
-    camera1 = player = game::iterdynents(0);
+    logoutf("1");
+    player = ((entities::classes::Player*)game::iterdynents(0));
+    camera1 = ((entities::classes::BasePhysicalEntity*)player);
+    logoutf("2");
     emptymap(0, true, NULL, false);
+    logoutf("3");
 
     logoutf("init: sound");
     initsound();

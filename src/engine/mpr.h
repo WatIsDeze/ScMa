@@ -46,9 +46,9 @@ namespace mpr
 
     struct Ent
     {
-        physent *ent;
+        entities::classes::BasePhysicalEntity *ent;
 
-        Ent(physent *ent) : ent(ent) {}
+        Ent(entities::classes::BasePhysicalEntity *ent) : ent(ent) {}
 
         vec center() const { return vec(ent->o.x, ent->o.y, ent->o.z + (ent->aboveeye - ent->eyeheight)/2); }
     };
@@ -57,7 +57,7 @@ namespace mpr
     {
         matrix3 orient;
 
-        EntOBB(physent *ent) : Ent(ent)
+        EntOBB(entities::classes::BasePhysicalEntity *ent) : Ent(ent)
         {
             orient.setyaw(ent->yaw*RAD);
         }
@@ -109,7 +109,7 @@ namespace mpr
 
     struct EntFuzzy : Ent
     {
-        EntFuzzy(physent *ent) : Ent(ent) {}
+        EntFuzzy(entities::classes::BasePhysicalEntity *ent) : Ent(ent) {}
 
         float left() const { return ent->o.x - ent->radius; }
         float right() const { return ent->o.x + ent->radius; }
@@ -121,7 +121,7 @@ namespace mpr
 
     struct EntCylinder : EntFuzzy
     {
-        EntCylinder(physent *ent) : EntFuzzy(ent) {}
+        EntCylinder(entities::classes::BasePhysicalEntity *ent) : EntFuzzy(ent) {}
 
         vec contactface(const vec &n, const vec &dir) const
         {
@@ -154,7 +154,7 @@ namespace mpr
 
     struct EntCapsule : EntFuzzy
     {
-        EntCapsule(physent *ent) : EntFuzzy(ent) {}
+        EntCapsule(entities::classes::BasePhysicalEntity *ent) : EntFuzzy(ent) {}
 
         vec supportpoint(const vec &n) const
         {
@@ -168,7 +168,7 @@ namespace mpr
 
     struct EntEllipsoid : EntFuzzy
     {
-        EntEllipsoid(physent *ent) : EntFuzzy(ent) {}
+        EntEllipsoid(entities::classes::BasePhysicalEntity *ent) : EntFuzzy(ent) {}
 
         vec supportpoint(const vec &dir) const
         {

@@ -1,0 +1,65 @@
+[
+    {
+        "ent_type": 2,
+        "et_type": 3,
+        "game": {
+            "attributes": {},
+            "classname": "playerstart"
+        },
+        "game_type": 3,
+        "int_attr1": 0,
+        "int_attr2": 0,
+        "int_attr3": 0,
+        "int_attr4": 0,
+        "int_attr5": 0,
+        "int_reserved": 0,
+        "model_idx": -1,
+        "o": {
+            "x": 308.0,
+            "y": 300.0,
+            "z": 580.0
+        }
+    },
+    {
+        "ent_type": 2,
+        "et_type": 3,
+        "game": {
+            "attributes": {},
+            "classname": "playerstart"
+        },
+        "game_type": 3,
+        "int_attr1": 0,
+        "int_attr2": 0,
+        "int_attr3": 0,
+        "int_attr4": 0,
+        "int_attr5": 0,
+        "int_reserved": 0,
+        "model_idx": -1,
+        "o": {
+            "x": 260.0,
+            "y": 772.0,
+            "z": 580.0
+        }
+    },
+    {
+        "ent_type": 2,
+        "et_type": 2,
+        "game": {
+            "attributes": {},
+            "classname": "door"
+        },
+        "game_type": 13,
+        "int_attr1": 0,
+        "int_attr2": 0,
+        "int_attr3": 0,
+        "int_attr4": 0,
+        "int_attr5": 0,
+        "int_reserved": 0,
+        "model_idx": -1,
+        "o": {
+            "x": 250.35003662109375,
+            "y": 609.7980346679688,
+            "z": 538.5250244140625
+        }
+    }
+]

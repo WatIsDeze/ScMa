@@ -1,3 +1,6 @@
+#ifndef BIH_H
+#define BIH_H
+
 struct stainrenderer;
 
 struct BIH
@@ -74,20 +77,22 @@ struct BIH
     bool traverse(const mesh &m, const vec &o, const vec &ray, const vec &invray, float maxdist, float &dist, int mode, node *curnode, float tmin, float tmax);
     bool triintersect(const mesh &m, int tidx, const vec &mo, const vec &mray, float maxdist, float &dist, int mode);
 
-    bool boxcollide(physent *d, const vec &dir, float cutoff, const vec &o, int yaw, int pitch, int roll, float scale = 1);
-    bool ellipsecollide(physent *d, const vec &dir, float cutoff, const vec &o, int yaw, int pitch, int roll, float scale = 1);
+    bool boxcollide(entities::classes::BasePhysicalEntity *d, const vec &dir, float cutoff, const vec &o, int yaw, int pitch, int roll, float scale = 1);
+    bool ellipsecollide(entities::classes::BasePhysicalEntity *d, const vec &dir, float cutoff, const vec &o, int yaw, int pitch, int roll, float scale = 1);
 
     template<int C>
-    void collide(const mesh &m, physent *d, const vec &dir, float cutoff, const vec &center, const vec &radius, const matrix4x3 &orient, float &dist, node *curnode, const ivec &bo, const ivec &br);
+    void collide(const mesh &m, entities::classes::BasePhysicalEntity *d, const vec &dir, float cutoff, const vec &center, const vec &radius, const matrix4x3 &orient, float &dist, node *curnode, const ivec &bo, const ivec &br);
     template<int C>
-    void tricollide(const mesh &m, int tidx, physent *d, const vec &dir, float cutoff, const vec &center, const vec &radius, const matrix4x3 &orient, float &dist, const ivec &bo, const ivec &br);
+    void tricollide(const mesh &m, int tidx, entities::classes::BasePhysicalEntity *d, const vec &dir, float cutoff, const vec &center, const vec &radius, const matrix4x3 &orient, float &dist, const ivec &bo, const ivec &br);
 
     void genstaintris(stainrenderer *s, const vec &staincenter, float stainradius, const vec &o, int yaw, int pitch, int roll, float scale = 1);
     void genstaintris(stainrenderer *s, const mesh &m, const vec &center, float radius, const matrix4x3 &orient, node *curnode, const ivec &bo, const ivec &br);
     void genstaintris(stainrenderer *s, const mesh &m, int tidx, const vec &center, float radius, const matrix4x3 &orient, const ivec &bo, const ivec &br);
  
     void preload();
+
+    // Static function, why should we have a global mmintersect ?
+    static bool mmintersect(entities::classes::BasePhysicalEntity &e, const vec &o, const vec &ray, float maxdist, int mode, float &dist);
 };
 
-extern bool mmintersect(const entities::classes::BaseEntity &e, const vec &o, const vec &ray, float maxdist, int mode, float &dist);
-
+#endif // BIH_H

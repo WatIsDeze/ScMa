@@ -1,6 +1,7 @@
 // sound.cpp: basic positional sound using sdl_mixer
 
 #include "engine.h"
+#include "../game/entities/player.h"
 
 #ifdef __APPLE__
   #include "SDL_mixer.h"
@@ -80,7 +81,7 @@ soundchannel &newchannel(int n, soundslot *slot, const vec *loc = NULL, entities
     if(ent)
     {
         loc = &ent->o;
-        ent->flags |= EF_SOUND;
+        ent->flags |= entities::EntityFlags::EF_SOUND;
     }
     while(!channels.inrange(n)) channels.add(channels.length());
     soundchannel &chan = channels[n];
@@ -99,7 +100,7 @@ void freechannel(int n)
     if(!channels.inrange(n) || !channels[n].inuse) return;
     soundchannel &chan = channels[n];
     chan.inuse = false;
-    if(chan.ent) chan.ent->flags &= ~EF_SOUND;
+    if(chan.ent) chan.ent->flags &= ~entities::EntityFlags::EF_SOUND;
 }
 
 void syncchannel(soundchannel &chan)
@@ -461,16 +462,16 @@ void stopmapsound(entities::classes::BaseEntity *e)
 
 void checkmapsounds()
 {
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
     loopv(ents)
     {
-        entities::classes::BaseEntity &e = *ents[i];
-        if(e.type!=ET_SOUND) continue;
+        entities::classes::BasePhysicalEntity &e = *ents[i];
+        if(e.et_type!=ET_SOUND) continue;
         if(camera1->o.dist(e.o) < e.attr2)
         {
-            if(!(e.flags&EF_SOUND)) playsound(e.attr1, NULL, &e, SND_MAP, -1);
+            if(!(e.flags&entities::EntityFlags::EF_SOUND)) playsound(e.attr1, NULL, &e, SND_MAP, -1);
         }
-        else if(e.flags&EF_SOUND) stopmapsound(&e);
+        else if(e.flags&entities::EntityFlags::EF_SOUND) stopmapsound(&e);
     }
 }
 
@@ -566,11 +567,11 @@ void preloadmapsound(int n)
 
 void preloadmapsounds()
 {
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
     loopv(ents)
     {
-        entities::classes::BaseEntity &e = *ents[i];
-        if(e.type==ET_SOUND) mapsounds.preloadsound(e.attr1);
+        entities::classes::BasePhysicalEntity &e = *ents[i];
+        if(e.et_type==ET_SOUND) mapsounds.preloadsound(e.attr1);
     }
 }
 
@@ -774,7 +775,7 @@ void initmumble()
         if(mumblelink)
         {
             mumbleinfo = (MumbleInfo *)MapViewOfFile(mumblelink, FILE_MAP_ALL_ACCESS, 0, 0, sizeof(MumbleInfo));
-            if(mumbleinfo) wcsncpy(mumbleinfo->name, L"Tesseract", 256);
+            if(mumbleinfo) wcsncpy(mumbleinfo->name, L"SchizoMania", 256);
         }
     #elif defined(_POSIX_SHARED_MEMORY_OBJECTS)
         defformatcubestr(shmname, "/MumbleLink.%d", getuid());
@@ -782,7 +783,7 @@ void initmumble()
         if(mumblelink >= 0)
         {
             mumbleinfo = (MumbleInfo *)mmap(NULL, sizeof(MumbleInfo), PROT_READ|PROT_WRITE, MAP_SHARED, mumblelink, 0);
-            if(mumbleinfo != (MumbleInfo *)-1) wcsncpy(mumbleinfo->name, L"Tesseract", 256);
+            if(mumbleinfo != (MumbleInfo *)-1) wcsncpy(mumbleinfo->name, L"SchizoMania", 256);
         }
     #endif
     if(!VALID_MUMBLELINK) closemumble();

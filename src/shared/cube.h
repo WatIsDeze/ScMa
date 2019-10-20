@@ -57,6 +57,7 @@
 #include <fstream>
 #include <iomanip>
 #include <string>
+#include <memory>
 
 // Libraries from the ext folder.
 #include "../ext/json-develop/single_include/nlohmann/json.hpp"

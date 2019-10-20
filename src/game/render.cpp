@@ -1,10 +1,20 @@
 #include "game.h"
+#include "entities/player.h"
 
 namespace game
 {
-    __attribute__((optimize("O0"))) void rendergame()
+    __attribute__((optimize("O0"))) void RenderGameEntities()
     {
+        loopv(entities::g_ents) {
+            entities::classes::BaseEntity *ent = entities::g_ents[i];
+            //if (ent->et_type != ET_PLAYERSTART && ent->et_type != ET_EMPTY && ent->et_type != ET_LIGHT && ent->et_type != ET_SPOTLIGHT && ent->et_type != ET_SOUND)
+            if (ent != NULL)
+                ent->render();
+        }
 
+        // Render our client player.
+        if (game::player1 != NULL)
+            game::player1->render();
     }
 
     VARP(hudgun, 0, 1, 1);

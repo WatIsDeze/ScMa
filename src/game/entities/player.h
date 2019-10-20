@@ -3,7 +3,7 @@
 
 namespace entities {
     namespace classes {
-        class Player : public BaseEntity {
+        class Player : public BaseDynamicEntity {
         public:
             Player();
             virtual ~Player();
@@ -11,6 +11,11 @@ namespace entities {
             void preload();
             void think();
             void render();
+
+            void respawn();
+
+            bool onTrigger(entities::classes::BaseEntity *otherEnt, const vec &dir);
+            bool onTouch(entities::classes::BaseEntity *otherEnt, const vec &dir);
 
         private:
 

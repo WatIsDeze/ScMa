@@ -1,4 +1,5 @@
 #include "engine.h"
+#include "ents.h"
 
 VAR(oqdynent, 0, 1, 1);
 VAR(animationinterpolationtime, 0, 200, 1000);
@@ -305,16 +306,20 @@ void rdanimjoints(int *on)
 COMMAND(rdanimjoints, "i");
 
 // mapmodels
-
-vector<mapmodelinfo> mapmodels;
-static const char * const mmprefix = "mapmodel/";
-static const int mmprefixlen = strlen(mmprefix);
+vector<mapmodelinfo> mapmodels;                     // Vector containing all the mapmodels (by index.)
+static const char * const mmprefix = "world/";      // The base subdirectory in the media/model/ folder to append the name to.
+static const int mmprefixlen = strlen(mmprefix);    // Strlen... C++-ify this.
 
 void mapmodel(char *name)
 {
+    // Returns a reference to the added mapmodel info in the list.
     mapmodelinfo &mmi = mapmodels.add();
+
+    // Setup the name.
     if(name[0]) formatcubestr(mmi.name, "%s%s", mmprefix, name);
     else mmi.name[0] = '\0';
+
+    // Set all to NULL.
     mmi.m = mmi.collide = NULL;
 }
 
@@ -335,13 +340,14 @@ ICOMMAND(nummapmodels, "", (), { intret(mapmodels.length()); });
 // model registry
 
 hashnameset<model *> models;
-vector<const char *> preloadmodels;
-hashset<char *> failedmodels;
+vector<const char*> preloadmodels;
+hashset<char*> failedmodels;
 
 void preloadmodel(const char *name)
 {
     if(!name || !name[0] || models.access(name) || preloadmodels.htfind(name) >= 0) return;
     preloadmodels.add(newcubestr(name));
+
 }
 
 void flushpreloadedmodels(bool msg)
@@ -363,12 +369,12 @@ void flushpreloadedmodels(bool msg)
 
 void preloadusedmapmodels(bool msg, bool bih)
 {
-    vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
     vector<int> used;
     loopv(ents)
     {
-        entities::classes::BaseEntity &e = *ents[i];
-        if(e.type==ET_MAPMODEL && e.attr1 >= 0 && used.find(e.attr1) < 0) used.add(e.attr1);
+        entities::classes::BasePhysicalEntity &e = *ents[i];
+        if(e.et_type==ET_MAPMODEL && e.et_type >= 0 && used.find(e.et_type) < 0) used.add(e.et_type);
     }
 
     vector<const char *> col;
@@ -442,6 +448,22 @@ model *loadmodel(const char *name, int i, bool msg)
     return m;
 }
 
+mapmodelinfo loadmodelinfo(const char *name, entities::classes::BaseEntity *ent) {
+    mapmodelinfo mmi;
+
+    // Preload first.
+    preloadmodel(name);
+
+    // Load in the model.
+    mmi.m = loadmodel(name, -1, true);
+    if (mmi.m != NULL) {
+        copycubestr(mmi.name, name, strlen(name));
+        ent->setAttribute("model", std::string(mmi.name), false);
+    }
+
+    return mmi;
+}
+
 void clear_models()
 {
     enumerate(models, model *, m, delete m);
@@ -487,7 +509,7 @@ struct batchedmodel
         int visible;
         int culled;
     };
-    dynent *d;
+    entities::classes::BaseDynamicEntity *d;
     int next;
 };
 struct modelbatch
@@ -543,7 +565,7 @@ static inline void renderbatchedmodel(model *m, const batchedmodel &b)
         if(b.flags&MDL_FULLBRIGHT) anim |= ANIM_FULLBRIGHT;
     }
 
-    m->render(anim, b.basetime, b.basetime2, b.pos, b.yaw, b.pitch, b.roll, b.d, a, b.sizescale, b.colorscale);
+    m->render(anim, b.basetime, b.basetime2, b.pos, b.yaw, b.pitch, b.roll, (entities::classes::BaseDynamicEntity*)b.d, a, b.sizescale, b.colorscale);
 }
 
 VAR(maxmodelradiusdistance, 10, 200, 1000);
@@ -553,7 +575,7 @@ static inline void enablecullmodelquery()
     startbb();
 }
 
-static inline void rendercullmodelquery(model *m, dynent *d, const vec &center, float radius)
+static inline void rendercullmodelquery(model *m, entities::classes::BaseDynamicEntity *d, const vec &center, float radius)
 {
     if(fabs(camera1->o.x-center.x) < radius+1 &&
        fabs(camera1->o.y-center.y) < radius+1 &&
@@ -575,7 +597,7 @@ static inline void disablecullmodelquery()
     endbb();
 }
 
-static inline int cullmodel(model *m, const vec &center, float radius, int flags, dynent *d = NULL)
+static inline int cullmodel(model *m, const vec &center, float radius, int flags, entities::classes::BaseDynamicEntity *d = NULL)
 {
     if(flags&MDL_CULL_DIST && center.dist(camera1->o)/radius>maxmodelradiusdistance) return MDL_CULL_DIST;
     if(flags&MDL_CULL_VFC && isfoggedsphere(radius, center)) return MDL_CULL_VFC;
@@ -893,6 +915,9 @@ void clearbatchedmapmodels()
 
 void rendermapmodel(int idx, int anim, const vec &o, float yaw, float pitch, float roll, int flags, int basetime, float size)
 {
+    // WatIsDeze: TODO: Remove.
+    //conoutf("rendermapmodel: %d (%.2f/%.2f/%.2f) %s", idx, o.x, o.y, o.z, mapmodels.inrange(idx) ? "found" : "not found");
+
     if(!mapmodels.inrange(idx)) return;
     mapmodelinfo &mmi = mapmodels[idx];
     model *m = mmi.m ? mmi.m : loadmodel(mmi.name);
@@ -937,7 +962,7 @@ void rendermapmodel(int idx, int anim, const vec &o, float yaw, float pitch, flo
     addbatchedmodel(m, b, batchedmodels.length()-1);
 }
 
-void rendermodel(const char *mdl, int anim, const vec &o, float yaw, float pitch, float roll, int flags, dynent *d, modelattach *a, int basetime, int basetime2, float size, const vec4 &color)
+void rendermodel(const char *mdl, int anim, const vec &o, float yaw, float pitch, float roll, int flags, entities::classes::BaseDynamicEntity *d, modelattach *a, int basetime, int basetime2, float size, const vec4 &color)
 {
     model *m = loadmodel(mdl);
     if(!m) return;
@@ -1028,9 +1053,9 @@ hasboundbox:
     addbatchedmodel(m, b, batchedmodels.length()-1);
 }
 
-int intersectmodel(const char *mdl, int anim, const vec &pos, float yaw, float pitch, float roll, const vec &o, const vec &ray, float &dist, int mode, dynent *d, modelattach *a, int basetime, int basetime2, float size)
+int intersectmodel(const std::string &mdl, int anim, const vec &pos, float yaw, float pitch, float roll, const vec &o, const vec &ray, float &dist, int mode, entities::classes::BaseDynamicEntity *d, modelattach *a, int basetime, int basetime2, float size)
 {
-    model *m = loadmodel(mdl);
+    model *m = loadmodel(mdl.c_str());
     if(!m) return -1;
     if(d && d->ragdoll && (!(anim&ANIM_RAGDOLL) || d->ragdoll->millis < basetime)) DELETEP(d->ragdoll);
     if(a) for(int i = 0; a[i].tag; i++)
@@ -1040,18 +1065,18 @@ int intersectmodel(const char *mdl, int anim, const vec &pos, float yaw, float p
     return m->intersect(anim, basetime, basetime2, pos, yaw, pitch, roll, d, a, size, o, ray, dist, mode);
 }
 
-void abovemodel(vec &o, const char *mdl)
+void abovemodel(vec &o, const std::string &mdl)
 {
-    model *m = loadmodel(mdl);
+    model *m = loadmodel(mdl.c_str());
     if(!m) return;
     o.z += m->above();
 }
 
-bool matchanim(const char *name, const char *pattern)
+bool matchanim(const std::string &name, const char *pattern)
 {
     for(;; pattern++)
     {
-        const char *s = name;
+        const char *s = name.c_str();
         char c;
         for(;; pattern++)
         {
@@ -1110,9 +1135,9 @@ void loadskin(const char *dir, const char *altdir, Texture *&skin, Texture *&mas
     tryload(masks, NULL, NULL, "masks");
 }
 
-void setbbfrommodel(dynent *d, const char *mdl)
+void setbbfrommodel(entities::classes::BasePhysicalEntity *d, const std::string &mdl)
 {
-    model *m = loadmodel(mdl);
+    model *m = loadmodel(mdl.c_str());
     if(!m) return;
     vec center, radius;
     m->collisionbox(center, radius);
@@ -1123,4 +1148,3 @@ void setbbfrommodel(dynent *d, const char *mdl)
     d->eyeheight = (center.z-radius.z) + radius.z*2*m->eyeheight;
     d->aboveeye  = radius.z*2*(1.0f-m->eyeheight);
 }
-

@@ -80,11 +80,11 @@ void clearparticleemitters()
 void addparticleemitters()
 {
     emitters.setsize(0);
-    const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
     loopv(ents)
     {
-        entities::classes::BaseEntity &e = *ents[i];
-        if(e.type != ET_PARTICLES) continue;
+        entities::classes::BasePhysicalEntity &e = *ents[i];
+        if(e.et_type != ET_PARTICLES) continue;
         emitters.add(particleemitter(&e));
     }
     regenemitters = false;
@@ -135,7 +135,7 @@ struct particle
     {
         const char *text;
         float val;
-        physent *owner;
+        entities::classes::BaseEntity *owner;
         struct
         {
             uchar color2[3];
@@ -177,7 +177,7 @@ struct partrenderer
 
     virtual void init(int n) { }
     virtual void reset() = 0;
-    virtual void resettracked(physent *owner) { }
+    virtual void resettracked(entities::classes::BaseEntity *owner) { }
     virtual particle *addpart(const vec &o, const vec &d, int fade, int color, float size, int gravity = 0) = 0;
     virtual void update() { }
     virtual void render() = 0;
@@ -299,7 +299,7 @@ struct listrenderer : partrenderer
         list = NULL;
     }
 
-    void resettracked(physent *owner)
+    void resettracked(entities::classes::BaseEntity *owner)
     {
         if(!(type&PT_TRACK)) return;
         for(listparticle **prev = &list, *cur = list; cur; cur = *prev)
@@ -650,7 +650,7 @@ struct varenderer : partrenderer
         lastupdate = -1;
     }
 
-    void resettracked(physent *owner)
+    void resettracked(entities::classes::BaseEntity *owner)
     {
         if(!(type&PT_TRACK)) return;
         loopi(numparts)
@@ -894,7 +894,7 @@ void cleanupparticles()
     loopi(sizeof(parts)/sizeof(parts[0])) parts[i]->cleanup();
 }
 
-void removetrackedparticles(physent *owner)
+void removetrackedparticles(entities::classes::BaseEntity *owner)
 {
     loopi(sizeof(parts)/sizeof(parts[0])) parts[i]->resettracked(owner);
 }
@@ -1102,7 +1102,7 @@ void particle_meter(const vec &s, float val, int type, int fade, int color, int 
     p->progress = clamp(int(val*100), 0, 100);
 }
 
-void particle_flare(const vec &p, const vec &dest, int fade, int type, int color, float size, physent *owner)
+void particle_flare(const vec &p, const vec &dest, int fade, int type, int color, float size, entities::classes::BaseEntity *owner)
 {
     if(!canaddparticles()) return;
     newparticle(p, dest, fade, type, color, size)->owner = owner;
@@ -1260,7 +1260,7 @@ void regular_particle_flame(int type, const vec &p, float radius, float height, 
     regularflame(type, p, radius, height, color, density, scale, speed, fade, gravity);
 }
 
-static void makeparticles(entity &e)
+static void makeparticles(entities::classes::BaseEntity &e)
 {
     switch(e.attr1)
     {
@@ -1345,13 +1345,13 @@ bool printparticles(entities::classes::BaseEntity &e, char *buf, int len)
     switch(e.attr1)
     {
         case 0: case 4: case 7: case 8: case 9: case 10: case 11: case 12: case 13:
-            nformatcubestr(buf, len, "%s %d %d %d 0x%.3hX %d", entities::entname(e.type), e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
+            nformatcubestr(buf, len, "%s %d %d %d 0x%.3hX %d", entities::entname(e.et_type), e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
             return true;
         case 3:
-            nformatcubestr(buf, len, "%s %d %d 0x%.3hX %d %d", entities::entname(e.type), e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
+            nformatcubestr(buf, len, "%s %d %d 0x%.3hX %d %d", entities::entname(e.et_type), e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
             return true;
         case 5: case 6:
-            nformatcubestr(buf, len, "%s %d %d 0x%.3hX 0x%.3hX %d", entities::entname(e.type), e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
+            nformatcubestr(buf, len, "%s %d %d 0x%.3hX 0x%.3hX %d", entities::entname(e.et_type), e.attr1, e.attr2, e.attr3, e.attr4, e.attr5);
             return true;
     }
     return false;
@@ -1424,17 +1424,17 @@ void updateparticles()
     }
     if(editmode) // show sparkly thingies for map entities in edit mode
     {
-        const vector<entities::classes::BaseEntity *> &ents = entities::getents();
+        const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
         // note: order matters in this case as particles of the same type are drawn in the reverse order that they are added
         loopv(entgroup)
         {
-            entity &e = *ents[entgroup[i]];
+            entities::classes::BasePhysicalEntity &e = *ents[entgroup[i]];
             particle_textcopy(e.o, entname(e), PART_TEXT, 1, 0xFF4B19, 2.0f);
         }
         loopv(ents)
         {
-            entity &e = *ents[i];
-            if(e.type==ET_EMPTY) continue;
+            entities::classes::BasePhysicalEntity &e = *ents[i];
+            if(e.et_type==ET_EMPTY) continue;
             particle_textcopy(e.o, entname(e), PART_TEXT, 1, 0x1EC850, 2.0f);
             regular_particle_splash(PART_EDIT, 2, 40, e.o, 0x3232FF, 0.32f*particlesize/100.0f);
         }

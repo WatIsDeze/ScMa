@@ -4,11 +4,11 @@ project(SchizoMania)
 
 # Build options.
 option(SCHIZOMANIA_BUILD_CLIENT "Build the game client" ON)
-option(SCHIZOMANIA_BUILD_SERVER "Build the game server" ON)
+option(SCHIZOMANIA_BUILD_SERVER "Build the game server" OFF)
 
 # Generate compile commands (compile_commands.json) for clang tooling etc.
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED OFF)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -23,8 +23,8 @@ if (APPLE)
     list(INSERT CMAKE_FIND_LIBRARY_SUFFIXES 0 ".dylib" )
 
     set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LIBRARY "libc++")
-    set(CMAKE_XCODE_ATTRIBUTE_CLANG_LANGUAGE_STANDARD "c++11")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -std=c++11")
+    set(CMAKE_XCODE_ATTRIBUTE_CLANG_LANGUAGE_STANDARD "c++14")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -std=c++14")
 endif()
 
 #Libraries
@@ -104,6 +104,7 @@ if (APPLE)
         SchizoMania_Shared_Client
         SchizoMania_Game_Client
         SchizoMania_Engine_Client
+        SchizoMania_Shared_Entities
         # ${MODPLUG_LIBRARIES}
 
         ${COCOA}
@@ -118,6 +119,7 @@ if (APPLE)
 else()
     target_link_libraries(SchizoMania_Client
         SchizoMania_Shared_Client
+        SchizoMania_Shared_Entities
         SchizoMania_Engine_Client
         SchizoMania_Game_Client
     )

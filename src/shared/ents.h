@@ -1,233 +1,168 @@
-// this file defines static map entities ("entity") and dynamic entities (players/monsters, "dynent")
-// the gamecode extends these types to add game specific functionality
+#ifndef ENTS_H
+#define ENTS_H
 
-// ET_*: the only static entity types dictated by the engine... rest are gamecode dependent
+// This file defines static map entities ("entity") and includes the basic entities:
+// (dynamic entities (players/monsters, "dynent"), and static(No AI, or Input) entities(barrels, etc, "physent")
+// the gamecode extends from the BaseEntity class type.
 
-enum { ET_EMPTY=0, ET_LIGHT, ET_MAPMODEL, ET_PLAYERSTART, ET_ENVMAP, ET_PARTICLES, ET_SOUND, ET_SPOTLIGHT, ET_DECAL, ET_GAMESPECIFIC };
+// ET_*: The internal engine entity type.
+// (ent->et_type = ..)
 
-class entity                                   // persistent map entity
-{
-public:
-    entity() : o(0, 0, 0) {}
-    virtual ~entity() {}
-
-    vec o;                                      // position
-    short attr1, attr2, attr3, attr4, attr5;
-    uchar type;                                 // type is one of the above (The enumerator is what they meant.)
-    uchar reserved;
+enum {
+    ET_EMPTY=0,         // Empty entities. Not in use. (No functionality, usually removed, or yet to be replaced.)
+    ET_LIGHT,           // Light entities, can be dynamic lights(flickering, moving, on/off)
+    ET_MAPMODEL,        // MapModel entities, can be benches, boxes, doors, anything alike.
+    ET_PLAYERSTART,     // Playerstart entities, where players can spawn.
+    ET_ENVMAP,          // Environment Map entity.
+    ET_PARTICLES,       // Particle Effect entities.
+    ET_SOUND,           // Sound Effect entities.
+    ET_SPOTLIGHT,       // Spotlight entity, has to be attached to an ET_LIGHT entity.
+    ET_DECAL,           // Decal entities, speak for itself.s
+    ET_GAMESPECIFIC
 };
-
-enum
-{
-    EF_NOVIS      = 1<<0,
-    EF_NOSHADOW   = 1<<1,
-    EF_NOCOLLIDE  = 1<<2,
-    EF_ANIM       = 1<<3,
-    EF_SHADOWMESH = 1<<4,
-    EF_OCTA       = 1<<5,
-    EF_RENDER     = 1<<6,
-    EF_SOUND      = 1<<7,
-    EF_SPAWNED    = 1<<8
-
-};
-
-
-
 
 #define MAXENTS 10000
 
 //extern vector<entities::classes::BaseEntity *> ents;                // map entities
 
+
+// Client/Server entity states. (ent->state, ent->editstate).
 enum { CS_ALIVE = 0, CS_DEAD, CS_SPAWNING, CS_LAGGED, CS_EDITING, CS_SPECTATOR };
 
+// Physics entity states. (ent->physstate)
 enum { PHYS_FLOAT = 0, PHYS_FALL, PHYS_SLIDE, PHYS_SLOPE, PHYS_FLOOR, PHYS_STEP_UP, PHYS_STEP_DOWN, PHYS_BOUNCE };
 
+// Game entity type, is it a player, AI, Inanimate, camera, or bounces.. (ent->ent_type)
 enum { ENT_PLAYER = 0, ENT_AI, ENT_INANIMATE, ENT_CAMERA, ENT_BOUNCE };
 
+// Physics collision types. (ent->collidetype)
 enum { COLLIDE_NONE = 0, COLLIDE_ELLIPSE, COLLIDE_OBB, COLLIDE_TRI };
 
+// Crouche Time, and Crouch Height. TODO: Place in Physics or player settings?
 #define CROUCHTIME 200
 #define CROUCHHEIGHT 0.75f
 
-class physent : public entity                  // base entity type, can be affected by physics
-{
-public:
-    //vec o, vel, falling;                        // origin, velocity
-    vec vel, falling;                        // origin, velocity
-    vec deltapos, newpos;                       // movement interpolation
-    float yaw, pitch, roll;
-    float maxspeed;                             // cubes per second, 100 for player
-    int timeinair;
-    float radius, eyeheight, maxheight, aboveeye; // bounding box size
-    float xradius, yradius, zmargin;
-    vec floor;                                  // the normal of floor the dynent is on
-
-    int inwater;
-    bool jumping;
-    char move, strafe, crouching;
-
-    uchar physstate;                            // one of PHYS_* above
-    uchar state, editstate;                     // one of CS_* above
-    //uchar type;                                 // one of ENT_* above
-    uchar collidetype;                          // one of COLLIDE_* above
-
-    bool blocked;                               // used by physics to signal ai
-
-    physent() : deltapos(0, 0, 0), newpos(0, 0, 0), yaw(0), pitch(0), roll(0), maxspeed(100),
-               radius(4.1f), eyeheight(18), maxheight(18), aboveeye(2), xradius(4.1f), yradius(4.1f), zmargin(0),
-               state(CS_ALIVE), editstate(CS_ALIVE),
-               collidetype(COLLIDE_ELLIPSE),
-               blocked(false)
-               {  type = ENT_PLAYER; reset(); }
-
-    void resetinterp()
-    {
-        newpos = o;
-        deltapos = vec(0, 0, 0);
-    }
-
-    void reset()
-    {
-        inwater = 0;
-        timeinair = 0;
-        eyeheight = maxheight;
-        jumping = false;
-        strafe = move = crouching = 0;
-        physstate = PHYS_FALL;
-        vel = falling = vec(0, 0, 0);
-        floor = vec(0, 0, 1);
-    }
-
-    vec feetpos(float offset = 0) const { return vec(o).addz(offset - eyeheight); }
-    vec headpos(float offset = 0) const { return vec(o).addz(offset); }
-
-    bool crouched() const { return fabs(eyeheight - maxheight*CROUCHHEIGHT) < 1e-4f; }
-};
-
-enum
-{
-    ANIM_MAPMODEL = 0,
-    ANIM_GAMESPECIFIC
-};
-
-#define ANIM_ALL         0x1FF
-#define ANIM_INDEX       0x1FF
-#define ANIM_LOOP        (1<<9)
-#define ANIM_CLAMP       (1<<10)
-#define ANIM_REVERSE     (1<<11)
-#define ANIM_START       (ANIM_LOOP|ANIM_CLAMP)
-#define ANIM_END         (ANIM_LOOP|ANIM_CLAMP|ANIM_REVERSE)
-#define ANIM_DIR         0xE00
-#define ANIM_SECONDARY   12
-#define ANIM_REUSE       0xFFFFFF
-#define ANIM_NOSKIN      (1<<24)
-#define ANIM_SETTIME     (1<<25)
-#define ANIM_FULLBRIGHT  (1<<26)
-#define ANIM_NORENDER    (1<<27)
-#define ANIM_RAGDOLL     (1<<28)
-#define ANIM_SETSPEED    (1<<29)
-#define ANIM_NOPITCH     (1<<30)
-#define ANIM_FLAGS       0xFF000000
-
-struct animinfo // description of a character's animation
-{
-    int anim, frame, range, basetime;
-    float speed;
-    uint varseed;
-
-    animinfo() : anim(0), frame(0), range(0), basetime(0), speed(100.0f), varseed(0) { }
-
-    bool operator==(const animinfo &o) const { return frame==o.frame && range==o.range && (anim&(ANIM_SETTIME|ANIM_DIR))==(o.anim&(ANIM_SETTIME|ANIM_DIR)) && (anim&ANIM_SETTIME || basetime==o.basetime) && speed==o.speed; }
-    bool operator!=(const animinfo &o) const { return frame!=o.frame || range!=o.range || (anim&(ANIM_SETTIME|ANIM_DIR))!=(o.anim&(ANIM_SETTIME|ANIM_DIR)) || (!(anim&ANIM_SETTIME) && basetime!=o.basetime) || speed!=o.speed; }
-};
-
-struct animinterpinfo // used for animation blending of animated characters
-{
-    animinfo prev, cur;
-    int lastswitch;
-    void *lastmodel;
-
-    animinterpinfo() : lastswitch(-1), lastmodel(NULL) {}
-
-    void reset() { lastswitch = -1; }
-};
-
-#define MAXANIMPARTS 3
-
-struct occludequery;
-struct ragdolldata;
-
-struct dynent : physent                         // animated characters, or characters that can receive input
-{
-    bool k_left, k_right, k_up, k_down;         // see input code
-
-    animinterpinfo animinterp[MAXANIMPARTS];
-    ragdolldata *ragdoll;
-    occludequery *query;
-    int lastrendered;
-
-    dynent() : ragdoll(NULL), query(NULL), lastrendered(0)
-    {
-        reset();
-    }
-
-    ~dynent()
-    {
-#ifndef STANDALONE
-        extern void cleanragdoll(dynent *d);
-        if(ragdoll) cleanragdoll(this);
-#endif
-    }
-
-    void stopmoving()
-    {
-        k_left = k_right = k_up = k_down = jumping = false;
-        move = strafe = crouching = 0;
-    }
-
-    void reset()
-    {
-        physent::reset();
-        stopmoving();
-        loopi(MAXANIMPARTS) animinterp[i].reset();
-    }
-
-    vec abovehead() { return vec(o).addz(aboveeye+4); }
-};
-
-
-// Defined here, for several reasons, since it has to replace good ol' extentity.
 namespace entities
 {
+    enum EntityFlags : int {
+        EF_NOFLAG     = 0,
+        EF_NOVIS      = 1<<0,
+        EF_NOSHADOW   = 1<<1,
+        EF_NOCOLLIDE  = 1<<2,
+        EF_ANIM       = 1<<3,
+        EF_SHADOWMESH = 1<<4,
+        EF_OCTA       = 1<<5,
+        EF_RENDER     = 1<<6,
+        EF_SOUND      = 1<<7,
+        EF_SPAWNED    = 1<<8
+    };
+
+    // Classes.
     namespace classes {
-        class BaseEntity : public dynent {
+        class BaseEntity;
+
+//        // Entity
+//        o(0, 0, 0), attr1(0), attr2(0), attr3(0), attr4(0), attr5(0), et_type(ET_EMPTY), ent_type(ENT_INANIMATE), game_type(GAMEENTITY), reserved(0), model_idx(0),
+
+//        // Dynent.
+//        blocked(false), ragdoll(NULL), query(NULL), lastrendered(0),
+
+//        // Physent.
+//        deltapos(0, 0, 0), newpos(0, 0, 0), yaw(0), pitch(0), roll(0), maxspeed(25),
+//                   radius(2.4), eyeheight(7), maxheight(8), aboveeye(2), xradius(1.67), yradius(1.67), zmargin(0),
+//                   state(CS_ALIVE), editstate(CS_ALIVE),
+//                   collidetype(COLLIDE_ELLIPSE)
+
+        // Core legacy entity class.
+        class CoreEntity
+        {
         public:
-            BaseEntity();
-            virtual ~BaseEntity();
+            // Constructors.
+            CoreEntity() : o(0, 0, 0), attr1(0), attr2(0), attr3(0), attr4(0), attr5(0),
+                et_type(ET_EMPTY), ent_type(ENT_INANIMATE), game_type(ET_EMPTY), reserved(0), model_idx(0), flags(EntityFlags::EF_NOFLAG),
+                attached(nullptr) {}
 
-            virtual void preload();
-            virtual void think();
-            virtual void render();
+//            CoreEntity(const CoreEntity &e) {
+//                //
+//                // Legacy Core Entity data.
+//                //
+//                o = e.o;                             // position
+//                attr1 = e.attr1;                     // Old integer attributes, still used for storing/loading certain attributes of ET_TYPES.
+//                attr2 = e.attr2;
+//                attr3 = e.attr3;
+//                attr4 = e.attr4;
+//                attr5 = e.attr5;
+//                et_type = e.et_type;                              // These are for the ET(Engine Type) values.
+//                ent_type = e.ent_type;                             // These are for ENT_(DynEnt/PhysEnt Type) values.
+//                game_type = e.game_type;                            // the internal game entity type values.
+//                reserved = e.reserved;
+//                name = e.name;
+//                classname = e.classname;
+//                attributes = e.attributes;
+//                flags = e.flags;
+//                attached = e.attached;
+//                model_idx = e.model_idx;
+//            }
 
-        // Taken from what was, gameentity.
-        public:
-            std::string classname;
+            virtual ~CoreEntity() {}
 
-            // Contains the json attributes.
-            std::map<std::string, std::string> attributes;
+            //
+            // Legacy Core Entity data.
+            //
+            vec o;                                      // position
+            short attr1, attr2, attr3, attr4, attr5;    // Old integer attributes, still used for storing/loading ET_TYPES.
+            uchar et_type;                              // These are for the ET(Engine Type) values.
+            uchar ent_type;                             // These are for ENT_(DynEnt/PhysEnt Type) values.
+            uchar game_type;                            // the internal game entity type values.
+            uchar reserved;
 
-        // Taken from the old "extentity".
-        public:
+            //
+            // Legacy Core ExtEntity data and functions.
+            //
             int flags;
             BaseEntity *attached;
 
-            bool spawned() const { return (flags&EF_SPAWNED) != 0; }
-            void setspawned(bool val) { if(val) flags |= EF_SPAWNED; else flags &= ~EF_SPAWNED; }
-            void setspawned() { flags |= EF_SPAWNED; }
-            void clearspawned() { flags &= ~EF_SPAWNED; }
+            bool spawned() const { return (flags&entities::EntityFlags::EF_SPAWNED) != 0; }
+            void setspawned(bool val) { if(val) flags |= entities::EntityFlags::EF_SPAWNED; else flags &= ~entities::EntityFlags::EF_SPAWNED; }
+            void setspawned() { flags |= entities::EntityFlags::EF_SPAWNED; }
+            void clearspawned() { flags &= ~entities::EntityFlags::EF_SPAWNED; }
 
-        private:
+            //
+            // Legacy of ours, but it made more sense than short attr1 ... etc.
+            //
+            short model_idx;
+
+        public:
+            //
+            // Core BaseEntity data.
+            //
+            // Entity Name. (Used for trigger events.)
+            std::string name;
+            // Entity class name. (Used to spawn the proper inheritance class instance.)
+            std::string classname;
+            // Contains the json attributes.
+            std::map<std::string, std::string> attributes;
+
+            //
+            //
+            //
 
         };
+    }
+}
+
+// Do some predefines for animinfo.h
+namespace entities {
+    namespace classes {
+        class BasePhysicalEntity;
+        class BaseDynamicEntity;
     } // classes
 } // entities
+
+// Include our base entity types.
+#include "entities/animinfo.h"              // Include the basic animation info for our entities.
+#include "entities/baseentity.h"            // Include the basic entity to base all others on.
+#include "entities/basephysicalentity.h"    // Include the physical entity, for objects such as crates etc.
+#include "entities/basedynamicentity.h"     // Include the dynamical entity, for objects that can move as if it were players.
+
+#endif // ENTS_H

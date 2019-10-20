@@ -12,9 +12,11 @@
 #include "texture.h"
 #include "bih.h"
 #include "model.h"
+#include "ents.h"
 
-extern dynent *player;
-extern physent *camera1;                // special ent that acts as camera, same object as player1 in FPS mode
+namespace entities { namespace classes { class Player; } }
+extern entities::classes::Player *player;
+extern entities::classes::BasePhysicalEntity *camera1;                // special ent that acts as camera, same object as player in FPS mode
 
 extern int worldscale, worldsize;
 extern int mapversion;
@@ -381,10 +383,10 @@ extern bool debugaa();
 extern void cleanupaa();
 
 // ents
-extern char *entname(entity &e);
+extern char *entname(entities::classes::BasePhysicalEntity &e);
 extern bool haveselent();
 extern undoblock *copyundoents(undoblock *u);
-extern void pasteundoent(int idx, const entity &ue);
+extern void pasteundoent(int idx, const entities::classes::BasePhysicalEntity &ue);
 extern void pasteundoents(undoblock *u);
 
 // octaedit
@@ -640,7 +642,7 @@ extern void modifyorient(float yaw, float pitch);
 extern void mousemove(int dx, int dy);
 extern bool overlapsdynent(const vec &o, float radius);
 extern void rotatebb(vec &center, vec &radius, int yaw, int pitch, int roll = 0);
-extern float shadowray(const vec &o, const vec &ray, float radius, int mode, entities::classes::BaseEntity *t = NULL);
+extern float shadowray(const vec &o, const vec &ray, float radius, int mode, entities::classes::BasePhysicalEntity *t = NULL);
 
 // world
 
@@ -688,6 +690,72 @@ static inline model *loadmapmodel(int n)
     }
     return NULL;
 }
+
+static inline model *loadmapmodel(const std::string &filename)
+{
+    loopv(mapmodels)
+    {
+        // Fetch the name.
+        std::string name = mapmodels[i].name;
+
+        // Compare if the mapmodel's values equal each other.
+        model *m = mapmodels[i].m;
+
+        if (strcmp(m->name, filename.c_str()) == 0)
+            // If they equal each other, it means we don't have to load it in again. Just return the pointer.
+            return m ? m : loadmodel(filename.c_str());
+        else
+            return NULL;
+    }
+    return NULL;
+}
+
+
+// WatIsDeze: Added so we can load mapmodels by string filename
+/*static inline int loadmapmodel(const char *filename, entities::classes::BaseEntity *ent)
+{
+    int idx = -1;
+
+    // Check if it already exists.
+    if (ent == NULL) {
+        return -1;
+    }
+
+    // WatIsDeze: TODO: Check if this is actually... smart.
+    if (ent->model_idx != -1) {
+        loopv(mapmodels) if(!strcmp(mapmodels[i].name, filename)) {
+            ent->model_idx = i;
+        }
+    } else {
+        //loopv(mapmodels)
+        if (mapmodels.inrange(e->model_idx))
+            return e->model_idx;
+        else
+            return -1;
+    }
+
+    // MapModelInfo struct.
+    mapmodelinfo &mmi = mapmodels.add();
+    mmi.m = NULL;
+    mmi.collide = NULL;
+
+    // Setup the name.
+    if(filename[0])
+        copycubestr(mmi.name, filename);
+    else
+        mmi.name[0] = '\0';
+
+    // Try and load the model.
+    model *mdl = loadmodel(filename);
+
+    if (mdl) {
+        conoutf("%s %s %i", "Succesfully loaded MapModel: ", filename, mapmodels.length() - 1);
+        return mapmodels.length() - 1;
+    } else {
+        conoutf("%s %s", "Failed to load MapModel: ", filename);
+        return -1;
+    }
+}*/
 
 static inline mapmodelinfo *getmminfo(int n) { return mapmodels.inrange(n) ? &mapmodels[n] : NULL; }
 

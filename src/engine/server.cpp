@@ -73,7 +73,7 @@ void fatal(const char *fmt, ...)
     defvformatcubestr(msg,fmt,fmt);
     if(logfile) logoutf("%s", msg);
 #ifdef WIN32
-    MessageBox(NULL, msg, "Tesseract fatal error", MB_OK|MB_SYSTEMMODAL);
+    MessageBox(NULL, msg, "SchizoMania fatal error", MB_OK|MB_SYSTEMMODAL);
 #else
     fprintf(stderr, "server error: %s\n", msg);
 #endif
@@ -889,15 +889,15 @@ static LRESULT CALLBACK handlemessages(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
             {
                 case MENU_OPENCONSOLE:
                     setupconsole();
-                    if(conwindow) ModifyMenu(appmenu, 0, MF_BYPOSITION|MF_cubestr, MENU_HIDECONSOLE, "Hide Console");
+                    if(conwindow) ModifyMenu(appmenu, 0, MF_BYPOSITION|MF_STRING, MENU_HIDECONSOLE, "Hide Console");
                     break;
                 case MENU_SHOWCONSOLE:
                     ShowWindow(conwindow, SW_SHOWNORMAL);
-                    ModifyMenu(appmenu, 0, MF_BYPOSITION|MF_cubestr, MENU_HIDECONSOLE, "Hide Console");
+                    ModifyMenu(appmenu, 0, MF_BYPOSITION|MF_STRING, MENU_HIDECONSOLE, "Hide Console");
                     break;
                 case MENU_HIDECONSOLE:
                     ShowWindow(conwindow, SW_HIDE);
-                    ModifyMenu(appmenu, 0, MF_BYPOSITION|MF_cubestr, MENU_SHOWCONSOLE, "Show Console");
+                    ModifyMenu(appmenu, 0, MF_BYPOSITION|MF_STRING, MENU_SHOWCONSOLE, "Show Console");
                     break;
                 case MENU_EXIT:
                     PostMessage(hWnd, WM_CLOSE, 0, 0);
@@ -921,9 +921,9 @@ static void setupwindow(const char *title)
 
     appmenu = CreatePopupMenu();
     if(!appmenu) fatal("failed creating popup menu");
-    AppendMenu(appmenu, MF_cubestr, MENU_OPENCONSOLE, "Open Console");
+    AppendMenu(appmenu, MF_STRING, MENU_OPENCONSOLE, "Open Console");
     AppendMenu(appmenu, MF_SEPARATOR, 0, NULL);
-    AppendMenu(appmenu, MF_cubestr, MENU_EXIT, "Exit");
+    AppendMenu(appmenu, MF_STRING, MENU_EXIT, "Exit");
     //SetMenuDefaultItem(appmenu, 0, FALSE);
 
     WNDCLASS wc;
@@ -1082,7 +1082,7 @@ void initserver(bool listen, bool dedicated)
     if(dedicated)
     {
 #ifdef WIN32
-        setupwindow("Tesseract server");
+        setupwindow("SchizoMania server");
 #endif
     }
 

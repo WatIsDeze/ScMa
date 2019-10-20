@@ -1,20 +1,21 @@
 #!/bin/sh
-# TESS_DATA should refer to the directory in which Tesseract data files are placed.
-#TESS_DATA=~/tesseract
-#TESS_DATA=/usr/local/tesseract
-TESS_DATA=.
+# SCMA_DATA should refer to the directory in which SchizoMania data files are placed.
+#SCMA_DATA=~/schizomania
+#SCMA_DATA=/usr/local/schizomania
+SCMA_DATA=.
 
-# TESS_BIN should refer to the directory in which Tesseract executable files are placed.
-TESS_BIN=src
+# SCMA should refer to the directory in which SchizoMania executable files are placed.
+SCMA_BIN=src
 
-# TESS_OPTIONS contains any command line options you would like to start Tesseract with.
-#TESS_OPTIONS=""
-TESS_OPTIONS="-u${HOME}/.tesseract"
+# SCMA_OPTIONS contains any command line options you would like to start SchizoMania with.
+#SCMA_OPTIONS=""
+#SCMA_OPTIONS="-u${HOME}/.schizomania -g debug_log.txt"
+SCMA_OPTIONS="-u${HOME}/.schizomania -g log.txt"
 
 # SYSTEM_NAME should be set to the name of your operating system.
 #SYSTEM_NAME=Linux
 SYSTEM_NAME=`uname -s`
-
+cc
 # MACHINE_NAME should be set to the name of your processor.
 #MACHINE_NAME=i686
 MACHINE_NAME=`uname -m`
@@ -44,22 +45,11 @@ x86_64|amd64)
   ;;
 esac
 
-if [ -x ${TESS_BIN}/native_client ]
+if [ -x ${SCMA_BIN}/SchizoMania_Client ]
 then
   SYSTEM_NAME=native_
   MACHINE_NAME=
 fi
 
-#if [ -x ${TESS_BIN}/${SYSTEM_NAME}${MACHINE_NAME}client ]
-#then
-  cd ${TESS_DATA}
-  exec ${TESS_BIN}/SchizoMania_Client ${TESS_OPTIONS} "$@"
-#else
-#  echo "Your platform does not have a pre-compiled Tesseract client."
-#  echo "Please follow the following steps to build a native client:"
-#  echo "1) Ensure you have the SDL2, SDL2-image, SDL2-mixer, and OpenGL libraries installed."
-#  echo "2) Type \"make -C src install\"."
-#  echo "3) If the build succeeds, run this script again."
-#  exit 1
-#fi
-
+cd ${SCMA_DATA}
+exec ${SCMA_BIN}/SchizoMania_Client ${SCMA_OPTIONS} "$@"

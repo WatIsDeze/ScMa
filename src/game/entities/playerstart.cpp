@@ -4,8 +4,10 @@
 namespace entities {
 namespace classes {
 
-PlayerStart::PlayerStart() : BaseEntity() {
-    type = ENT_PLAYER;
+PlayerStart::PlayerStart() : BasePhysicalEntity() {
+    et_type = ET_PLAYERSTART;
+    ent_type = ENT_INANIMATE;
+    game_type = PLAYERSTART;
 }
 
 PlayerStart::~PlayerStart() {
@@ -17,12 +19,11 @@ void PlayerStart::preload() {
 }
 
 void PlayerStart::think() {
-    //moveplayer(this, 10, true);
+
 }
 
 void PlayerStart::render() {
-    // TODO: Fix this.
-    //if(isthirdperson()) renderclient(player1, "ogro", NULL, 0, ANIM_ATTACK1, 300, player1->lastaction, player1->lastpain);
+
 }
 
 } // classes
