@@ -7,7 +7,7 @@ namespace entities
         // PhysicalEntity: Used for objects such as crates, etc.
         class BasePhysicalEntity : public BaseEntity
         {
-			ENTITY_FACTORY_IMPL(BasePhysicalEntity);
+            ENTITY_FACTORY_IMPL(BasePhysicalEntity);
         public:
 
             void resetinterp();
@@ -30,17 +30,17 @@ namespace entities
             float xradius = 1.67;
             float yradius = 1.67;
             float zmargin = 0;
-            
-			int inwater = 0;
-			int timeinair = 0;
-			bool jumping = false;
-			char strafe = 0;
-			char move = 0;
-			char crouching = 0;
-			uchar physstate = PHYS_FALL;
-			vec vel = vec(0, 0, 0);
-			vec falling = vec(0, 0, 0);
-			vec floor = vec(0, 0, 1);
+
+            int inwater = 0;
+            int timeinair = 0;
+            bool jumping = false;
+            char strafe = 0;
+            char move = 0;
+            char crouching = 0;
+            uchar physstate = PHYS_FLOOR;
+            vec vel = vec(0, 0, 0);
+            vec falling = vec(0, 0, 0);
+            vec floor = vec(0, 0, 1);
             uchar state = CS_ALIVE;
             uchar editstate = CS_ALIVE;
             uchar collidetype = COLLIDE_ELLIPSE;

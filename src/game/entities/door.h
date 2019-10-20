@@ -4,10 +4,9 @@
 namespace entities {
     namespace classes {
         class Door : public BaseMapModel {
-			ENTITY_FACTORY_IMPL(Door);
+            ENTITY_FACTORY_IMPL(Door);
         public:
             Door();
-            virtual ~Door();
 
             void preload();
             void think();

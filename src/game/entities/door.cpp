@@ -28,10 +28,6 @@ Door::Door() :  entities::classes::BaseMapModel("world/door") {
     flags |= entities::EntityFlags::EF_SPAWNED;
 }
 
-Door::~Door() {
-
-}
-
 void Door::preload() {
 
 }
@@ -45,6 +41,7 @@ void Door::render() {
 
 void Door::onAnimate(int &anim, int &basetime) {
     conoutf("OnAnimate: %i %i", anim, basetime);
+    anim = ANIM_MAPMODEL | ANIM_ALL | ANIM_REVERSE;
 }
 
 bool Door::onTrigger(const entities::classes::CoreEntity *otherEnt, const vec &dir) {

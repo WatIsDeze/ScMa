@@ -5,6 +5,7 @@
 #include "baseentity.h"
 #include "coreentity.h"
 #include "entityfactory.h"
+using json = nlohmann::json;
 
 const nlohmann::json json_utils::getSubobject(const nlohmann::json& document, const std::string& key)
 {
@@ -36,6 +37,7 @@ bool json_utils::tryQueryJsonVar(const nlohmann::json& document, const std::stri
 			return true;
 		}
 		catch(nlohmann::json::type_error& e) {
+            conoutf(CON_ERROR, "nlohmann went nuts again: %s", e.what());
 		}
 	}
 	

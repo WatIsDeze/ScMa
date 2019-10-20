@@ -15,9 +15,6 @@ DynamicLight::DynamicLight() : BasePhysicalEntity() {
     setName("DynamicLight");
 }
 
-DynamicLight::~DynamicLight() {
-
-}
 
 void DynamicLight::preload() {
     conoutf("%s", "Preloading dynamiclight entity");
