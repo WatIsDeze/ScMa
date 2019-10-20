@@ -51,7 +51,7 @@ struct soundchannel
     bool inuse;
     vec loc;
     soundslot *slot;
-    entities::classes::BaseEntity *ent;
+    entities::classes::CoreEntity *ent;
     int radius, volume, pan, flags;
     bool dirty;
 
@@ -76,7 +76,7 @@ struct soundchannel
 vector<soundchannel> channels;
 int maxchannels = 0;
 
-soundchannel &newchannel(int n, soundslot *slot, const vec *loc = NULL, entities::classes::BaseEntity *ent = NULL, int flags = 0, int radius = 0)
+soundchannel &newchannel(int n, soundslot *slot, const vec *loc = NULL, entities::classes::CoreEntity *ent = NULL, int flags = 0, int radius = 0)
 {
     if(ent)
     {
@@ -211,7 +211,7 @@ Mix_Music *loadmusic(const char *name)
     return music;
 }
 
-void startmusic(char *name, char *cmd)
+SCRIPTEXPORT_AS(music) void startmusic(char *name, char *cmd)
 {
     if(nosound) return;
     stopmusic();
@@ -236,8 +236,6 @@ void startmusic(char *name, char *cmd)
         }
     }
 }
-
-COMMANDN(music, startmusic, "ss");
 
 static Mix_Chunk *loadwav(const char *name)
 {
@@ -387,32 +385,34 @@ static struct soundtype
     }
 } gamesounds("game/"), mapsounds("mapsound/");
 
-void registersound(char *name, int *vol) { intret(gamesounds.addsound(name, *vol, 0)); }
-COMMAND(registersound, "si");
+SCRIPTEXPORT void registersound(char *name, int *vol) { intret(gamesounds.addsound(name, *vol, 0)); }
 
-void mapsound(char *name, int *vol, int *maxuses) { intret(mapsounds.addsound(name, *vol, *maxuses < 0 ? 0 : max(1, *maxuses))); }
-COMMAND(mapsound, "sii");
+SCRIPTEXPORT void mapsound(char *name, int *vol, int *maxuses) { intret(mapsounds.addsound(name, *vol, *maxuses < 0 ? 0 : max(1, *maxuses))); }
 
-void altsound(char *name, int *vol) { gamesounds.addalt(name, *vol); }
-COMMAND(altsound, "si");
+SCRIPTEXPORT void altsound(char *name, int *vol) { gamesounds.addalt(name, *vol); }
 
-void altmapsound(char *name, int *vol) { mapsounds.addalt(name, *vol); }
-COMMAND(altmapsound, "si");
+SCRIPTEXPORT void altmapsound(char *name, int *vol) { mapsounds.addalt(name, *vol); }
 
-ICOMMAND(numsounds, "", (), intret(gamesounds.configs.length()));
-ICOMMAND(nummapsounds, "", (), intret(mapsounds.configs.length()));
+SCRIPTEXPORT void numsounds()
+{
+    intret(gamesounds.configs.length());
+}
 
-void soundreset()
+SCRIPTEXPORT void nummapsounds()
+{
+    intret(mapsounds.configs.length());
+}
+
+SCRIPTEXPORT void soundreset()
 {
     gamesounds.reset();
 }
-COMMAND(soundreset, "");
 
-void mapsoundreset()
+SCRIPTEXPORT void mapsoundreset()
 {
     mapsounds.reset();
 }
-COMMAND(mapsoundreset, "");
+
 
 void resetchannels()
 {
@@ -447,7 +447,7 @@ void clearmapsounds()
     mapsounds.clear();
 }
 
-void stopmapsound(entities::classes::BaseEntity *e)
+void stopmapsound(entities::classes::CoreEntity *e)
 {
     loopv(channels)
     {
@@ -462,16 +462,19 @@ void stopmapsound(entities::classes::BaseEntity *e)
 
 void checkmapsounds()
 {
-    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
+    const auto& ents = entities::getents();
     loopv(ents)
     {
-        entities::classes::BasePhysicalEntity &e = *ents[i];
-        if(e.et_type!=ET_SOUND) continue;
-        if(camera1->o.dist(e.o) < e.attr2)
+        auto e = dynamic_cast<entities::classes::BaseEntity *>(ents[i]);
+        if (!e)
+			continue;
+		if(e->et_type != ET_SOUND)
+			continue;
+		if(camera1->o.dist(e->o) < e->attr2)
         {
-            if(!(e.flags&entities::EntityFlags::EF_SOUND)) playsound(e.attr1, NULL, &e, SND_MAP, -1);
+			if(!(e->flags&entities::EntityFlags::EF_SOUND)) playsound(e->attr1, NULL, e, SND_MAP, -1);
         }
-        else if(e.flags&entities::EntityFlags::EF_SOUND) stopmapsound(&e);
+		else if(e->flags&entities::EntityFlags::EF_SOUND) stopmapsound(e);
     }
 }
 
@@ -567,15 +570,18 @@ void preloadmapsound(int n)
 
 void preloadmapsounds()
 {
-    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
+    const auto& ents = entities::getents();
     loopv(ents)
     {
-        entities::classes::BasePhysicalEntity &e = *ents[i];
-        if(e.et_type==ET_SOUND) mapsounds.preloadsound(e.attr1);
+        auto e = dynamic_cast<entities::classes::BaseEntity *>(ents[i]);
+        if (!e)
+			continue;
+			
+		if(e->et_type==ET_SOUND) mapsounds.preloadsound(e->attr1);
     }
 }
 
-int playsound(int n, const vec *loc, entities::classes::BaseEntity *ent, int flags, int loops, int fade, int chanid, int radius, int expire)
+int playsound(int n, const vec *loc, entities::classes::CoreEntity *ent, int flags, int loops, int fade, int chanid, int radius, int expire)
 {
     if(nosound || !soundvol || minimized) return -1;
 
@@ -679,9 +685,12 @@ int playsoundname(const char *s, const vec *loc, int vol, int flags, int loops, 
     return playsound(id, loc, NULL, flags, loops, fade, chanid, radius, expire);
 }
 
-ICOMMAND(playsound, "i", (int *n), playsound(*n));
+SCRIPTEXPORT_AS(playsound) void playsound_scriptimpl(int *n)
+{
+    playsound(*n);
+}
 
-void resetsound()
+SCRIPTEXPORT void resetsound()
 {
     clearchanges(CHANGE_SOUND);
     if(!nosound)
@@ -718,8 +727,6 @@ void resetsound()
         DELETEA(musicdonecmd);
     }
 }
-
-COMMAND(resetsound, "");
 
 #ifdef WIN32
 
@@ -828,3 +835,9 @@ void updatemumble()
 #endif
 }
 
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+sound.binding.cpp"
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

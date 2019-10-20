@@ -1,4 +1,5 @@
 #include "cube.h"
+#include "engine/scriptexport.h"
 
 enum
 {
@@ -262,7 +263,7 @@ static void mountzip(ziparchive &arch, vector<zipfile> &files, const char *mount
     }
 }
 
-bool addzip(const char *name, const char *mount = NULL, const char *strip = NULL)
+SCRIPTEXPORT bool addzip(const char *name, const char *mount = NULL, const char *strip = NULL)
 {
     cubestr pname;
     copycubestr(pname, name);
@@ -302,7 +303,7 @@ bool addzip(const char *name, const char *mount = NULL, const char *strip = NULL
     return true;
 }
 
-bool removezip(const char *name)
+SCRIPTEXPORT bool removezip(const char *name)
 {
     cubestr pname;
     copycubestr(pname, name);
@@ -582,7 +583,20 @@ int listzipfiles(const char *dir, const char *ext, vector<char *> &files)
 }
 
 #ifndef STANDALONE
-ICOMMAND(addzip, "sss", (const char *name, const char *mount, const char *strip), addzip(name, mount[0] ? mount : NULL, strip[0] ? strip : NULL));
-ICOMMAND(removezip, "s", (const char *name), removezip(name));
+// SCRIPTEXPORT_AS(addzip) void addzip_scriptimpl(const char *name, const char *mount, const char *strip)
+// {
+//     addzip(name, mount[0] ? mount : NULL, strip[0] ? strip : NULL);
+// }
+
+// SCRIPTEXPORT void removezip(const char *name)
+// {
+//     removezip(name);
+// }
 #endif
 
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+shared+zip.binding.cpp"
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

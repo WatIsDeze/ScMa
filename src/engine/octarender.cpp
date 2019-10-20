@@ -2,6 +2,8 @@
 
 #include "engine.h"
 #include "ents.h"
+#include "shared/entities/baseentity.h"
+
 
 using namespace entities;
 using namespace classes;
@@ -336,14 +338,14 @@ struct vacollect : verthash
         GENVERTS(vertex, buf, { *f = v; f->norm.flip(); f->tangent.flip(); });
     }
 
-    void gendecal(const entities::classes::BaseEntity &e, DecalSlot &s, const decalkey &key)
+    void gendecal(const entities::classes::CoreEntity *e, DecalSlot &s, const decalkey &key)
     {
         matrix3 orient;
         orient.identity();
-        if(e.attr2) orient.rotate_around_z(sincosmod360(e.attr2));
-        if(e.attr3) orient.rotate_around_x(sincosmod360(e.attr3));
-        if(e.attr4) orient.rotate_around_y(sincosmod360(-e.attr4));
-        vec size(max(float(e.attr5), 1.0f));
+		if(e->attr2) orient.rotate_around_z(sincosmod360(e->attr2));
+		if(e->attr3) orient.rotate_around_x(sincosmod360(e->attr3));
+		if(e->attr4) orient.rotate_around_y(sincosmod360(-e->attr4));
+		vec size(max(float(e->attr5), 1.0f));
         size.y *= s.depth;
         if(!s.sts.empty())
         {
@@ -351,7 +353,7 @@ struct vacollect : verthash
             if(t->xs < t->ys) size.x *= t->xs / float(t->ys);
             else if(t->xs > t->ys) size.z *= t->ys / float(t->xs);
         }
-        vec center = orient.transform(vec(0, size.y*0.5f, 0)).add(e.o), radius = orient.abstransform(vec(size).mul(0.5f));
+		vec center = orient.transform(vec(0, size.y*0.5f, 0)).add(e->o), radius = orient.abstransform(vec(size).mul(0.5f));
         vec bbmin = vec(center).sub(radius), bbmax = vec(center).add(radius);
         vec clipoffset = orient.transposedtransform(center).msub(size, 0.5f);
         loopv(texs)
@@ -418,19 +420,22 @@ struct vacollect : verthash
     {
         if(decals.length()) extdecals.put(decals.getbuf(), decals.length());
         if(extdecals.empty()) return;
-        vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
+        const auto& ents = entities::getents();
         loopv(extdecals)
         {
             octaentities *oe = extdecals[i];
             loopvj(oe->decals)
             {
-                entities::classes::BasePhysicalEntity &e = *ents[oe->decals[j]];
-                if(e.flags & entities::EntityFlags::EF_RENDER) continue;
-                e.flags |= (int)entities::EntityFlags::EF_RENDER;
-                DecalSlot &s = lookupdecalslot(e.attr1, true);
+                auto e = dynamic_cast<entities::classes::BaseEntity *>(ents[oe->decals[j]]);
+                if (!e)
+					continue;
+					
+				if(e->flags & entities::EntityFlags::EF_RENDER) continue;
+				e->flags |= (int)entities::EntityFlags::EF_RENDER;
+				DecalSlot &s = lookupdecalslot(e->attr1, true);
                 if(!s.shader) continue;
-                ushort envmap = s.shader->type&SHADER_ENVMAP ? (s.texmask&(1<<TEX_ENVMAP) ? EMID_CUSTOM : closestenvmap(e.o)) : EMID_NONE;
-                decalkey k(e.attr1, envmap);
+				ushort envmap = s.shader->type&SHADER_ENVMAP ? (s.texmask&(1<<TEX_ENVMAP) ? EMID_CUSTOM : closestenvmap(e->o)) : EMID_NONE;
+				decalkey k(e->attr1, envmap);
                 gendecal(e, s, k);
             }
         }
@@ -439,8 +444,11 @@ struct vacollect : verthash
             octaentities *oe = extdecals[i];
             loopvj(oe->decals)
             {
-                entities::classes::BasePhysicalEntity &e = *ents[oe->decals[j]];
-                if(e.flags& entities::EntityFlags::EF_RENDER) e.flags &= (int)~entities::EntityFlags::EF_RENDER;
+                auto e = dynamic_cast<entities::classes::BaseEntity *>(ents[oe->decals[j]]);
+                if (!e)
+					continue;
+
+				if(e->flags& entities::EntityFlags::EF_RENDER) e->flags &= (int)~entities::EntityFlags::EF_RENDER;
             }
         }
         enumeratekt(decalindices, decalkey, k, sortval, t,
@@ -1756,10 +1764,14 @@ void allchanged(bool load)
     }
 }
 
-void recalc()
+SCRIPTEXPORT void recalc()
 {
     allchanged(true);
 }
 
-COMMAND(recalc, "");
 
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+octarender.binding.cpp"
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

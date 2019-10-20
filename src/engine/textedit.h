@@ -717,7 +717,14 @@ static editor *useeditor(const char *name, int mode, bool focus, const char *ini
     body\
 )
 
-ICOMMAND(textlist, "", (), // @DEBUG return list of all the editors
+inline bool textcommand_skip()
+{
+    return !textfocus || identflags&IDF_OVERRIDDEN;
+}
+
+// @DEBUG return list of all the editors
+SCRIPTEXPORT void textlist()
+{
     vector<char> s;
     loopv(editors)
     {
@@ -726,36 +733,63 @@ ICOMMAND(textlist, "", (), // @DEBUG return list of all the editors
     }
     s.add('\0');
     result(s.getbuf());
-);
-TEXTCOMMAND(textshow, "", (), // @DEBUG return the start of the buffer
+}
+
+// @DEBUG return the start of the buffer
+SCRIPTEXPORT void textshow()
+{
+    if (textcommand_skip()) return;
     editline line;
     line.combinelines(textfocus->lines);
     result(line.text);
     line.clear();
-);
-ICOMMAND(textfocus, "si", (char *name, int *mode), // focus on a (or create a persistent) specific editor, else returns current name
+}
+
+// focus on a (or create a persistent) specific editor, else returns current name
+SCRIPTEXPORT_AS(textfocus) void textfocus_f(char *name, int *mode)
+{
     if(identflags&IDF_OVERRIDDEN) return;
     if(*name) useeditor(name, *mode<=0 ? EDITORFOREVER : *mode, true);
     else if(editors.length() > 0) result(editors.last()->name);
-);
-TEXTCOMMAND(textprev, "", (), editors.insert(0, textfocus); editors.pop();); // return to the previous editor
-TEXTCOMMAND(textmode, "i", (int *m), // (1= keep while focused, 2= keep while used in gui, 3= keep forever (i.e. until mode changes)) topmost editor, return current setting if no args
+}
+
+// return to the previous editor
+SCRIPTEXPORT void textprev()
+{
+    if (textcommand_skip()) return;
+    editors.insert(0, textfocus); editors.pop();
+}
+
+// (1= keep while focused, 2= keep while used in gui, 3= keep forever (i.e. until mode changes)) topmost editor, return current setting if no args
+SCRIPTEXPORT void textmode(int *m)
+{
+    if (textcommand_skip()) return;
     if(*m) textfocus->mode = *m;
     else intret(textfocus->mode);
-);
-TEXTCOMMAND(textsave, "s", (char *file),  // saves the topmost (filename is optional)
+}
+
+// saves the topmost (filename is optional)
+SCRIPTEXPORT void textsave(char *file)
+{
+    if (textcommand_skip()) return;
     if(*file) textfocus->setfile(path(file, true));
     textfocus->save();
-);
-TEXTCOMMAND(textload, "s", (char *file), // loads into the textfocusmost editor, returns filename if no args
+}
+
+// loads into the textfocusmost editor, returns filename if no args
+SCRIPTEXPORT void textload(char *file)
+{ 
+    if (textcommand_skip()) return;
     if(*file)
     {
         textfocus->setfile(path(file, true));
         textfocus->load();
     }
     else if(textfocus->filename) result(textfocus->filename);
-);
-ICOMMAND(textinit, "sss", (char *name, char *file, char *initval), // loads into named editor if no file assigned and editor has been rendered
+}
+
+// loads into named editor if no file assigned and editor has been rendered
+SCRIPTEXPORT void textinit(char *name, char *file, char *initval) 
 {
     if(identflags&IDF_OVERRIDDEN) return;
     editor *e = NULL;
@@ -765,23 +799,54 @@ ICOMMAND(textinit, "sss", (char *name, char *file, char *initval), // loads into
         e->setfile(path(file, true));
         e->load();
     }
-});
+}
 
-#define PASTEBUFFER "#pastebuffer"
+const char PASTEBUFFER[] = "#pastebuffer";
 
-TEXTCOMMAND(textcopy, "", (), editor *b = useeditor(PASTEBUFFER, EDITORFOREVER, false); textfocus->copyselectionto(b););
-TEXTCOMMAND(textpaste, "", (), editor *b = useeditor(PASTEBUFFER, EDITORFOREVER, false); textfocus->insertallfrom(b););
-TEXTCOMMAND(textmark, "i", (int *m),  // (1=mark, 2=unmark), return current mark setting if no args
+SCRIPTEXPORT void textcopy()
+{
+    if (textcommand_skip()) return;
+    editor *b = useeditor(PASTEBUFFER, EDITORFOREVER, false); textfocus->copyselectionto(b);
+}
+
+SCRIPTEXPORT void textpaste()
+{
+    if (textcommand_skip()) return;
+    editor *b = useeditor(PASTEBUFFER, EDITORFOREVER, false); textfocus->insertallfrom(b);
+}
+
+// (1=mark, 2=unmark), return current mark setting if no args
+SCRIPTEXPORT void textmark(int *m)
+{
+    if (textcommand_skip()) return;
     if(*m) textfocus->mark(*m==1);
     else intret(textfocus->region() ? 1 : 2);
-);
-TEXTCOMMAND(textselectall, "", (), textfocus->selectall(););
-TEXTCOMMAND(textclear, "", (), textfocus->clear(););
-TEXTCOMMAND(textcurrentline, "",  (), result(textfocus->currentline().text););
+}
 
-TEXTCOMMAND(textexec, "i", (int *selected), // execute script commands from the buffer (0=all, 1=selected region only)
+SCRIPTEXPORT void textselectall()
+{
+    if (textcommand_skip()) return;
+    textfocus->selectall();
+}
+
+SCRIPTEXPORT void textclear()
+{
+    if (textcommand_skip()) return;
+    textfocus->clear();
+}
+
+SCRIPTEXPORT void textcurrentline()
+{
+    if (textcommand_skip()) return;
+    result(textfocus->currentline().text);
+}
+
+// execute script commands from the buffer (0=all, 1=selected region only)
+SCRIPTEXPORT void textexec(int *selected)
+{ 
+    if (textcommand_skip()) return;
     char *script = *selected ? textfocus->selectiontocubestr() : textfocus->tocubestr();
     execute(script);
     delete[] script;
-);
+}
 

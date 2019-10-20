@@ -172,7 +172,7 @@ void optiface(uchar *p, cube &c)
     if(((f>>4)&0x0F0F0F0FU) == (f&0x0F0F0F0FU)) emptyfaces(c);
 }
 
-void printcube()
+SCRIPTEXPORT void printcube()
 {
     cube &c = lookupcube(lu); // assume this is cube being pointed at
     conoutf(CON_DEBUG, "= %p = (%d, %d, %d) @ %d", (void *)&c, lu.x, lu.y, lu.z, lusize);
@@ -181,7 +181,6 @@ void printcube()
     conoutf(CON_DEBUG, " z  %.8x", c.faces[2]);
 }
 
-COMMAND(printcube, "");
 
 bool isvalidcube(const cube &c)
 {
@@ -584,7 +583,10 @@ void mpremip(bool local)
     allchanged();
 }
 
-ICOMMAND(remip, "", (), mpremip(true));
+SCRIPTEXPORT_AS(remip) void remip_scriptimpl()
+{
+    mpremip(true);
+}
 
 const ivec cubecoords[8] = // verts of bounding cube
 {
@@ -1885,3 +1887,9 @@ void calcmerges()
     genmerges();
 }
 
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+octa.binding.cpp"
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

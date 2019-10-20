@@ -1,0 +1,77 @@
+[
+    {
+        "ent_type": 2,
+        "et_type": 9,
+        "game": {
+            "attributes": {
+                "classname": "playerstart",
+                "name": "PlayerStart_0"
+            },
+            "classname": "playerstart",
+            "name": "baseentity_0"
+        },
+        "game_type": 13,
+        "int_attr1": 0,
+        "int_attr2": 0,
+        "int_attr3": 0,
+        "int_attr4": 0,
+        "int_attr5": 0,
+        "int_reserved": 0,
+        "model_idx": 0,
+        "o": {
+            "x": 606.0,
+            "y": 610.0,
+            "z": 532.0
+        }
+    },
+    {
+        "ent_type": 2,
+        "et_type": 1,
+        "game": {
+            "attributes": {
+                "classname": "CoreEntity",
+                "name": "baseentity_1"
+            },
+            "classname": "CoreEntity",
+            "name": "tesseract_ent_-1"
+        },
+        "game_type": 1,
+        "int_attr1": 31,
+        "int_attr2": 82,
+        "int_attr3": 0,
+        "int_attr4": 0,
+        "int_attr5": 0,
+        "int_reserved": 0,
+        "model_idx": 0,
+        "o": {
+            "x": 495.0,
+            "y": 748.0,
+            "z": 516.0
+        }
+    },
+    {
+        "ent_type": 2,
+        "et_type": 1,
+        "game": {
+            "attributes": {
+                "classname": "CoreEntity",
+                "name": "baseentity_2"
+            },
+            "classname": "CoreEntity",
+            "name": "tesseract_ent_-1"
+        },
+        "game_type": 1,
+        "int_attr1": 261,
+        "int_attr2": 0,
+        "int_attr3": 56,
+        "int_attr4": 89,
+        "int_attr5": 2,
+        "int_reserved": 0,
+        "model_idx": 0,
+        "o": {
+            "x": 643.0,
+            "y": 732.4707641601563,
+            "z": 517.6891479492188
+        }
+    }
+]

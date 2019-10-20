@@ -1066,7 +1066,7 @@ void setupshaders()
 
 VAR(defershaders, 0, 1, 1);
 
-void defershader(int *type, const char *name, const char *contents)
+SCRIPTEXPORT void defershader(int *type, const char *name, const char *contents)
 {
     Shader *exists = shaders.access(name);
     if(exists && !exists->invalid()) return;
@@ -1079,7 +1079,6 @@ void defershader(int *type, const char *name, const char *contents)
     s.type = SHADER_DEFERRED | (*type & ~SHADER_INVALID);
     s.standard = standardshaders;
 }
-COMMAND(defershader, "iss");
 
 void Shader::force()
 {
@@ -1123,9 +1122,12 @@ Shader *useshaderbyname(const char *name)
     s->forced = true;
     return s;
 }
-ICOMMAND(forceshader, "s", (const char *name), useshaderbyname(name));
+SCRIPTEXPORT void forceshader(const char *name)
+{
+    useshaderbyname(name);
+}
 
-void shader(int *type, char *name, char *vs, char *ps)
+SCRIPTEXPORT void shader(int *type, char *name, char *vs, char *ps)
 {
     if(lookupshaderbyname(name)) return;
 
@@ -1150,9 +1152,8 @@ void shader(int *type, char *name, char *vs, char *ps)
     }
     slotparams.shrink(0);
 }
-COMMAND(shader, "isss");
 
-void variantshader(int *type, char *name, int *row, char *vs, char *ps, int *maxvariants)
+SCRIPTEXPORT void variantshader(int *type, char *name, int *row, char *vs, char *ps, int *maxvariants)
 {
     if(*row < 0)
     {
@@ -1179,9 +1180,8 @@ void variantshader(int *type, char *name, int *row, char *vs, char *ps, int *max
         if(strstr(ps, "//:variant") || strstr(vs, "//:variant")) gengenericvariant(*s, varname, vs, ps, *row);
     }
 }
-COMMAND(variantshader, "isissi");
 
-void setshader(char *name)
+SCRIPTEXPORT void setshader(char *name)
 {
     slotparams.shrink(0);
     Shader *s = shaders.access(name);
@@ -1191,7 +1191,6 @@ void setshader(char *name)
     }
     else slotshader = s;
 }
-COMMAND(setshader, "s");
 
 void resetslotshader()
 {
@@ -1277,7 +1276,7 @@ bool shouldreuseparams(Slot &s, VSlot &p)
     return false;
 }
 
-ICOMMAND(dumpshader, "sbi", (const char *name, int *col, int *row),
+SCRIPTEXPORT void dumpshader(const char *name, int *col, int *row)
 {
     Shader *s = lookupshaderbyname(name);
     FILE *l = getlogfile();
@@ -1289,9 +1288,12 @@ ICOMMAND(dumpshader, "sbi", (const char *name, int *col, int *row),
     }
     if(s->vsstr) fprintf(l, "%s:%s\n%s\n", s->name, "VS", s->vsstr);
     if(s->psstr) fprintf(l, "%s:%s\n%s\n", s->name, "FS", s->psstr);
-});
+}
 
-ICOMMAND(isshaderdefined, "s", (char *name), intret(lookupshaderbyname(name) ? 1 : 0));
+SCRIPTEXPORT void isshaderdefined(char *name)
+{
+    intret(lookupshaderbyname(name) ? 1 : 0);
+}
 
 static hashset<const char *> shaderparamnames(256);
 
@@ -1322,10 +1324,26 @@ void addslotparam(const char *name, float x, float y, float z, float w, int flag
     slotparams.add(param);
 }
 
-ICOMMAND(setuniformparam, "sfFFf", (char *name, float *x, float *y, float *z, float *w), addslotparam(name, *x, *y, *z, *w));
-ICOMMAND(setshaderparam, "sfFFf", (char *name, float *x, float *y, float *z, float *w), addslotparam(name, *x, *y, *z, *w));
-ICOMMAND(defuniformparam, "sfFFf", (char *name, float *x, float *y, float *z, float *w), addslotparam(name, *x, *y, *z, *w));
-ICOMMAND(reuseuniformparam, "sfFFf", (char *name, float *x, float *y, float *z, float *w), addslotparam(name, *x, *y, *z, *w, SlotShaderParam::REUSE));
+SCRIPTEXPORT void setuniformparam(char *name, float *x, CommandTypes::OptionalFloat y, CommandTypes::OptionalFloat z, float *w)
+{
+    addslotparam(name, *x, *y, *z, *w);
+}
+
+SCRIPTEXPORT void setshaderparam(char *name, float *x, CommandTypes::OptionalFloat y, CommandTypes::OptionalFloat z, float *w)
+{
+    addslotparam(name, *x, *y, *z, *w);
+}
+
+SCRIPTEXPORT void defuniformparam(char *name, float *x, CommandTypes::OptionalFloat y, CommandTypes::OptionalFloat z, float *w)
+{
+    addslotparam(name, *x, *y, *z, *w);
+}
+
+SCRIPTEXPORT void reuseuniformparam(char *name, float *x, CommandTypes::OptionalFloat y, CommandTypes::OptionalFloat z, float *w)
+{
+    addslotparam(name, *x, *y, *z, *w, SlotShaderParam::REUSE);
+}
+
 
 #define NUMPOSTFXBINDS 10
 
@@ -1481,14 +1499,13 @@ static bool addpostfx(const char *name, int outputbind, int outputscale, uint in
     return true;
 }
 
-void clearpostfx()
+SCRIPTEXPORT void clearpostfx()
 {
     postfxpasses.shrink(0);
     cleanuppostfx(false);
 }
-COMMAND(clearpostfx, "");
 
-ICOMMAND(addpostfx, "siisffff", (char *name, int *bind, int *scale, char *inputs, float *x, float *y, float *z, float *w),
+SCRIPTEXPORT_AS(addpostfx) void addpostfx_scriptimpl(char *name, int *bind, int *scale, char *inputs, float *x, float *y, float *z, float *w)
 {
     int inputmask = inputs[0] ? 0 : 1;
     int freemask = inputs[0] ? 0 : 1;
@@ -1506,13 +1523,13 @@ ICOMMAND(addpostfx, "siisffff", (char *name, int *bind, int *scale, char *inputs
     inputmask &= (1<<NUMPOSTFXBINDS)-1;
     freemask &= (1<<NUMPOSTFXBINDS)-1;
     addpostfx(name, clamp(*bind, 0, NUMPOSTFXBINDS-1), max(*scale, 0), inputmask, freemask, vec4(*x, *y, *z, *w));
-});
+}
 
-ICOMMAND(setpostfx, "sffff", (char *name, float *x, float *y, float *z, float *w),
+SCRIPTEXPORT void setpostfx(char *name, float *x, float *y, float *z, float *w)
 {
     clearpostfx();
     if(name[0]) addpostfx(name, 0, 0, 1, 1, vec4(*x, *y, *z, *w));
-});
+}
 
 void cleanupshaders()
 {
@@ -1552,7 +1569,7 @@ void reloadshaders()
     });
 }
 
-void resetshaders()
+SCRIPTEXPORT void resetshaders()
 {
     clearchanges(CHANGE_SHADERS);
 
@@ -1565,7 +1582,6 @@ void resetshaders()
     allchanged(true);
     GLERROR;
 }
-COMMAND(resetshaders, "");
 
 FVAR(blursigma, 0.005f, 0.5f, 2.0f);
 
@@ -1609,3 +1625,9 @@ void setblurshader(int pass, int size, int radius, float *weights, float *offset
     LOCALPARAMV(offsets, scaledoffsets, 8);
 }
 
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+shader.binding.cpp"
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

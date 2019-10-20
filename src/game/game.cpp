@@ -1,14 +1,18 @@
 #include "game.h"
+#include "entities.h"
 #include "entities/playerstart.h"
 #include "entities/player.h"
+#include "engine/scriptexport.h"
+
+
 
 namespace game
 {
     // Global player entity pointer.
-    entities::classes::Player *player1 = NULL;
+    ::entities::classes::Player *player1 = NULL;
 
     // List of connected players. (For future network usage.)
-    vector<entities::classes::Player*> players;
+	//vector<::entities::classes::Player*> players;
 
     // Networking State properties.
     bool connected = false;
@@ -20,63 +24,55 @@ namespace game
 
     void updateworld() {
         // Update the map time. (First frame since maptime = 0.
-        if(!maptime) {
-            maptime = lastmillis;
-            maprealtime = totalmillis;
-            return;
-        }
+        if(!maptime) { maptime = lastmillis; maprealtime = totalmillis; return; }
 
         // Escape this function if there is no currenttime yet from server to client. (Meaning it is 0.)
         if(!curtime) return; //{ gets2c(); if (player1->) c2sinfo(); return; } //c2sinfo(); }///if(player1->clientnum>=0) c2sinfo(); return; }
         //if(!curtime) return; //{ gets2c(); c2sinfo(); }///if(player1->clientnum>=0) c2sinfo(); return; }
 
-        // Update the physics.
+		// Update the physics.
         physicsframe();
 
         // Update all our entity objects.
-       // gets2c();
         updateentities();
-
-        // Allow for crouching and moving.
-        if (connected) {
-            //crouchplayer(player1, 10, true);
-            moveplayer(player1, 10, true);
-        }
-
-       // if(player->clientnum >=0) c2sinfo();   // do this last, to reduce the effective frame lag
+        // gets2c();
+		// if(player->clientnum >=0) c2sinfo();   // do this last, to reduce the effective frame lag
     }
 
     void SpawnPlayer()   // place at random spawn
     {
-        player1 = new entities::classes::Player();
-        player1->respawn();
+        if (player1)
+        {
+            player1->reset();
+            player1->respawn();
+        } else {
+            player1 = new entities::classes::Player();
+            player1->respawn();
+        }
     }
 
     void updateentities() {
         // Execute think actions for entities.
-        loopv(entities::g_ents)
+        loopv(entities::getents())
         {
             // Let's go at it!
-            if (entities::g_ents.inrange(i)) {
-                entities::classes::BaseEntity *e = entities::g_ents[i];
+            if (entities::getents().inrange(i)) {
+                entities::classes::BaseEntity *e = dynamic_cast<entities::classes::BaseEntity *>(entities::getents()[i]);
                 if (e != NULL && e->ent_type != ENT_PLAYER)
                     e->think();
             }
 
         }
 
-        //if (game::player1)
-            //game::player1->think();
-
-        if (connected) {
-            conoutf("Connected: %i", connected);
-        }
+        if (game::player1)
+            game::player1->think();
     }
 
     void gameconnect(bool _remote)
     {
         // Store connection state.
-        connected = _remote;
+        //connected = _remote;
+        connected = true;
 
         // Toggle edit mode if required.
         if(editmode)
@@ -89,7 +85,7 @@ namespace game
         connected = false;
     }
 
-    void changemap(const char *name)
+    SCRIPTEXPORT void changemap(const char *name)
     {
         // Are we connected? If not, connect locally.
         if(!connected) localconnect();
@@ -101,9 +97,6 @@ namespace game
         // If world loading fails, start a new empty map instead.
         if(!load_world(name))
             emptymap(0, true, name);
-
-        // Add the player entity to index 0 of the entity list.
-
     }
 
     void forceedit(const char *name) {
@@ -116,7 +109,7 @@ namespace game
         conoutf("dynentcollide D et_type: %i ent_type: %i game_type: %i --- O et_type: %i ent_type: %i game_type %i", d->et_type, d->ent_type, d->game_type, o->et_type, o->ent_type, o->game_type);
     }
 
-    void mapmodelcollide(entities::classes::BaseEntity *d, entities::classes::BaseEntity *o, const vec &dir) {
+    void mapmodelcollide(entities::classes::CoreEntity *d, entities::classes::CoreEntity *o, const vec &dir) {
         conoutf("mmcollide D et_type: %i ent_type: %i game_type: %i --- O et_type: %i ent_type: %i game_type %i", d->et_type, d->ent_type, d->game_type, o->et_type, o->ent_type, o->game_type);
     }
 
@@ -142,18 +135,21 @@ namespace game
         //clearprojectiles();
         //clearbouncers();
     }
-    void suicide(entities::classes::BaseEntity *d) {
+    void suicide(entities::classes::CoreEntity *d) {
 
     }
     void newmap(int size) {
         // Copy into mapname and reset maptime.
         maptime = 0;
 
+        // Clear old entity list..
+        entities::clearents();
+
         // SpawnPlayer.
         SpawnPlayer();
 
         // Find our playerspawn.
-        findplayerspawn(player1, -1, 0);
+        findplayerspawn(player1);
     }
     void loadingmap(const char *name) {
 
@@ -161,9 +157,15 @@ namespace game
 
     void startmap(const char *name)
     {
+        // Reset entity spawns.
+		entities::resetspawns();
+
+        // Spawn our player.
         SpawnPlayer();
-        findplayerspawn(player1);
-        entities::resetspawns();
+
+		// Find player spawn point.
+		findplayerspawn(player1);
+
         copycubestr(clientmap, name ? name : "");
         execident("mapstart");
     }
@@ -204,13 +206,12 @@ namespace game
 
     bool canjump()
     {
-        //if(!intermission) respawn();
-        return player1->state!=CS_DEAD;// && !intermission;
+        return player1->state!=CS_DEAD;
     }
 
     bool cancrouch()
     {
-        return player1->state!=CS_DEAD;// && !intermission;
+        return player1->state!=CS_DEAD;
     }
 
     bool allowmove(entities::classes::BasePhysicalEntity *d)
@@ -220,12 +221,12 @@ namespace game
         //return !d->ms_lastaction || lastmillis-d->ms_lastaction>=1000;
     }
 
-    entities::classes::BasePhysicalEntity *iterdynents(int i) {
+    entities::classes::CoreEntity *iterdynents(int i) {
         if (i == 0) {
-            return (entities::classes::BasePhysicalEntity*)player1;
+            return player1;
         } else {
-            if (i < entities::g_ents.length()) {
-                return entities::g_ents[i];
+            if (i < entities::getents().length()) {
+                return dynamic_cast<entities::classes::BaseEntity *>(entities::getents()[i]);
             } else {
                 return nullptr;
             }
@@ -237,13 +238,12 @@ namespace game
     }
     // int numdynents() { return players.length()+monsters.length()+movables.length(); }
     int numdynents() {
-        return entities::g_ents.length() + 1; // + 1 is for the player.
+        return entities::getents().length() + 1; // + 1 is for the player.
     }
 
     // This function should be used to render HUD View stuff etc.
     void rendergame(bool mainpass) {
         // This function should be used to render HUD View stuff etc.
-//        game::RenderGameEntities();
     }
 
     const char *defaultcrosshair(int index) {
@@ -256,7 +256,17 @@ namespace game
     }
 
     void setupcamera() {
-
+        entities::classes::BasePhysicalEntity *target = dynamic_cast<entities::classes::BasePhysicalEntity*>(player1);
+        assert(target);
+        if(target)
+        {
+            player1->strafe = target->strafe;
+            player1->move = target->move;
+            player1->yaw = target->yaw;
+            player1->pitch = target->state==CS_DEAD ? 0 : target->pitch;
+            player1->o = target->o;
+            player1->resetinterp();
+        }
     }
 
     bool allowthirdperson() {
@@ -271,23 +281,26 @@ namespace game
         return player1->state!=CS_EDITING;
     }
 
-    void lighteffects(entities::classes::BaseEntity *e, vec &color, vec &dir) {
+    void lighteffects(entities::classes::CoreEntity *e, vec&color, vec &dir) {
     }
 
     void renderDynamicLights() {
         // Loop through our light entities and render them all.
-        loopv(entities::g_lightEnts)
+        auto &ents = entities::getents();
+        loopv(ents)
         {
             // Let's go at it!
-            entities::classes::BaseEntity *e = entities::g_lightEnts[i];
+            auto e = dynamic_cast<entities::classes::BaseEntity *>(ents[i]);
+            if (!e || e->et_type != ET_LIGHT) continue;
+            
             e->render();
         }
     }
 
-    void dynlighttrack(entities::classes::BaseEntity *owner, vec &o, vec &hud) {
+    void dynlighttrack(entities::classes::CoreEntity *owner, vec &o, vec &hud) {
     }
 
-    void particletrack(entities::classes::BaseEntity *owner, vec &o, vec &d) {
+    void particletrack(entities::classes::CoreEntity *owner, vec &o, vec &d) {
     }
 
     void writegamedata(vector<char> &extras) {
@@ -308,7 +321,9 @@ namespace game
         execfile("config/auth.cfg", false);
     }
 
-    void parseoptions(vector<const char *> &args) {}
+    void parseoptions(vector<const char *> &args) {
+        conoutf(CON_WARN, "game::parseoption is empty");
+    }
     void connectattempt(const char *name, const char *password, const ENetAddress &address) {
         // Will need this to even join a game.
         //copycubestr(connectpass, password);
@@ -336,8 +351,9 @@ namespace game
 
     void initclient() {
         // Setup the map time.
-        maptime = maprealtime = 0;
-        SpawnPlayer();
+        maptime = 0;
+		SpawnPlayer();
+        findplayerspawn(player1);
     }
 
     const char *gameident() {
@@ -347,6 +363,12 @@ namespace game
         return NULL;
     }
 
-}; // namespace game.
 
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+game+game.binding.cpp"
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //
+
+}; // namespace game.
 

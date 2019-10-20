@@ -2,104 +2,44 @@
 // runs dedicated or as client coroutine
 
 #include "engine.h"
-
-#define LOGSTRLEN 512
-
-static FILE *logfile = NULL;
-
-void closelogfile()
-{
-    if(logfile)
-    {
-        fclose(logfile);
-        logfile = NULL;
-    }
-}
-
-FILE *getlogfile()
-{
-#ifdef WIN32
-    return logfile;
-#else
-    return logfile ? logfile : stdout;
-#endif
-}
-
-void setlogfile(const char *fname)
-{
-    closelogfile();
-    if(fname && fname[0])
-    {
-        fname = findfile(fname, "w");
-        if(fname) logfile = fopen(fname, "w");
-    }
-    FILE *f = getlogfile();
-    if(f) setvbuf(f, NULL, _IOLBF, BUFSIZ);
-}
-
-void logoutf(const char *fmt, ...)
-{
-    va_list args;
-    va_start(args, fmt);
-    logoutfv(fmt, args);
-    va_end(args);
-}
-
-
-static void writelog(FILE *file, const char *buf)
-{
-    static uchar ubuf[512];
-    size_t len = strlen(buf), carry = 0;
-    while(carry < len)
-    {
-        size_t numu = encodeutf8(ubuf, sizeof(ubuf)-1, &((const uchar *)buf)[carry], len - carry, &carry);
-        if(carry >= len) ubuf[numu++] = '\n';
-        fwrite(ubuf, 1, numu, file);
-    }
-}
-
-static void writelogv(FILE *file, const char *fmt, va_list args)
-{
-    static char buf[LOGSTRLEN];
-    vformatcubestr(buf, fmt, args, sizeof(buf));
-    writelog(file, buf);
-}
+#include "scriptexport.h"
+#include "log.h"
 
 #ifdef STANDALONE
 void fatal(const char *fmt, ...)
 {
-    void cleanupserver();
-    cleanupserver();
-    defvformatcubestr(msg,fmt,fmt);
-    if(logfile) logoutf("%s", msg);
+   void cleanupserver();
+   cleanupserver();
+   defvformatcubestr(msg,fmt,fmt);
+   if(logfile) logoutf("%s", msg);
 #ifdef WIN32
-    MessageBox(NULL, msg, "SchizoMania fatal error", MB_OK|MB_SYSTEMMODAL);
+   MessageBox(NULL, msg, "SchizoMania fatal error", MB_OK|MB_SYSTEMMODAL);
 #else
-    fprintf(stderr, "server error: %s\n", msg);
+   fprintf(stderr, "server error: %s\n", msg);
 #endif
-    closelogfile();
-    exit(EXIT_FAILURE);
+   closelogfile();
+   exit(EXIT_FAILURE);
 }
 
 void conoutfv(int type, const char *fmt, va_list args)
 {
-    logoutfv(fmt, args);
+   logoutfv(fmt, args);
 }
 
 void conoutf(const char *fmt, ...)
 {
-    va_list args;
-    va_start(args, fmt);
-    conoutfv(CON_INFO, fmt, args);
-    va_end(args);
+   va_list args;
+   va_start(args, fmt);
+   conoutfv(CON_INFO, fmt, args);
+   va_end(args);
 }
 
 void conoutf(int type, const char *fmt, ...)
 {
-    va_list args;
-    va_start(args, fmt);
-    conoutfv(type, fmt, args);
-    va_end(args);
+   va_list args;
+   va_start(args, fmt);
+   conoutfv(type, fmt, args);
+   va_end(args);
 }
 #endif
 
@@ -116,7 +56,9 @@ struct client                   // server side version of "dynent" type
     void *info;
 };
 
+namespace {
 vector<client *> clients;
+}
 
 ENetHost *serverhost = NULL;
 int laststatus = 0;
@@ -1004,11 +946,11 @@ void logoutfv(const char *fmt, va_list args)
 
 #else
 
-void logoutfv(const char *fmt, va_list args)
-{
-    FILE *f = getlogfile();
-    if(f) writelogv(f, fmt, args);
-}
+// void logoutfv(const char *fmt, va_list args)
+// {
+//     FILE *f = getlogfile();
+//     if(f) writelogv(f, fmt, args);
+// }
 
 #endif
 
@@ -1104,7 +1046,7 @@ void initserver(bool listen, bool dedicated)
 }
 
 #ifndef STANDALONE
-void startlistenserver(int *usemaster)
+SCRIPTEXPORT void startlistenserver(int *usemaster)
 {
     if(serverhost) { conoutf(CON_ERROR, "listen server is already running"); return; }
 
@@ -1116,9 +1058,8 @@ void startlistenserver(int *usemaster)
 
     conoutf("listen server started for %d clients%s", maxclients, allowupdatemaster ? " and listed with master server" : "");
 }
-COMMAND(startlistenserver, "i");
 
-void stoplistenserver()
+SCRIPTEXPORT void stoplistenserver()
 {
     if(!serverhost) { conoutf(CON_ERROR, "listen server is not running"); return; }
 
@@ -1128,7 +1069,6 @@ void stoplistenserver()
 
     conoutf("listen server stopped");
 }
-COMMAND(stoplistenserver, "");
 #endif
 
 bool serveroption(char *opt)
@@ -1159,3 +1099,10 @@ int main(int argc, char **argv)
     return EXIT_SUCCESS;
 }
 #endif
+
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+server.binding.cpp"
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

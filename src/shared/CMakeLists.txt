@@ -15,7 +15,7 @@ add_library(SchizoMania_Shared_Client STATIC
     igame.h
     pch.cpp
     stream.cpp
-    tessfont.c
+    # tessfont.c
     tools.cpp
     tools.h
     zip.cpp
@@ -40,12 +40,16 @@ target_include_directories(SchizoMania_Shared_Client
         entities/
 )
 target_link_libraries(SchizoMania_Shared_Client
-    PUBLIC
+	PUBLIC
+		SchizoMania_Game_Client
+		SchizoMania_Shared_Entities
         enet
         ${SDL2_LIBRARIES}
         ${FREETYPE_LIBRARIES}
         ${ZLIB_LIBRARIES}
         ${OPENGL_LIBRARIES}
+    PRIVATE
+        SchizoMania_Binding
 )
 
 # target_compile_definitions(SchizoMania_Shared_Server PUBLIC -DSTANDALONE)

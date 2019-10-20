@@ -1,4 +1,6 @@
 // script binding functionality
+#pragma once
+#include "cube.h"
 
 enum { VAL_NULL = 0, VAL_INT, VAL_FLOAT, VAL_STR, VAL_ANY, VAL_CODE, VAL_MACRO, VAL_IDENT, VAL_CSTR, VAL_CANY, VAL_WORD, VAL_POP, VAL_COND };
 
@@ -311,10 +313,10 @@ inline void ident::getcval(tagval &v) const
 
 // nasty macros for registering script functions, abuses globals to avoid excessive infrastructure
 #define KEYWORD(name, type) UNUSED static bool __dummy_##type = addcommand(#name, (identfun)NULL, NULL, type)
-#define COMMANDKN(name, type, fun, nargs) UNUSED static bool __dummy_##fun = addcommand(#name, (identfun)fun, nargs, type)
-#define COMMANDK(name, type, nargs) COMMANDKN(name, type, name, nargs)
-#define COMMANDN(name, fun, nargs) COMMANDKN(name, ID_COMMAND, fun, nargs)
-#define COMMAND(name, nargs) COMMANDN(name, name, nargs)
+#define COMMANDKN(name, type, fun, nargs, doc) UNUSED static bool __dummy_##fun = addcommand(#name, (identfun)fun, nargs, type, doc)
+#define COMMANDK(name, type, nargs, doc) COMMANDKN(name, type, name, nargs, doc)
+#define COMMANDN(name, fun, nargs, doc) COMMANDKN(name, ID_COMMAND, fun, nargs, doc)
+#define COMMAND(name, nargs, doc) COMMANDN(name, name, nargs, doc)
 
 #define _VAR(name, global, min, cur, max, persist)  int global = variable(#name, min, cur, max, &global, NULL, persist)
 #define VARN(name, global, min, cur, max) _VAR(name, global, min, cur, max, 0)
@@ -398,13 +400,22 @@ inline void ident::getcval(tagval &v) const
 // anonymous inline commands, uses nasty template trick with line numbers to keep names unique
 #define ICOMMANDNAME(name) _icmd_##name
 #define ICOMMANDSNAME _icmds_
-#define ICOMMANDKNS(name, type, cmdname, nargs, proto, b) template<int N> struct cmdname; template<> struct cmdname<__LINE__> { static bool init; static void run proto; }; bool cmdname<__LINE__>::init = addcommand(name, (identfun)cmdname<__LINE__>::run, nargs, type); void cmdname<__LINE__>::run proto \
+#define ICOMMANDKNS(name, type, cmdname, nargs, proto, b, doc) template<int N> struct cmdname; template<> struct cmdname<__LINE__> { static bool init; static void run proto; }; bool cmdname<__LINE__>::init = addcommand(name, (identfun)cmdname<__LINE__>::run, nargs, type, doc); void cmdname<__LINE__>::run proto \
     { b; }
-#define ICOMMANDKN(name, type, cmdname, nargs, proto, b) ICOMMANDKNS(#name, type, cmdname, nargs, proto, b)
-#define ICOMMANDK(name, type, nargs, proto, b) ICOMMANDKN(name, type, ICOMMANDNAME(name), nargs, proto, b)
-#define ICOMMANDKS(name, type, nargs, proto, b) ICOMMANDKNS(name, type, ICOMMANDSNAME, nargs, proto, b)
-#define ICOMMANDNS(name, cmdname, nargs, proto, b) ICOMMANDKNS(name, ID_COMMAND, cmdname, nargs, proto, b)
-#define ICOMMANDN(name, cmdname, nargs, proto, b) ICOMMANDNS(#name, cmdname, nargs, proto, b)
-#define ICOMMAND(name, nargs, proto, b) ICOMMANDN(name, ICOMMANDNAME(name), nargs, proto, b)
-#define ICOMMANDS(name, nargs, proto, b) ICOMMANDNS(name, ICOMMANDSNAME, nargs, proto, b)
+#define ICOMMANDKN(name, type, cmdname, nargs, proto, b, doc) ICOMMANDKNS(#name, type, cmdname, nargs, proto, b, doc)
+#define ICOMMANDK(name, type, nargs, proto, b, doc) ICOMMANDKN(name, type, ICOMMANDNAME(name), nargs, proto, b, doc)
+#define ICOMMANDKS(name, type, nargs, proto, b, doc) ICOMMANDKNS(name, type, ICOMMANDSNAME, nargs, proto, b, doc)
+#define ICOMMANDNS(name, cmdname, nargs, proto, b, doc) ICOMMANDKNS(name, ID_COMMAND, cmdname, nargs, proto, b, doc)
+#define ICOMMANDN(name, cmdname, nargs, proto, b, doc) ICOMMANDNS(#name, cmdname, nargs, proto, b, doc)
+#define ICOMMAND(name, nargs, proto, b, doc) ICOMMANDN(name, ICOMMANDNAME(name), nargs, proto, b, doc)
+#define ICOMMANDS(name, nargs, proto, b, doc) ICOMMANDNS(name, ICOMMANDSNAME, nargs, proto, b, doc)
 
+namespace CommandTypes
+{
+    typedef int* KeyPress;
+    typedef int* Integer;
+    typedef int* Boolean;
+    typedef int* ArgLen;
+    typedef uint* Expression;
+    typedef float* OptionalFloat;
+}

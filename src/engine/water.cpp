@@ -1,4 +1,5 @@
 #include "engine.h"
+#include "shared/entities/basephysicalentity.h"
 
 #define NUMCAUSTICS 32
 
@@ -681,3 +682,6 @@ void renderwater()
     }
 }
 
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

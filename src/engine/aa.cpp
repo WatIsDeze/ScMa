@@ -771,3 +771,6 @@ void cleanupaa()
     cleanuptqaa();
 }
 
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

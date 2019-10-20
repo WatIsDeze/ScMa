@@ -1060,7 +1060,10 @@ void gl_checkextensions()
     if(hasGPU5 && hasTG) tqaaresolvegather = 1;
 }
 
-ICOMMAND(glext, "s", (char *ext), intret(hasext(ext) ? 1 : 0));
+SCRIPTEXPORT void glext(char *ext)
+{
+    intret(hasext(ext) ? 1 : 0);
+}
 
 struct timer
 {
@@ -1222,14 +1225,26 @@ void gl_init()
 
 VAR(wireframe, 0, 0, 1);
 
-ICOMMAND(getcamyaw, "", (), floatret(camera1->yaw));
-ICOMMAND(getcampitch, "", (), floatret(camera1->pitch));
-ICOMMAND(getcamroll, "", (), floatret(camera1->roll));
-ICOMMAND(getcampos, "", (),
+SCRIPTEXPORT void getcamyaw()
+{
+    floatret(camera1->yaw);
+}
+
+SCRIPTEXPORT void getcampitch()
+{
+    floatret(camera1->pitch);
+}
+
+SCRIPTEXPORT void getcamroll()
+{
+    floatret(camera1->roll);
+}
+
+SCRIPTEXPORT void getcampos()
 {
     defformatcubestr(pos, "%s %s %s", floatstr(camera1->o.x), floatstr(camera1->o.y), floatstr(camera1->o.z));
     result(pos);
-});
+}
 
 vec worldpos, camdir, camright, camup;
 
@@ -1432,70 +1447,71 @@ void recomputecamera()
     game::setupcamera();
     computezoom();
 
+    auto prepCamera1 = dynamic_cast<entities::classes::BasePhysicalEntity*>(camera1);
+    auto prepPlayer = dynamic_cast<entities::classes::BasePhysicalEntity*>(player);
+
+    assert(prepCamera1);
+    assert(prepPlayer);
+
     bool allowthirdperson = true;
     bool shoulddetach = (allowthirdperson && thirdperson > 1) || game::detachcamera();
     if((!allowthirdperson || !thirdperson) && !shoulddetach)
     {
-        camera1 = player;
+        *prepCamera1 = *prepPlayer;
+
         detachedcamera = false;
     }
     else
     {
         static entities::classes::BasePhysicalEntity tempcamera;
-        tempcamera.et_type = ET_GAMESPECIFIC;
-        tempcamera.ent_type = ENT_CAMERA;
-        tempcamera.game_type = ET_GAMESPECIFIC;
-        camera1 = &tempcamera;
-        if(detachedcamera && shoulddetach) camera1->o = player->o;
-        else
-        {
-            *camera1 = *player;
+
+        if(detachedcamera && shoulddetach) {
+            prepCamera1->o = prepPlayer->o;
+        } else {
+            *prepCamera1 = *prepPlayer;
+
             detachedcamera = shoulddetach;
         }
-        //camera1->reset();
-        camera1->et_type = ET_GAMESPECIFIC;
-        camera1->ent_type = ENT_CAMERA;
-        camera1->game_type = ET_GAMESPECIFIC;
-        camera1->move = -1;
-        camera1->eyeheight = camera1->aboveeye = camera1->radius = camera1->xradius = camera1->yradius = 2;
-
+        prepCamera1->ent_type = ENT_CAMERA;
+        prepCamera1->move = -1;
+        prepCamera1->eyeheight = prepCamera1->aboveeye = prepCamera1->radius = prepCamera1->xradius = prepCamera1->yradius = 2;
         matrix3 orient;
         orient.identity();
-        orient.rotate_around_z(camera1->yaw*RAD);
-        orient.rotate_around_x(camera1->pitch*RAD);
-        orient.rotate_around_y(camera1->roll*-RAD);
+        orient.rotate_around_z(prepCamera1->yaw*RAD);
+        orient.rotate_around_x(prepCamera1->pitch*RAD);
+        orient.rotate_around_y(prepCamera1->roll*-RAD);
         vec dir = vec(orient.b).neg(), side = vec(orient.a).neg(), up = orient.c;
 
         if(game::collidecamera())
         {
-            movecamera(camera1, dir, thirdpersondistance, 1);
-            movecamera(camera1, dir, clamp(thirdpersondistance - camera1->o.dist(player->o), 0.0f, 1.0f), 0.1f);
+            movecamera(prepCamera1, dir, thirdpersondistance, 1);
+            movecamera(prepCamera1, dir, clamp(thirdpersondistance - prepCamera1->o.dist(prepPlayer->o), 0.0f, 1.0f), 0.1f);
             if(thirdpersonup)
             {
-                vec pos = camera1->o;
+                vec pos = prepCamera1->o;
                 float dist = fabs(thirdpersonup);
                 if(thirdpersonup < 0) up.neg();
-                movecamera(camera1, up, dist, 1);
-                movecamera(camera1, up, clamp(dist - camera1->o.dist(pos), 0.0f, 1.0f), 0.1f);
+                movecamera(prepCamera1, up, dist, 1);
+                movecamera(prepCamera1, up, clamp(dist - prepCamera1->o.dist(pos), 0.0f, 1.0f), 0.1f);
             }
             if(thirdpersonside)
             {
-                vec pos = camera1->o;
+                vec pos = prepCamera1->o;
                 float dist = fabs(thirdpersonside);
                 if(thirdpersonside < 0) side.neg();
-                movecamera(camera1, side, dist, 1);
-                movecamera(camera1, side, clamp(dist - camera1->o.dist(pos), 0.0f, 1.0f), 0.1f);
+                movecamera(prepCamera1, side, dist, 1);
+                movecamera(prepCamera1, side, clamp(dist - prepCamera1->o.dist(pos), 0.0f, 1.0f), 0.1f);
             }
         }
         else
         {
-            camera1->o.add(vec(dir).mul(thirdpersondistance));
-            if(thirdpersonup) camera1->o.add(vec(up).mul(thirdpersonup));
-            if(thirdpersonside) camera1->o.add(vec(side).mul(thirdpersonside));
+            prepCamera1->o.add(vec(dir).mul(thirdpersondistance));
+            if(thirdpersonup) prepCamera1->o.add(vec(up).mul(thirdpersonup));
+            if(thirdpersonside) prepCamera1->o.add(vec(side).mul(thirdpersonside));
         }
     }
 
-    setviewcell(camera1->o);
+    setviewcell(prepCamera1->o);
 }
 
 float calcfrustumboundsphere(float nearplane, float farplane,  const vec &pos, const vec &view, vec &center)
@@ -2100,10 +2116,7 @@ void drawminimap()
     entities::classes::BasePhysicalEntity *oldcamera = camera1;
     static entities::classes::BaseDynamicEntity cmcamera;
     cmcamera = *player;
-    cmcamera.reset();
-    cmcamera.et_type = ET_GAMESPECIFIC;
     cmcamera.ent_type = ENT_CAMERA;
-    cmcamera.game_type = GAMEENTITY;
     cmcamera.o = vec(minimapcenter.x, minimapcenter.y, minimapheight > 0 ? minimapheight : minimapcenter.z + minimapradius.z + 1);
     cmcamera.yaw = 0;
     cmcamera.pitch = -90;
@@ -2184,10 +2197,7 @@ void drawcubemap(int size, const vec &o, float yaw, float pitch, const cubemapsi
     entities::classes::BasePhysicalEntity *oldcamera = camera1;
     static entities::classes::BaseDynamicEntity cmcamera;
     cmcamera = *player;
-    //cmcamera.reset();
-    cmcamera.et_type = ET_GAMESPECIFIC;
     cmcamera.ent_type = ENT_CAMERA;
-    cmcamera.game_type = GAMEENTITY;
     cmcamera.o = o;
     cmcamera.yaw = yaw;
     cmcamera.pitch = pitch;
@@ -2312,7 +2322,6 @@ namespace modelpreview
 
         oldcamera = camera1;
         camera = *camera1;
-        camera.reset();
         camera.et_type = ET_GAMESPECIFIC;
         camera.ent_type = ENT_CAMERA;
         camera.game_type = GAMEENTITY;
@@ -2620,14 +2629,12 @@ void loadcrosshair(const char *name, int i)
     }
 }
 
-void loadcrosshair_(const char *name, int *i)
+SCRIPTEXPORT_AS(loadcrosshair) void loadcrosshair_(const char *name, int *i)
 {
     loadcrosshair(name, *i);
 }
 
-COMMANDN(loadcrosshair, loadcrosshair_, "si");
-
-ICOMMAND(getcrosshair, "i", (int *i),
+SCRIPTEXPORT void getcrosshair(int *i)
 {
     const char *name = "";
     if(*i >= 0 && *i < MAXCROSSHAIRS)
@@ -2636,7 +2643,7 @@ ICOMMAND(getcrosshair, "i", (int *i),
         if(!name) name = "media/interface/crosshair/default.png";
     }
     result(name);
-});
+}
 
 void writecrosshairs(stream *f)
 {
@@ -2846,3 +2853,9 @@ void cleanupgl()
     gle::cleanup();
 }
 
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+rendergl.binding.cpp"
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

@@ -1,14 +1,44 @@
 {
     "configurations": [
+      {
+        "name": "Linux - Debug",
+        "intelliSenseMode": "clang-x64",
+        "includePath": [
+          "${workspaceFolder}",
+          "${workspaceFolder}/src",
+          "${workspaceFolder}/src/shared",
+          "${workspaceFolder}/src/game",
+          "${workspaceFolder}/src/engine",
+          "${workspaceFolder}/src/tools"
+        ],
+        "defines": [
+          "DEBUG"
+        ],
+        "forcedInclude": [
+          "${workspaceFolder}/include/core.h"
+        ],
+        "compilerPath": "/usr/bin/clang",
+        "cStandard": "c11",
+        "cppStandard": "c++17",
+        "compileCommands": "${workspaceFolder}/build/compile_commands.json",
+        "browse": {
+          "path": [
+            "${workspaceFolder}"
+          ],
+          "limitSymbolsToIncludedHeaders": true,
+          "databaseFilename": ""
+        }
+      },
         {
-            "name": "Linux",
+            "name": "OSX",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "./**"
             ],
             "defines": [
                 "GL_SILENCE_DEPRECATION=1"
             ],
-            "compilerPath": "/usr/bin/gcc",
+            "compilerPath": "/usr/bin/clang",
             "cStandard": "c11",
             "cppStandard": "c++11",
             "intelliSenseMode": "clang-x64",
@@ -16,4 +46,4 @@
         }
     ],
     "version": 4
-}
+  }

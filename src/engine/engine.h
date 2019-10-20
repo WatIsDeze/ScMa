@@ -4,6 +4,7 @@
 #include "cube.h"
 #include "world.h"
 #include "help.h"
+#include "scriptexport.h"
 
 #ifndef STANDALONE
 
@@ -14,7 +15,6 @@
 #include "model.h"
 #include "ents.h"
 
-namespace entities { namespace classes { class Player; } }
 extern entities::classes::Player *player;
 extern entities::classes::BasePhysicalEntity *camera1;                // special ent that acts as camera, same object as player in FPS mode
 
@@ -295,7 +295,7 @@ extern void cleanupvolumetric();
 extern void findshadowvas();
 extern void findshadowmms();
 
-extern int calcshadowinfo(const entities::classes::BaseEntity &e, vec &origin, float &radius, vec &spotloc, int &spotangle, float &bias);
+extern int calcshadowinfo(const entities::classes::CoreEntity *e, vec &origin, float &radius, vec &spotloc, int &spotangle, float &bias);
 extern int dynamicshadowvabounds(int mask, vec &bbmin, vec &bbmax);
 extern void rendershadowmapworld();
 extern void batchshadowmapmodels(bool skipmesh = false);
@@ -383,10 +383,10 @@ extern bool debugaa();
 extern void cleanupaa();
 
 // ents
-extern char *entname(entities::classes::BasePhysicalEntity &e);
+extern char *entname(entities::classes::CoreEntity *e);
 extern bool haveselent();
 extern undoblock *copyundoents(undoblock *u);
-extern void pasteundoent(int idx, const entities::classes::BasePhysicalEntity &ue);
+extern void pasteundoent(int idx, entities::classes::CoreEntity *ue);
 extern void pasteundoents(undoblock *u);
 
 // octaedit
@@ -461,7 +461,7 @@ extern void renderdecals();
 struct shadowmesh;
 extern void clearshadowmeshes();
 extern void genshadowmeshes();
-extern shadowmesh *findshadowmesh(int idx, entities::classes::BaseEntity &e);
+extern shadowmesh *findshadowmesh(int idx, entities::classes::CoreEntity *e);
 extern void rendershadowmesh(shadowmesh *m);
 
 // dynlight
@@ -691,19 +691,16 @@ static inline model *loadmapmodel(int n)
     return NULL;
 }
 
-static inline model *loadmapmodel(const std::string &filename)
+static inline model *loadmapmodel(const char *filename)
 {
     loopv(mapmodels)
     {
-        // Fetch the name.
-        std::string name = mapmodels[i].name;
-
         // Compare if the mapmodel's values equal each other.
         model *m = mapmodels[i].m;
 
-        if (strcmp(m->name, filename.c_str()) == 0)
+        if (strcmp(m->name, filename) == 0)
             // If they equal each other, it means we don't have to load it in again. Just return the pointer.
-            return m ? m : loadmodel(filename.c_str());
+            return m ? m : loadmodel(filename);
         else
             return NULL;
     }
@@ -712,7 +709,7 @@ static inline model *loadmapmodel(const std::string &filename)
 
 
 // WatIsDeze: Added so we can load mapmodels by string filename
-/*static inline int loadmapmodel(const char *filename, entities::classes::BaseEntity *ent)
+/*static inline int loadmapmodel(const char *filename, entities::classes::CoreEntity *ent)
 {
     int idx = -1;
 
@@ -771,7 +768,7 @@ extern void seedparticles();
 extern void updateparticles();
 extern void debugparticles();
 extern void renderparticles(int layer = PL_ALL);
-extern bool printparticles(entities::classes::BaseEntity &e, char *buf, int len);
+extern bool printparticles(entities::classes::CoreEntity *e, char *buf, int len);
 extern void cleanupparticles();
 
 // stain

@@ -263,3 +263,6 @@ int ipmask::print(char *buf) const
     return int(buf-start);
 }
 
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

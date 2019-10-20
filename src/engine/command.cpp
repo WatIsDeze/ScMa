@@ -280,7 +280,12 @@ static void debugcodeline(const char *p, const char *fmt, ...)
     debugalias();
 }
 
-ICOMMAND(nodebug, "e", (uint *body), { nodebug++; executeret(body, *commandret); nodebug--; });
+SCRIPTEXPORT_AS(nodebug) void nodebug_imp(CommandTypes::Expression body)
+{
+    nodebug++;
+    executeret(body, *commandret);
+    nodebug--;
+}
 
 void addident(ident *id)
 {
@@ -369,7 +374,7 @@ ICOMMAND(push, "rTe", (ident *id, tagval *v, uint *code),
     id->flags &= ~IDF_UNKNOWN;
     executeret(code, *commandret);
     poparg(*id);
-});
+}, "builtin");
 
 static inline void pushalias(ident &id, identstack &stack)
 {
@@ -470,7 +475,7 @@ void resetvar(char *name)
     else clearoverride(*id);
 }
 
-COMMAND(resetvar, "s");
+COMMAND(resetvar, "s", "builtin");
 
 static inline void setarg(ident &id, tagval &v)
 {
@@ -547,7 +552,7 @@ ICOMMAND(alias, "sT", (const char *name, tagval *v),
 {
     setalias(name, *v);
     v->type = VAL_NULL;
-});
+}, "builtin");
 
 // variable's and commands are registered through globals, see cube.h
 
@@ -600,7 +605,7 @@ hashnameset<defvar> defvars;
         def.name = name; \
         def.onchange = onchange[0] ? compilecode(onchange) : NULL; \
         body; \
-    });
+    }, "builtin");
 #define DEFIVAR(cmdname, flags) \
     DEFVAR(cmdname, "siiis", (char *name, int *min, int *cur, int *max, char *onchange), \
         def.i = variable(name, *min, *cur, *max, &def.i, def.onchange ? defvar::changed : NULL, flags))
@@ -688,13 +693,13 @@ float getfvarmax(const char *name)
     return id->maxvalf;
 }
 
-ICOMMAND(getvarmin, "s", (char *s), intret(getvarmin(s)));
-ICOMMAND(getvarmax, "s", (char *s), intret(getvarmax(s)));
-ICOMMAND(getfvarmin, "s", (char *s), floatret(getfvarmin(s)));
-ICOMMAND(getfvarmax, "s", (char *s), floatret(getfvarmax(s)));
+ICOMMAND(getvarmin, "s", (char *s), intret(getvarmin(s)), "builtin");
+ICOMMAND(getvarmax, "s", (char *s), intret(getvarmax(s)), "builtin");
+ICOMMAND(getfvarmin, "s", (char *s), floatret(getfvarmin(s)), "builtin");
+ICOMMAND(getfvarmax, "s", (char *s), floatret(getfvarmax(s)), "builtin");
 
 bool identexists(const char *name) { return idents.access(name)!=NULL; }
-ICOMMAND(identexists, "s", (char *s), intret(identexists(s) ? 1 : 0));
+ICOMMAND(identexists, "s", (char *s), intret(identexists(s) ? 1 : 0), "builtin");
 
 ident *getident(const char *name) { return idents.access(name); }
 
@@ -717,7 +722,7 @@ const char *getalias(const char *name)
     return i && i->type==ID_ALIAS && (i->index >= MAXARGS || aliasstack->usedargs&(1<<i->index)) ? i->getstr() : "";
 }
 
-ICOMMAND(getalias, "s", (char *s), result(getalias(s)));
+ICOMMAND(getalias, "s", (char *s), result(getalias(s)), "builtin");
 
 int clampvar(ident *id, int val, int minval, int maxval)
 {
@@ -807,8 +812,18 @@ void setsvarchecked(ident *id, const char *val)
     }
 }
 
-bool addcommand(const char *name, identfun fun, const char *args, int type)
+bool addcommand(const char *name, identfun fun, const char *args, int type, const char* doc)
 {
+	if (name == std::string("push"))
+	{
+		
+	}
+	
+	if (name == std::string("font"))
+	{
+	
+	}
+	
     uint argmask = 0;
     int numargs = 0;
     bool limit = true;
@@ -818,23 +833,23 @@ bool addcommand(const char *name, identfun fun, const char *args, int type)
         {'i', "int"},
         {'b', "bool"},
         {'f', "float"},
-        {'F', "Float"}, //?
+        {'F', "Float?"}, //?
         {'t', "tea?"}, //??
         {'T', "Tea?"}, //??
         {'E', "Exp?"}, //??
-        {'N', "Number?"}, //??
-        {'D', "Double?"}, //??
+        {'N', "ArgLength"}, //??
+        {'D', "KeyPress"}, //??
         {'S', "String?"},
         {'s', "string"},
-        {'e', "e?"},
+        {'e', "expression"},
         {'r', "r?"},
-        {'$', "$?"},
+        {'$', "identifier"},
         {'1', "1?"},
         {'2', "2?"},
         {'3', "3?"},
         {'4', "4?"},
         {'C', "C?"},
-        {'V', "V?"}
+        {'V', "Vector"}
     };
 
     argList.push_back(std::string(name));
@@ -863,7 +878,7 @@ bool addcommand(const char *name, identfun fun, const char *args, int type)
         }
     } 
 
-    Help::Register(Help::HelpSection::Commands, argList);
+    Help::Register(Help::HelpSection::Commands, argList, doc);
 
     if(limit && numargs > MAXCOMARGS) fatal("builtin %s declared with too many args: %d", name, numargs);
     addident(ident(type, name, args, argmask, numargs, (void *)fun));
@@ -2898,7 +2913,10 @@ void executeret(ident *id, tagval *args, int numargs, bool lookup, tagval &resul
     ++rundepth;
     tagval *prevret = commandret;
     commandret = &result;
-    if(rundepth > MAXRUNDEPTH) debugcode("exceeded recursion limit");
+    if(rundepth > MAXRUNDEPTH)
+    {
+ 		debugcode("exceeded recursion limit");
+	}
     else if(id) switch(id->type)
     {
         default:
@@ -3097,7 +3115,7 @@ bool execfile(const char *cfgfile, bool msg)
     delete[] buf;
     return true;
 }
-ICOMMAND(exec, "sb", (char *file, int *msg), intret(execfile(file, *msg != 0) ? 1 : 0));
+ICOMMAND(exec, "sb", (char *file, int *msg), intret(execfile(file, *msg != 0) ? 1 : 0), "builtin");
 
 const char *escapecubestr(const char *s)
 {
@@ -3118,14 +3136,14 @@ const char *escapecubestr(const char *s)
     return buf.getbuf();
 }
 
-ICOMMAND(escape, "s", (char *s), result(escapecubestr(s)));
+ICOMMAND(escape, "s", (char *s), result(escapecubestr(s)), "builtin");
 ICOMMAND(unescape, "s", (char *s),
 {
     int len = strlen(s);
     char *d = newcubestr(len);
     unescapecubestr(d, s, &s[len]);
     cubestrret(d);
-});
+}, "builtin");
 
 const char *escapeid(const char *s)
 {
@@ -3193,7 +3211,7 @@ void writecfg(const char *name)
     delete f;
 }
 
-COMMAND(writecfg, "s");
+COMMAND(writecfg, "s", "builtin");
 #endif
 
 void changedvars()
@@ -3203,7 +3221,7 @@ void changedvars()
     ids.sortname();
     loopv(ids) printvar(ids[i]);
 }
-COMMAND(changedvars, "");
+COMMAND(changedvars, "", "builtin");
 
 // below the commands that implement a small imperative language. thanks to the semantics of
 // () and [] expressions, any control construct can be defined trivially.
@@ -3254,7 +3272,7 @@ void numberret(double v)
 #undef ICOMMANDSNAME
 #define ICOMMANDSNAME _stdcmd
 
-ICOMMANDK(do, ID_DO, "e", (uint *body), executeret(body, *commandret));
+ICOMMANDK(do, ID_DO, "e", (uint *body), executeret(body, *commandret), "builtin");
 
 static void doargs(uint *body)
 {
@@ -3266,10 +3284,10 @@ static void doargs(uint *body)
     }
     else executeret(body, *commandret);
 }
-COMMANDK(doargs, ID_DOARGS, "e");
+COMMANDK(doargs, ID_DOARGS, "e", "builtin");
 
-ICOMMANDK(if, ID_IF, "tee", (tagval *cond, uint *t, uint *f), executeret(getbool(*cond) ? t : f, *commandret));
-ICOMMAND(?, "tTT", (tagval *cond, tagval *t, tagval *f), result(*(getbool(*cond) ? t : f)));
+ICOMMANDK(if, ID_IF, "tee", (tagval *cond, uint *t, uint *f), executeret(getbool(*cond) ? t : f, *commandret), "builtin");
+ICOMMAND(?, "tTT", (tagval *cond, tagval *t, tagval *f), result(*(getbool(*cond) ? t : f)), "builtin");
 
 ICOMMAND(pushif, "rTe", (ident *id, tagval *v, uint *code),
 {
@@ -3283,7 +3301,7 @@ ICOMMAND(pushif, "rTe", (ident *id, tagval *v, uint *code),
         executeret(code, *commandret);
         poparg(*id);
     }
-});
+}, "builtin");
 
 void loopiter(ident *id, identstack &stack, const tagval &v)
 {
@@ -3337,10 +3355,10 @@ static inline void doloop(ident &id, int offset, int n, int step, uint *body)
     }
     poparg(id);
 }
-ICOMMAND(loop, "rie", (ident *id, int *n, uint *body), doloop(*id, 0, *n, 1, body));
-ICOMMAND(loop+, "riie", (ident *id, int *offset, int *n, uint *body), doloop(*id, *offset, *n, 1, body));
-ICOMMAND(loop*, "riie", (ident *id, int *step, int *n, uint *body), doloop(*id, 0, *n, *step, body));
-ICOMMAND(loop+*, "riiie", (ident *id, int *offset, int *step, int *n, uint *body), doloop(*id, *offset, *n, *step, body));
+ICOMMAND(loop, "rie", (ident *id, int *n, uint *body), doloop(*id, 0, *n, 1, body), "builtin");
+ICOMMAND(loop+, "riie", (ident *id, int *offset, int *n, uint *body), doloop(*id, *offset, *n, 1, body), "builtin");
+ICOMMAND(loop*, "riie", (ident *id, int *step, int *n, uint *body), doloop(*id, 0, *n, *step, body), "builtin");
+ICOMMAND(loop+*, "riiie", (ident *id, int *offset, int *step, int *n, uint *body), doloop(*id, *offset, *n, *step, body), "builtin");
 
 static inline void loopwhile(ident &id, int offset, int n, int step, uint *cond, uint *body)
 {
@@ -3354,12 +3372,12 @@ static inline void loopwhile(ident &id, int offset, int n, int step, uint *cond,
     }
     poparg(id);
 }
-ICOMMAND(loopwhile, "riee", (ident *id, int *n, uint *cond, uint *body), loopwhile(*id, 0, *n, 1, cond, body));
-ICOMMAND(loopwhile+, "riiee", (ident *id, int *offset, int *n, uint *cond, uint *body), loopwhile(*id, *offset, *n, 1, cond, body));
-ICOMMAND(loopwhile*, "riiee", (ident *id, int *step, int *n, uint *cond, uint *body), loopwhile(*id, 0, *n, *step, cond, body));
-ICOMMAND(loopwhile+*, "riiiee", (ident *id, int *offset, int *step, int *n, uint *cond, uint *body), loopwhile(*id, *offset, *n, *step, cond, body));
+ICOMMAND(loopwhile, "riee", (ident *id, int *n, uint *cond, uint *body), loopwhile(*id, 0, *n, 1, cond, body), "builtin");
+ICOMMAND(loopwhile+, "riiee", (ident *id, int *offset, int *n, uint *cond, uint *body), loopwhile(*id, *offset, *n, 1, cond, body), "builtin");
+ICOMMAND(loopwhile*, "riiee", (ident *id, int *step, int *n, uint *cond, uint *body), loopwhile(*id, 0, *n, *step, cond, body), "builtin");
+ICOMMAND(loopwhile+*, "riiiee", (ident *id, int *offset, int *step, int *n, uint *cond, uint *body), loopwhile(*id, *offset, *n, *step, cond, body), "builtin");
 
-ICOMMAND(while, "ee", (uint *cond, uint *body), while(executebool(cond)) execute(body));
+ICOMMAND(while, "ee", (uint *cond, uint *body), while(executebool(cond)) execute(body), "builtin");
 
 static inline void loopconc(ident &id, int offset, int n, int step, uint *body, bool space)
 {
@@ -3381,26 +3399,26 @@ static inline void loopconc(ident &id, int offset, int n, int step, uint *body, 
     s.add('\0');
     commandret->setstr(s.disown());
 }
-ICOMMAND(loopconcat, "rie", (ident *id, int *n, uint *body), loopconc(*id, 0, *n, 1, body, true));
-ICOMMAND(loopconcat+, "riie", (ident *id, int *offset, int *n, uint *body), loopconc(*id, *offset, *n, 1, body, true));
-ICOMMAND(loopconcat*, "riie", (ident *id, int *step, int *n, uint *body), loopconc(*id, 0, *n, *step, body, true));
-ICOMMAND(loopconcat+*, "riiie", (ident *id, int *offset, int *step, int *n, uint *body), loopconc(*id, *offset, *n, *step, body, true));
-ICOMMAND(loopconcatword, "rie", (ident *id, int *n, uint *body), loopconc(*id, 0, *n, 1, body, false));
-ICOMMAND(loopconcatword+, "riie", (ident *id, int *offset, int *n, uint *body), loopconc(*id, *offset, *n, 1, body, false));
-ICOMMAND(loopconcatword*, "riie", (ident *id, int *step, int *n, uint *body), loopconc(*id, 0, *n, *step, body, false));
-ICOMMAND(loopconcatword+*, "riiie", (ident *id, int *offset, int *step, int *n, uint *body), loopconc(*id, *offset, *n, *step, body, false));
+ICOMMAND(loopconcat, "rie", (ident *id, int *n, uint *body), loopconc(*id, 0, *n, 1, body, true), "builtin");
+ICOMMAND(loopconcat+, "riie", (ident *id, int *offset, int *n, uint *body), loopconc(*id, *offset, *n, 1, body, true), "builtin");
+ICOMMAND(loopconcat*, "riie", (ident *id, int *step, int *n, uint *body), loopconc(*id, 0, *n, *step, body, true), "builtin");
+ICOMMAND(loopconcat+*, "riiie", (ident *id, int *offset, int *step, int *n, uint *body), loopconc(*id, *offset, *n, *step, body, true), "builtin");
+ICOMMAND(loopconcatword, "rie", (ident *id, int *n, uint *body), loopconc(*id, 0, *n, 1, body, false), "builtin");
+ICOMMAND(loopconcatword+, "riie", (ident *id, int *offset, int *n, uint *body), loopconc(*id, *offset, *n, 1, body, false), "builtin");
+ICOMMAND(loopconcatword*, "riie", (ident *id, int *step, int *n, uint *body), loopconc(*id, 0, *n, *step, body, false), "builtin");
+ICOMMAND(loopconcatword+*, "riiie", (ident *id, int *offset, int *step, int *n, uint *body), loopconc(*id, *offset, *n, *step, body, false), "builtin");
 
 void concat(tagval *v, int n)
 {
     commandret->setstr(conc(v, n, true));
 }
-COMMAND(concat, "V");
+COMMAND(concat, "V", "builtin");
 
 void concatword(tagval *v, int n)
 {
     commandret->setstr(conc(v, n, false));
 }
-COMMAND(concatword, "V");
+COMMAND(concatword, "V", "builtin");
 
 void append(ident *id, tagval *v, bool space)
 {
@@ -3411,8 +3429,8 @@ void append(ident *id, tagval *v, bool space)
     else v->getval(r);
     if(id->index < MAXARGS) setarg(*id, r); else setalias(*id, r);
 }
-ICOMMAND(append, "rt", (ident *id, tagval *v), append(id, v, true));
-ICOMMAND(appendword, "rt", (ident *id, tagval *v), append(id, v, false));
+ICOMMAND(append, "rt", (ident *id, tagval *v), append(id, v, true), "builtin");
+ICOMMAND(appendword, "rt", (ident *id, tagval *v), append(id, v, false), "builtin");
 
 void result(tagval &v)
 {
@@ -3434,7 +3452,7 @@ ICOMMANDK(result, ID_RESULT, "T", (tagval *v),
 {
     *commandret = *v;
     v->type = VAL_NULL;
-});
+}, "builtin");
 
 void format(tagval *args, int numargs)
 {
@@ -3459,7 +3477,7 @@ void format(tagval *args, int numargs)
     s.add('\0');
     commandret->setstr(s.disown());
 }
-COMMAND(format, "V");
+COMMAND(format, "V", "builtin");
 
 static const char *liststart = NULL, *listend = NULL, *listquotestart = NULL, *listquoteend = NULL;
 
@@ -3537,7 +3555,7 @@ int listlen(const char *s)
     while(parselist(s)) n++;
     return n;
 }
-ICOMMAND(listlen, "s", (char *s), intret(listlen(s)));
+ICOMMAND(listlen, "s", (char *s), intret(listlen(s)), "builtin");
 
 void at(tagval *args, int numargs)
 {
@@ -3552,14 +3570,14 @@ void at(tagval *args, int numargs)
     }
     commandret->setstr(listelem(start, end, qstart));
 }
-COMMAND(at, "si1V");
+COMMAND(at, "si1V", "builtin");
 
 void substr(char *s, int *start, int *count, int *numargs)
 {
     int len = strlen(s), offset = clamp(*start, 0, len);
     commandret->setstr(newcubestr(&s[offset], *numargs >= 3 ? clamp(*count, 0, len - offset) : len - offset));
 }
-COMMAND(substr, "siiN");
+COMMAND(substr, "siiN", "builtin");
 
 void sublist(const char *s, int *skip, int *count, int *numargs)
 {
@@ -3570,7 +3588,7 @@ void sublist(const char *s, int *skip, int *count, int *numargs)
     if(len > 0 && parselist(s, start, end, list, qend)) while(--len > 0 && parselist(s, start, end, qstart, qend));
     commandret->setstr(newcubestr(list, qend - list));
 }
-COMMAND(sublist, "siiN");
+COMMAND(sublist, "siiN", "builtin");
 
 ICOMMAND(stripcolors, "s", (char *s),
 {
@@ -3578,7 +3596,7 @@ ICOMMAND(stripcolors, "s", (char *s),
     char *d = newcubestr(len);
     filtertext(d, s, true, false, len);
     cubestrret(d);
-});
+}, "builtin");
 
 static inline void setiter(ident &id, char *val, identstack &stack)
 {
@@ -3613,7 +3631,7 @@ void listfind(ident *id, const char *list, const uint *body)
 found:
     if(n >= 0) poparg(*id);
 }
-COMMAND(listfind, "rse");
+COMMAND(listfind, "rse", "builtin");
 
 void listassoc(ident *id, const char *list, const uint *body)
 {
@@ -3629,7 +3647,7 @@ void listassoc(ident *id, const char *list, const uint *body)
     }
     if(n >= 0) poparg(*id);
 }
-COMMAND(listassoc, "rse");
+COMMAND(listassoc, "rse", "builtin");
 
 #define LISTFIND(name, fmt, type, init, cmp) \
     ICOMMAND(name, "s" fmt "i", (char *list, type *val, int *skip), \
@@ -3643,7 +3661,7 @@ COMMAND(listassoc, "rse");
         } \
     notfound: \
         intret(-1); \
-    });
+    }, "builtin");
 LISTFIND(listfind=, "i", int, , parseint(start) == *val);
 LISTFIND(listfind=f, "f", float, , parsefloat(start) == *val);
 LISTFIND(listfind=s, "s", char, int len = (int)strlen(val), int(end-start) == len && !memcmp(start, val, len));
@@ -3657,7 +3675,7 @@ LISTFIND(listfind=s, "s", char, int len = (int)strlen(val), int(end-start) == le
             if(cmp) { if(parselist(s, start, end, qstart)) cubestrret(listelem(start, end, qstart)); return; } \
             if(!parselist(s)) break; \
         } \
-    });
+    }, "builtin");
 LISTASSOC(listassoc=, "i", int, , parseint(start) == *val);
 LISTASSOC(listassoc=f, "f", float, , parsefloat(start) == *val);
 LISTASSOC(listassoc=s, "s", char, int len = (int)strlen(val), int(end-start) == len && !memcmp(start, val, len));
@@ -3674,7 +3692,7 @@ void looplist(ident *id, const char *list, const uint *body)
     }
     if(n) poparg(*id);
 }
-COMMAND(looplist, "rse");
+COMMAND(looplist, "rse", "builtin");
 
 void looplist2(ident *id, ident *id2, const char *list, const uint *body)
 {
@@ -3689,7 +3707,7 @@ void looplist2(ident *id, ident *id2, const char *list, const uint *body)
     }
     if(n) { poparg(*id); poparg(*id2); }
 }
-COMMAND(looplist2, "rrse");
+COMMAND(looplist2, "rrse", "builtin");
 
 void looplist3(ident *id, ident *id2, ident *id3, const char *list, const uint *body)
 {
@@ -3705,7 +3723,7 @@ void looplist3(ident *id, ident *id2, ident *id3, const char *list, const uint *
     }
     if(n) { poparg(*id); poparg(*id2); poparg(*id3); }
 }
-COMMAND(looplist3, "rrrse");
+COMMAND(looplist3, "rrrse", "builtin");
 
 void looplistconc(ident *id, const char *list, const uint *body, bool space)
 {
@@ -3731,8 +3749,8 @@ void looplistconc(ident *id, const char *list, const uint *body, bool space)
     r.add('\0');
     commandret->setstr(r.disown());
 }
-ICOMMAND(looplistconcat, "rse", (ident *id, char *list, uint *body), looplistconc(id, list, body, true));
-ICOMMAND(looplistconcatword, "rse", (ident *id, char *list, uint *body), looplistconc(id, list, body, false));
+ICOMMAND(looplistconcat, "rse", (ident *id, char *list, uint *body), looplistconc(id, list, body, true), "builtin");
+ICOMMAND(looplistconcatword, "rse", (ident *id, char *list, uint *body), looplistconc(id, list, body, false), "builtin");
 
 void listfilter(ident *id, const char *list, const uint *body)
 {
@@ -3755,7 +3773,7 @@ void listfilter(ident *id, const char *list, const uint *body)
     r.add('\0');
     commandret->setstr(r.disown());
 }
-COMMAND(listfilter, "rse");
+COMMAND(listfilter, "rse", "builtin");
 
 void listcount(ident *id, const char *list, const uint *body)
 {
@@ -3771,7 +3789,7 @@ void listcount(ident *id, const char *list, const uint *body)
     if(n) poparg(*id);
     intret(r);
 }
-COMMAND(listcount, "rse");
+COMMAND(listcount, "", "builtin");
 
 void prettylist(const char *s, const char *conj)
 {
@@ -3795,7 +3813,7 @@ void prettylist(const char *s, const char *conj)
     p.add('\0');
     commandret->setstr(p.disown());
 }
-COMMAND(prettylist, "ss");
+COMMAND(prettylist, "ss", "builtin");
 
 int listincludes(const char *list, const char *needle, int needlelen)
 {
@@ -3808,7 +3826,7 @@ int listincludes(const char *list, const char *needle, int needlelen)
     }
     return -1;
 }
-ICOMMAND(indexof, "ss", (char *list, char *elem), intret(listincludes(list, elem, strlen(elem))));
+ICOMMAND(indexof, "ss", (char *list, char *elem), intret(listincludes(list, elem, strlen(elem))), "builtin");
 
 #define LISTMERGECMD(name, init, iter, filter, dir) \
     ICOMMAND(name, "ss", (const char *list, const char *elems), \
@@ -3826,7 +3844,7 @@ ICOMMAND(indexof, "ss", (char *list, char *elem), intret(listincludes(list, elem
         } \
         p.add('\0'); \
         commandret->setstr(p.disown()); \
-    })
+    }, "builtin")
 
 LISTMERGECMD(listdel, , list, elems, <);
 LISTMERGECMD(listintersect, , list, elems, >=);
@@ -3857,7 +3875,7 @@ void listsplice(const char *s, const char *vals, int *skip, int *count)
     p.add('\0');
     commandret->setstr(p.disown());
 }
-COMMAND(listsplice, "ssii");
+COMMAND(listsplice, "ssii", "builtin");
 
 ICOMMAND(loopfiles, "rsse", (ident *id, char *dir, char *ext, uint *body),
 {
@@ -3873,7 +3891,7 @@ ICOMMAND(loopfiles, "rsse", (ident *id, char *dir, char *ext, uint *body),
         execute(body);
     }
     if(files.length()) poparg(*id);
-});
+}, "builtin");
 
 void findfile_(char *name)
 {
@@ -3887,7 +3905,7 @@ void findfile_(char *name)
         fileexists(fname, "e") || findfile(fname, "e") ? 1 : 0
     );
 }
-COMMANDN(findfile, findfile_, "s");
+COMMANDN(findfile, findfile_, "s", "builtin");
 
 struct sortitem
 {
@@ -3999,8 +4017,8 @@ void sortlist(char *list, ident *x, ident *y, uint *body, uint *unique)
 
     commandret->setstr(sorted);
 }
-COMMAND(sortlist, "srree");
-ICOMMAND(uniquelist, "srre", (char *list, ident *x, ident *y, uint *body), sortlist(list, x, y, NULL, body));
+COMMAND(sortlist, "srree", "builtin");
+ICOMMAND(uniquelist, "srre", (char *list, ident *x, ident *y, uint *body), sortlist(list, x, y, NULL, body), "builtin");
 
 #define MATHCMD(name, fmt, type, op, initval, unaryop) \
     ICOMMANDS(name, #fmt "1V", (tagval *args, int numargs), \
@@ -4015,7 +4033,7 @@ ICOMMAND(uniquelist, "srre", (char *list, ident *x, ident *y, uint *body), sortl
         } \
         else { val = numargs > 0 ? args[0].fmt : initval; unaryop; } \
         type##ret(val); \
-    })
+    }, "builtin")
 #define MATHICMDN(name, op, initval, unaryop) MATHCMD(#name, i, int, val = val op val2, initval, unaryop)
 #define MATHICMD(name, initval, unaryop) MATHICMDN(name, name, initval, unaryop)
 #define MATHFCMDN(name, op, initval, unaryop) MATHCMD(#name "f", f, float, val = val op val2, initval, unaryop)
@@ -4032,7 +4050,7 @@ ICOMMAND(uniquelist, "srre", (char *list, ident *x, ident *y, uint *body), sortl
         } \
         else val = (numargs > 0 ? args[0].fmt : 0) op 0; \
         intret(int(val)); \
-    })
+    }, "builtin")
 #define CMPICMDN(name, op) CMPCMD(#name, i, int, op)
 #define CMPICMD(name) CMPICMDN(name, name)
 #define CMPFCMDN(name, op) CMPCMD(#name "f", f, float, op)
@@ -4067,7 +4085,7 @@ CMPFCMD(>);
 CMPFCMD(<=);
 CMPFCMD(>=);
 
-ICOMMANDK(!, ID_NOT, "t", (tagval *a), intret(getbool(*a) ? 0 : 1));
+ICOMMANDK(!, ID_NOT, "t", (tagval *a), intret(getbool(*a) ? 0 : 1), "builtin");
 ICOMMANDK(&&, ID_AND, "E1V", (tagval *args, int numargs),
 {
     if(!numargs) intret(1);
@@ -4078,7 +4096,7 @@ ICOMMANDK(&&, ID_AND, "E1V", (tagval *args, int numargs),
         else *commandret = args[i];
         if(!getbool(*commandret)) break;
     }
-});
+}, "builtin");
 ICOMMANDK(||, ID_OR, "E1V", (tagval *args, int numargs),
 {
     if(!numargs) intret(0);
@@ -4089,7 +4107,7 @@ ICOMMANDK(||, ID_OR, "E1V", (tagval *args, int numargs),
         else *commandret = args[i];
         if(getbool(*commandret)) break;
     }
-});
+}, "builtin");
 
 
 #define DIVCMD(name, fmt, type, op) MATHCMD(#name, fmt, type, { if(val2) op; else val = 0; }, 0, )
@@ -4100,18 +4118,18 @@ DIVCMD(divf, f, float, val /= val2);
 DIVCMD(modf, f, float, val = fmod(val, val2));
 MATHCMD("pow", f, float, val = pow(val, val2), 0, );
 
-ICOMMAND(sin, "f", (float *a), floatret(sin(*a*RAD)));
-ICOMMAND(cos, "f", (float *a), floatret(cos(*a*RAD)));
-ICOMMAND(tan, "f", (float *a), floatret(tan(*a*RAD)));
-ICOMMAND(asin, "f", (float *a), floatret(asin(*a)/RAD));
-ICOMMAND(acos, "f", (float *a), floatret(acos(*a)/RAD));
-ICOMMAND(atan, "f", (float *a), floatret(atan(*a)/RAD));
-ICOMMAND(atan2, "ff", (float *y, float *x), floatret(atan2(*y, *x)/RAD));
-ICOMMAND(sqrt, "f", (float *a), floatret(sqrt(*a)));
-ICOMMAND(loge, "f", (float *a), floatret(log(*a)));
-ICOMMAND(log2, "f", (float *a), floatret(log(*a)/M_LN2));
-ICOMMAND(log10, "f", (float *a), floatret(log10(*a)));
-ICOMMAND(exp, "f", (float *a), floatret(exp(*a)));
+ICOMMAND(sin, "f", (float *a), floatret(sin(*a*RAD)), "builtin");
+ICOMMAND(cos, "f", (float *a), floatret(cos(*a*RAD)), "builtin");
+ICOMMAND(tan, "f", (float *a), floatret(tan(*a*RAD)), "builtin");
+ICOMMAND(asin, "f", (float *a), floatret(asin(*a)/RAD), "builtin");
+ICOMMAND(acos, "f", (float *a), floatret(acos(*a)/RAD), "builtin");
+ICOMMAND(atan, "f", (float *a), floatret(atan(*a)/RAD), "builtin");
+ICOMMAND(atan2, "ff", (float *y, float *x), floatret(atan2(*y, *x)/RAD), "builtin");
+ICOMMAND(sqrt, "f", (float *a), floatret(sqrt(*a)), "builtin");
+ICOMMAND(loge, "f", (float *a), floatret(log(*a)), "builtin");
+ICOMMAND(log2, "f", (float *a), floatret(log(*a)/M_LN2), "builtin");
+ICOMMAND(log10, "f", (float *a), floatret(log10(*a)), "builtin");
+ICOMMAND(exp, "f", (float *a), floatret(exp(*a)), "builtin");
 
 #define MINMAXCMD(name, fmt, type, op) \
     ICOMMAND(name, #fmt "1V", (tagval *args, int numargs), \
@@ -4119,20 +4137,20 @@ ICOMMAND(exp, "f", (float *a), floatret(exp(*a)));
         type val = numargs > 0 ? args[0].fmt : 0; \
         for(int i = 1; i < numargs; i++) val = op(val, args[i].fmt); \
         type##ret(val); \
-    })
+    }, "builtin")
 
 MINMAXCMD(min, i, int, min);
 MINMAXCMD(max, i, int, max);
 MINMAXCMD(minf, f, float, min);
 MINMAXCMD(maxf, f, float, max);
 
-ICOMMAND(bitscan, "i", (int *n), intret(bitscan(*n)));
+ICOMMAND(bitscan, "i", (int *n), intret(bitscan(*n)), "builtin");
 
-ICOMMAND(abs, "i", (int *n), intret(abs(*n)));
-ICOMMAND(absf, "f", (float *n), floatret(fabs(*n)));
+ICOMMAND(abs, "i", (int *n), intret(abs(*n)), "builtin");
+ICOMMAND(absf, "f", (float *n), floatret(fabs(*n)), "builtin");
 
-ICOMMAND(floor, "f", (float *n), floatret(floor(*n)));
-ICOMMAND(ceil, "f", (float *n), floatret(ceil(*n)));
+ICOMMAND(floor, "f", (float *n), floatret(floor(*n)), "builtin");
+ICOMMAND(ceil, "f", (float *n), floatret(ceil(*n)), "builtin");
 ICOMMAND(round, "ff", (float *n, float *k),
 {
     double step = *k;
@@ -4144,7 +4162,7 @@ ICOMMAND(round, "ff", (float *n, float *k),
     }
     else r = r < 0 ? ceil(r - 0.5) : floor(r + 0.5);
     floatret(float(r));
-}); 
+}, "builtin"); 
 
 ICOMMAND(cond, "ee2V", (tagval *args, int numargs),
 {
@@ -4164,7 +4182,7 @@ ICOMMAND(cond, "ee2V", (tagval *args, int numargs),
             break;
         }
     }
-});
+}, "builtin");
 
 #define CASECOMMAND(name, fmt, type, acc, compare) \
     ICOMMAND(name, fmt "te2V", (tagval *args, int numargs), \
@@ -4179,13 +4197,13 @@ ICOMMAND(cond, "ee2V", (tagval *args, int numargs),
                 return; \
             } \
         } \
-    })
+    }, "builtin")
 
 CASECOMMAND(case, "i", int, args[0].getint(), args[i].type == VAL_NULL || args[i].getint() == val);
 CASECOMMAND(casef, "f", float, args[0].getfloat(), args[i].type == VAL_NULL || args[i].getfloat() == val);
 CASECOMMAND(cases, "s", const char *, args[0].getstr(), args[i].type == VAL_NULL || !strcmp(args[i].getstr(), val));
 
-ICOMMAND(rnd, "ii", (int *a, int *b), intret(*a - *b > 0 ? rnd(*a - *b) + *b : *b));
+ICOMMAND(rnd, "ii", (int *a, int *b), intret(*a - *b > 0 ? rnd(*a - *b) + *b : *b), "builtin");
 ICOMMAND(rndstr, "i", (int *len),
 {
     int n = clamp(*len, 0, 10000);
@@ -4201,7 +4219,7 @@ ICOMMAND(rndstr, "i", (int *len),
     }
     s[n] = '\0';
     cubestrret(s);
-});
+}, "builtin");
 
 ICOMMAND(tohex, "ii", (int *n, int *p),
 {
@@ -4209,7 +4227,7 @@ ICOMMAND(tohex, "ii", (int *n, int *p),
     char *buf = newcubestr(len);
     nformatcubestr(buf, len, "0x%.*X", max(*p, 1), *n);
     cubestrret(buf);
-});
+}, "builtin");
 
 #define CMPSCMD(name, op) \
     ICOMMAND(name, "s1V", (tagval *args, int numargs), \
@@ -4222,7 +4240,7 @@ ICOMMAND(tohex, "ii", (int *n, int *p),
         } \
         else val = (numargs > 0 ? args[0].s[0] : 0) op 0; \
         intret(int(val)); \
-    })
+    }, "builtin")
 
 CMPSCMD(strcmp, ==);
 CMPSCMD(=s, ==);
@@ -4232,14 +4250,14 @@ CMPSCMD(>s, >);
 CMPSCMD(<=s, <=);
 CMPSCMD(>=s, >=);
 
-ICOMMAND(echo, "C", (char *s), conoutf("\f1%s", s));
-ICOMMAND(error, "C", (char *s), conoutf(CON_ERROR, "%s", s));
-ICOMMAND(strstr, "ss", (char *a, char *b), { char *s = strstr(a, b); intret(s ? s-a : -1); });
-ICOMMAND(strlen, "s", (char *s), intret(strlen(s)));
-ICOMMAND(strcode, "si", (char *s, int *i), intret(*i > 0 ? (memchr(s, 0, *i) ? 0 : uchar(s[*i])) : uchar(s[0])));
-ICOMMAND(codestr, "i", (int *i), { char *s = newcubestr(1); s[0] = char(*i); s[1] = '\0'; cubestrret(s); });
-ICOMMAND(struni, "si", (char *s, int *i), intret(*i > 0 ? (memchr(s, 0, *i) ? 0 : cube2uni(s[*i])) : cube2uni(s[0])));
-ICOMMAND(unistr, "i", (int *i), { char *s = newcubestr(1); s[0] = uni2cube(*i); s[1] = '\0'; cubestrret(s); });
+ICOMMAND(echo, "C", (char *s), conoutf("\f1%s", s), "builtin");
+ICOMMAND(error, "C", (char *s), conoutf(CON_ERROR, "%s", s), "builtin");
+ICOMMAND(strstr, "ss", (char *a, char *b), { char *s = strstr(a, b); intret(s ? s-a : -1); }, "builtin");
+ICOMMAND(strlen, "s", (char *s), intret(strlen(s)), "builtin");
+ICOMMAND(strcode, "si", (char *s, int *i), intret(*i > 0 ? (memchr(s, 0, *i) ? 0 : uchar(s[*i])) : uchar(s[0])), "builtin");
+ICOMMAND(codestr, "i", (int *i), { char *s = newcubestr(1); s[0] = char(*i); s[1] = '\0'; cubestrret(s); }, "builtin");
+ICOMMAND(struni, "si", (char *s, int *i), intret(*i > 0 ? (memchr(s, 0, *i) ? 0 : cube2uni(s[*i])) : cube2uni(s[0])), "builtin");
+ICOMMAND(unistr, "i", (int *i), { char *s = newcubestr(1); s[0] = uni2cube(*i); s[1] = '\0'; cubestrret(s); }, "builtin");
 
 #define STRMAPCOMMAND(name, map) \
     ICOMMAND(name, "s", (char *s), \
@@ -4249,7 +4267,7 @@ ICOMMAND(unistr, "i", (int *i), { char *s = newcubestr(1); s[0] = uni2cube(*i); 
         loopi(len) m[i] = map(s[i]); \
         m[len] = '\0'; \
         cubestrret(m); \
-    })
+    }, "builtin")
 
 STRMAPCOMMAND(strlower, cubelower);
 STRMAPCOMMAND(strupper, cubeupper);
@@ -4278,7 +4296,7 @@ char *strreplace(const char *s, const char *oldval, const char *newval, const ch
     }
 }
 
-ICOMMAND(strreplace, "ssss", (char *s, char *o, char *n, char *n2), commandret->setstr(strreplace(s, o, n, n2[0] ? n2 : n)));
+ICOMMAND(strreplace, "ssss", (char *s, char *o, char *n, char *n2), commandret->setstr(strreplace(s, o, n, n2[0] ? n2 : n)), "builtin");
 
 void strsplice(const char *s, const char *vals, int *skip, int *count)
 {
@@ -4292,10 +4310,10 @@ void strsplice(const char *s, const char *vals, int *skip, int *count)
     p[slen - len + vlen] = '\0';
     commandret->setstr(p);
 }
-COMMAND(strsplice, "ssii");
+COMMAND(strsplice, "ssii", "builtin");
 
 #ifndef STANDALONE
-ICOMMAND(getmillis, "i", (int *total), intret(*total ? totalmillis : lastmillis));
+ICOMMAND(getmillis, "i", (int *total), intret(*total ? totalmillis : lastmillis), "builtin");
 
 struct sleepcmd
 {
@@ -4313,7 +4331,7 @@ void addsleep(int *msec, char *cmd)
     s.flags = identflags;
 }
 
-COMMANDN(sleep, addsleep, "is");
+COMMANDN(sleep, addsleep, "is", "builtin");
 
 void checksleep(int millis)
 {
@@ -4350,6 +4368,12 @@ void clearsleep_(int *clearoverrides)
     clearsleep(*clearoverrides!=0 || identflags&IDF_OVERRIDDEN);
 }
 
-COMMANDN(clearsleep, clearsleep_, "i");
+COMMANDN(clearsleep, clearsleep_, "i", "builtin");
 #endif
 
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+command.binding.cpp"
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

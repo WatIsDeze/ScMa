@@ -1,4 +1,7 @@
 #include "game.h"
+#include "engine/scriptexport.h"
+
+#include "entities.h"
 #include "entities/player.h"
 
 // This file its soul purpose is to have all CubeScript COMMAND definitions located in a single file.
@@ -12,30 +15,21 @@ namespace entities {
 
 namespace game {
     //---------------------------------------------------------------------------------------------//
-    // GENERAL GAME COMMANDS.                                                                      //
-    //---------------------------------------------------------------------------------------------//
-    // Changes the map, of course.
-    ICOMMAND(map, "s", (char *s), changemap(s));
-
-    //---------------------------------------------------------------------------------------------//
     // ENTITY COMMANDS.                                                                            //
     //---------------------------------------------------------------------------------------------//
     // ent_set_attr - Sets the value of the designated key property.
     // args: (str)key (str)value.
-    ICOMMAND(ent_set_attr, "ss", (char *s1, char *s2),
+    SCRIPTEXPORT void ent_set_attr(char *s1, char *s2)
     {
         // TODO: Fix the namespace variable issues.
-        //extern vector<entities::classes::BaseEntity *> entities::ents;
+        //extern vector<entities::classes::CoreEntity *> entities::ents;
+        auto& ents = entities::getents();
 
-        if (entities::edit_entity > -1 && entities::edit_entity < entities::g_ents.length()) {
-            entities::classes::BaseEntity *ent = (entities::classes::BaseEntity*)entities::g_ents[entities::edit_entity];
+        if (entities::edit_entity > -1 && entities::edit_entity < ents.length()) {
+            auto ent = ents[entities::edit_entity];
 
             // Ensure both string lengths are > 0
             if (strlen(s1) > 0 && strlen(s2) > 0) {
-                // Set the attribute value.
-                // TODO: Check if it already exists or not? Maybe just ignore that.
-                ent->attributes[s1] = s2;
-
                 // Update our entity about the changes.
                 ent->onAttributeSet(s1, s2);
             } else {
@@ -45,42 +39,45 @@ namespace game {
         } else {
             conoutf("%s", "No valid in range entity selected.");
         }
-    });
+    };
 
     // ent_get_attr - Retreives the value of the designated key property.
     // args: (str)key
-    ICOMMAND(ent_get_attr, "s", (char *s1), {
-        // TODO: Fix the namespace variable issues.
-        //extern vector<entities::classes::BaseEntity *> entities::ents;
+    SCRIPTEXPORT void ent_get_attr(char *s1)
+    {
+        auto& ents = entities::getents();
 
-        if (entities::edit_entity > -1 && entities::edit_entity < entities::g_ents.length()) {
-            entities::classes::BaseEntity *ent = (entities::classes::BaseEntity*)entities::g_ents[entities::edit_entity];
+        if (entities::edit_entity > -1 && entities::edit_entity < ents.length()) {
+            auto ent = ents[entities::edit_entity];
 
-            if (ent->attributes.find(s1) != ent->attributes.end()) {
-                conoutf("%s : %s", s1, ent->attributes[s1].c_str());
+			auto attributeValue = ent->onAttributeGet(s1);
+            if (!attributeValue.empty()) {
+                conoutf("%s : %s", s1, attributeValue.c_str());
             }
         } else {
             conoutf("%s", "No valid entity selected to fetch an attribute from.");
         }
-    });
+    }
 
     // ent_list_attr - Lists all the properties of the given entity.
-    ICOMMAND(ent_list_attr, "", (), {
-        // TODO: Fix the namespace variable issues.
-        //extern vector<entities::classes::BaseEntity *> entities::ents;
+    SCRIPTEXPORT void ent_list_attr()
+    {
+        auto& ents = entities::getents();
 
-        if (entities::edit_entity > -1 && entities::edit_entity < entities::g_ents.length()) {
-            entities::classes::BaseEntity *ent = (entities::classes::BaseEntity*)entities::g_ents[entities::edit_entity];
+        if (entities::edit_entity > -1 && entities::edit_entity < ents.length()) {
+            auto ent = ents[entities::edit_entity];
 
-            for(std::map<std::string, std::string>::iterator i = ent->attributes.begin(); i != ent->attributes.end(); ++i) {
-                conoutf("%s : %s", i->first.c_str(), i->second.c_str());
+			auto attributeList = ent->onAttributeList();
+            for(auto key : attributeList) {
+				auto value = ent->onAttributeGet(key);
+                conoutf("%s : %s", key.c_str(), value.c_str());
             }
         } else {
             conoutf("%s", "No valid entity selected to fetch an attribute from.");
         }
-    });
+    }
 
-    void gotosel()
+    SCRIPTEXPORT void gotosel()
     {
         if(player1->state!=CS_EDITING) return;
         player1->o = getselpos();
@@ -89,5 +86,4 @@ namespace game {
         player1->o.add(dir.mul(-32));
         player1->resetinterp();
     }
-    COMMAND(gotosel, "");
 }

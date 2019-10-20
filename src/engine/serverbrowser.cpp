@@ -544,16 +544,15 @@ void checkpings()
     }
 }
 
-void sortservers()
+SCRIPTEXPORT void sortservers()
 {
     servers.sort(serverinfo::compare);
 }
-COMMAND(sortservers, "");
 
 VARP(autosortservers, 0, 1, 1);
 VARP(autoupdateservers, 0, 1, 1);
 
-void refreshservers()
+SCRIPTEXPORT void refreshservers()
 {
     static int lastrefresh = 0;
     if(lastrefresh==totalmillis) return;
@@ -570,7 +569,10 @@ void refreshservers()
     if(autosortservers) sortservers();
 }
 
-ICOMMAND(numservers, "", (), intret(servers.length()))
+SCRIPTEXPORT void numservers()
+{
+    intret(servers.length());
+}
 
 #define GETSERVERINFO_(idx, si, body) \
     if(servers.inrange(idx)) \
@@ -580,30 +582,78 @@ ICOMMAND(numservers, "", (), intret(servers.length()))
     }
 #define GETSERVERINFO(idx, si, body) GETSERVERINFO_(idx, si, if(si.valid()) { body; })
 
-ICOMMAND(servinfovalid, "i", (int *i), GETSERVERINFO_(*i, si, intret(si.valid() ? 1 : 0)));
-ICOMMAND(servinfodesc, "i", (int *i),
+SCRIPTEXPORT void servinfovalid(int *i)
+{
+    GETSERVERINFO_(*i, si, intret(si.valid() ? 1 : 0));
+}
+
+SCRIPTEXPORT void servinfodesc(int *i)
+{
     GETSERVERINFO_(*i, si,
     {
         const char *status = si.status();
         result(status ? status : si.desc);
-    }));
-ICOMMAND(servinfoname, "i", (int *i), GETSERVERINFO_(*i, si, result(si.name)));
-ICOMMAND(servinfoport, "i", (int *i), GETSERVERINFO_(*i, si, intret(si.address.port)));
-ICOMMAND(servinfohaspassword, "i", (int *i), GETSERVERINFO_(*i, si, intret(si.password && si.password[0] ? 1 : 0)));
-ICOMMAND(servinfokeep, "i", (int *i), GETSERVERINFO_(*i, si, intret(si.keep ? 1 : 0)));
-ICOMMAND(servinfomap, "i", (int *i), GETSERVERINFO(*i, si, result(si.map)));
-ICOMMAND(servinfoping, "i", (int *i), GETSERVERINFO(*i, si, intret(si.ping)));
-ICOMMAND(servinfonumplayers, "i", (int *i), GETSERVERINFO(*i, si, intret(si.numplayers)));
-ICOMMAND(servinfomaxplayers, "i", (int *i), GETSERVERINFO(*i, si, intret(si.maxplayers)));
-ICOMMAND(servinfoplayers, "i", (int *i),
+    });
+}
+
+SCRIPTEXPORT void servinfoname(int *i)
+{
+    GETSERVERINFO_(*i, si, result(si.name));
+}
+
+SCRIPTEXPORT void servinfoport(int *i)
+{
+    GETSERVERINFO_(*i, si, intret(si.address.port));
+}
+
+SCRIPTEXPORT void servinfohaspassword(int *i)
+{
+    GETSERVERINFO_(*i, si, intret(si.password && si.password[0] ? 1 : 0));
+}
+
+SCRIPTEXPORT void servinfokeep(int *i)
+{
+    GETSERVERINFO_(*i, si, intret(si.keep ? 1 : 0));
+}
+
+SCRIPTEXPORT void servinfomap(int *i)
+{
+    GETSERVERINFO(*i, si, result(si.map));
+}
+
+SCRIPTEXPORT void servinfoping(int *i)
+{
+    GETSERVERINFO(*i, si, intret(si.ping));
+}
+
+SCRIPTEXPORT void servinfonumplayers(int *i)
+{
+    GETSERVERINFO(*i, si, intret(si.numplayers));
+}
+
+SCRIPTEXPORT void servinfomaxplayers(int *i)
+{
+    GETSERVERINFO(*i, si, intret(si.maxplayers));
+}
+
+SCRIPTEXPORT void servinfoplayers(int *i)
+{
     GETSERVERINFO(*i, si,
     {
         if(si.maxplayers <= 0) intret(si.numplayers);
         else result(tempformatcubestr(si.numplayers >= si.maxplayers ? "\f3%d/%d" : "%d/%d", si.numplayers, si.maxplayers));
-    }));
-ICOMMAND(servinfoattr, "ii", (int *i, int *n), GETSERVERINFO(*i, si, { if(si.attr.inrange(*n)) intret(si.attr[*n]); }));
+    });
+}
 
-ICOMMAND(connectservinfo, "is", (int *i, char *pw), GETSERVERINFO_(*i, si, connectserv(si.name, si.address.port, pw[0] ? pw : si.password)));
+SCRIPTEXPORT void servinfoattr(int *i, int *n)
+{
+    GETSERVERINFO(*i, si, { if(si.attr.inrange(*n)) intret(si.attr[*n]); });
+}
+
+SCRIPTEXPORT void connectservinfo(int *i, char *pw)
+{
+    GETSERVERINFO_(*i, si, connectserv(si.name, si.address.port, pw[0] ? pw : si.password));
+}
 
 servinfo *getservinfo(int i)
 {
@@ -675,7 +725,7 @@ void retrieveservers(vector<char> &data)
 
 bool updatedservers = false;
 
-void updatefrommaster()
+SCRIPTEXPORT void updatefrommaster()
 {
     vector<char> data;
     retrieveservers(data);
@@ -689,17 +739,25 @@ void updatefrommaster()
     updatedservers = true;
 }
 
-void initservers()
+SCRIPTEXPORT void initservers()
 {
     if(autoupdateservers && !updatedservers) updatefrommaster();
 }
 
-ICOMMAND(addserver, "sis", (const char *name, int *port, const char *password), addserver(name, *port, password[0] ? password : NULL));
-ICOMMAND(keepserver, "sis", (const char *name, int *port, const char *password), addserver(name, *port, password[0] ? password : NULL, true));
-ICOMMAND(clearservers, "i", (int *full), clearservers(*full!=0));
-COMMAND(updatefrommaster, "");
-COMMAND(initservers, "");
-COMMAND(refreshservers, "");
+SCRIPTEXPORT_AS(addserver) void addserver_scriptimpl(const char *name, int *port, const char *password)
+{
+    addserver(name, *port, password[0] ? password : NULL);
+}
+
+SCRIPTEXPORT void keepserver(const char *name, int *port, const char *password)
+{
+    addserver(name, *port, password[0] ? password : NULL, true);
+}
+
+SCRIPTEXPORT_AS(clearservers) void clearservers_scriptimpl(int *full)
+{
+    clearservers(*full!=0);
+}
 
 void writeservercfg()
 {
@@ -732,3 +790,9 @@ void writeservercfg()
     delete f;
 }
 
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+serverbrowser.binding.cpp"
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

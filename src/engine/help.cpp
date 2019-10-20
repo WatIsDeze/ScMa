@@ -62,13 +62,20 @@ std::map<Help::HelpSection, std::vector<std::string> >& Help::SectionLines()
     return g_SectionLines;
 }
 
-void Help::Register(Help::HelpSection section, const std::vector<std::string>& data)
+void Help::Register(Help::HelpSection section, const std::vector<std::string>& data, const std::string& doc)
 {
     auto& sectionLineData = SectionLines()[section];
-    sectionLineData.push_back(formatData(data));
+    if (doc.empty())
+    {
+        sectionLineData.push_back(formatData(data));
+    }
+    else
+    {
+        sectionLineData.push_back(formatData(data) + "\t\t" + doc);
+    }
 }
 
-void Help::Print(const char* arg)
+SCRIPTEXPORT_AS(help) void Help::Print(const char* arg)
 {
     std::string sArg = arg;
 
@@ -76,14 +83,19 @@ void Help::Print(const char* arg)
     {
         for (auto section : SectionLines())
         {
-            conoutf("==== %s ====", SectionToString(section.first).c_str());
-
-            for (auto line : section.second)
+            if (section.second.size())
             {
-                conoutf("    %s", line.c_str());
+                conoutf("==== %s ====", SectionToString(section.first).c_str());
+
+                for (auto line : section.second)
+                {
+                    conoutf("    %s", line.c_str());
+                }
             }
         }
     }
 }
 
-ICOMMAND(help, "s", (const char* arg),{ Help::Print(arg); }); 
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

@@ -1,4 +1,5 @@
 #include "engine.h"
+#include "shared/entities/basephysicalentity.h"
 
 struct stainvert
 {
@@ -685,23 +686,25 @@ struct stainrenderer
 
     void genmmtris(octaentities &oe)
     {
-        const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
+        const auto &ents = entities::getents();
         loopv(oe.mapmodels)
         {
-            entities::classes::BasePhysicalEntity &e = *ents[oe.mapmodels[i]];
-            model *m = loadmapmodel(e.model_idx);
+            auto e = dynamic_cast<entities::classes::BaseEntity *>(ents[oe.mapmodels[i]]);
+            if (!e) continue;
+            
+			model *m = loadmapmodel(e->model_idx);
             if(!m) continue;
 
             vec center, radius;
-            float rejectradius = m->collisionbox(center, radius), scale = e.attr5 > 0 ? e.attr5/100.0f : 1;
+			float rejectradius = m->collisionbox(center, radius), scale = e->attr5 > 0 ? e->attr5/100.0f : 1;
             center.mul(scale);
-            if(staincenter.reject(vec(e.o).add(center), stainradius + rejectradius*scale)) continue;
+			if(staincenter.reject(vec(e->o).add(center), stainradius + rejectradius*scale)) continue;
 
             if(m->animated() || (!m->bih && !m->setBIH())) continue; 
 
-            int yaw = e.attr2, pitch = e.attr3, roll = e.attr4;
+			int yaw = e->attr2, pitch = e->attr3, roll = e->attr4;
 
-            m->bih->genstaintris(this, staincenter, stainradius, e.o, yaw, pitch, roll, scale);
+			m->bih->genstaintris(this, staincenter, stainradius, e->o, yaw, pitch, roll, scale);
         }
     }
     
@@ -817,3 +820,6 @@ void genstainmmtri(stainrenderer *s, const vec v[3])
     s->genmmtri(v);
 }
 
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

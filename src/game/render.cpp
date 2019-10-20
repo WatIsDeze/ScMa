@@ -1,19 +1,23 @@
 #include "game.h"
+#include "engine/scriptexport.h"
+#include "entities.h"
 #include "entities/player.h"
 
 namespace game
 {
     __attribute__((optimize("O0"))) void RenderGameEntities()
     {
-        loopv(entities::g_ents) {
-            entities::classes::BaseEntity *ent = entities::g_ents[i];
+        loopv(entities::getents()) {
+            entities::classes::BaseEntity *ent = dynamic_cast<entities::classes::BaseEntity*>(entities::getents()[i]);
             //if (ent->et_type != ET_PLAYERSTART && ent->et_type != ET_EMPTY && ent->et_type != ET_LIGHT && ent->et_type != ET_SPOTLIGHT && ent->et_type != ET_SOUND)
-            if (ent != NULL)
+
+            // Ensure we only render player entities if it isn't our own player 1 entity. (Otherwise we'd render it double.)
+            if (ent != nullptr && (ent != game::player1))
                 ent->render();
         }
 
         // Render our client player.
-        if (game::player1 != NULL)
+        if (game::player1 != nullptr)
             game::player1->render();
     }
 
@@ -32,7 +36,7 @@ namespace game
     }
 
 
-    void drawhudmodel(entities::classes::BaseEntity *d, int anim, int basetime) {
+    void drawhudmodel(entities::classes::CoreEntity *d, int anim, int basetime) {
 
     }
 
@@ -44,7 +48,7 @@ namespace game
 
     }
 
-    vec hudgunorigin(int gun, const vec &from, const vec &to, entities::classes::BaseEntity *d) {
+    vec hudgunorigin(int gun, const vec &from, const vec &to, entities::classes::CoreEntity *d) {
         vec offset(from);
 
         return offset;
@@ -69,3 +73,19 @@ namespace game
     }
 }
 
+SCRIPTEXPORT int getplayercolor(int team, int color)
+{
+    switch(team)
+    {
+        case 1: return 0x0000FF;
+        case 2: return 0xFF0000;
+        default: return 0xFFFF77;
+    }
+}
+
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+game+render.binding.cpp"
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

@@ -942,3 +942,6 @@ bool checkchallenge(const char *answerstr, void *correct)
     return answer == *(gfint *)correct;
 }
 
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

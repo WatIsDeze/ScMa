@@ -3,7 +3,10 @@
 #include "engine.h"
 
 // Include game.h for our game entity casting.
-#include "../game/game.h"
+#include "game/game.h"
+#include "shared/ents.h"
+#include "world.h"
+#include "shared/entities/basephysicalentity.h"
 
 // Use JSON, no shit.
 using json = nlohmann::json;
@@ -22,16 +25,17 @@ void validmapname(char *dst, const char *src, const char *prefix = NULL, const c
     else if(dst != alt) copycubestr(dst, alt, maxlen);
 }
 
-void fixmapname(char *name)
+/* Make the name of the map great again (tm) */
+SCRIPTEXPORT void fixmapname(char *name)
 {
     validmapname(name, name, NULL, "");
 }
 
-static void fixent(entities::classes::BasePhysicalEntity &e, int version)
+static void fixent(entities::classes::BasePhysicalEntity *e, int version)
 {
     if(version <= 0)
     {
-        if(e.et_type >= ET_DECAL) e.et_type++;
+		if(e->et_type >= ET_DECAL) e->et_type++;
     }
 }
 
@@ -112,10 +116,10 @@ bool loadents(const char *fname, vector<entities::classes::BasePhysicalEntity> &
 
     loopi(min(hdr.numents, MAXENTS))
     {
-        entity &e = ents.add();
-        f->read(&e, sizeof(entity));
-        lilswap(&e.o.x, 3);
-        lilswap(&e.attr1, 5);
+        entity *e = ents.add();
+        f->read(e, sizeof(entity));
+        lilswap(&e->o.x, 3);
+        lilswap(&e->attr1, 5);
         fixent(e, hdr.version);
         if(eif > 0) f->seek(eif, SEEK_CUR);
         if(samegame)
@@ -171,7 +175,7 @@ void setmapfilenames(const char *fname, const char *cname = NULL)
     path(picname);
 }
 
-void mapcfgname()
+SCRIPTEXPORT void mapcfgname()
 {
     const char *mname = game::getclientmap();
     cubestr name;
@@ -180,8 +184,6 @@ void mapcfgname()
     path(cfgname);
     result(cfgname);
 }
-
-COMMAND(mapcfgname, "");
 
 void backup(const char *name, const char *backupname)
 {
@@ -615,7 +617,7 @@ bool save_world(const char *mname, bool nolms)
     hdr.headersize = sizeof(hdr);
     hdr.worldsize = worldsize;
     hdr.numents = 0;
-    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
+    const auto &ents = entities::getents();
     loopv(ents) if(ents[i]->et_type!=ET_EMPTY || nolms) hdr.numents++;
     hdr.numpvs = nolms ? 0 : getnumviewcells();
     hdr.blendmap = shouldsaveblendmap();
@@ -668,34 +670,15 @@ bool save_world(const char *mname, bool nolms)
     loopv(texmru) f->putlil<ushort>(texmru[i]);
 
     // JSON Entity storage.
-    json j;
+    json document;
 
     loopv(ents)
     {
         if(ents[i]->et_type!=ET_EMPTY || nolms)
         {
-            entities::classes::BasePhysicalEntity tmp = *ents[i];
-            lilswap(&tmp.o.x, 3);
-            lilswap(&tmp.attr1, 5);
-
-            // These are the default attributes, the old-school ones which are still used here and there in the engine.
-            j[i]["et_type"] = tmp.et_type;
-            j[i]["ent_type"] = tmp.ent_type;
-            j[i]["game_type"] = tmp.game_type;
-            j[i]["o"]["x"] = tmp.o.x;
-            j[i]["o"]["y"] = tmp.o.y;
-            j[i]["o"]["z"] = tmp.o.z;
-            j[i]["int_attr1"] = tmp.attr1;
-            j[i]["int_attr2"] = tmp.attr2;
-            j[i]["int_attr3"] = tmp.attr3;
-            j[i]["int_attr4"] = tmp.attr4;
-            j[i]["int_attr5"] = tmp.attr5;
-            j[i]["int_reserved"] = tmp.reserved;
-            j[i]["model_idx"] = tmp.model_idx;
-
-            // Store game related attributes.
-            j[i]["game"]["classname"] = tmp.classname;
-            j[i]["game"]["attributes"] = json(tmp.attributes);
+			json eleDoc {};
+			ents[i]->saveToJson(eleDoc);
+			document[i] = eleDoc;
         }
     }
 
@@ -705,7 +688,7 @@ bool save_world(const char *mname, bool nolms)
     // Save JSON to file.
     // TODO: Use the streams that the engine provides instead.
     std::ofstream o(jsonname);
-    o << std::setw(4) << j << std::endl;
+    o << std::setw(4) << document << std::endl;
 
     savevslots(f, numvslots);
 
@@ -831,70 +814,42 @@ bool load_world(const char *mname, const char *cname)        // Does not support
 
     renderprogress(0, "loading entities...");
 
-    // Read our entity JSON file
+    // Define the path to our JSON file.
     defformatcubestr(jsonname, "media/map/%s.json", mname);
 
-    // TODO: Use the engine stream.
-    // Load in the stream.
-    std::ifstream i(jsonname);
-    json j;
-    i >> j;
+    // Get a reference to the entities array.
+    auto &ents = entities::getents();
 
-    // Reference to our entities vector list stored in the entities namespace.
-    vector<entities::classes::BasePhysicalEntity*> &ents = entities::getents();
+    // One of the only few places where we'll use exceptions. We hate them.
+    try	{
+        json document;
+		std::ifstream(jsonname) >> document;
 
-    // TODO: Ensure that our data is valid, do not access invalid or nonexistent elements.
-    // Parse entities and allocate them, or rather, add them to the list! ;-)
-    for (auto& element : j) {
-        // For now only proceed if a type is available.
-        if (element.find("et_type") != element.end()) {
-            // Classname and type, used to determine what to load in and allocate the precise class firsthand.
-            std::string classname("");
-            int et_type = element["et_type"];
-            int ent_type = element["ent_type"];
-            int game_type = element["game_type"];
+        for (auto& element : document) {
+			std::string classname = "core_entity";
+			
+            if (element.contains("class") && element["class"].is_string()) {
+                classname = element["class"];
+            } else {
+                conoutf(CON_WARN, "Parsing %s: Missing 'class' entry, falling back to default class: '%s'", jsonname, classname.c_str());
+            }
 
-            // Have to do this here to ensure that classname can be passed to newgameentity.
-            classname = element["game"]["classname"];
-
-            // Allocate our entity.
-            entities::classes::BasePhysicalEntity &e = *(entities::classes::BasePhysicalEntity*)entities::newgameentity((char*)classname.c_str());
-
-            // Fetch base entity data. (Old ancient entity info.)
-            e.classname = classname;
-            e.et_type = element["et_type"];
-            e.ent_type = element["ent_type"];
-            e.game_type = element["game_type"];
-            e.o.x = element["o"]["x"];
-            e.o.y = element["o"]["y"];
-            e.o.z = element["o"]["z"];
-            e.attr1 = element["int_attr1"];
-            e.attr2 = element["int_attr2"];
-            e.attr3 = element["int_attr3"];
-            e.attr4 = element["int_attr4"];
-            e.attr5 = element["int_attr5"];
-            e.reserved = element["int_reserved"];
-            e.model_idx = element["model_idx"];
-
-            // Fetch a reference to the game attributes json element.
-            const json& attribute_element = element["game"]["attributes"];
-            e.attributes = attribute_element.get<std::map<std::string, std::string>>();
-
-            // All went well, so lets add our entity to the list.
-            ents.add(&e);
-
-            // Remove it again in case the entity was > ET_GAMESPECIFIC
-            //if (e.et_type >= ET_GAMESPECIFIC) {
-            //    entities::deletegameentity(&e);
-            //}
-        }
-    }
-
+            entities::classes::CoreEntity *ent = entities::newgameentity(classname.c_str());
+			ent->loadFromJson(element);
+			
+			ents.add(ent);
+		}
+	}
+    catch (json::type_error& e)	{
+        conoutf(CON_ERROR, "Unable to load entity json for map %s: %sent", mname, e.what());
+		return false;
+	}
+	
     if(hdr.numents > MAXENTS)
     {
         conoutf(CON_WARN, "warning: map has %d entities", hdr.numents);
         // TODO: What to do here?
-        //f->seek((hdr.numents-MAXENTS)*(samegame ? sizeof(entities::classes::BaseEntity) + einfosize : eif), SEEK_CUR);
+        //f->seek((hdr.numents-MAXENTS)*(samegame ? sizeof(entities::classes::CoreEntity) + einfosize : eif), SEEK_CUR);
     }
 
     renderprogress(0, "loading slots...");
@@ -958,13 +913,14 @@ bool load_world(const char *mname, const char *cname)        // Does not support
     return true;
 }
 
-void savecurrentmap() { save_world(game::getclientmap()); }
-void savemap(char *mname) { save_world(mname); }
+SCRIPTEXPORT void savecurrentmap() { save_world(game::getclientmap()); }
+SCRIPTEXPORT void savemap(char *mname) { save_world(mname); }
+SCRIPTEXPORT_AS(map) void loadmap(char *mname)
+{
+	load_world(mname);
+}
 
-COMMAND(savemap, "s");
-COMMAND(savecurrentmap, "");
-
-void writeobj(char *name)
+SCRIPTEXPORT void writeobj(char *name)
 {
     defformatcubestr(fname, "%s.obj", name);
     stream *f = openfile(path(fname), "w");
@@ -1058,9 +1014,7 @@ void writeobj(char *name)
     conoutf("generated model %s", fname);
 }
 
-COMMAND(writeobj, "s");
-
-void writecollideobj(char *name)
+SCRIPTEXPORT void writecollideobj(char *name)
 {
     extern bool havesel;
     extern selinfo sel;
@@ -1069,20 +1023,20 @@ void writecollideobj(char *name)
         conoutf(CON_ERROR, "geometry for collide model not selected");
         return;
     }
-    vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
-    entities::classes::BasePhysicalEntity *mm = NULL;
+    auto &ents = entities::getents();
+    entities::classes::CoreEntity *mm = NULL;
     loopv(entgroup)
     {
-        entities::classes::BasePhysicalEntity &e = *ents[entgroup[i]];
-        if(e.et_type != ET_MAPMODEL || !pointinsel(sel, e.o)) continue;
-        mm = &e;
+        auto e = ents[entgroup[i]];
+		if(e->et_type != ET_MAPMODEL || !pointinsel(sel, e->o)) continue;
+		mm = e;
         break;
     }
     if(!mm) loopv(ents)
     {
-        entities::classes::BasePhysicalEntity &e = *ents[i];
-        if(e.et_type != ET_MAPMODEL || !pointinsel(sel, e.o)) continue;
-        mm = &e;
+        auto e = ents[i];
+		if(e->et_type != ET_MAPMODEL || !pointinsel(sel, e->o)) continue;
+		mm = e;
         break;
     }
     if(!mm)
@@ -1169,7 +1123,11 @@ void writecollideobj(char *name)
     conoutf("generated collide model %s", fname);
 }
 
-COMMAND(writecollideobj, "s");
-
 #endif
 
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+worldio.binding.cpp"
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

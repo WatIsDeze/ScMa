@@ -1,4 +1,5 @@
 #include "engine.h"
+#include "shared/entities/basephysicalentity.h"
 
 struct QuadNode
 {
@@ -819,3 +820,6 @@ void renderminimapmaterials()
     glEnable(GL_CULL_FACE);
 }
 
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

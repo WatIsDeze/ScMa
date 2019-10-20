@@ -1,56 +1,37 @@
-#ifndef BASEENTITY_H
-#define BASEENTITY_H
+#pragma once
+#include "coreentity.h"
 
 // Defined here, for several reasons, since it has to replace good ol' extentity.
 namespace entities
 {
-    namespace classes {
-        // Predefined.
-        class CoreEntity;
-        class BasePhysicalEntity;
-        class BaseDynamicEntity;
+    namespace classes
+    {
 
-        class BaseEntity : public CoreEntity {
+        class BaseEntity : public CoreEntity
+        {
+            ENTITY_FACTORY_IMPL(BaseEntity);
         public:
-            //
-            // Base functions.
-            //
-            BaseEntity();
-            BaseEntity(const BaseEntity& e);
-            BaseEntity(const BasePhysicalEntity &e);
-            BaseEntity(const BaseDynamicEntity &e);
-            virtual ~BaseEntity();
-
             // Called every time a map is being loaded.
             virtual void preload();
             // Called each frame, to "think", AI logic should go here.
             virtual void think();
             // Called each frame to render.
             virtual void render();
-            // Reset the entity to its basic states.
-            virtual void reset();
-
-
-            //
-            // Attribute set and get, and event.
-            //
-            // Sets the key its value in the attributes list, also determines whether to automatically call onAttributeSet.
-            void setAttribute(const std::string &key, const std::string &value, bool callOnAttrSet);
-            // Returns the value of the attribute key.
-            std::string getAttribute(const std::string &key);
-
 
             //
             // OnEvent callbacks.
             //
-            // otherEnt = the entity which has triggered you.
-            virtual bool onTrigger(BaseEntity *otherEnt, const vec &dir);
-            // otherEnt = the entity which has touched you.
-            virtual bool onTouch(BaseEntity *otherEnt, const vec &dir);
-            // Can be overloaded to execute certain actions when the key/value of an attribute is changed.
+            // Can be used to call functions given on which key changed into what value.
             virtual void onAttributeSet(const std::string &key, const std::string &value);
+            // otherEnt = the entity which has triggered you.
+            virtual bool onTrigger(const CoreEntity *otherEnt, const vec &dir);
+            // otherEnt = the entity which has touched you.
+            virtual bool onTouch(const CoreEntity *otherEnt, const vec &dir);
+            // otherEnt = the entity which has used you. (Like, hit a button.)
+            virtual bool onUse(CoreEntity *otherEnt, const vec &dir);
+
+        protected:
+            nlohmann::json toJson();
         };
     } // classes
 } // entities
-
-#endif // BASEENTITY_H

@@ -1,5 +1,6 @@
 #include "engine.h"
 #include "ents.h"
+#include "shared/entities/basephysicalentity.h"
 
 VARNP(dynlights, usedynlights, 0, 1, 1);
 VARP(dynlightdist, 0, 1024, 10000);
@@ -10,7 +11,7 @@ struct dynlight
     float radius, initradius, curradius, dist;
     vec color, initcolor, curcolor;
     int fade, peak, expire, flags;
-    entities::classes::BaseEntity *owner;
+    entities::classes::CoreEntity *owner;
     vec dir;
     int spot;
 
@@ -53,7 +54,7 @@ struct dynlight
 vector<dynlight> dynlights;
 vector<dynlight *> closedynlights;
 
-void adddynlight(const vec &o, float radius, const vec &color, int fade, int peak, int flags, float initradius, const vec &initcolor, entities::classes::BaseEntity *owner, const vec &dir, int spot)
+void adddynlight(const vec &o, float radius, const vec &color, int fade, int peak, int flags, float initradius, const vec &initcolor, entities::classes::CoreEntity *owner, const vec &dir, int spot)
 {
     if(!usedynlights) return;
     if(o.dist(camera1->o) > dynlightdist || radius <= 0) return;
@@ -84,7 +85,7 @@ void cleardynlights()
     else if(faded>0) dynlights.remove(0, faded);
 }
 
-void removetrackeddynlights(entities::classes::BaseEntity *owner)
+void removetrackeddynlights(entities::classes::CoreEntity *owner)
 {
     loopvrev(dynlights) if(owner ? dynlights[i].owner == owner : dynlights[i].owner != NULL) dynlights.remove(i);
 }
@@ -185,3 +186,6 @@ void dynlightreaching(const vec &target, vec &color, vec &dir, bool hud)
     color.add(dyncolor);
 }
 
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

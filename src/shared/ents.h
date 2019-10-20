@@ -3,10 +3,17 @@
 
 // This file defines static map entities ("entity") and includes the basic entities:
 // (dynamic entities (players/monsters, "dynent"), and static(No AI, or Input) entities(barrels, etc, "physent")
-// the gamecode extends from the BaseEntity class type.
+// the gamecode extends from the BaseEntity class type (Which extends from the CoreEntity type.)
+// NOTE: dynent and physent are old Tesseract names for what now are, BaseDynamicEntity and BasePhysicalEntity
 
 // ET_*: The internal engine entity type.
 // (ent->et_type = ..)
+
+// Include our base entity types.
+//#include "entities/coreentity.h"
+//#include "entities/baseentity.h"
+//#include "entities/basephysicalentity.h"    // Include the physical entity, for objects such as crates etc.
+//#include "entities/basedynamicentity.h"     // Include the dynamical entity, for objects that can move as if it were players.
 
 enum {
     ET_EMPTY=0,         // Empty entities. Not in use. (No functionality, usually removed, or yet to be replaced.)
@@ -18,12 +25,10 @@ enum {
     ET_SOUND,           // Sound Effect entities.
     ET_SPOTLIGHT,       // Spotlight entity, has to be attached to an ET_LIGHT entity.
     ET_DECAL,           // Decal entities, speak for itself.s
-    ET_GAMESPECIFIC
+    ET_GAMESPECIFIC     // An entity that is specific to the game its own entity classes.
 };
 
 #define MAXENTS 10000
-
-//extern vector<entities::classes::BaseEntity *> ents;                // map entities
 
 
 // Client/Server entity states. (ent->state, ent->editstate).
@@ -37,6 +42,55 @@ enum { ENT_PLAYER = 0, ENT_AI, ENT_INANIMATE, ENT_CAMERA, ENT_BOUNCE };
 
 // Physics collision types. (ent->collidetype)
 enum { COLLIDE_NONE = 0, COLLIDE_ELLIPSE, COLLIDE_OBB, COLLIDE_TRI };
+
+enum                              // static entity types
+{
+    NOTUSED = ET_EMPTY,           // entity slot not in use in map
+    LIGHT = ET_LIGHT,             // lightsource, attr1 = radius, attr2 = intensity
+    MAPMODEL = ET_MAPMODEL,       // modelfilename = attr1 index, attr2 = yaw, attr3 = pitch, attr4 = roll, attr5 = scale
+    PLAYERSTART = ET_PLAYERSTART, // attr1 = angle, attr2 = team
+    ENVMAP = ET_ENVMAP,           // attr1 = radius
+    PARTICLES = ET_PARTICLES,
+    MAPSOUND = ET_SOUND,
+    SPOTLIGHT = ET_SPOTLIGHT,
+    DECAL = ET_DECAL,
+
+	// SchizoMania entity types. (game_type values, all should be >= ET_GAMEENTITY
+	// Anyhting >= GAMEENTITY usese classname is...
+	GAMEENTITY = ET_GAMESPECIFIC, // classname = game entity class type, attributes list is what it is, and can be accessed in any derived BaseEntity class.
+	PLAYER,
+	NPC_BASIC,
+	AI_BASIC,
+
+	// Objects.
+	BUTTON,
+	MAXENTTYPES,
+
+	//new entities
+	DOOR,
+
+    I_FIRST = 0,
+    I_LAST = -1
+};
+
+// hardcoded sounds, defined in sounds.cfg
+enum
+{
+    S_JUMP = 0, S_LAND,
+    S_SPLASHIN, S_SPLASHOUT, S_BURN,
+    S_ITEMSPAWN, S_TELEPORT, S_JUMPPAD,
+    S_MELEE, S_PULSE1, S_PULSE2, S_PULSEEXPLODE, S_RAIL1, S_RAIL2,
+    S_WEAPLOAD, S_NOAMMO, S_HIT,
+    S_PAIN1, S_PAIN2, S_DIE1, S_DIE2,
+
+    S_FLAGPICKUP,
+    S_FLAGDROP,
+    S_FLAGRETURN,
+    S_FLAGSCORE,
+    S_FLAGRESET,
+    S_FLAGFAIL
+};
+
 
 // Crouche Time, and Crouch Height. TODO: Place in Physics or player settings?
 #define CROUCHTIME 200
@@ -57,112 +111,11 @@ namespace entities
         EF_SPAWNED    = 1<<8
     };
 
-    // Classes.
-    namespace classes {
-        class BaseEntity;
-
-//        // Entity
-//        o(0, 0, 0), attr1(0), attr2(0), attr3(0), attr4(0), attr5(0), et_type(ET_EMPTY), ent_type(ENT_INANIMATE), game_type(GAMEENTITY), reserved(0), model_idx(0),
-
-//        // Dynent.
-//        blocked(false), ragdoll(NULL), query(NULL), lastrendered(0),
-
-//        // Physent.
-//        deltapos(0, 0, 0), newpos(0, 0, 0), yaw(0), pitch(0), roll(0), maxspeed(25),
-//                   radius(2.4), eyeheight(7), maxheight(8), aboveeye(2), xradius(1.67), yradius(1.67), zmargin(0),
-//                   state(CS_ALIVE), editstate(CS_ALIVE),
-//                   collidetype(COLLIDE_ELLIPSE)
-
-        // Core legacy entity class.
-        class CoreEntity
-        {
-        public:
-            // Constructors.
-            CoreEntity() : o(0, 0, 0), attr1(0), attr2(0), attr3(0), attr4(0), attr5(0),
-                et_type(ET_EMPTY), ent_type(ENT_INANIMATE), game_type(ET_EMPTY), reserved(0), model_idx(0), flags(EntityFlags::EF_NOFLAG),
-                attached(nullptr) {}
-
-//            CoreEntity(const CoreEntity &e) {
-//                //
-//                // Legacy Core Entity data.
-//                //
-//                o = e.o;                             // position
-//                attr1 = e.attr1;                     // Old integer attributes, still used for storing/loading certain attributes of ET_TYPES.
-//                attr2 = e.attr2;
-//                attr3 = e.attr3;
-//                attr4 = e.attr4;
-//                attr5 = e.attr5;
-//                et_type = e.et_type;                              // These are for the ET(Engine Type) values.
-//                ent_type = e.ent_type;                             // These are for ENT_(DynEnt/PhysEnt Type) values.
-//                game_type = e.game_type;                            // the internal game entity type values.
-//                reserved = e.reserved;
-//                name = e.name;
-//                classname = e.classname;
-//                attributes = e.attributes;
-//                flags = e.flags;
-//                attached = e.attached;
-//                model_idx = e.model_idx;
-//            }
-
-            virtual ~CoreEntity() {}
-
-            //
-            // Legacy Core Entity data.
-            //
-            vec o;                                      // position
-            short attr1, attr2, attr3, attr4, attr5;    // Old integer attributes, still used for storing/loading ET_TYPES.
-            uchar et_type;                              // These are for the ET(Engine Type) values.
-            uchar ent_type;                             // These are for ENT_(DynEnt/PhysEnt Type) values.
-            uchar game_type;                            // the internal game entity type values.
-            uchar reserved;
-
-            //
-            // Legacy Core ExtEntity data and functions.
-            //
-            int flags;
-            BaseEntity *attached;
-
-            bool spawned() const { return (flags&entities::EntityFlags::EF_SPAWNED) != 0; }
-            void setspawned(bool val) { if(val) flags |= entities::EntityFlags::EF_SPAWNED; else flags &= ~entities::EntityFlags::EF_SPAWNED; }
-            void setspawned() { flags |= entities::EntityFlags::EF_SPAWNED; }
-            void clearspawned() { flags &= ~entities::EntityFlags::EF_SPAWNED; }
-
-            //
-            // Legacy of ours, but it made more sense than short attr1 ... etc.
-            //
-            short model_idx;
-
-        public:
-            //
-            // Core BaseEntity data.
-            //
-            // Entity Name. (Used for trigger events.)
-            std::string name;
-            // Entity class name. (Used to spawn the proper inheritance class instance.)
-            std::string classname;
-            // Contains the json attributes.
-            std::map<std::string, std::string> attributes;
-
-            //
-            //
-            //
-
-        };
-    }
-}
-
-// Do some predefines for animinfo.h
-namespace entities {
     namespace classes {
         class BasePhysicalEntity;
         class BaseDynamicEntity;
     } // classes
 } // entities
 
-// Include our base entity types.
-#include "entities/animinfo.h"              // Include the basic animation info for our entities.
-#include "entities/baseentity.h"            // Include the basic entity to base all others on.
-#include "entities/basephysicalentity.h"    // Include the physical entity, for objects such as crates etc.
-#include "entities/basedynamicentity.h"     // Include the dynamical entity, for objects that can move as if it were players.
 
 #endif // ENTS_H

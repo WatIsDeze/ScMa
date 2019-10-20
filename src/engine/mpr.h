@@ -1,3 +1,5 @@
+#include "shared/entities/basephysicalentity.h"
+
 // This code is based off the Minkowski Portal Refinement algorithm by Gary Snethen in XenoCollide & Game Programming Gems 7.
 
 namespace mpr

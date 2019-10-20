@@ -1,5 +1,4 @@
-#ifndef __CUBE_H__
-#define __CUBE_H__
+#pragma once
 
 #define _FILE_OFFSET_BITS 64
 
@@ -42,14 +41,14 @@
     #define GL_GLEXT_LEGACY
     #define __glext_h_
     #include <OpenGL/gl.h>
-    #define main SDL_main
+   #define main SDL_main
   #else
     #include <SDL2/SDL.h>
     #include <SDL2/SDL_opengl.h>
   #endif
 #endif
 
-#include "enet/include/enet/enet.h"
+#include <enet/enet.h>
 #include <zlib.h>
 
 // C++ STD Lib.
@@ -58,14 +57,14 @@
 #include <iomanip>
 #include <string>
 #include <memory>
+#include <functional>
 
 // Libraries from the ext folder.
-#include "../ext/json-develop/single_include/nlohmann/json.hpp"
+#include <nlohmann/json.hpp>
 
 // Engine and game related includes.
 #include "tools.h"
 #include "geom.h"
-#include "ents.h"
 #include "command.h"
 
 #ifndef STANDALONE
@@ -76,5 +75,4 @@
 #include "iengine.h"
 #include "igame.h"
 
-#endif
 

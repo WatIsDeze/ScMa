@@ -1,3 +1,4 @@
+#pragma once
 
 enum                            // hardcoded texture numbers
 {
@@ -22,11 +23,11 @@ struct octaheader
     int numvslots;
 };
 
-#define MAPVERSION 1            // bump if map format changes, see worldio.cpp
+#define MAPVERSION 2            // bump if map format changes, see worldio.cpp
 
 struct mapheader
 {
-    char magic[4];              // "TMAP"
+    char magic[4];              // "SCMA"
     int version;                // any >8bit quantity is little endian
     int headersize;             // sizeof(header)
     int worldsize;
@@ -51,3 +52,16 @@ enum
 
 struct vertex { vec pos; bvec4 norm; vec tc; bvec4 tangent; };
 
+template <class ET>
+ET* getentitybytype(int searchStartIndex = 0)
+{
+	const auto &ents = entities::getents();
+	for(int i = searchStartIndex; i < ents.length(); i++)
+	{
+		auto e = dynamic_cast<ET*>(ents[i]);
+
+		if (e) return e;
+	}
+
+	return nullptr;
+}

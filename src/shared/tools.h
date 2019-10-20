@@ -2,11 +2,20 @@
 
 #ifndef _TOOLS_H
 #define _TOOLS_H
+#include <cstdarg>
+#include <cstdio>
+#include <cstring>
+#include <utility>
+#include <algorithm>
+#include <enet/enet.h>
 
-#ifdef NULL
-#undef NULL
+#include <SDL.h>
+#ifdef __APPLE__
+#include <OpenGL/opengl.h>
+#else
+#include <SDL_opengl.h>
 #endif
-#define NULL 0
+#include "zlib.h"
 
 typedef unsigned char uchar;
 typedef unsigned short ushort;
@@ -42,44 +51,10 @@ inline void operator delete(void *, void *) {}
 inline void operator delete[](void *, void *) {}
 #endif
 
-#ifdef swap
-#undef swap
-#else
-#define swap std::swap
-#endif
-/*template<class T>
-static inline void swap(T &a, T &b)
-{
-    T t = a;
-    a = b;
-    b = t;
-}*/
-#ifdef max
-#undef max
-#endif
-#ifdef min
-#undef min
-#endif
-template<class T>
-static inline T max(T a, T b)
-{
-    return a > b ? a : b;
-}
-template<class T>
-static inline T max(T a, T b, T c)
-{
-    return max(max(a, b), c);
-}
-template<class T>
-static inline T min(T a, T b)
-{
-    return a < b ? a : b;
-}
-template<class T>
-static inline T min(T a, T b, T c)
-{
-    return min(min(a, b), c);
-}
+using std::min;
+using std::max;
+using std::swap;
+
 template<class T, class U>
 static inline T clamp(T a, U b, U c)
 {
@@ -176,14 +151,26 @@ template<size_t N> inline void vformatcubestr(char (&d)[N], const char *fmt, va_
 
 inline char *copycubestr(char *d, const char *s, size_t len)
 {
-    size_t slen = min(strlen(s), len-1);
+    size_t slen = std::min(strlen(s), len-1);
     memcpy(d, s, slen);
     d[slen] = 0;
     return d;
 }
 template<size_t N> inline char *copycubestr(char (&d)[N], const char *s) { return copycubestr(d, s, N); }
 
-inline char *concatcubestr(char *d, const char *s, size_t len) { size_t used = strlen(d); return used < len ? copycubestr(d+used, s, len-used) : d; }
+inline char *concatcubestr(char *d, const char *s, size_t len)
+{
+    size_t used = strlen(d);
+    if (used < len)
+    {
+        return copycubestr(d+used, s, len-used);
+    }
+    else
+    {
+        return d;
+    }
+}
+
 template<size_t N> inline char *concatcubestr(char (&d)[N], const char *s) { return concatcubestr(d, s, N); }
 
 inline char *prependcubestr(char *d, const char *s, size_t len)
@@ -605,7 +592,7 @@ static inline bool htcmp(GLuint x, GLuint y)
 
 template <class T> struct vector
 {
-    static const int MINSIZE = 8;
+    static const int MINSIZE {8};
 
     T *buf;
     int alen, ulen;
@@ -908,6 +895,7 @@ template <class T> struct vector
     }
     #undef UNIQUE
 };
+template <class T> const int vector<T>::MINSIZE;
 
 template<class H, class E, class K, class T> struct hashbase
 {

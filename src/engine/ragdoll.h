@@ -1,3 +1,6 @@
+#include "shared/entities/basephysicalentity.h"
+#include "shared/entities/basedynamicentity.h"
+
 struct ragdollskel
 {
     struct vert

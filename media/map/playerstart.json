@@ -1,65 +1,52 @@
 [
     {
         "ent_type": 2,
-        "et_type": 3,
+        "et_type": 9,
         "game": {
-            "attributes": {},
-            "classname": "playerstart"
+            "attributes": {
+                "classname": "playerstart",
+                "name": "PlayerStart_0"
+            },
+            "classname": "playerstart",
+            "name": "baseentity_0"
         },
-        "game_type": 3,
+        "game_type": 13,
         "int_attr1": 0,
         "int_attr2": 0,
         "int_attr3": 0,
         "int_attr4": 0,
         "int_attr5": 0,
         "int_reserved": 0,
-        "model_idx": -1,
+        "model_idx": 0,
         "o": {
-            "x": 436.0,
-            "y": 404.0,
-            "z": 516.0
+            "x": 606.0,
+            "y": 610.0,
+            "z": 532.0
         }
     },
     {
         "ent_type": 2,
-        "et_type": 3,
+        "et_type": 1,
         "game": {
-            "attributes": {},
-            "classname": "playerstart"
+            "attributes": {
+                "classname": "CoreEntity",
+                "name": "baseentity_1"
+            },
+            "classname": "CoreEntity",
+            "name": "tesseract_ent_-1"
         },
-        "game_type": 3,
-        "int_attr1": 0,
+        "game_type": 1,
+        "int_attr1": 500,
         "int_attr2": 0,
-        "int_attr3": 0,
-        "int_attr4": 0,
+        "int_attr3": 29,
+        "int_attr4": 53,
         "int_attr5": 0,
         "int_reserved": 0,
-        "model_idx": -1,
+        "model_idx": 0,
         "o": {
-            "x": 524.0,
-            "y": 532.0,
-            "z": 508.0
-        }
-    },
-    {
-        "ent_type": 2,
-        "et_type": 3,
-        "game": {
-            "attributes": {},
-            "classname": "playerstart"
-        },
-        "game_type": 3,
-        "int_attr1": 0,
-        "int_attr2": 0,
-        "int_attr3": 0,
-        "int_attr4": 0,
-        "int_attr5": 0,
-        "int_reserved": 0,
-        "model_idx": -1,
-        "o": {
-            "x": 596.0,
-            "y": 548.0,
-            "z": 516.0
+            "x": 649.0,
+            "y": 731.8465576171875,
+            "z": 517.9375610351563
         }
     }
 ]

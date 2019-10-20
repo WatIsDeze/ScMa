@@ -1,5 +1,5 @@
 #CMake Configuration for Tesseract "The Right Way (tm)"
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.13)
 project(SchizoMania)
 
 # Build options.
@@ -64,12 +64,16 @@ endif()
 #defines, project wide
 #Silence OpenGL deprecations .. yes Apple, you like Metal and you can't shutup about it .. :rolleyes:
 add_definitions("-DGL_SILENCE_DEPRECATION")
+include_directories(
+    ext/json-develop/single_include
+)
 
 #The engine, server and shared sub projects
 add_subdirectory(enet)
 add_subdirectory(shared)
 add_subdirectory(game)
 add_subdirectory(engine)
+add_subdirectory(binding)
 
 #Everything ready, now define the executables
 if (APPLE)
@@ -104,6 +108,7 @@ if (APPLE)
         SchizoMania_Shared_Client
         SchizoMania_Game_Client
         SchizoMania_Engine_Client
+        SchizoMania_Binding
         SchizoMania_Shared_Entities
         # ${MODPLUG_LIBRARIES}
 
@@ -122,6 +127,7 @@ else()
         SchizoMania_Shared_Entities
         SchizoMania_Engine_Client
         SchizoMania_Game_Client
+        SchizoMania_Binding
     )
 endif()
 
@@ -143,3 +149,4 @@ if (APPLE)
         MACOSX_PACKAGE_LOCATION Resources/MainMenu.nib
     )
 endif()
+

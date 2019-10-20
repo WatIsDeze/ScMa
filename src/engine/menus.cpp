@@ -40,7 +40,7 @@ void clearchanges(int type)
     if(needsapply.empty()) UI::hideui("changes");
 }
 
-void applychanges()
+SCRIPTEXPORT void applychanges()
 {
     int changetypes = 0;
     loopv(needsapply) changetypes |= needsapply[i].type;
@@ -49,8 +49,17 @@ void applychanges()
     if(changetypes&CHANGE_SOUND) execident("resetsound");
 }
 
-COMMAND(applychanges, "");
-ICOMMAND(pendingchanges, "b", (int *idx), { if(needsapply.inrange(*idx)) result(needsapply[*idx].desc); else if(*idx < 0) intret(needsapply.length()); });
+SCRIPTEXPORT void pendingchanges(int *idx)
+{
+    if (needsapply.inrange(*idx))
+    {
+        result(needsapply[*idx].desc); 
+    }
+    else if (*idx < 0)
+    {
+        intret(needsapply.length());
+    }
+}
 
 static int lastmainmenu = -1;
 
@@ -72,7 +81,13 @@ void clearmainmenu()
     if(mainmenu && isconnected())
     {
         mainmenu = 0;
-        UI::hideui(NULL);
+        UI::hideui(nullptr);
     }
 }
 
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+menus.binding.cpp"
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

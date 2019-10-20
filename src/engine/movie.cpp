@@ -1159,12 +1159,20 @@ VARP(movieh, 0, 240, 10000);
 VARP(moviefps, 1, 24, 1000);
 VARP(moviesound, 0, 1, 1);
 
-void movie(char *name)
+SCRIPTEXPORT void movie(char *name)
 {
     if(name[0] == '\0') recorder::stop();
     else if(!recorder::isrecording()) recorder::start(name, moviefps, moview ? moview : screenw, movieh ? movieh : screenh, moviesound!=0);
 }
 
-COMMAND(movie, "s");
-ICOMMAND(movierecording, "", (), intret(recorder::isrecording() ? 1 : 0));
+SCRIPTEXPORT void movierecording()
+{
+    intret(recorder::isrecording() ? 1 : 0);
+}
 
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+movie.binding.cpp"
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

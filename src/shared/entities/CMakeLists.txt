@@ -3,14 +3,18 @@ project(SchizoMania_Shared)
 
 add_library(SchizoMania_Shared_Entities STATIC
 	animinfo.h
+	attributes.h
+	attributes.cpp
+	coreentity.h
+	coreentity.cpp
 	baseentity.h
 	baseentity.cpp
 	basedynamicentity.cpp
 	basedynamicentity.h
 	basephysicalentity.cpp
 	basephysicalentity.h
-	attributes.h
-	attributes.cpp
+	entityfactory.h
+	entityfactory.cpp
 )
 
 # add_library(SchizoMania_Server STATIC

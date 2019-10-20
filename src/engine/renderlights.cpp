@@ -1,4 +1,6 @@
 #include "engine.h"
+#include "shared/entities/basephysicalentity.h"
+
 
 int gw = -1, gh = -1, bloomw = -1, bloomh = -1, lasthdraccum = 0;
 GLuint gfbo = 0, gdepthtex = 0, gcolortex = 0, gnormaltex = 0, gglowtex = 0, gdepthrb = 0, gstencilrb = 0;
@@ -532,7 +534,10 @@ void initgbuffer()
 VARF(forcepacknorm, 0, 0, 1, initwarning("g-buffer setup", INIT_LOAD, CHANGE_SHADERS));
 
 bool usepacknorm() { return forcepacknorm || msaasamples || !useavatarmask(); }
-ICOMMAND(usepacknorm, "", (), intret(usepacknorm() ? 1 : 0));
+SCRIPTEXPORT_AS(usepacknorm) void usepacknorm_scriptimpl()
+{
+    intret(usepacknorm() ? 1 : 0);
+}
 
 void maskgbuffer(const char *mask)
 {
@@ -1569,15 +1574,15 @@ struct lightinfo
         if(spot > 0) calcspot();
         calcscissor();
     }
-    lightinfo(int i, const entities::classes::BaseEntity &e)
-      : ent(i), shadowmap(-1), flags(e.attr5),
-        o(e.o), color(vec(e.attr2, e.attr3, e.attr4).max(0)), radius(e.attr1), dist(camera1->o.dist(e.o)),
+    lightinfo(int i, const entities::classes::CoreEntity *e)
+	: ent(i), shadowmap(-1), flags(e->attr5),
+	o(e->o), color(vec(e->attr2, e->attr3, e->attr4).max(0)), radius(e->attr1), dist(camera1->o.dist(e->o)),
         dir(0, 0, 0), spot(0), query(NULL)
     {
-        if(e.attached && e.attached->et_type == ET_SPOTLIGHT)
+		if(e->attached && e->attached->et_type == ET_SPOTLIGHT)
         {
-            dir = vec(e.attached->o).sub(e.o).normalize();
-            spot = clamp(int(e.attached->attr1), 1, 89);
+			dir = vec(e->attached->o).sub(e->o).normalize();
+			spot = clamp(int(e->attached->attr1), 1, 89);
             calcspot();
         }
         calcscissor();
@@ -3416,15 +3421,15 @@ VAR(debuglightscissor, 0, 0, 1);
 
 void viewlightscissor()
 {
-    vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
+    auto &ents = entities::getents();
     gle::defvertex(2);
     loopv(entgroup)
     {
         int idx = entgroup[i];
         if(ents.inrange(idx) && ents[idx]->et_type == ET_LIGHT)
         {
-            entities::classes::BasePhysicalEntity &e = *ents[idx];
-            loopvj(lights) if(lights[j].o == e.o)
+            auto e = dynamic_cast<entities::classes::BaseEntity *>(ents[idx]);
+			loopvj(lights) if(lights[j].o == e->o)
             {
                 lightinfo &l = lights[j];
                 if(!l.validscissor()) break;
@@ -3447,11 +3452,11 @@ void collectlights()
     if(lights.length()) return;
 
     // point lights processed here
-    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
+    const auto &ents = entities::getents();
     if(!editmode || !fullbright) loopv(ents)
     {
-        const entities::classes::BasePhysicalEntity *e = ents[i];
-        if(e->et_type != ET_LIGHT || e->attr1 <= 0) continue;
+        const auto e = dynamic_cast<entities::classes::BaseEntity *>(ents[i]);
+        if(!e || e->et_type != ET_LIGHT || e->attr1 <= 0) continue;
 
         if(smviscull)
         {
@@ -3459,7 +3464,7 @@ void collectlights()
             if(pvsoccludedsphere(e->o, e->attr1)) continue;
         }
 
-        lightinfo &l = lights.add(lightinfo(i, *e));
+		lightinfo &l = lights.add(lightinfo(i, e));
         if(l.validscissor()) lightorder.add(lights.length()-1);
     }
 
@@ -4288,22 +4293,22 @@ void rendercsmshadowmaps()
     }
 }
 
-int calcshadowinfo(const entities::classes::BaseEntity &e, vec &origin, float &radius, vec &spotloc, int &spotangle, float &bias)
+int calcshadowinfo(const entities::classes::CoreEntity *e, vec &origin, float &radius, vec &spotloc, int &spotangle, float &bias)
 {
-    if(e.attr5&L_NOSHADOW || e.attr1 <= smminradius) return SM_NONE;
+	if(e->attr5&L_NOSHADOW || e->attr1 <= smminradius) return SM_NONE;
 
-    origin = e.o;
-    radius = e.attr1;
+	origin = e->o;
+	radius = e->attr1;
     int type, w, border;
     float lod;
-    if(e.attached && e.attached->et_type == ET_SPOTLIGHT)
+	if(e->attached && e->attached->et_type == ET_SPOTLIGHT)
     {
         type = SM_SPOT;
         w = 1;
         border = 0;
         lod = smspotprec;
-        spotloc = e.attached->o;
-        spotangle = clamp(int(e.attached->attr1), 1, 89);
+		spotloc = e->attached->o;
+		spotangle = clamp(int(e->attached->attr1), 1, 89);
     }
     else
     {
@@ -4311,7 +4316,7 @@ int calcshadowinfo(const entities::classes::BaseEntity &e, vec &origin, float &r
         w = 3;
         lod = smcubeprec;
         border = smfilter > 2 ? smborder2 : smborder;
-        spotloc = e.o;
+		spotloc = e->o;
         spotangle = 0;
     }
 
@@ -4347,14 +4352,14 @@ void rendershadowmaps(int offset = 0)
 
     glEnable(GL_SCISSOR_TEST);
 
-    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
+    const auto &ents = entities::getents();
     for(int i = offset; i < shadowmaps.length(); i++)
     {
         shadowmapinfo &sm = shadowmaps[i];
         if(sm.light < 0) continue;
 
         lightinfo &l = lights[sm.light];
-        entities::classes::BasePhysicalEntity *e = l.ent >= 0 ? ents[l.ent] : NULL;
+        auto e = l.ent >= 0 ? ents[l.ent] : NULL;
 
         int border, sidemask;
         if(l.spot)
@@ -4378,7 +4383,7 @@ void rendershadowmaps(int offset = 0)
         shadowdir = l.dir;
         shadowspot = l.spot;
 
-        shadowmesh *mesh = e ? findshadowmesh(l.ent, *e) : NULL;
+        shadowmesh *mesh = e ? findshadowmesh(l.ent, e) : NULL;
 
         findshadowvas();
         findshadowmms();
@@ -4997,3 +5002,9 @@ void cleanuplights()
     cleanupaa();
 }
 
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+renderlights.binding.cpp"
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

@@ -39,25 +39,28 @@ bool isconnected(bool attempt, bool local)
     return curpeer || (attempt && connpeer) || (local && haslocalclients());
 }
 
-ICOMMAND(isconnected, "bb", (int *attempt, int *local), intret(isconnected(*attempt > 0, *local != 0) ? 1 : 0));
+SCRIPTEXPORT_AS(isconnected) void isconnected_scriptimpl(CommandTypes::Boolean attempt, CommandTypes::Boolean local)
+{
+    intret(isconnected(*attempt > 0, *local != 0) ? 1 : 0);
+}
 
 const ENetAddress *connectedpeer()
 {
     return curpeer ? &curpeer->address : NULL;
 }
 
-ICOMMAND(connectedip, "", (),
+SCRIPTEXPORT void connectedip()
 {
     const ENetAddress *address = connectedpeer();
     cubestr hostname;
     result(address && enet_address_get_host_ip(address, hostname, sizeof(hostname)) >= 0 ? hostname : "");
-});
+};
 
-ICOMMAND(connectedport, "", (),
+SCRIPTEXPORT void connectedport()
 {
     const ENetAddress *address = connectedpeer();
     intret(address ? address->port : -1);
-});
+};
 
 void abortconnect()
 {
@@ -73,7 +76,7 @@ void abortconnect()
 SVARP(connectname, "");
 VARP(connectport, 0, 0, 0xFFFF);
 
-void connectserv(const char *servername, int serverport, const char *serverpassword)
+SCRIPTEXPORT_AS(connect) void connectserv(const char *servername, int serverport, const char *serverpassword)
 {
     if(connpeer)
     {
@@ -125,7 +128,7 @@ void connectserv(const char *servername, int serverport, const char *serverpassw
     game::connectattempt(servername ? servername : "", serverpassword ? serverpassword : "", address);
 }
 
-void reconnect(const char *serverpassword)
+SCRIPTEXPORT void reconnect(const char *serverpassword)
 {
     if(!connectname[0] || connectport <= 0)
     {
@@ -180,12 +183,31 @@ void trydisconnect(bool local)
     else conoutf("not connected");
 }
 
-ICOMMAND(connect, "sis", (char *name, int *port, char *pw), connectserv(name, *port, pw));
-ICOMMAND(lanconnect, "is", (int *port, char *pw), connectserv(NULL, *port, pw));
-COMMAND(reconnect, "s");
-ICOMMAND(disconnect, "b", (int *local), trydisconnect(*local != 0));
-ICOMMAND(localconnect, "", (), { if(!isconnected()) localconnect(); });
-ICOMMAND(localdisconnect, "", (), { if(haslocalclients()) localdisconnect(); });
+SCRIPTEXPORT void lanconnect(int *port, char *pw)
+{
+    connectserv(NULL, *port, pw);
+}
+
+SCRIPTEXPORT_AS(disconnect) void disconnect_scriptimpl(int *local)
+{
+    trydisconnect(*local != 0);
+}
+
+SCRIPTEXPORT_AS(localconnect) void localconnect_scriptimpl() //!!!!
+{
+    if(!isconnected())
+    {
+        localconnect();
+    }
+}
+
+SCRIPTEXPORT_AS(localdisconnect) void localdisconnect_scriptimpl()
+{
+    if(haslocalclients())
+    {
+        localdisconnect();
+    }
+}
 
 void sendclientpacket(ENetPacket *packet, int chan)
 {
@@ -272,3 +294,9 @@ void gets2c()           // get updates from the server
     }
 }
 
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+client.binding.cpp"
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

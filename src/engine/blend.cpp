@@ -349,12 +349,15 @@ static void optimizeblendmap(uchar &type, BlendMapNode &node)
     }
 }
 
-void optimizeblendmap()
+SCRIPTEXPORT_AS(optimizeblendmap) void optimizeblendmap_scriptimpl()
 {
     optimizeblendmap(blendmap.type, blendmap);
 }
 
-ICOMMAND(optimizeblendmap, "", (), optimizeblendmap());
+void optimizeblendmap()
+{
+    optimizeblendmap_scriptimpl();
+}
 
 VARF(blendpaintmode, 0, 0, 5,
 {
@@ -677,7 +680,7 @@ struct BlendTexture
 
 static vector<BlendTexture> blendtexs;
 
-void dumpblendtexs()
+SCRIPTEXPORT void dumpblendtexs()
 {
     loopv(blendtexs)
     {
@@ -689,8 +692,6 @@ void dumpblendtexs()
         savepng(buf, temp, true);
     }
 }
-
-COMMAND(dumpblendtexs, "");
 
 static void renderblendtexture(uchar &type, BlendMapNode &node, int bmx, int bmy, int bmsize, uchar *dst, int dsize, int dx, int dy, int dw, int dh)
 {
@@ -871,13 +872,13 @@ void cleanupblendmap()
     loopv(blendtexs) blendtexs[i].cleanup();
 }
 
-ICOMMAND(clearblendbrushes, "", (),
+SCRIPTEXPORT void clearblendbrushes()
 {
     while(brushes.length()) delete brushes.pop();
     curbrush = -1;
-});
+}
 
-void delblendbrush(const char *name)
+SCRIPTEXPORT void delblendbrush(const char *name)
 {
     loopv(brushes) if(!strcmp(brushes[i]->name, name))
     {
@@ -887,9 +888,7 @@ void delblendbrush(const char *name)
     curbrush = brushes.empty() ? -1 : clamp(curbrush, 0, brushes.length()-1);
 }
 
-COMMAND(delblendbrush, "s");
-
-void addblendbrush(const char *name, const char *imgname)
+SCRIPTEXPORT void addblendbrush(const char *name, const char *imgname)
 {
     delblendbrush(name);
 
@@ -917,26 +916,28 @@ void addblendbrush(const char *name, const char *imgname)
 
 }
 
-COMMAND(addblendbrush, "ss");
 
-ICOMMAND(nextblendbrush, "i", (int *dir),
+SCRIPTEXPORT void nextblendbrush(int *dir)
 {
     curbrush += *dir < 0 ? -1 : 1;
     if(brushes.empty()) curbrush = -1;
     else if(!brushes.inrange(curbrush)) curbrush = *dir < 0 ? brushes.length()-1 : 0;
-});
+}
 
-ICOMMAND(setblendbrush, "s", (char *name),
+SCRIPTEXPORT void setblendbrush(char *name)
 {
     loopv(brushes) if(!strcmp(brushes[i]->name, name)) { curbrush = i; break; }
-});
+}
 
-ICOMMAND(getblendbrushname, "i", (int *n),
+SCRIPTEXPORT void getblendbrushname(int *n)
 {
     result(brushes.inrange(*n) ? brushes[*n]->name : "");
-});
+}
 
-ICOMMAND(curblendbrush, "", (), intret(curbrush));
+SCRIPTEXPORT void curblendbrush()
+{
+    intret(curbrush);
+}
 
 extern int nompedit;
 
@@ -956,14 +957,14 @@ bool canpaintblendmap(bool brush = true, bool sel = false, bool msg = true)
     return true;
 }
 
-ICOMMAND(rotateblendbrush, "i", (int *val),
+SCRIPTEXPORT void rotateblendbrush(int *val)
 {
     if(!canpaintblendmap()) return;
 
     BlendBrush *brush = brushes[curbrush];
     const texrotation &r = texrotations[*val < 0 ? 3 : clamp(*val, 1, 7)];
     brush->reorient(r.flipx, r.flipy, r.swapxy);
-});
+}
 
 void paintblendmap(bool msg)
 {
@@ -1001,16 +1002,16 @@ void trypaintblendmap()
     paintblendmap(false);
 }
 
-ICOMMAND(paintblendmap, "D", (int *isdown),
+SCRIPTEXPORT_AS(paintblendmap) void paintblendmap_scriptimpl(int *isdown)
 {
     if(*isdown)
     {
         if(!paintingblendmap) { paintblendmap(true); paintingblendmap = totalmillis; }
     }
     else stoppaintblendmap();
-});
+}
 
-void clearblendmapsel()
+SCRIPTEXPORT void clearblendmapsel()
 {
     if(noedit(false) || (nompedit && multiplayer())) return;
     extern selinfo sel;
@@ -1022,9 +1023,7 @@ void clearblendmapsel()
                   ivec(x2<<BM_SCALE, y2<<BM_SCALE, worldsize));
 }
 
-COMMAND(clearblendmapsel, "");
-
-void invertblendmapsel()
+SCRIPTEXPORT void invertblendmapsel()
 {
     if(noedit(false) || (nompedit && multiplayer())) return;
     extern selinfo sel;
@@ -1036,30 +1035,28 @@ void invertblendmapsel()
                   ivec(x2<<BM_SCALE, y2<<BM_SCALE, worldsize));
 }
 
-COMMAND(invertblendmapsel, "");
 
-ICOMMAND(invertblendmap, "", (),
+SCRIPTEXPORT_AS(invertblendmap) void invertblendmap_scriptimpl()
 {
     if(noedit(false) || (nompedit && multiplayer())) return;
     invertblendmap(0, 0, worldsize>>BM_SCALE, worldsize>>BM_SCALE);
     previewblends(ivec(0, 0, 0), ivec(worldsize, worldsize, worldsize));
-});
+}
 
-void showblendmap()
+SCRIPTEXPORT void showblendmap()
 {
     if(noedit(true) || (nompedit && multiplayer())) return;
     previewblends(ivec(0, 0, 0), ivec(worldsize, worldsize, worldsize));
 }
 
-COMMAND(showblendmap, "");
-ICOMMAND(clearblendmap, "", (),
+SCRIPTEXPORT void clearblendmap()
 {
     if(noedit(true) || (nompedit && multiplayer())) return;
     resetblendmap();
     showblendmap();
-});
+}
 
-ICOMMAND(moveblendmap, "ii", (int *dx, int *dy),
+SCRIPTEXPORT_AS(moveblendmap) void moveblendmap_scriptimpl(int *dx, int *dy)
 {
     if(noedit(true) || (nompedit && multiplayer())) return;
     if(*dx%(BM_IMAGE_SIZE<<BM_SCALE) || *dy%(BM_IMAGE_SIZE<<BM_SCALE))
@@ -1072,7 +1069,7 @@ ICOMMAND(moveblendmap, "ii", (int *dx, int *dy),
     else
         moveblendmap(*dx>>BM_SCALE, *dy>>BM_SCALE);
     showblendmap();
-});
+}
 
 void renderblendbrush()
 {
@@ -1159,3 +1156,9 @@ uchar shouldsaveblendmap()
     return blendmap.solid!=&bmsolids[0xFF] ? 1 : 0;
 }
 
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+blend.binding.cpp"
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //

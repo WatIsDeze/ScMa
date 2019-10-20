@@ -26,7 +26,7 @@ static inline clipplanes &getclipbounds(const cube &c, const ivec &o, int size, 
     return p;
 }
 
-static inline clipplanes &getclipbounds(const cube &c, const ivec &o, int size, entities::classes::BaseEntity *d)
+static inline clipplanes &getclipbounds(const cube &c, const ivec &o, int size, entities::classes::CoreEntity *d)
 {
     int offset = !(c.visible&0x80) || d->ent_type==ENT_PLAYER ? 0 : 1;
     return getclipbounds(c, o, size, offset);
@@ -131,20 +131,20 @@ float hitentdist;
 int hitent, hitorient;
 
 
-extern void entselectionbox(const entities::classes::BasePhysicalEntity &e, vec &eo, vec &es);
+extern void entselectionbox(const entities::classes::CoreEntity *e, vec &eo, vec &es);
 
-static float disttoent(octaentities *oc, const vec &o, const vec &ray, float radius, int mode, entities::classes::BasePhysicalEntity *t)
+static float disttoent(octaentities *oc, const vec &o, const vec &ray, float radius, int mode, entities::classes::CoreEntity *t)
 {
     vec eo, es;
     int orient = -1;
     float dist = radius, f = 0.0f;
-    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
+    const auto &ents = entities::getents();
 
     #define entintersect(type, func) do { \
         loopv(oc->type) \
         { \
-            entities::classes::BasePhysicalEntity &e = *ents[oc->type[i]]; \
-            if(!(e.flags&entities::EntityFlags::EF_OCTA) || &e==t) continue; \
+            entities::classes::CoreEntity *e = ents[oc->type[i]]; \
+            if(!(e->flags&entities::EntityFlags::EF_OCTA) || e==t) continue; \
             func; \
             if(f<dist && f>0 && vec(ray).mul(f).add(o).insidebb(oc->o, oc->size)) \
             { \
@@ -158,11 +158,11 @@ static float disttoent(octaentities *oc, const vec &o, const vec &ray, float rad
     if((mode&RAY_POLY) == RAY_POLY) entintersect(mapmodels,
     {
         // Ensure that the entity is a mapmodel type.
-        if(!BIH::mmintersect(((entities::classes::BasePhysicalEntity&)e), o, ray, radius, mode, f)) continue;
+        if(!BIH::mmintersect(((entities::classes::BasePhysicalEntity*)e), o, ray, radius, mode, f)) continue;
     });
 
     #define entselintersect(type) entintersect(type, { \
-        entselectionbox((entities::classes::BasePhysicalEntity&)e, eo, es); \
+        entselectionbox(e, eo, es); \
         if(!rayboxintersect(eo, es, o, ray, f, orient)) continue; \
     })
 
@@ -181,11 +181,14 @@ static float disttooutsideent(const vec &o, const vec &ray, float radius, int mo
     vec eo, es;
     int orient;
     float dist = radius, f = 0.0f;
-    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
+    const auto &ents = entities::getents();
     loopv(outsideents)
     {
-        entities::classes::BasePhysicalEntity &e = *ents[outsideents[i]];
-        if(!(e.flags&entities::EntityFlags::EF_OCTA) || &e == t) continue;
+        auto e = dynamic_cast<entities::classes::BaseEntity *>(ents[outsideents[i]]);
+        if (!e)
+			continue;
+			
+        if(!(e->flags&entities::EntityFlags::EF_OCTA) || e == t) continue;
         entselectionbox(e, eo, es);
         if(!rayboxintersect(eo, es, o, ray, f, orient)) continue;
         if(f<dist && f>0)
@@ -202,11 +205,12 @@ static float disttooutsideent(const vec &o, const vec &ray, float radius, int mo
 static float shadowent(octaentities *oc, const vec &o, const vec &ray, float radius, int mode, entities::classes::BasePhysicalEntity *t)
 {
     float dist = radius, f = 0.0f;
-    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
+    const auto &ents = entities::getents();
     loopv(oc->mapmodels)
     {
-        entities::classes::BasePhysicalEntity &e = *ents[oc->mapmodels[i]];
-        if(!(e.flags&entities::EntityFlags::EF_OCTA) || &e==t) continue;
+        auto e = dynamic_cast<entities::classes::BasePhysicalEntity*>(ents[oc->mapmodels[i]]);
+        if (!e) continue;
+        if(!(e->flags&entities::EntityFlags::EF_OCTA) || e==t) continue;
         if(!BIH::mmintersect((e), o, ray, radius, mode, f)) continue;
         if(f>0 && f<dist) dist = f;
     }
@@ -427,7 +431,7 @@ float rayfloor(const vec &o, vec &floor, int mode, float radius)
 
 // info about collisions
 int collideinside; // whether an internal collision happened
-entities::classes::BaseEntity *collideplayer; // whether the collection hit a player
+entities::classes::CoreEntity *collideplayer; // whether the collection hit a player
 vec collidewall; // just the normal vectors.
 
 const float STAIRHEIGHT = 4.1f; // Original was 4.1, let's change this to the new player radius which was 4.1 also.
@@ -563,7 +567,7 @@ const vector<entities::classes::BasePhysicalEntity*> &checkdynentcache(int x, in
     int numdyns = game::numdynents(), dsize = 1<<dynentsize, dx = x<<dynentsize, dy = y<<dynentsize;
     loopi(numdyns)
     {
-        entities::classes::BasePhysicalEntity *d = game::iterdynents(i);
+        entities::classes::BasePhysicalEntity *d = (entities::classes::BaseDynamicEntity*)game::iterdynents(i);
         if (!d)
             continue;
 
@@ -638,19 +642,19 @@ bool plcollide(entities::classes::BasePhysicalEntity *d, const vec &dir, bool in
 {
     if(d->ent_type==ENT_CAMERA || d->state!=CS_ALIVE) return false;
     int lastinside = collideinside;
-    entities::classes::BaseEntity *insideplayer = NULL;
+    entities::classes::CoreEntity *insideplayer = NULL;
     loopdynentcache(x, y, d->o, d->radius)
     {
         const vector<entities::classes::BasePhysicalEntity*> &dynents = checkdynentcache(x, y);
         loopv(dynents)
         {
-           entities::classes::BasePhysicalEntity *o = (entities::classes::BasePhysicalEntity*)dynents[i];
-            if(o==d || d->o.reject(o->o, d->radius+o->radius)) continue;
+           auto o = dynamic_cast<entities::classes::BasePhysicalEntity*>(dynents[i]);
+            if(!o || o==d || d->o.reject(o->o, d->radius+o->radius)) continue;
             if(plcollide(d, dir, o))
             {   
                 collideplayer = o;
                 //game::dynentcollide(d, o, collidewall);
-                ((entities::classes::BaseEntity*)d)->onTouch(o, collidewall);
+                d->onTouch(o, collidewall);
                 return true;
             }
             if(collideinside > lastinside)
@@ -664,7 +668,7 @@ bool plcollide(entities::classes::BasePhysicalEntity *d, const vec &dir, bool in
     {
         collideplayer = insideplayer;
         //game::dynentcollide(d, insideplayer, vec(0, 0, 0));
-        ((entities::classes::BaseEntity*)d)->onTouch(insideplayer, vec(0, 0, 0));
+        d->onTouch(insideplayer, vec(0, 0, 0));
         return true;
     }
     return false;
@@ -696,8 +700,13 @@ static inline bool mmcollide(entities::classes::BasePhysicalEntity *d, const vec
         //if(!collidewall.iszero()) return true;
         if(!collidewall.iszero()) {
             //game::mapmodelcollide(d, (entities::classes::BaseEntity*)&e, collidewall);
-            ((entities::classes::BaseEntity*)d)->onTouch((entities::classes::BaseEntity*)&e, collidewall);
-            return true;
+            auto d_as_baseEnt = dynamic_cast<entities::classes::BaseEntity*>(d);
+            auto e_as_coreEnt = dynamic_cast<const entities::classes::CoreEntity*>(e);
+            if (d_as_baseEnt && e_as_coreEnt)
+            {
+                d_as_baseEnt->onTouch(e_as_coreEnt, collidewall);
+                return true;
+            }
         }
         collideinside++;
     }
@@ -818,10 +827,10 @@ VAR(testtricol, 0, 0, 2);
 
 bool mmcollide(entities::classes::BasePhysicalEntity *d, const vec &dir, float cutoff, octaentities &oc) // collide with a mapmodel
 {
-    const vector<entities::classes::BasePhysicalEntity *> &ents = entities::getents();
+    const auto &ents = entities::getents();
     loopv(oc.mapmodels)
     {
-        entities::classes::BasePhysicalEntity *e = (entities::classes::BasePhysicalEntity*)ents[oc.mapmodels[i]];
+        auto e = dynamic_cast<entities::classes::BaseEntity *>(ents[oc.mapmodels[i]]);
         if (!e) continue;
         if(e->flags&entities::EntityFlags::EF_NOCOLLIDE || !mapmodels.inrange(e->model_idx)) continue;
         mapmodelinfo &mmi = mapmodels[e->model_idx];
@@ -848,10 +857,10 @@ bool mmcollide(entities::classes::BasePhysicalEntity *d, const vec &dir, float c
             switch(testtricol ? testtricol : d->collidetype)
             {
                 case COLLIDE_ELLIPSE:
-                    if(m->bih->ellipsecollide(d, dir, cutoff, e->o, yaw, pitch, roll, scale)) return true;
+                    if(m->bih->ellipsecollide((entities::classes::BasePhysicalEntity*)d, dir, cutoff, e->o, yaw, pitch, roll, scale)) return true;
                     break;
                 case COLLIDE_OBB:
-                    if(m->bih->boxcollide(d, dir, cutoff, e->o, yaw, pitch, roll, scale)) return true;
+                    if(m->bih->boxcollide((entities::classes::BasePhysicalEntity*)d, dir, cutoff, e->o, yaw, pitch, roll, scale)) return true;
                     break;
                 default: continue;
             }
@@ -879,9 +888,9 @@ bool mmcollide(entities::classes::BasePhysicalEntity *d, const vec &dir, float c
                 case COLLIDE_OBB:
                     if(mcol == COLLIDE_ELLIPSE)
                     {
-                        if(mmcollide<mpr::EntOBB, mpr::ModelEllipse>(d, dir, e, center, radius, yaw, pitch, roll)) return true;
+                        if(mmcollide<mpr::EntOBB, mpr::ModelEllipse>(d, dir, (entities::classes::BasePhysicalEntity*)e, center, radius, yaw, pitch, roll)) return true;
                     }
-                    else if(mmcollide<mpr::EntOBB, mpr::ModelOBB>(d, dir, e, center, radius, yaw, pitch, roll)) return true;
+                    else if(mmcollide<mpr::EntOBB, mpr::ModelOBB>(d, dir, (entities::classes::BasePhysicalEntity*)e, center, radius, yaw, pitch, roll)) return true;
                     break;
                 default: continue;
             }
@@ -1689,31 +1698,29 @@ bool droptofloor(vec &o, float radius, float height)
     return false;
 }
 
-float dropheight(entities::classes::BaseEntity &e)
+float dropheight(entities::classes::CoreEntity *e)
 {
-    switch(e.et_type)
+	switch(e->et_type)
     {
         case ET_PARTICLES:
         case ET_MAPMODEL: return 0.0f;
         default:
-            if(e.et_type >= ET_GAMESPECIFIC) return entities::dropheight(e);
+            if(e->et_type >= ET_GAMESPECIFIC) return entities::dropheight(e);
             return 4.0f;
     }
 }
 
-void dropenttofloor(entities::classes::BasePhysicalEntity *e)
+void dropenttofloor(entities::classes::CoreEntity *e)
 {
-    droptofloor(e->o, 1.0f, dropheight(*e));
+	droptofloor(e->o, 1.0f, dropheight(e));
 }
 
-void phystest()
+SCRIPTEXPORT void phystest()
 {
     static const char * const states[] = {"float", "fall", "slide", "slope", "floor", "step up", "step down", "bounce"};
     printf ("PHYS(pl): %s, air %d, floor: (%f, %f, %f), vel: (%f, %f, %f), g: (%f, %f, %f)\n", states[player->physstate], player->timeinair, player->floor.x, player->floor.y, player->floor.z, player->vel.x, player->vel.y, player->vel.z, player->falling.x, player->falling.y, player->falling.z);
     printf ("PHYS(cam): %s, air %d, floor: (%f, %f, %f), vel: (%f, %f, %f), g: (%f, %f, %f)\n", states[camera1->physstate], camera1->timeinair, camera1->floor.x, camera1->floor.y, camera1->floor.z, camera1->vel.x, camera1->vel.y, camera1->vel.z, camera1->falling.x, camera1->falling.y, camera1->falling.z);
 }
-
-COMMAND(phystest, "");
 
 void vecfromyawpitch(float yaw, float pitch, int move, int strafe, vec &m)
 {
@@ -1943,7 +1950,7 @@ void interppos(entities::classes::BasePhysicalEntity *pl)
     pl->o.add(deltapos);
 }
 
-void moveplayer(entities::classes::BaseDynamicEntity *pl, int moveres, bool local)
+void moveplayer(entities::classes::BasePhysicalEntity *pl, int moveres, bool local)
 {
     if(physsteps <= 0)
     {
@@ -1952,9 +1959,9 @@ void moveplayer(entities::classes::BaseDynamicEntity *pl, int moveres, bool loca
     }
 
     if(local) pl->o = pl->newpos;
-    loopi(physsteps-1) moveplayer(((entities::classes::BasePhysicalEntity*)pl), moveres, local, physframetime);
+    loopi(physsteps-1) moveplayer(pl, moveres, local, physframetime);
     if(local) pl->deltapos = pl->o;
-    moveplayer(((entities::classes::BasePhysicalEntity*)pl), moveres, local, physframetime);
+    moveplayer(pl, moveres, local, physframetime);
     if(local)
     {
         pl->newpos = pl->o;
@@ -2020,15 +2027,49 @@ void updatephysstate(entities::classes::BasePhysicalEntity *d)
     d->o = old;
 }
 
-#define dir(name,v,d,s,os) ICOMMAND(name, "D", (int *down), { player->s = *down!=0; player->v = player->s ? d : (player->os ? -(d) : 0); });
+SCRIPTEXPORT void backward(CommandTypes::KeyPress down)
+{
+    player->k_down = *down != 0;
+    player->move = player->k_down ? -1 : (player->k_up ? 1 : 0);
+}
 
-dir(backward, move,   -1, k_down,  k_up);
-dir(forward,  move,    1, k_up,    k_down);
-dir(left,     strafe,  1, k_left,  k_right);
-dir(right,    strafe, -1, k_right, k_left);
+SCRIPTEXPORT void forward(CommandTypes::KeyPress down)
+{
+    player->k_up = *down != 0;
+    player->move = player->k_up ? 1 : (player->k_down ? -1 : 0);
+}
 
-ICOMMAND(jump,   "D", (int *down), { if(!*down || game::canjump()) player->jumping = *down!=0; });
-ICOMMAND(crouch, "D", (int *down), { if(!*down) player->crouching = abs(player->crouching); else if(game::cancrouch()) player->crouching = -1; });
+SCRIPTEXPORT void left(CommandTypes::KeyPress down)
+{
+    player->k_left = *down != 0;
+    player->strafe = player->k_left ? 1 : (player->k_right ? -1 : 0);
+}
+
+SCRIPTEXPORT void right(CommandTypes::KeyPress down)
+{
+    player->k_right = *down != 0;
+    player->strafe = player->k_right ? -1 : (player->k_left ? 1 : 0);
+}
+
+SCRIPTEXPORT void jump(CommandTypes::KeyPress down)
+{
+    if(!*down || game::canjump())
+    {
+        player->jumping = *down!=0;
+    }
+}
+
+SCRIPTEXPORT void crouch(CommandTypes::KeyPress down)
+{
+    if(!*down)
+    {
+        player->crouching = abs(player->crouching);
+    }
+    else if(game::cancrouch())
+    {
+        player->crouching = -1;
+    }
+}
 
 bool entinmap(entities::classes::BasePhysicalEntity *d, bool avoidplayers)        // brute force but effective way to find a free spawn spot in the map
 {
@@ -2067,3 +2108,9 @@ bool entinmap(entities::classes::BasePhysicalEntity *d, bool avoidplayers)      
     return false;
 }
 
+
+// >>>>>>>>>> SCRIPTBIND >>>>>>>>>>>>>> //
+#if 0
+#include "/Users/micha/dev/ScMaMike/src/build/binding/..+engine+physics.binding.cpp"
+#endif
+// <<<<<<<<<< SCRIPTBIND <<<<<<<<<<<<<< //
