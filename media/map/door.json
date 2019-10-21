@@ -1,0 +1,135 @@
+[
+    {
+        "class": "core_entity",
+        "core_entity": {
+            "attr1": 0,
+            "attr2": 0,
+            "attr3": 0,
+            "attr4": 0,
+            "attr5": 0,
+            "model_idx": 0,
+            "name": "coreentity_unnamed",
+            "o": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "reserved": 0
+        },
+        "ent_type": 2,
+        "et_type": 9,
+        "game_type": 13
+    },
+    {
+        "class": "core_entity",
+        "core_entity": {
+            "attr1": 0,
+            "attr2": 0,
+            "attr3": 0,
+            "attr4": 0,
+            "attr5": 0,
+            "model_idx": 0,
+            "name": "coreentity_unnamed",
+            "o": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "reserved": 0
+        },
+        "ent_type": 2,
+        "et_type": 1,
+        "game_type": 1
+    },
+    {
+        "base_entity": null,
+        "class": "playerstart",
+        "core_entity": {
+            "attr1": 44,
+            "attr2": 23,
+            "attr3": 0,
+            "attr4": -1,
+            "attr5": 0,
+            "model_idx": 0,
+            "name": "playerstart_2",
+            "o": {
+                "x": 627.7559204101563,
+                "y": 564.0,
+                "z": 516.36767578125
+            },
+            "reserved": 0
+        },
+        "ent_type": 2,
+        "et_type": 9,
+        "game_type": 9,
+        "playerstart": {
+            "yaw": 0.0
+        }
+    },
+    {
+        "base_entity": null,
+        "class": "base_entity",
+        "core_entity": {
+            "attr1": 86,
+            "attr2": 103,
+            "attr3": 186,
+            "attr4": 0,
+            "attr5": 3,
+            "model_idx": 0,
+            "name": "tesseract_ent_-1",
+            "o": {
+                "x": 644.0,
+                "y": 732.0,
+                "z": 516.0
+            },
+            "reserved": 0
+        },
+        "ent_type": 2,
+        "et_type": 1,
+        "game_type": 1
+    },
+    {
+        "base_entity": null,
+        "class": "base_entity",
+        "core_entity": {
+            "attr1": 312,
+            "attr2": 255,
+            "attr3": 0,
+            "attr4": 0,
+            "attr5": 0,
+            "model_idx": 0,
+            "name": "tesseract_ent_-1",
+            "o": {
+                "x": 94.68928527832031,
+                "y": 876.0,
+                "z": 500.2852783203125
+            },
+            "reserved": 0
+        },
+        "ent_type": 2,
+        "et_type": 1,
+        "game_type": 1
+    },
+    {
+        "base_entity": null,
+        "class": "base_entity",
+        "core_entity": {
+            "attr1": 0,
+            "attr2": 0,
+            "attr3": 0,
+            "attr4": 0,
+            "attr5": 0,
+            "model_idx": 0,
+            "name": "door_5",
+            "o": {
+                "x": 554.1817626953125,
+                "y": 502.74346923828125,
+                "z": 522.688232421875
+            },
+            "reserved": 0
+        },
+        "ent_type": 2,
+        "et_type": 9,
+        "game_type": 9
+    }
+]

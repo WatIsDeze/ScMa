@@ -1,5 +1,5 @@
 #CMake Configuration for Tesseract "The Right Way (tm)"
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.15)
 project(SchizoMania)
 
 # Build options.
@@ -35,7 +35,7 @@ find_package(TIFF REQUIRED)
 find_package(WEBP REQUIRED)
 find_package(Freetype REQUIRED)
 #For Linux, prime the SDL2 finder by setting the include dir
-if (UNIX AND NOT APPLE)
+if (UNIX AND NOT DARWIN)
     set(SDL2_INCLUDE_DIR "/usr/include/SDL2")
 endif()
 find_package(SDL2 REQUIRED)

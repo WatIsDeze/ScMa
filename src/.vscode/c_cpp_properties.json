@@ -1,16 +1,16 @@
 {
     "configurations": [
         {
-            "name": "Linux",
+            "name": "Linux - x64 - Debug",
             "includePath": [
                 "${workspaceFolder}/**"
             ],
             "defines": [
                 "GL_SILENCE_DEPRECATION=1"
             ],
-            "compilerPath": "/usr/bin/gcc",
+            "compilerPath": "/usr/bin/g++-7",
             "cStandard": "c11",
-            "cppStandard": "c++11",
+            "cppStandard": "c++17",
             "intelliSenseMode": "clang-x64",
             "compileCommands": "${workspaceFolder}/build/compile_commands.json"
         }

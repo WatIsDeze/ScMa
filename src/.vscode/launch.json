@@ -5,6 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Linux - x64 - Debug",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/SchizoMania_Client",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/..",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb"
+        },
+        {
             "name": "SchizoMania OSX - Debug",
             "type": "cppdbg",
             "request": "launch",

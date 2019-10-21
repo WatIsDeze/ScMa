@@ -21,7 +21,7 @@ namespace entities
     extern void clearents();
     extern vector<entities::classes::CoreEntity *> &getents();
     extern const char *entmodel(const entities::classes::CoreEntity *e);
-    extern void animatemapmodel(const entities::classes::CoreEntity *e, int &anim, int &basetime);
+    extern void animatemapmodel(entities::classes::CoreEntity *e, int &anim, int &basetime);
 }
 
 namespace game

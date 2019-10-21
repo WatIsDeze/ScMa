@@ -4,6 +4,52 @@
 
 namespace game
 {
+
+    /*
+        void rendergame()
+    {
+        ai::render();
+
+        if(intermission)
+        {
+            bestteams.shrink(0);
+            bestplayers.shrink(0);
+            if(m_teammode) getbestteams(bestteams);
+            else getbestplayers(bestplayers);
+        }
+
+        bool third = isthirdperson();
+        gameent *f = followingplayer(), *exclude = third ? NULL : f;
+        loopv(players)
+        {
+            gameent *d = players[i];
+            if(d == player1 || d->state==CS_SPECTATOR || d->state==CS_SPAWNING || d->lifesequence < 0 || d == exclude || (d->state==CS_DEAD && hidedead)) continue;
+            renderplayer(d);
+            copycubestr(d->info, colorname(d));
+            if(d->state!=CS_DEAD)
+            {
+                int team = m_teammode && validteam(d->team) ? d->team : 0;
+                particle_text(d->abovehead(), d->info, PART_TEXT, 1, teamtextcolor[team], 2.0f);
+            }
+        }
+        loopv(ragdolls)
+        {
+            gameent *d = ragdolls[i];
+            float fade = 1.0f;
+            if(ragdollmillis && ragdollfade)
+                fade -= clamp(float(lastmillis - (d->lastupdate + max(ragdollmillis - ragdollfade, 0)))/min(ragdollmillis, ragdollfade), 0.0f, 1.0f);
+            renderplayer(d, fade);
+        }
+        if(exclude)
+            renderplayer(exclude, 1, MDL_ONLYSHADOW);
+        else if(!f && (player1->state==CS_ALIVE || (player1->state==CS_EDITING && third) || (player1->state==CS_DEAD && !hidedead)))
+            renderplayer(player1, 1, third ? 0 : MDL_ONLYSHADOW);
+        entities::renderentities();
+        renderbouncers();
+        renderprojectiles();
+        if(cmode) cmode->rendergame();
+    }
+    */
     __attribute__((optimize("O0"))) void RenderGameEntities()
     {
         loopv(entities::getents()) {

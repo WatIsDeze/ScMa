@@ -1,5 +1,6 @@
 #include "engine.h"
 #include "ents.h"
+#include "shared/entities/animinfo.h"
 
 VAR(oqdynent, 0, 1, 1);
 VAR(animationinterpolationtime, 0, 200, 1000);

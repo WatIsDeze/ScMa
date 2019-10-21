@@ -55,6 +55,9 @@ namespace entities
 
 	const char *entmodel(const entities::classes::CoreEntity *e)
 	{
+		// Yeah well... return filename?
+		// How??
+		
 		return nullptr;
 	}
 
@@ -118,7 +121,7 @@ namespace entities
 		while(entities::getents().length()) deletegameentity(entities::getents().pop());
 	}
 
-	void animatemapmodel(const entities::classes::CoreEntity *e, int &anim, int &basetime)
+	void animatemapmodel(entities::classes::CoreEntity *e, int &anim, int &basetime)
 	{/*        const fpsentity &f = (const fpsentity &)e;
 		if(validtrigger(f.attr3)) switch(f.triggerstate)
 		{
@@ -127,10 +130,12 @@ namespace entities
 			case TRIGGERED: anim = ANIM_TRIGGER|ANIM_END; break;
 			case TRIGGER_RESETTING: anim = ANIM_TRIGGER|ANIM_REVERSE; basetime = f.lasttrigger; break;
 		}*/
-		//const entities::classes::BaseMapModelEntity *ent = (const entities::classes::BaseMapModelEntity&)e;
-		//anim = ANIM_MAPMODEL | ANIM_START | ANIM_LOOP;
-		//basetime = SDL_GetTicks() - e.reserved;
-		//e.reserved = SDL_GetTicks();
+
+		// Not sure, code is fucked atm but you know what this fucker function was for.->
+		const entities::classes::BaseMapModel *ent = dynamic_cast<entities::classes::BaseMapModel*>(e);
+		anim = ANIM_MAPMODEL | ANIM_START | ANIM_LOOP;
+		basetime = SDL_GetTicks() - ent->reserved;
+		ent->reserved = SDL_GetTicks();
 
 	}
 
@@ -174,13 +179,11 @@ namespace entities
 	}
 	const char *entname(int i)
 	{
-		static const char * const entnames[MAXENTTYPES] =
-		{
-			"none?", "light", "mapmodel", "playerstart", "envmap", "particles", "sound", "spotlight", "decal",
-			"teleport", "teledest", "jumppad",
-			"flag", "gameentity"
-		};
-		return i>=0 && size_t(i)<sizeof(entnames)/sizeof(entnames[0]) ? entnames[i] : "";
+		if (g_ents.inrange(i)) {
+			return g_ents[i]->name.c_str();
+		} else { 
+			"__unknown__"
+		}
 	}
 
 	void editent(int i, bool local)

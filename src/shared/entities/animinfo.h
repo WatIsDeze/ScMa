@@ -8,7 +8,10 @@
 //
 #define MAXANIMPARTS 3 // Defines the maximum amount of animation body parts.
 
-// Animation specific flags, game animations, or mapmodel.
+//
+// Animation specific flags, map model(which supposedly renders it through rendermapmodel in game::)
+// or game specific
+//
 enum
 {
     ANIM_MAPMODEL = 0,

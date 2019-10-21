@@ -2,7 +2,7 @@
 #include "entities.h"
 #include "entities/playerstart.h"
 #include "entities/player.h"
-
+#include "animinfo.h"
 
 
 namespace game
@@ -203,6 +203,148 @@ namespace game
 
     }
 
+    //
+    // These are here, and we gotta figure out how to adjust them, our entitie is missing certain variables so this code is not portable atm.
+    //
+    //
+    /*
+    enum
+    {
+        ANIM_DEAD = ANIM_GAMESPECIFIC, ANIM_DYING,
+        ANIM_IDLE, ANIM_RUN_N, ANIM_RUN_NE, ANIM_RUN_E, ANIM_RUN_SE, ANIM_RUN_S, ANIM_RUN_SW, ANIM_RUN_W, ANIM_RUN_NW,
+        ANIM_JUMP, ANIM_JUMP_N, ANIM_JUMP_NE, ANIM_JUMP_E, ANIM_JUMP_SE, ANIM_JUMP_S, ANIM_JUMP_SW, ANIM_JUMP_W, ANIM_JUMP_NW,
+        ANIM_SINK, ANIM_SWIM,
+        ANIM_CROUCH, ANIM_CROUCH_N, ANIM_CROUCH_NE, ANIM_CROUCH_E, ANIM_CROUCH_SE, ANIM_CROUCH_S, ANIM_CROUCH_SW, ANIM_CROUCH_W, ANIM_CROUCH_NW,
+        ANIM_CROUCH_JUMP, ANIM_CROUCH_JUMP_N, ANIM_CROUCH_JUMP_NE, ANIM_CROUCH_JUMP_E, ANIM_CROUCH_JUMP_SE, ANIM_CROUCH_JUMP_S, ANIM_CROUCH_JUMP_SW, ANIM_CROUCH_JUMP_W, ANIM_CROUCH_JUMP_NW,
+        ANIM_CROUCH_SINK, ANIM_CROUCH_SWIM,
+        ANIM_SHOOT, ANIM_MELEE,
+        ANIM_PAIN,
+        ANIM_EDIT, ANIM_LAG, ANIM_TAUNT, ANIM_WIN, ANIM_LOSE,
+        ANIM_GUN_IDLE, ANIM_GUN_SHOOT, ANIM_GUN_MELEE,
+        ANIM_VWEP_IDLE, ANIM_VWEP_SHOOT, ANIM_VWEP_MELEE,
+        NUMANIMS
+    };
+
+    static const char * const animnames[] =
+    {
+        "mapmodel",
+        "dead", "dying",
+        "idle", "run N", "run NE", "run E", "run SE", "run S", "run SW", "run W", "run NW",
+        "jump", "jump N", "jump NE", "jump E", "jump SE", "jump S", "jump SW", "jump W", "jump NW",
+        "sink", "swim",
+        "crouch", "crouch N", "crouch NE", "crouch E", "crouch SE", "crouch S", "crouch SW", "crouch W", "crouch NW",
+        "crouch jump", "crouch jump N", "crouch jump NE", "crouch jump E", "crouch jump SE", "crouch jump S", "crouch jump SW", "crouch jump W", "crouch jump NW",
+        "crouch sink", "crouch swim",
+        "shoot", "melee",
+        "pain",
+        "edit", "lag", "taunt", "win", "lose",
+        "gun idle", "gun shoot", "gun melee",
+        "vwep idle", "vwep shoot", "vwep melee"
+    };
+   void renderplayer(entities::classes::BaseDynamicEntity *d, const playermodelinfo &mdl, int color, int team, float fade, int flags = 0, bool mainpass = true)
+    {
+        int lastaction = d->lastaction, anim = ANIM_IDLE|ANIM_LOOP, attack = 0, delay = 0;
+        if(d->lastattack >= 0)
+        {
+            attack = attacks[d->lastattack].anim;
+            delay = attacks[d->lastattack].attackdelay+50;
+        }
+        if(intermission && d->state!=CS_DEAD)
+        {
+            anim = attack = ANIM_LOSE|ANIM_LOOP;
+            if(validteam(team) ? bestteams.htfind(team)>=0 : bestplayers.find(d)>=0) anim = attack = ANIM_WIN|ANIM_LOOP;
+        }
+        else if(d->state==CS_ALIVE && d->lasttaunt && lastmillis-d->lasttaunt<1000 && lastmillis-d->lastaction>delay)
+        {
+            lastaction = d->lasttaunt;
+            anim = attack = ANIM_TAUNT;
+            delay = 1000;
+        }
+        modelattach a[5];
+        int ai = 0;
+        if(guns[d->gunselect].vwep)
+        {
+            int vanim = ANIM_VWEP_IDLE|ANIM_LOOP, vtime = 0;
+            if(lastaction && d->lastattack >= 0 && attacks[d->lastattack].gun==d->gunselect && lastmillis < lastaction + delay)
+            {
+                vanim = attacks[d->lastattack].vwepanim;
+                vtime = lastaction;
+            }
+            a[ai++] = modelattach("tag_weapon", guns[d->gunselect].vwep, vanim, vtime);
+        }
+        if(mainpass && !(flags&MDL_ONLYSHADOW))
+        {
+            d->muzzle = vec(-1, -1, -1);
+            if(guns[d->gunselect].vwep) a[ai++] = modelattach("tag_muzzle", &d->muzzle);
+        }
+        const char *mdlname = mdl.model[validteam(team) ? team : 0];
+        float yaw = testanims && d==player1 ? 0 : d->yaw,
+              pitch = testpitch && d==player1 ? testpitch : d->pitch;
+        vec o = d->feetpos();
+        int basetime = 0;
+        if(animoverride) anim = (animoverride<0 ? ANIM_ALL : animoverride)|ANIM_LOOP;
+        else if(d->state==CS_DEAD)
+        {
+            anim = ANIM_DYING|ANIM_NOPITCH;
+            basetime = d->lastpain;
+            if(ragdoll && mdl.ragdoll) anim |= ANIM_RAGDOLL;
+            else if(lastmillis-basetime>1000) anim = ANIM_DEAD|ANIM_LOOP|ANIM_NOPITCH;
+        }
+        else if(d->state==CS_EDITING || d->state==CS_SPECTATOR) anim = ANIM_EDIT|ANIM_LOOP;
+        else if(d->state==CS_LAGGED)                            anim = ANIM_LAG|ANIM_LOOP;
+        else if(!intermission)
+        {
+            if(lastmillis-d->lastpain < 300)
+            {
+                anim = ANIM_PAIN;
+                basetime = d->lastpain;
+            }
+            else if(d->lastpain < lastaction && lastmillis-lastaction < delay)
+            {
+                anim = attack;
+                basetime = lastaction;
+            }
+
+            if(d->inwater && d->physstate<=PHYS_FALL) anim |= (((game::allowmove(d) && (d->move || d->strafe)) || d->vel.z+d->falling.z>0 ? ANIM_SWIM : ANIM_SINK)|ANIM_LOOP)<<ANIM_SECONDARY;
+            else
+            {
+                static const int dirs[9] =
+                {
+                    ANIM_RUN_SE, ANIM_RUN_S, ANIM_RUN_SW,
+                    ANIM_RUN_E,  0,          ANIM_RUN_W,
+                    ANIM_RUN_NE, ANIM_RUN_N, ANIM_RUN_NW
+                };
+                int dir = dirs[(d->move+1)*3 + (d->strafe+1)];
+                if(d->timeinair>100) anim |= ((dir ? dir+ANIM_JUMP_N-ANIM_RUN_N : ANIM_JUMP) | ANIM_END) << ANIM_SECONDARY;
+                else if(dir && game::allowmove(d)) anim |= (dir | ANIM_LOOP) << ANIM_SECONDARY;
+            }
+
+            if(d->crouching) switch((anim>>ANIM_SECONDARY)&ANIM_INDEX)
+            {
+                case ANIM_IDLE: anim &= ~(ANIM_INDEX<<ANIM_SECONDARY); anim |= ANIM_CROUCH<<ANIM_SECONDARY; break;
+                case ANIM_JUMP: anim &= ~(ANIM_INDEX<<ANIM_SECONDARY); anim |= ANIM_CROUCH_JUMP<<ANIM_SECONDARY; break;
+                case ANIM_SWIM: anim &= ~(ANIM_INDEX<<ANIM_SECONDARY); anim |= ANIM_CROUCH_SWIM<<ANIM_SECONDARY; break;
+                case ANIM_SINK: anim &= ~(ANIM_INDEX<<ANIM_SECONDARY); anim |= ANIM_CROUCH_SINK<<ANIM_SECONDARY; break;
+                case 0: anim |= (ANIM_CROUCH|ANIM_LOOP)<<ANIM_SECONDARY; break;
+                case ANIM_RUN_N: case ANIM_RUN_NE: case ANIM_RUN_E: case ANIM_RUN_SE: case ANIM_RUN_S: case ANIM_RUN_SW: case ANIM_RUN_W: case ANIM_RUN_NW:
+                    anim += (ANIM_CROUCH_N - ANIM_RUN_N) << ANIM_SECONDARY;
+                    break;
+                case ANIM_JUMP_N: case ANIM_JUMP_NE: case ANIM_JUMP_E: case ANIM_JUMP_SE: case ANIM_JUMP_S: case ANIM_JUMP_SW: case ANIM_JUMP_W: case ANIM_JUMP_NW:
+                    anim += (ANIM_CROUCH_JUMP_N - ANIM_JUMP_N) << ANIM_SECONDARY;
+                    break;
+            }
+
+            if((anim&ANIM_INDEX)==ANIM_IDLE && (anim>>ANIM_SECONDARY)&ANIM_INDEX) anim >>= ANIM_SECONDARY;
+        }
+        if(!((anim>>ANIM_SECONDARY)&ANIM_INDEX)) anim |= (ANIM_IDLE|ANIM_LOOP)<<ANIM_SECONDARY;
+        if(d!=player1) flags |= MDL_CULL_VFC | MDL_CULL_OCCLUDED | MDL_CULL_QUERY;
+        if(d->type==ENT_PLAYER) flags |= MDL_FULLBRIGHT;
+        else flags |= MDL_CULL_DIST;
+        if(!mainpass) flags &= ~(MDL_FULLBRIGHT | MDL_CULL_VFC | MDL_CULL_OCCLUDED | MDL_CULL_QUERY | MDL_CULL_DIST);
+        float trans = d->state == CS_LAGGED ? 0.5f : 1.0f;
+        rendermodel(mdlname, anim, o, yaw, pitch, 0, flags, d, a[0].tag ? a : NULL, basetime, 0, fade, vec4(vec::hexcolor(color), trans));
+    }*/
+
     bool canjump()
     {
         return player1->state!=CS_DEAD;
@@ -244,6 +386,7 @@ namespace game
     void rendergame(bool mainpass) {
         // This function should be used to render HUD View stuff etc.
     }
+    
 
     const char *defaultcrosshair(int index) {
         return "data/crosshair.png";

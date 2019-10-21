@@ -1,0 +1,69 @@
+[
+    {
+        "class": "core_entity",
+        "core_entity": {
+            "attr1": 0,
+            "attr2": 0,
+            "attr3": 0,
+            "attr4": 0,
+            "attr5": 0,
+            "model_idx": 0,
+            "name": "coreentity_unnamed",
+            "o": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "reserved": 0
+        },
+        "ent_type": 2,
+        "et_type": 9,
+        "game_type": 13
+    },
+    {
+        "class": "core_entity",
+        "core_entity": {
+            "attr1": 0,
+            "attr2": 0,
+            "attr3": 0,
+            "attr4": 0,
+            "attr5": 0,
+            "model_idx": 0,
+            "name": "coreentity_unnamed",
+            "o": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "reserved": 0
+        },
+        "ent_type": 2,
+        "et_type": 1,
+        "game_type": 1
+    },
+    {
+        "base_entity": null,
+        "class": "playerstart",
+        "core_entity": {
+            "attr1": 10,
+            "attr2": 7,
+            "attr3": 0,
+            "attr4": -1,
+            "attr5": 0,
+            "model_idx": 0,
+            "name": "playerstart_2",
+            "o": {
+                "x": 627.7559204101563,
+                "y": 564.0,
+                "z": 516.36767578125
+            },
+            "reserved": 0
+        },
+        "ent_type": 2,
+        "et_type": 9,
+        "game_type": 9,
+        "playerstart": {
+            "yaw": 0.0
+        }
+    }
+]

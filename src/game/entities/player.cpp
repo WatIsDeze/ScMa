@@ -14,10 +14,10 @@ Player::Player() : BaseDynamicEntity() {
 	physstate = PHYS_FALL;
 	// Load in our player entity model.
 	conoutf("%s", "Preloading player entity");
-	preloadmodel("actors/player/male");
+	//preloadmodel("actors/player/male");
 	// Reset.
 	setName("Player");
-//preloadmodel("player/female");
+	preloadmodel("player/bones");
 	// Camera.
 	camera = new entities::classes::BasePhysicalEntity();
 }
@@ -29,7 +29,7 @@ Player::Player() : BaseDynamicEntity() {
 void Player::preload() {
 	// Load in our player entity model.
 	conoutf("%s", "Preloading player entity");
-	preloadmodel("actors/player/male");
+	preloadmodel("player/bones");
 
 	state = CS_ALIVE;
 	et_type = ET_GAMESPECIFIC;
@@ -65,7 +65,7 @@ void Player::render() {
 		// Calculate the position.
 		vec pos = o;
 		pos.z -= eyeheight;
-		rendermodel("actors/player/male", ANIM_JUMP, pos, yaw, pitch, 0, MDL_CULL_VFC | MDL_CULL_DIST | MDL_CULL_OCCLUDED);
+		rendermodel("player/bones", ANIM_IDLE, pos, yaw, pitch);
 	}
 }
 
