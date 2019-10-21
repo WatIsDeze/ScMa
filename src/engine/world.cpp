@@ -991,7 +991,7 @@ SCRIPTEXPORT_AS(enttoggle) void enttoggle_scriptimpl()
     else { if(entmoving > 1) entmoving = 1; intret(1); }
 }
 
-SCRIPTEXPORT_AS(entmoving) void entmoving_scriptimpl(int *n)
+SCRIPTEXPORT_AS(entmoving) void entmoving_scriptimpl(CommandTypes::Boolean n)
 {
     if(*n >= 0)
     {

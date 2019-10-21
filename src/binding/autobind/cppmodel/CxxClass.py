@@ -3,7 +3,8 @@ from .CxxNode import CxxNode
 class CxxClass(CxxNode):
     
     def __init__(self, sourceObject, parent = None):
-        super.__init__(self, sourceObject, parent)
+        CxxNode.__init__(self, sourceObject, parent)
 
-
+    def get_inheritance_hierarchy(self):
+        pass
     # def function
