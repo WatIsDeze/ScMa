@@ -3105,7 +3105,7 @@ namespace UI
         windows[name] = new Window(name, contents, onshow, onhide);
     };
 
-    SCRIPTEXPORT void uiallowinput(int *val)
+    SCRIPTEXPORT void uiallowinput(CommandTypes::Boolean val)
     {
         if(window)
         {
@@ -3115,7 +3115,7 @@ namespace UI
         }
     }
     
-    SCRIPTEXPORT void uieschide(int *val)
+    SCRIPTEXPORT void uieschide(CommandTypes::Boolean val)
     {
         if(window) { if(*val >= 0) window->eschide = *val!=0; intret(window->eschide ? 1 : 0); }
     }
