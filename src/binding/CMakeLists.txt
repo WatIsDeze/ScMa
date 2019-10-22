@@ -1,16 +1,20 @@
 
 set(CMAKE_CXX_VISIBILITY_PRESET default)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN 0)
+set(PYTHON python3)
+if (APPLE)
+    set(PYTHON /usr/local/bin/python3)
+endif()
 
 execute_process(
-    COMMAND python3 index.py binding
+    COMMAND ${PYTHON} index.py binding
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
     OUTPUT_VARIABLE binding_sources
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 
 execute_process(
-    COMMAND python3 index.py input
+    COMMAND ${PYTHON} index.py input
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
     OUTPUT_VARIABLE input_sources
     OUTPUT_STRIP_TRAILING_WHITESPACE
@@ -21,14 +25,14 @@ set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
 )
 
 execute_process(
-    COMMAND python3 index.py genlist ${sources_sources}
+    COMMAND ${PYTHON} index.py genlist ${sources_sources}
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
 )
 
 
 foreach(input_file ${input_sources})
     execute_process(
-        COMMAND python3 index.py cmake_output ${input_file}
+        COMMAND ${PYTHON} index.py cmake_output ${input_file}
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         OUTPUT_VARIABLE input_file_target
         OUTPUT_STRIP_TRAILING_WHITESPACE
@@ -42,7 +46,7 @@ foreach(input_file ${input_sources})
         OUTPUT command_${input_file_target}
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMAND
-        python3 index.py gen ${input_file} ${output_file_target}
+        ${PYTHON} index.py gen ${input_file} ${output_file_target}
         COMMENT "Preprocessing ${input_file}"
     )
     add_custom_target(

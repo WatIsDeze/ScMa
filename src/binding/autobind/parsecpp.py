@@ -7,6 +7,7 @@ import sys
 from .cppmodel.CxxNode import CxxNode
 from .cppmodel.CxxFunction import CxxFunction
 from .cppmodel.CxxClass import CxxClass
+from .cppmodel.CxxVariable import CxxVariable
 from .cppmodel.CxxInclude import CxxInclude
 
 
@@ -111,9 +112,9 @@ class CppParser:
                         return CxxClass(cursor, parent)
             if type(parent) == CxxClass:
                 if self.cursor_is_part_of_file_or_header(cursor, file):
-                    if (cursor.kind in [cindex.CursorKind.FIELD_DECL,
-                        cindex.CursorKind.PARM_DECL]):
-                        print(">>> class {} field {}".format(parent.sourceObject.spelling, cursor.spelling), file=sys.stderr)
+                    if (cursor.kind in [cindex.CursorKind.FIELD_DECL]):
+                        print(">>> class {} field({}) {}".format(parent.sourceObject.spelling, cursor.kind, cursor.spelling), file=sys.stderr)
+                        return CxxVariable(cursor, parent)
                 pass
             return None
 

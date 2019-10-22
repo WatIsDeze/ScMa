@@ -18,7 +18,8 @@ namespace entities {
             void onAnimate(int &anim, int &basetime);
 
         private:
-
+			vec pivot;
+			vec axis;
         };
     } // classes
 } // entities
