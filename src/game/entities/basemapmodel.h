@@ -28,6 +28,9 @@ namespace entities
             void loadModelAttributes();
 
         private:
+        //
+        //  Model Info. (Map Model Info, and filename.)
+        //
             mapmodelinfo mmi;
             std::string filename;
 
@@ -35,7 +38,7 @@ namespace entities
         //
         // Entity Factory functions.
         //
-        
+
         };
 		
     } // classes

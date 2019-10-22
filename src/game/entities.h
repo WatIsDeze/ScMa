@@ -14,8 +14,8 @@ namespace entities
     }
 
     // Entity arrays.
-    extern vector<classes::BaseEntity *> g_ents;
-    extern vector<classes::BaseEntity *> g_lightEnts;
+    static vector<classes::CoreEntity *> g_ents;
+    static vector<classes::CoreEntity *> g_lightEnts;
 
     //
     // Entity core functions.

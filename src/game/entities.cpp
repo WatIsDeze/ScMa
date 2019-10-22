@@ -17,16 +17,12 @@ namespace entities
 {
 	using namespace game;
 
-#ifndef STANDALONE
+	// Returns a reference to the global entities pointer array. (Weird stuff to do.)
+	vector<entities::classes::CoreEntity *> &getents() { return g_ents;	}
 
-	vector<entities::classes::CoreEntity *> &getents() {
-		static vector<entities::classes::CoreEntity *> g_ents;
-		return g_ents;
-	}
-
-	bool mayattach(entities::classes::BasePhysicalEntity *e) { return false; }
-	bool mayattach(entities::classes::CoreEntity *e) { return false; }
-	bool attachent(entities::classes::CoreEntity *e, entities::classes::CoreEntity *a) { return false; }
+	bool mayattach(entities::classes::BasePhysicalEntity *ent) { return false; }
+	bool mayattach(entities::classes::CoreEntity *ent) { return false; }
+	bool attachent(entities::classes::CoreEntity *ent, entities::classes::CoreEntity *a) { return false; }
 
 	const char *itemname(int i)
 	{
@@ -132,11 +128,12 @@ namespace entities
 		}*/
 
 		// Not sure, code is fucked atm but you know what this fucker function was for.->
-		const entities::classes::BaseMapModel *ent = dynamic_cast<entities::classes::BaseMapModel*>(e);
-		anim = ANIM_MAPMODEL | ANIM_START | ANIM_LOOP;
-		basetime = SDL_GetTicks() - ent->reserved;
-		ent->reserved = SDL_GetTicks();
-
+		if (e->et_type == ET_MAPMODEL) {
+			entities::classes::BaseMapModel *ent = dynamic_cast<entities::classes::BaseMapModel*>(e);
+			anim = ANIM_MAPMODEL | ANIM_START | ANIM_LOOP;
+			basetime = SDL_GetTicks() - ent->reserved;
+			ent->reserved = SDL_GetTicks();
+		}
 	}
 
 	void entradius(entities::classes::CoreEntity *e, bool color)
@@ -179,10 +176,10 @@ namespace entities
 	}
 	const char *entname(int i)
 	{
-		if (g_ents.inrange(i)) {
-			return g_ents[i]->name.c_str();
+		if (entities::g_ents.inrange(i)) {
+			return entities::g_ents[i]->name.c_str();
 		} else { 
-			"__unknown__"
+			"__unknown__";
 		}
 	}
 
@@ -202,5 +199,4 @@ namespace entities
 //		if(e->game_type==FLAG) return 0.0f;
 		return 4.0f;
 	}
-#endif
 }

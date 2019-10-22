@@ -23,7 +23,7 @@ namespace entities
             animinterpinfo animinterp[MAXANIMPARTS] { 0 };
             ragdolldata *ragdoll = nullptr;
             occludequery *query = nullptr;
-            int lastrendered = -1;
+            int lastrendered;
         };
     } // classes
 } // entities
