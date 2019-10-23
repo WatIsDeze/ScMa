@@ -318,11 +318,12 @@ namespace game
     const char *savedservers() { return "config/servers.cfg"; }
 
     void loadconfigs() {
-        execfile("config/auth.cfg", false);
+        execfile("config/auth.cfg", true);
     }
 
     void parseoptions(vector<const char *> &args) {
-        conoutf(CON_WARN, "game::parseoption is empty");
+        if (args.empty())
+            conoutf(CON_WARN, "game::parseoption is empty");
     }
     void connectattempt(const char *name, const char *password, const ENetAddress &address) {
         // Will need this to even join a game.
@@ -343,10 +344,10 @@ namespace game
     void physicstrigger(entities::classes::BasePhysicalEntity *d, bool local, int floorlevel, int waterlevel, int material)
     {
         // This function seems to be used for playing material audio. No worries about that atm.
-/*        if     (waterlevel>0) { if(material!=MAT_LAVA) playsound(S_SPLASHOUT, d==player1 ? NULL : &d->o); }
+        if     (waterlevel>0) { if(material!=MAT_LAVA) playsound(S_SPLASHOUT, d==player1 ? NULL : &d->o); }
         else if(waterlevel<0) playsound(material==MAT_LAVA ? S_BURN : S_SPLASHIN, d==player1 ? NULL : &d->o);
-        if     (floorlevel>0) { if(d==player1 || d->type!=ENT_PLAYER || ((gameent *)d)->ai) msgsound(S_JUMP, d); }
-        else if(floorlevel<0) { if(d==player1 || d->type!=ENT_PLAYER || ((gameent *)d)->ai) msgsound(S_LAND, d); }*/
+        if     (floorlevel>0) { if(d==player1 || d->ent_type !=ENT_PLAYER) playsound(S_JUMP, d); }
+        else if(floorlevel<0) { if(d==player1 || d->ent_type !=ENT_PLAYER ) playsound(S_LAND, d); }
     }
 
     void initclient() {

@@ -26,10 +26,10 @@
             "name": "Linux - x64 - Debug",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/debug/SchizoMania_Client",
+            "program": "${workspaceFolder}/build/SchizoMania_Client",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/..",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb"
