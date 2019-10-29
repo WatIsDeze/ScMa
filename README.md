@@ -1,3 +1,6 @@
+# Archived, now ported to Polyhedron engine from us: Pyramid Apex Games.
+Go look over here for the engine, and its including project game SchizoMania! [Polyhedron](https://github.com/Pyramid-Apex-Games/Polyhedron)
+
 # SchizoMania:
 SchizoMania is a game about a character called Dave who is quite deranged.
 Since we do not intend to do spoilers, think about Resident Evil 3 mixed up with Silent Hill 2 to get an idea about what it's intent is.
@@ -20,15 +23,4 @@ He’s not there.
 Where did he go?
 Where am I?``
 
-For those of you who do want to read the Chapter 1 spoiler, I suggest you go to the dev_docs folder.
-
-# Technology behind it:
-SchizoMania game, using [Tesseract](http://tesseract.gg) engine.
-
-Although it is using [Tesseract](http://tesseract.gg) as a base, it does not refrain from heavily modifying parts that need a change.
-
-# Helping out:
-In order to help us out, there is an irc channel on, irc.freenode.net #schizomania, and there is a [Discord](https://discord.gg/euwTtYx) server which we strongly advise you to join instead. 
-
-# License:
-All our media falls under this license, unless it is still temporary art from [Tesseract](http://tesseract.gg). https://creativecommons.org/licenses/by-nc-nd/4.0/
+For those of you who do want to read the Chapter 1 spoiler, I suggest you go to the dev_docs folder
